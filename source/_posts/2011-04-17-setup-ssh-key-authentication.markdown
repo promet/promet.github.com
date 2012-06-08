@@ -1,6 +1,8 @@
 ---
 date: '2011-04-17 15:46:41'
 layout: post
+author: gerold-mercadero
+published: true
 slug: setup-ssh-key-authentication
 status: publish
 title: Setup SSH Key Authentication

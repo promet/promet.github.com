@@ -1,6 +1,8 @@
 ---
 date: '2011-04-01 13:11:45'
 layout: post
+author: gerold-mercadero
+published: true
 slug: gmail-shorcuts
 status: publish
 title: Gmail Shorcuts

@@ -1,6 +1,8 @@
 ---
 date: '2010-05-19 05:37:46'
 layout: post
+author: gerold-mercadero
+published: true
 slug: ssl-certificates-registration-now-includes-www-subdomain
 status: publish
 title: SSL Certificate registration now includes "www" subdomain.

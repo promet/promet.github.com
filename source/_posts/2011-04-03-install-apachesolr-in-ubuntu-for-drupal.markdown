@@ -1,6 +1,8 @@
 ---
 date: '2011-04-03 14:26:25'
 layout: post
+author: gerold-mercadero
+published: true
 slug: install-apachesolr-in-ubuntu-for-drupal
 status: publish
 title: Install ApacheSolr in Ubuntu for Drupal

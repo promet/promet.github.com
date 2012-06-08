@@ -1,6 +1,8 @@
 ---
 date: '2011-04-15 14:44:29'
 layout: post
+author: gerold-mercadero
+published: true
 slug: centos-5-6-released
 status: publish
 title: CentOS 5.6 released

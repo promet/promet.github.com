@@ -1,6 +1,8 @@
 ---
 date: '2010-10-16 18:51:31'
 layout: post
+author: gerold-mercadero
+published: true
 slug: wordpress-3-error-briefly-unavailable-for-scheduled-maintenance
 status: publish
 title: 'WordPress 3 Error: Briefly unavailable for scheduled maintenance. Check back

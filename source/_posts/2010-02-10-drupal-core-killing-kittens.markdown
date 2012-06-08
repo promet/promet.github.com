@@ -1,6 +1,8 @@
 ---
 date: '2010-02-10 22:36:57'
 layout: post
+author: gerold-mercadero
+published: true
 slug: drupal-core-killing-kittens
 status: publish
 title: Drupal core - killing kittens

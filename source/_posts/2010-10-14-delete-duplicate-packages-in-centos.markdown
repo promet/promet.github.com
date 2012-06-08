@@ -1,6 +1,8 @@
 ---
 date: '2010-10-14 06:15:25'
 layout: post
+author: gerold-mercadero
+published: true
 slug: delete-duplicate-packages-in-centos
 status: publish
 title: Remove Duplicate Packages in CentOS

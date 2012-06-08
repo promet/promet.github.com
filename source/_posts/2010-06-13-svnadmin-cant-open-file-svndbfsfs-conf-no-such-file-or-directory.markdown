@@ -1,6 +1,8 @@
 ---
 date: '2010-06-13 00:37:48'
 layout: post
+author: gerold-mercadero
+published: true
 slug: svnadmin-cant-open-file-svndbfsfs-conf-no-such-file-or-directory
 status: publish
 title: 'svnadmin: can''t open file ''svn/db/fsfs.conf'': No such file or directory'

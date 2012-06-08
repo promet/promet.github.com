@@ -1,6 +1,8 @@
 ---
 date: '2010-02-02 17:24:57'
 layout: post
+author: gerold-mercadero
+published: true
 slug: drupal-performance-improvement-for-the-layment-presentation
 status: publish
 title: Drupal Performance improvement for the drupal admins presentation

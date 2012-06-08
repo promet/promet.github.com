@@ -1,6 +1,8 @@
 ---
 date: '2010-04-29 08:28:22'
 layout: post
+author: gerold-mercadero
+published: true
 slug: free-alternative-to-innodb-hot-backup
 status: publish
 title: Free alternative to InnoDB Hot Backup

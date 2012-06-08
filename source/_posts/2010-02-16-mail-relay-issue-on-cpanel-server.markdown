@@ -1,6 +1,8 @@
 ---
 date: '2010-02-16 09:05:00'
 layout: post
+author: gerold-mercadero
+published: true
 slug: mail-relay-issue-on-cpanel-server
 status: publish
 title: Mail Relay Issue on Cpanel Server

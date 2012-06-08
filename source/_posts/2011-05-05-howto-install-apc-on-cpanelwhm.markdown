@@ -1,6 +1,8 @@
 ---
 date: '2011-05-05 21:07:16'
 layout: post
+author: gerold-mercadero
+published: true
 slug: howto-install-apc-on-cpanelwhm
 status: publish
 title: HowTo Install APC on CPanel/WHM

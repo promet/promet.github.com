@@ -1,6 +1,8 @@
 ---
 date: '2010-04-13 23:48:56'
 layout: post
+author: gerold-mercadero
+published: true
 slug: google-will-use-site-performance-and-page-load-speed-in-serp-ranking-sysadmin-seo-here-we-come
 status: publish
 title: Google will use site performance and page load speed in SERP ranking - sysadmin

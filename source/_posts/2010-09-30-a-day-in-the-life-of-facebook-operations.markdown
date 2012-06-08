@@ -1,6 +1,8 @@
 ---
 date: '2010-09-30 14:23:51'
 layout: post
+author: gerold-mercadero
+published: true
 slug: a-day-in-the-life-of-facebook-operations
 status: publish
 title: A Day in the Life of Facebook Operations

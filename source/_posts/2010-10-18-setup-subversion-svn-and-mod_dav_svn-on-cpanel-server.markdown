@@ -1,6 +1,8 @@
 ---
 date: '2010-10-18 06:00:06'
 layout: post
+author: gerold-mercadero
+published: true
 slug: setup-subversion-svn-and-mod_dav_svn-on-cpanel-server
 status: publish
 title: Setup Subversion (SVN) and mod_dav_svn on Cpanel Server

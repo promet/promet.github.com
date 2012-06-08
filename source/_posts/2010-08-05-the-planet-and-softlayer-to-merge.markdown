@@ -1,6 +1,8 @@
 ---
 date: '2010-08-05 10:18:02'
 layout: post
+author: gerold-mercadero
+published: true
 slug: the-planet-and-softlayer-to-merge
 status: publish
 title: The Planet and Softlayer to merge

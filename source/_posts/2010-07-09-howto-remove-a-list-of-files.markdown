@@ -1,6 +1,8 @@
 ---
 date: '2010-07-09 16:33:28'
 layout: post
+author: gerold-mercadero
+published: true
 slug: howto-remove-a-list-of-files
 status: publish
 title: HowTo remove a list of files

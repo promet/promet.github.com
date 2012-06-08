@@ -1,6 +1,8 @@
 ---
 date: '2010-10-01 08:35:41'
 layout: post
+author: gerold-mercadero
+published: true
 slug: surge2010-after-party-three-martini-chug
 status: publish
 title: Surge2010 after party - three martini chug

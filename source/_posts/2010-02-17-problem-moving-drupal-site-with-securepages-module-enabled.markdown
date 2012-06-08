@@ -1,6 +1,8 @@
 ---
 date: '2010-02-17 07:41:23'
 layout: post
+author: gerold-mercadero
+published: true
 slug: problem-moving-drupal-site-with-securepages-module-enabled
 status: publish
 title: Problem Moving Drupal Site With SecurePages Module Enabled

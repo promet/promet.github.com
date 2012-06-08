@@ -1,6 +1,8 @@
 ---
 date: '2011-04-22 15:59:01'
 layout: post
+author: gerold-mercadero
+published: true
 slug: amazon-aws-worse-failure
 status: publish
 title: Amazon AWS worse failure

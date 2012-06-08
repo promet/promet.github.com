@@ -1,6 +1,8 @@
 ---
 date: '2010-05-19 11:39:40'
 layout: post
+author: gerold-mercadero
+published: true
 slug: joomla-site-error-mark-afterload-null-create-the-application
 status: publish
 title: 'Joomla site error: "mark( ''afterLoad'' ) : null; /** * CREATE THE APPLICATION..."'

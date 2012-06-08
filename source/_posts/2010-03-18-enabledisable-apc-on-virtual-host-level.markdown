@@ -1,6 +1,8 @@
 ---
 date: '2010-03-18 16:53:29'
 layout: post
+author: gerold-mercadero
+published: true
 slug: enabledisable-apc-on-virtual-host-level
 status: publish
 title: Enable/Disable APC on virtual host level

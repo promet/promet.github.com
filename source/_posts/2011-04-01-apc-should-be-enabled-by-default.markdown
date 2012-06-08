@@ -1,6 +1,8 @@
 ---
 date: '2011-04-01 14:36:15'
 layout: post
+author: gerold-mercadero
+published: true
 slug: apc-should-be-enabled-by-default
 status: publish
 title: APC should be enabled by default

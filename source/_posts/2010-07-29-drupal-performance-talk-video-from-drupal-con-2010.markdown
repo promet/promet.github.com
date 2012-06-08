@@ -1,6 +1,8 @@
 ---
 date: '2010-07-29 23:01:17'
 layout: post
+author: gerold-mercadero
+published: true
 slug: drupal-performance-talk-video-from-drupal-con-2010
 status: publish
 title: Drupal Performance talk video from Drupal Con 2010

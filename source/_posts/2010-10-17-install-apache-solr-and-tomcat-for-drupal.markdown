@@ -1,6 +1,8 @@
 ---
 date: '2010-10-17 05:10:55'
 layout: post
+author: gerold-mercadero
+published: true
 slug: install-apache-solr-and-tomcat-for-drupal
 status: publish
 title: Install Apache Solr and Tomcat for Drupal

@@ -1,6 +1,8 @@
 ---
 date: '2012-04-30 07:34:45'
 layout: post
+author: gerold-mercadero
+published: true
 slug: yum-there-are-unfinished-transactions-remaining-you-might-consider-running-yum-complete-transaction-first-to-finish-them
 status: publish
 title: 'YUM: There are unfinished transactions remaining. You might consider running

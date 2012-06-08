@@ -1,6 +1,8 @@
 ---
 date: '2012-06-04 09:15:33'
 layout: post
+author: gerold-mercadero
+published: true
 slug: install-vsftpd-server-with-virtual-user-and-directory
 status: publish
 title: Install vsftpd Server With Virtual User and Directory

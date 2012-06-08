@@ -1,6 +1,8 @@
 ---
 date: '2011-04-12 14:41:17'
 layout: post
+author: gerold-mercadero
+published: true
 slug: setup-sftp-only-access-redhat-based-distro
 status: publish
 title: Setup SFTP-Only Access (Redhat-based Distro)

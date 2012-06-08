@@ -1,6 +1,8 @@
 ---
 date: '2011-04-11 10:24:29'
 layout: post
+author: gerold-mercadero
+published: true
 slug: moving-drupal-site-with-civicrm
 status: publish
 title: Moving Drupal site with CiviCRM

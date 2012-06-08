@@ -1,6 +1,8 @@
 ---
 date: '2011-03-27 19:08:20'
 layout: post
+author: gerold-mercadero
+published: true
 slug: hosting-presentation-at-drupalcon2011
 status: publish
 title: Hosting presentation at DrupalCon2011

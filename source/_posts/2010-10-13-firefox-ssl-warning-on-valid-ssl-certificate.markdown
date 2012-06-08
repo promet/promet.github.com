@@ -1,6 +1,8 @@
 ---
 date: '2010-10-13 17:26:29'
 layout: post
+author: gerold-mercadero
+published: true
 slug: firefox-ssl-warning-on-valid-ssl-certificate
 status: publish
 title: Firefox SSL Warning on Valid SSL Certificate
