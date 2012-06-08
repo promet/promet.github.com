@@ -27,6 +27,19 @@ authors:
     github: mdxp
     gravatar: 34b742e276f76496c6c3b12d07ee984f
     twitter: mariusducea
+  greg-palmier:
+    display_name: Greg Palmier
+    github: gregpalmier
+    gravatar: 5cd156f8fa447c243b23b942244d09b4
+  gerold-mercadero:
+    display_name: Gerold Mercadero
+    github: gerold
+    gravatar: 705fc52c0ee87b603827570c51131758
+    twitter: gmercadero
+  joel-scoble:
+    display_name: Joel Scoble
+    github: jscoble
+    gravatar: 6a30e1ba776d0fdb29ef378477035deb
 
 # ----------------------- #
 #    Jekyll & Plugins     #
