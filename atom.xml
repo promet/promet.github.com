@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
 
-  <title><![CDATA[My Octopress Blog]]></title>
+  <title><![CDATA[Linux Sysadmin Blog]]></title>
   <link href="http://promet.github.com/atom.xml" rel="self"/>
   <link href="http://promet.github.com/"/>
-  <updated>2012-06-08T10:12:47-05:00</updated>
+  <updated>2012-06-08T10:46:28-05:00</updated>
   <id>http://promet.github.com/</id>
   <author>
-    <name><![CDATA[Your Name]]></name>
+    <name><![CDATA[Promet OPS Team]]></name>
     
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
