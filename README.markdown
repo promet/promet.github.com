@@ -86,3 +86,4 @@ Resources
 * [Markdown Docs](http://daringfireball.net/projects/markdown/)
 * [Jekyll Docs](https://github.com/mojombo/jekyll/wiki/template-data)
 * [Liquid Docs](https://github.com/Shopify/liquid/wiki/Liquid-for-Designers)
+
