@@ -1,7 +1,7 @@
 ---
 date: '2011-03-27 19:08:20'
 layout: post
-author: gerold-mercadero
+author: andrew-kucharski
 published: true
 slug: hosting-presentation-at-drupalcon2011
 status: publish

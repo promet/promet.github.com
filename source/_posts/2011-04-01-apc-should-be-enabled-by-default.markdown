@@ -1,7 +1,7 @@
 ---
 date: '2011-04-01 14:36:15'
 layout: post
-author: gerold-mercadero
+author: marius-ducea
 published: true
 slug: apc-should-be-enabled-by-default
 status: publish

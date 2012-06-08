@@ -1,7 +1,7 @@
 ---
 date: '2011-05-05 21:07:16'
 layout: post
-author: gerold-mercadero
+author: marius-ducea
 published: true
 slug: howto-install-apc-on-cpanelwhm
 status: publish
