@@ -1,7 +1,7 @@
 ---
 date: '2010-07-09 19:49:17'
 layout: post
-author: gerold-mercadero
+author: marius-ducea
 published: true
 slug: debian-ftp-archive-for-etch-archive-debian-org
 status: publish

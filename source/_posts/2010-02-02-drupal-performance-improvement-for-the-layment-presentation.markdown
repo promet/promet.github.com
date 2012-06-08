@@ -1,7 +1,7 @@
 ---
 date: '2010-02-02 17:24:57'
 layout: post
-author: gerold-mercadero
+author: andrew-kucharski
 published: true
 slug: drupal-performance-improvement-for-the-layment-presentation
 status: publish

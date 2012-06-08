@@ -1,7 +1,7 @@
 ---
 date: '2010-09-30 08:29:56'
 layout: post
-author: gerold-mercadero
+author: andrew-kucharski
 published: true
 slug: keynote-summary-of-surge-conference
 status: publish

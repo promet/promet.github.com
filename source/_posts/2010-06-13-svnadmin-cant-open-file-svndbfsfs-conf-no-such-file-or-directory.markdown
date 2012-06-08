@@ -1,7 +1,7 @@
 ---
 date: '2010-06-13 00:37:48'
 layout: post
-author: gerold-mercadero
+author: marius-ducea
 published: true
 slug: svnadmin-cant-open-file-svndbfsfs-conf-no-such-file-or-directory
 status: publish

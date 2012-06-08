@@ -1,7 +1,7 @@
 ---
 date: '2010-04-19 17:27:19'
 layout: post
-author: gerold-mercadero
+author: andrew-kucharski
 published: true
 slug: drupalcon-security-session-notes
 status: publish

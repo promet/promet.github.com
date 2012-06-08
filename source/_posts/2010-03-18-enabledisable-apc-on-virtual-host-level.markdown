@@ -1,7 +1,7 @@
 ---
 date: '2010-03-18 16:53:29'
 layout: post
-author: gerold-mercadero
+author: marius-ducea
 published: true
 slug: enabledisable-apc-on-virtual-host-level
 status: publish

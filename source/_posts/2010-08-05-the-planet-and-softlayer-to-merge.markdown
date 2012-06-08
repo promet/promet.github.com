@@ -1,7 +1,7 @@
 ---
 date: '2010-08-05 10:18:02'
 layout: post
-author: gerold-mercadero
+author: andrew-kucharski
 published: true
 slug: the-planet-and-softlayer-to-merge
 status: publish
