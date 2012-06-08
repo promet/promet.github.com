@@ -23,19 +23,24 @@ I've written few Drupal ApacheSolr install guides here and this one is basically
 
 **1.)  Install Tomcat and setup your Tomcat admin user.**
 
-`aptitude install tomcat6 tomcat6-admin tomcat6-common tomcat6-user
-vi /etc/tomcat6/tomcat-users.xml`
+```
+aptitude install tomcat6 tomcat6-admin tomcat6-common tomcat6-user
+vi /etc/tomcat6/tomcat-users.xml
 _<role rolename="admin"/>
 <role rolename="manager"/>
 <user username="tomcat" password="password" roles="admin,manager"/>_
-`/etc/init.d/tomcat6 restart`
+/etc/init.d/tomcat6 restart
+```
 
 If all is good you will be able to access Tomcat admin at _http://hostname:8080_.  Default page will show with links to admin section, etc.
 
 **2.)  Install Solr**
 
-`wget http://apache.rediris.es/lucene/solr/1.4.1/apache-solr-1.4.1.zip` ([_check for updates_](http://apache.rediris.es/lucene/solr/))
-`unzip apache-solr-1.4.1.zip
+```
+wget http://apache.rediris.es/lucene/solr/1.4.1/apache-solr-1.4.1.zip
+``` ([_check for updates_](http://apache.rediris.es/lucene/solr/))
+```
+unzip apache-solr-1.4.1.zip
 mkdir /usr/share/tomcat6/webapps
 cp apache-solr-1.4.1/dist/apache-solr-1.4.1.war /usr/share/tomcat6/webapps/solr.war
 cp -r apache-solr-1.4.1/example/solr /usr/share/tomcat6/solr
@@ -43,8 +48,9 @@ vi /etc/tomcat6/Catalina/localhost/solr.xml`
 _<Context docBase="/usr/share/tomcat6/webapps/solr.war" debug="0" privileged="true" allowLinking="true" crossContext="true">
 <Environment name="solr/home" type="java.lang.String" value="/usr/share/tomcat6/solr" override="true" />
 </Context>_
-`chown -r tomcat6.tomcat6 /var/lib/tomcat6
-/etc/init.d/tomcat6 restart`
+chown -r tomcat6.tomcat6 /var/lib/tomcat6
+/etc/init.d/tomcat6 restart
+```
 
 You should see Solr access on your Tomcat admin/manager page (_http://hostname:8080/manager/html_).
 
@@ -52,15 +58,17 @@ You should see Solr access on your Tomcat admin/manager page (_http://hostname:8
 
 I already have a Drupal site with ApacheSolr module installed and SolrPHPclient library.
 
-`cp /path/drupal_site/sites/all/modules/apachesolr/schema.xml /usr/share/tomcat6/solr/conf/schema.xml
+```
+cp /path/drupal_site/sites/all/modules/apachesolr/schema.xml /usr/share/tomcat6/solr/conf/schema.xml
 cp /path/drupal_site/sites/all/modules/apachesolr/solrconfig.xml /usr/share/tomcat6/solr/conf/solrconfig.xml
 cp apache-solr-1.4.1/example/multicore/solr.xml /usr/share/tomcat6/solr/
 mkdir /usr/share/tomcat6/solr/site_sample1
 cp -r /usr/share/tomcat6/solr/conf /usr/share/tomcat6/solr/site_sample1/conf
 vi /usr/share/tomcat6/solr/solr.xml`
 _<core name="site1" instanceDir="site_sample1" />_
-`chown -R tomcat6:root /usr/share/tomcat6/solr/
-/etc/init.d/tomcat6 restart`
+chown -R tomcat6:root /usr/share/tomcat6/solr/
+/etc/init.d/tomcat6 restart
+```
 
 Visit ApacheSolr settings of your Drupal admin and enter the configuration:
 _Solr Hostname: **localhost**
@@ -68,10 +76,12 @@ Solr Port: **8080**
 Solr Path: **/solr/site1**_
 
 **To add new site to Solr:**
-`mkdir /usr/share/tomcat6/solr/site_sample2
+```
+mkdir /usr/share/tomcat6/solr/site_sample2
 cp -r /usr/share/tomcat6/solr/conf /usr/share/tomcat6/solr/site_sample2/conf
 vi /usr/share/tomcat6/solr/solr.xml`
 _<core name="site2" instanceDir="site_sample2" />_
+```
 
 That's All.
 

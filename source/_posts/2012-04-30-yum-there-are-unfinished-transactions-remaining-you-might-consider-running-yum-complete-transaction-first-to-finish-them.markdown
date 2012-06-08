@@ -15,7 +15,9 @@ tags:
 ---
 
 Yum Error:
-`There are unfinished transactions remaining. You might consider running yum-complete-transaction first to finish them.`
+```
+There are unfinished transactions remaining. You might consider running yum-complete-transaction first to finish them.
+```
 
 With _unfinished transactions_, yum refers to any incomplete or aborted transactions, such as package installations or updates.  Obviously, yum wants you to run `yum-complete-transaction` command to fix the problem.  If you can't find _yum-complete-transaction_ on your system, probably you don't have the package "_yum-utils_" installed, so install it first with `yum install yum-utils`.
 
