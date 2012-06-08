@@ -49,8 +49,8 @@ Usage
  3. Add metadata to the YAML front matter ('author' should correspond to a key in _config.yml):
 
  ```yml
- author: tien-nguyen
- categories: [Evil, Muwahaha, Kittens]
+ author: marius-ducea
+ categories: [Install, Setup, etc]
  published: false # working draft, will not be published on generate
  ```
 
@@ -76,7 +76,7 @@ Usage
   rake deploy
   ```
 
-  In a few moments, see your new article published on [the blog](http://technology.customink.com)!
+  In a few moments, see your new article published on [the blog](http://linuxsysadminblog.com)!
 
 
 Resources
