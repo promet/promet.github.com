@@ -21,6 +21,13 @@ subscribe_email:
 # RSS feeds can list your email address if you like
 email:
 
+authors:
+  marius-ducea:
+    display_name: Marius Ducea
+    github: mdxp
+    gravatar: 34b742e276f76496c6c3b12d07ee984f
+    twitter: mariusducea
+
 # ----------------------- #
 #    Jekyll & Plugins     #
 # ----------------------- #

@@ -1,0 +1,27 @@
+---
+layout: page
+single: true
+---
+
+{% assign author = site.authors[page.author] %}
+
+<div id="author-top-links" style="margin:-10px 0 8px 0;">
+  {% if author.github %}
+    <iframe src="http://markdotto.github.com/github-buttons/github-btn.html?user={{ author.github }}&type=follow&count=true"
+  allowtransparency="true" frameborder="0" scrolling="0" width="165px" height="20px"></iframe>
+  {% endif %}
+
+  {% if author.twitter %}
+    <a href="https://twitter.com/{{ author.twitter }}" class="twitter-follow-button" data-show-count="false">Follow @{{ author.twitter }}</a>
+<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
+  {% endif %}
+</div>
+
+<img alt="{{ author.display_name }}" src="http://gravatar.com/avatar/{{ author.gravatar }}?s=200" width="200" height="200" style="float:left; margin-right: 1.5em;" />
+
+<div style="border-bottom:1px solid #ddd; padding:0 0 10px 0;">
+  {{ content | newline_to_br }}
+  <div style="clear:both;"></div>
+</div>
+
+{% include author_archive.html %}

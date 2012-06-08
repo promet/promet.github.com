@@ -1,0 +1,33 @@
+---
+layout: page
+title: Our Team
+footer: false
+---
+
+<div id="author-archives">
+{% for author in site.authors %}
+  {% assign post_count = 0 %}
+  {% for post in site.posts %}
+    {% if post.author == author[0] and post.published %}
+      {% capture post_count %}{{ post_count | plus: 1 }}{% endcapture %}
+    {% endif %}
+  {% endfor %}
+  <div style="margin: 0 0 15px 0;">
+    <img src="http://www.gravatar.com/avatar/{{ author[1].gravatar }}?default=mm&s=50" style="border-width:5px; float:left; margin:0 15px 0 0;" height="50" width="50">
+    <div style="padding:2px 0 0 0;">
+      <a href="{{ root_url }}/blog/our-team/{{ author[0] }}.html">{{ author[1].display_name }}</a>
+    </div>
+    <div style="color:#999; font-size:14px; font-style:italic; margin:-5px 0 0 0;">
+      {{ post_count }}
+      {% if post_count == '1' %}
+        post
+      {% else %}
+        posts
+      {% endif %}
+    </div>
+  </div>
+
+  <div style="clear:both"></div>
+{% endfor %}
+</div>
+
