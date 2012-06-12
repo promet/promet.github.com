@@ -31,6 +31,14 @@ Usage
 * Branch off `master` or work locally for longer running articles
 * Always work off the `source` branch
 
+Initial setup
+-----
+
+Before you can publish your first changes you will have to bootstrap your environment. For this run:
+```
+rake bootstrap
+```
+
 ### Creating a new Post
 
  0. Make sure you have the most recent posts
