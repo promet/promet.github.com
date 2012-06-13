@@ -10,7 +10,7 @@ Installation
 
 ### Dependencies
 
-* Ruby 1.9.3
+* Ruby 1.9.2
 * Bundler
 
 ### Quick Start
