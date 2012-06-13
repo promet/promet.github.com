@@ -40,6 +40,27 @@ authors:
     display_name: Joel Scoble
     github: jscoble
     gravatar: 6a30e1ba776d0fdb29ef378477035deb
+  andrew-kucharski:
+    display_name: Andrew Kucharski
+    github: 
+    gravatar: 
+  pim-van-der-wal:
+    display_name: Pim Van der Wal
+    github: 
+    gravatar: 
+  brant-wynn:
+    display_name: Brant Wynn
+    github: 
+    gravatar: 8af518a1587fd6a9eabc0f9ff91012ee
+  max-veprinsky:
+    display_name: Max Veprinsky
+    github: 
+    gravatar: 
+  rachel-jaro:
+    display_name: Rachel Jaro
+    github: 
+    gravatar:
+
 
 # ----------------------- #
 #    Jekyll & Plugins     #
