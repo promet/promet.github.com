@@ -52,16 +52,17 @@ Create your repository: _svnadmin create /path/to/svn/repos_
 Add the code below to your domain's custom include file.  You need to create this file based on [this guide](http://www.cpanel.net/documentation/easyapache/customdirectives.html) to preserve when you recompile Apache/PHP.
 Example file (Apache2,standard/non-ssl):  _/usr/local/apache/conf/userdata/std/2/cpanl_user/domain.com/svn.conf_
 File Contents:
-`<Location /svn>
-#  mod dav svn support and location of svn repo files
-DAV svn
-SVNPath /path/to/svn/repos
-# authentication for security, create using htpasswd
-AuthType Basic
-AuthName "SVN Access"
-AuthUserFile /path/to/file/containing/user.pass
-Require valid-user
-# added for permissions/access
-Order allow,deny
-Allow from all
-</Location>`
+
+    <Location /svn>
+    #  mod dav svn support and location of svn repo files
+    DAV svn
+    SVNPath /path/to/svn/repos
+    # authentication for security, create using htpasswd
+    AuthType Basic
+    AuthName "SVN Access"
+    AuthUserFile /path/to/file/containing/user.pass
+    Require valid-user
+    # added for permissions/access
+    Order allow,deny
+    Allow from all
+    </Location>

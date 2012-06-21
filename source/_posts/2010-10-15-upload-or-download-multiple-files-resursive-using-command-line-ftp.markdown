@@ -15,11 +15,11 @@ tags:
 ---
 
 Problem is I can't upload directory including sub-directories and files using command-line ftp.   I searched for similar problem and looks like you can't do this using command line ftp, unless you create a script.   One solution I found is the use of "[lftp](http://lftp.yar.ru/)".
-`
-   # lftp ftp_host
-   > user ftp_user ftp_pass
-   > mirror source target`      (download entire directory tree)`
-   > mirror -R source target`  (reverse mirror; upload entire directory tree)
+
+    \# lftp ftp_host
+    \> user ftp_user ftp_pass
+    \> mirror source target      (download entire directory tree)
+    \> mirror -R source target  (reverse mirror; upload entire directory tree)
 
 Usefull when transferring files between servers where you only have ftp access.
 
