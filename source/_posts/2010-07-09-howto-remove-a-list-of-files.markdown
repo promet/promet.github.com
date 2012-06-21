@@ -18,10 +18,10 @@ tags:
 ---
 
 Here is a quick tip on how to remove a list of files. Let's say you have the list of files inside a file called **files_to_remove**. Usually I would do something like this:
-`LIST=`cat files_to_remove``
+    LIST=\`cat files_to_remove\`
 and then
-`ls -al $LIST`
+    ls -al $LIST
 just to check what is in the list and if it looks good.
 
 And finally:
-`rm -vf $LIST`
+    rm -vf $LIST

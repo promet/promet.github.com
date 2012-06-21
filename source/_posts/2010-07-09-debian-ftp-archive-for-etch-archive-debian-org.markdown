@@ -17,7 +17,8 @@ tags:
 
 And indeed running apt update was giving a  **404 error**, as the etch files are no longer in the main ftp archive (on ftp.debian.org):
 
-`apt-get update
+```
+apt-get update
 Ign http://ftp.debian.org etch Release.gpg
 Ign http://ftp.debian.org etch Release
 Ign http://ftp.debian.org etch/main Packages
@@ -34,7 +35,8 @@ Reading package lists... Done
 W: Couldn't stat source package list http://ftp.debian.org etch/main Packages (/var/lib/apt/lists/ftp.debian.org_debian_dists_etch_main_binary-i386_Packages) - stat (2 No such file or directory)
 W: Couldn't stat source package list http://ftp.debian.org etch/non-free Packages (/var/lib/apt/lists/ftp.debian.org_debian_dists_etch_non-free_binary-i386_Packages) - stat (2 No such file or directory)
 W: Couldn't stat source package list http://ftp.debian.org etch/contrib Packages (/var/lib/apt/lists/ftp.debian.org_debian_dists_etch_contrib_binary-i386_Packages) - stat (2 No such file or directory)
-W: You may want to run apt-get update to correct these problems`
+W: You may want to run apt-get update to correct these problems
+```
 
 and the apt sources line causing this error was (from **/etc/apt/sources.list**):
 `deb http://ftp.debian.org/debian/ etch main non-free contrib`

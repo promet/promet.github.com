@@ -64,10 +64,11 @@ Here's my quick install guide for Solr, Tomcat, and Drupal ApacheSolr module for
 	
   * Edit _/opt/tomcat/conf/tomcat-users.xml_ to enable Tomcat login.  See comments in this file.
 
-
-`<role rolename="manager"/>
+```
+<role rolename="manager"/>
 <role rolename="admin"/>
-<user username="tomcat" password="tomcat" roles="manager,admin"/>`
+<user username="tomcat" password="tomcat" roles="manager,admin"/>
+```
 
 
 
@@ -104,10 +105,12 @@ Here's my quick install guide for Solr, Tomcat, and Drupal ApacheSolr module for
   * Create file _/opt/tomcat/conf/Catalina/localhost/solr.xml_ with the following configuration.  Make sure paths are correct.
 
 
-`<Context docBase="/opt/tomcat/webapps/solr.war" debug="0" privileged="true" allowLinking="true" crossContext="true">
+```
+<Context docBase="/opt/tomcat/webapps/solr.war" debug="0" privileged="true" allowLinking="true" crossContext="true">
 <Environment name="solr/home" type="java.lang.String" value="/opt/tomcat/solr" override="true" />
 </Context>
-`
+```
+
 **Install Process: ApacheSolr Drupal module and SolrPHP client**
 
 
@@ -136,37 +139,32 @@ Here's my quick install guide for Solr, Tomcat, and Drupal ApacheSolr module for
   * Create directory for each site and copy _/opt/tomcat/solr/conf _ directory to each of them. Example:
 
 
-`mkdir /opt/tomcat/solr/site1
-mkdir /opt/tomcat/solr/site2
-cp -r /opt/tomcat/solr/conf /opt/tomcat/solr/site1/
-cp -r /opt/tomcat/solr/conf /opt/tomcat/solr/site2/`
+    mkdir /opt/tomcat/solr/site1
+    mkdir /opt/tomcat/solr/site2
+    cp -r /opt/tomcat/solr/conf /opt/tomcat/solr/site1/
+    cp -r /opt/tomcat/solr/conf /opt/tomcat/solr/site2/
 
 
 
 	
   * Edit _/opt/tomcat/solr/solr.xml_ with the following config:
 
-
-`<?xml version="1.0" encoding="UTF-8" ?>
+```
+<?xml version="1.0" encoding="UTF-8" ?>
 <solr persistent="false">
 <cores adminPath="/admin/cores">
 <core name="site1" instanceDir="site1" />
 <core name="site1" instanceDir="site2" />
 </cores>
-</solr>`
+</solr>
+```
 
-
-
-	
   * Start or Restart Tomcat: _/etc/init.d/tomcat6 start_
-
 	
   * Visit _http://localhost:8080/_ and go to you Solr App
 
 
 **Configure Drupal site:**
-
-
 
 	
   * Go to ApacheSolr settings _http://localhost/admin/settings/apachesolr_
@@ -174,13 +172,11 @@ cp -r /opt/tomcat/solr/conf /opt/tomcat/solr/site2/`
 	
   * Save your config and if all is good you'll see message: _Your site has contacted the Apache Solr server._
 
-
-`Solr host name: localhost
+```
+Solr host name: localhost
 Solr port: 8080
 Solr path (for site1): /solr/site1
-`
-
-
+```
 	
   * Configure your search index.
 
