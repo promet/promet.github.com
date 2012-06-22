@@ -1,4 +1,5 @@
 ---
+author: gerold-mercadero
 date: '2009-01-06 07:59:42'
 layout: post
 slug: flvtool2-not-injecting-metadata-video-length

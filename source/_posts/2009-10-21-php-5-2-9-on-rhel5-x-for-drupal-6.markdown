@@ -1,4 +1,5 @@
 ---
+author: max-veprinsky
 date: '2009-10-21 15:10:13'
 layout: post
 slug: php-5-2-9-on-rhel5-x-for-drupal-6

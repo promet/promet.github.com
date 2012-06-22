@@ -1,4 +1,5 @@
 ---
+author: andrew-kucharski
 date: '2009-05-12 18:07:30'
 layout: post
 slug: sys-admin-beer-money-free-software-foundation-ads

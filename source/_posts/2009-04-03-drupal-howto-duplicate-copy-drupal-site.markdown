@@ -1,4 +1,5 @@
 ---
+author: gerold-mercadero
 date: '2009-04-03 04:48:11'
 layout: post
 slug: drupal-howto-duplicate-copy-drupal-site

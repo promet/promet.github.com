@@ -1,4 +1,5 @@
 ---
+author: marius-ducea
 date: '2009-08-25 06:05:25'
 layout: post
 slug: using-wildcards-in-nginx-valid_referers

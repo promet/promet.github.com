@@ -1,4 +1,5 @@
 ---
+author: gerold-mercadero
 date: '2009-10-27 09:43:30'
 layout: post
 slug: problem-with-lilo-boot-loader

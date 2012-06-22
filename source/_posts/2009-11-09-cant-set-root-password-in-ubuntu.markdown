@@ -1,4 +1,5 @@
 ---
+author: gerold-mercadero
 date: '2009-11-09 02:34:13'
 layout: post
 slug: cant-set-root-password-in-ubuntu

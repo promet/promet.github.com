@@ -1,4 +1,5 @@
 ---
+author: max-veprinsky
 date: '2009-10-19 13:45:34'
 layout: post
 slug: change-squid-outgoing-address

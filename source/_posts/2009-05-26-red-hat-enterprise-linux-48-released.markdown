@@ -1,4 +1,5 @@
 ---
+author: marius-ducea
 date: '2009-05-26 03:04:20'
 layout: post
 slug: red-hat-enterprise-linux-48-released

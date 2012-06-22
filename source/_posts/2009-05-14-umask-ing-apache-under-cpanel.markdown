@@ -1,4 +1,5 @@
 ---
+author: max-veprinsky
 date: '2009-05-14 18:17:02'
 layout: post
 slug: umask-ing-apache-under-cpanel

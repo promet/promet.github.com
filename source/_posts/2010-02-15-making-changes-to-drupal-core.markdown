@@ -1,4 +1,5 @@
 ---
+author: gerold-mercadero
 date: '2010-02-15 00:42:10'
 layout: post
 slug: making-changes-to-drupal-core

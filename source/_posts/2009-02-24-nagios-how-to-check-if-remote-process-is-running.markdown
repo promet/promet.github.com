@@ -1,4 +1,5 @@
 ---
+author: gerold-mercadero
 date: '2009-02-24 04:00:33'
 layout: post
 slug: nagios-how-to-check-if-remote-process-is-running

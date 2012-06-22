@@ -1,4 +1,5 @@
 ---
+author: gerold-mercadero
 date: '2009-06-29 05:39:10'
 layout: post
 slug: moving-drupalcivicrm-sites

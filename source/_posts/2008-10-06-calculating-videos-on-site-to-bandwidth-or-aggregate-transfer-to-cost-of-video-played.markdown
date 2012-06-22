@@ -1,4 +1,5 @@
 ---
+author: andrew-kucharski
 date: '2008-10-06 22:42:04'
 layout: post
 slug: calculating-videos-on-site-to-bandwidth-or-aggregate-transfer-to-cost-of-video-played

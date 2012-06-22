@@ -1,4 +1,5 @@
 ---
+author: andrew-kucharski
 date: '2009-10-21 14:57:21'
 layout: post
 slug: apple-sold-3-1-million-macs-in-the-last-three-months-17-more-than-a-year-ago

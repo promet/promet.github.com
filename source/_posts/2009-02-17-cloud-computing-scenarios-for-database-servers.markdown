@@ -1,4 +1,5 @@
 ---
+author: pim-van-der-wal
 date: '2009-02-17 10:09:35'
 layout: post
 slug: cloud-computing-scenarios-for-database-servers

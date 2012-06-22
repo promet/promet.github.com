@@ -1,4 +1,5 @@
 ---
+author: gerold-mercadero
 date: '2009-05-22 00:38:39'
 layout: post
 slug: hidden-wordpress-spam

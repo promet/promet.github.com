@@ -1,4 +1,5 @@
 ---
+author: max-veprinsky
 date: '2009-02-09 17:10:53'
 layout: post
 slug: upgrade-to-java-se-6-update-12-on-fedora-10

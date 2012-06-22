@@ -1,4 +1,5 @@
 ---
+author: max-veprinsky
 date: '2008-07-29 09:11:15'
 layout: post
 slug: virtual-desktop-in-gnome-222-fedora-core-9

@@ -1,4 +1,5 @@
 ---
+author: andrew-kucharski
 date: '2009-02-02 14:37:49'
 layout: post
 slug: adbard-dont-die

@@ -1,4 +1,5 @@
 ---
+author: marius-ducea
 date: '2009-02-24 07:36:08'
 layout: post
 slug: ubuntu-910-%e2%80%9ckarmic-koala%e2%80%9d-will-use-eucalyptus-for-your-own-cloud-computing-solution

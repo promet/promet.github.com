@@ -1,4 +1,5 @@
 ---
+author: max-veprinsky
 date: '2009-11-23 17:56:46'
 layout: post
 slug: xen-vm-mount-external-devices

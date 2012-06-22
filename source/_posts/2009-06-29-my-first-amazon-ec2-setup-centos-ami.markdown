@@ -1,4 +1,5 @@
 ---
+author: gerold-mercadero
 date: '2009-06-29 07:52:12'
 layout: post
 slug: my-first-amazon-ec2-setup-centos-ami

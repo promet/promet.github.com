@@ -1,4 +1,5 @@
 ---
+author: max-veprinsky
 date: '2009-04-24 12:50:54'
 layout: post
 slug: lsi-aquires-3ware%c2%ae-from-amcc

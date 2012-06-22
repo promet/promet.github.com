@@ -1,4 +1,5 @@
 ---
+author: marius-ducea
 date: '2009-09-01 05:03:36'
 layout: post
 slug: centos-4-8-finally-released

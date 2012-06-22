@@ -1,4 +1,5 @@
 ---
+author: marius-ducea
 date: '2009-05-19 04:30:51'
 layout: post
 slug: rhelcentos-x86_64-and-i386-packages-mess

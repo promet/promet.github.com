@@ -1,4 +1,5 @@
 ---
+author: pim-van-der-wal
 date: '2008-06-27 07:53:31'
 layout: post
 slug: mysql-error-1449-there-is-no-usernamehost-registered

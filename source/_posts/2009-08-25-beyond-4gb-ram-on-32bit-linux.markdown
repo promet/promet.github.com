@@ -1,4 +1,5 @@
 ---
+author: max-veprinsky
 date: '2009-08-25 17:04:08'
 layout: post
 slug: beyond-4gb-ram-on-32bit-linux

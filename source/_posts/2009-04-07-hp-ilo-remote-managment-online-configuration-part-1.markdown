@@ -1,4 +1,5 @@
 ---
+author: max-veprinsky
 date: '2009-04-07 16:54:28'
 layout: post
 slug: hp-ilo-remote-managment-online-configuration-part-1

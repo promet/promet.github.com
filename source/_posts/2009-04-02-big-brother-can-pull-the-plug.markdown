@@ -1,4 +1,5 @@
 ---
+author: max-veprinsky
 date: '2009-04-02 03:21:09'
 layout: post
 slug: big-brother-can-pull-the-plug

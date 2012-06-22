@@ -1,4 +1,5 @@
 ---
+author: andrew-kucharski
 date: '2009-02-24 12:39:50'
 layout: post
 slug: even-the-clouds-come-down-to-earth-cloud-services-crash-just-like-everyone-else-sometimes

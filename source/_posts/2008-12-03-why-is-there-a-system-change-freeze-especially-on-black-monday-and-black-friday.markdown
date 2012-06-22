@@ -1,4 +1,5 @@
 ---
+author: andrew-kucharski
 date: '2008-12-03 18:53:34'
 layout: post
 slug: why-is-there-a-system-change-freeze-especially-on-black-monday-and-black-friday

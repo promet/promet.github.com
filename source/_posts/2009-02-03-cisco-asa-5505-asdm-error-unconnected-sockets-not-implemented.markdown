@@ -1,4 +1,5 @@
 ---
+author: marius-ducea
 date: '2009-02-03 07:53:51'
 layout: post
 slug: cisco-asa-5505-asdm-error-unconnected-sockets-not-implemented

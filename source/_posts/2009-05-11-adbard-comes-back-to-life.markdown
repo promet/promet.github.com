@@ -1,4 +1,5 @@
 ---
+author: andrew-kucharski
 date: '2009-05-11 09:21:03'
 layout: post
 slug: adbard-comes-back-to-life

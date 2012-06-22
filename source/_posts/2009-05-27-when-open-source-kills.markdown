@@ -1,4 +1,5 @@
 ---
+author: max-veprinsky
 date: '2009-05-27 11:39:25'
 layout: post
 slug: when-open-source-kills

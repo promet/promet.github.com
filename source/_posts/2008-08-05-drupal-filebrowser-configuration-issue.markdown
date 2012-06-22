@@ -1,4 +1,5 @@
 ---
+author: gerold-mercadero
 date: '2008-08-05 11:46:25'
 layout: post
 slug: drupal-filebrowser-configuration-issue

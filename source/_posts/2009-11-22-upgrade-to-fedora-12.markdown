@@ -1,4 +1,5 @@
 ---
+author: max-veprinsky
 date: '2009-11-22 15:58:02'
 layout: post
 slug: upgrade-to-fedora-12

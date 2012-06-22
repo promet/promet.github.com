@@ -7,6 +7,7 @@ title: Install Wordpress with Subversion
 wordpress_id: '1'
 categories:
 - Installation
+author: gerold-mercadero
 ---
 
 To install Wordpress with Subversion you need shell access to your server and have Subversion installed.  To start, login to your server (shell) and go to directory where you want to install Wordpress and execute this command:

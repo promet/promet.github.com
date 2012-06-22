@@ -1,4 +1,5 @@
 ---
+author: andrew-kucharski
 date: '2009-01-06 00:36:16'
 layout: post
 slug: beer-money-and-open-source-ad-network

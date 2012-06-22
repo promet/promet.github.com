@@ -1,4 +1,5 @@
 ---
+author: max-veprinsky
 date: '2009-04-13 10:37:29'
 layout: post
 slug: centos-53-released

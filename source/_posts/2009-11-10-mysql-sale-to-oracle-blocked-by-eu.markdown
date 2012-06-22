@@ -1,4 +1,5 @@
 ---
+author: andrew-kucharski
 date: '2009-11-10 13:02:32'
 layout: post
 slug: mysql-sale-to-oracle-blocked-by-eu

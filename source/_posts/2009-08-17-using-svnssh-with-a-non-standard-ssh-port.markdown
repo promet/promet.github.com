@@ -1,4 +1,5 @@
 ---
+author: marius-ducea
 date: '2009-08-17 04:25:05'
 layout: post
 slug: using-svnssh-with-a-non-standard-ssh-port

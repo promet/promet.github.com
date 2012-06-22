@@ -1,4 +1,5 @@
 ---
+author: marius-ducea
 date: '2009-06-02 09:57:46'
 layout: post
 slug: howto-get-started-with-amazon-ec2-api-tools

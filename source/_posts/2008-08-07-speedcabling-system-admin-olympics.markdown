@@ -1,4 +1,5 @@
 ---
+author: andrew-kucharski
 date: '2008-08-07 14:37:23'
 layout: post
 slug: speedcabling-system-admin-olympics

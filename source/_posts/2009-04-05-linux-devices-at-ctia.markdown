@@ -1,4 +1,5 @@
 ---
+author: andrew-kucharski
 date: '2009-04-05 22:31:26'
 layout: post
 slug: linux-devices-at-ctia

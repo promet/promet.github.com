@@ -1,4 +1,5 @@
 ---
+author: andrew-kucharski
 date: '2009-10-25 23:38:59'
 layout: post
 slug: whitehouse-org-goes-open-source-with-drupal

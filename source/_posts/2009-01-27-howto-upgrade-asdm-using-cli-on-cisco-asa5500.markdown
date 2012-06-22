@@ -1,4 +1,5 @@
 ---
+author: marius-ducea
 date: '2009-01-27 06:18:17'
 layout: post
 slug: howto-upgrade-asdm-using-cli-on-cisco-asa5500

@@ -1,4 +1,5 @@
 ---
+author: gerold-mercadero
 date: '2009-03-24 03:15:52'
 layout: post
 slug: adding-custom-mantis-bug-status

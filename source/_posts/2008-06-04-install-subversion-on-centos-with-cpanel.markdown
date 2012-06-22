@@ -7,6 +7,7 @@ title: Install Subversion on CentOS with Cpanel
 wordpress_id: '6'
 categories:
 - Installation
+author: gerold-mercadero
 ---
 
 To install Subversion (SVN) login to your server (shell) and execute:

@@ -1,4 +1,5 @@
 ---
+author: andrew-kucharski
 date: '2008-11-12 15:33:06'
 layout: post
 slug: can-your-isp-stop-a-40-gigabit-ddos-attack

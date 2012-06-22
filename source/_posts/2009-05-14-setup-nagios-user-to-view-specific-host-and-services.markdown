@@ -1,4 +1,5 @@
 ---
+author: gerold-mercadero
 date: '2009-05-14 19:29:00'
 layout: post
 slug: setup-nagios-user-to-view-specific-host-and-services

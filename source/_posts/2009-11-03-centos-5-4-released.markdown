@@ -1,4 +1,5 @@
 ---
+author: marius-ducea
 date: '2009-11-03 02:41:01'
 layout: post
 slug: centos-5-4-released

@@ -1,4 +1,5 @@
 ---
+author: max-veprinsky
 date: '2009-01-27 16:30:45'
 layout: post
 slug: enforce-ssl-for-google-services

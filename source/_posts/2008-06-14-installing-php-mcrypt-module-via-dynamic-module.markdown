@@ -11,6 +11,7 @@ tags:
 - CLI
 - mcrypt
 - php
+author: marius-ducea
 ---
 
 Considering that you have an existing php installation compiled from sources, it is very easy to add afterwards _new php modules_, outside the php binary. This can be achieved without any interruption of the web services, and requires just the following steps:

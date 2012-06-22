@@ -1,4 +1,5 @@
 ---
+author: marius-ducea
 date: '2009-09-15 07:10:34'
 layout: post
 slug: howto-display-php-errors-when-you-dont-have-access-to-php-ini

@@ -1,4 +1,5 @@
 ---
+author: gerold-mercadero
 date: '2009-07-29 03:43:51'
 layout: post
 slug: task-on-amazon-ebs-on-centos-ami

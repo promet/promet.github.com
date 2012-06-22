@@ -1,4 +1,5 @@
 ---
+author: gerold-mercadero
 date: '2009-09-14 20:15:46'
 layout: post
 slug: hpacucli-error-while-loading-shared-libraries-libstdc-libc6-2-2-so-3

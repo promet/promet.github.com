@@ -10,6 +10,7 @@ categories:
 tags:
 - Amazon
 - Down Time
+author: andrew-kucharski
 ---
 
 Any host or system admin hates the words "its not working" or "its down".  When I see a big site take a hit or is town there are two reactions that I generally have:

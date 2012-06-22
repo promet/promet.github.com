@@ -1,4 +1,5 @@
 ---
+author: max-veprinsky
 date: '2009-07-06 15:25:20'
 layout: post
 slug: install-truecrypt-on-fedora-10

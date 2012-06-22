@@ -1,4 +1,5 @@
 ---
+author: andrew-kucharski
 date: '2009-04-20 11:25:19'
 layout: post
 slug: sun-dumps-ibm-for-a-better-offer-from-oracle-what-will-happen-to-mysql

@@ -1,4 +1,5 @@
 ---
+author: andrew-kucharski
 date: '2009-10-25 23:34:30'
 layout: post
 slug: linux-will-take-mobile-with-android-plus-android-turns-one

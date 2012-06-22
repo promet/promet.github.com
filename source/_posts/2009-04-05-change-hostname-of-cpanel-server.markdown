@@ -1,4 +1,5 @@
 ---
+author: gerold-mercadero
 date: '2009-04-05 07:19:16'
 layout: post
 slug: change-hostname-of-cpanel-server

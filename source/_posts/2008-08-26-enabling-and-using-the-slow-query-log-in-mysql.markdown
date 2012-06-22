@@ -1,4 +1,5 @@
 ---
+author: pim-van-der-wal
 date: '2008-08-26 17:39:10'
 layout: post
 slug: enabling-and-using-the-slow-query-log-in-mysql

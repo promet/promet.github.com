@@ -1,4 +1,5 @@
 ---
+author: gerold-mercadero
 date: '2008-11-25 09:39:23'
 layout: post
 slug: cpanel-adding-custom-configuration-to-httpdconf
