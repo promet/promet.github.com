@@ -1,4 +1,5 @@
 ---
+published: true
 author: max-veprinsky
 date: '2008-07-29 09:11:15'
 layout: post

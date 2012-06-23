@@ -1,4 +1,5 @@
 ---
+published: true
 author: gerold-mercadero
 date: '2009-03-22 12:25:15'
 layout: post

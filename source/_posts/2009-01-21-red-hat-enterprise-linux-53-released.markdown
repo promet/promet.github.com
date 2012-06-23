@@ -1,5 +1,6 @@
 ---
 author: andrew-kucharski
+published: true
 date: '2009-01-21 10:06:39'
 layout: post
 slug: red-hat-enterprise-linux-53-released

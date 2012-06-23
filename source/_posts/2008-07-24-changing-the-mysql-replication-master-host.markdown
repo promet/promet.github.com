@@ -1,5 +1,6 @@
 ---
 author: pim-van-der-wal
+published: true
 date: '2008-07-24 10:09:22'
 layout: post
 slug: changing-the-mysql-replication-master-host

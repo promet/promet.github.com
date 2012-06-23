@@ -1,4 +1,5 @@
 ---
+published: true
 author: marius-ducea
 date: '2008-07-25 15:26:37'
 layout: post

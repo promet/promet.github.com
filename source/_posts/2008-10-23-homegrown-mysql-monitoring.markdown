@@ -1,5 +1,6 @@
 ---
 author: pim-van-der-wal
+published: true
 date: '2008-10-23 07:46:49'
 layout: post
 slug: homegrown-mysql-monitoring

@@ -1,4 +1,5 @@
 ---
+published: true
 date: '2008-06-04 05:11:20'
 layout: post
 slug: install-wordpress-with-subversion

@@ -1,5 +1,6 @@
 ---
 author: pim-van-der-wal
+published: true
 date: '2008-09-04 07:41:00'
 layout: post
 slug: when-mysql-starts-counting-sheep

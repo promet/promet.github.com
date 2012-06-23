@@ -1,5 +1,6 @@
 ---
-author: pim-van-der-wal
+author: pim-van-der-walpublished: true
+
 date: '2008-06-20 08:24:56'
 layout: post
 slug: implementing-aes-encryption-in-the-front-end

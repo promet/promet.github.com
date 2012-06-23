@@ -1,5 +1,6 @@
 ---
 author: pim-van-der-wal
+published: true
 date: '2009-01-05 16:16:47'
 layout: post
 slug: monitoring-a-java-application-from-nagios

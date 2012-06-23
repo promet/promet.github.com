@@ -1,5 +1,6 @@
 ---
 author: gerold-mercadero
+published: true
 date: '2009-01-14 05:48:39'
 layout: post
 slug: compile-mplayermencoder-with-xvid-and-h264-codec-support

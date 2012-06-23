@@ -13,6 +13,7 @@ tags:
 - google aps
 - hosting
 author: andrew-kucharski
+published: true
 ---
 
 PrometHost offers best of class hosting for websites, databases, and other services such as email, domain registration, spam filtering, etc.   We have recently made a decision to focus on three things for our hosting offering:

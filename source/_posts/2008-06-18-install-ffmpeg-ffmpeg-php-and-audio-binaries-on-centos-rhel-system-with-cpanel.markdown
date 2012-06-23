@@ -10,6 +10,7 @@ categories:
 tags:
 - ffmpeg
 author: gerold-mercadero
+published: true
 ---
 
 FFMPEG is an open source application that allows you to convert video and audio files easily between a variety of different formats.  It supports most industry-standard codec and can convert from one file format to another quickly and easily.  This guide is intented for the installatiion of ffmpeg, ffmpeg-php, mplayer, mencoder, lame mp3 encoder, flvtool2, libVorbis, and libogg and tested on CentOS5 and RHEL3 systems with Cpanel.

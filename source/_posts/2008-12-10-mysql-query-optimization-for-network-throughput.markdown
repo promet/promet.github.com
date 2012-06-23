@@ -1,5 +1,6 @@
 ---
 author: pim-van-der-wal
+published: true
 date: '2008-12-10 10:42:46'
 layout: post
 slug: mysql-query-optimization-for-network-throughput

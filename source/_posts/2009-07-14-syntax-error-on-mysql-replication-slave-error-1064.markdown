@@ -1,5 +1,6 @@
 ---
 author: pim-van-der-wal
+published: true
 date: '2009-07-14 20:52:38'
 layout: post
 slug: syntax-error-on-mysql-replication-slave-error-1064

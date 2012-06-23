@@ -1,5 +1,6 @@
 ---
 author: pim-van-der-wal
+published: true
 date: '2008-10-14 13:37:16'
 layout: post
 slug: pci-dss-compliance-for-dummies

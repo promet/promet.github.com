@@ -1,4 +1,5 @@
 ---
+published: true
 author: andrew-kucharski
 date: '2009-03-04 12:25:15'
 layout: post

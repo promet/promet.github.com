@@ -1,4 +1,5 @@
 ---
+published: true
 author: marius-ducea
 published: true
 date: '2009-11-03 02:41:01'

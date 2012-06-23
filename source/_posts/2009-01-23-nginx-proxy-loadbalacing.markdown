@@ -1,5 +1,6 @@
 ---
 author: max-veprinsky
+published: true
 date: '2009-01-23 19:57:37'
 layout: post
 slug: nginx-proxy-loadbalacing

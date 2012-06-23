@@ -1,5 +1,6 @@
 ---
 author: pim-van-der-wal
+published: true
 date: '2008-09-18 17:22:02'
 layout: post
 slug: run-parts-not-running-all-the-scripts-in-etccrondaily

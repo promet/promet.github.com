@@ -1,4 +1,5 @@
 ---
+published: true
 date: '2008-06-04 05:38:20'
 layout: post
 slug: install-subversion-on-centos-with-cpanel

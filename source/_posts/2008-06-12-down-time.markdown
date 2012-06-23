@@ -10,6 +10,7 @@ categories:
 tags:
 - Amazon
 - Down Time
+published: true
 author: andrew-kucharski
 ---
 

@@ -1,5 +1,6 @@
 ---
 author: pim-van-der-wal
+published: true
 date: '2008-10-09 14:16:26'
 layout: post
 slug: rebuilding-the-mysql-replication-slave

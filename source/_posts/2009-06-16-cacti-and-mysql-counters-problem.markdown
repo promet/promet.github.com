@@ -1,5 +1,6 @@
 ---
 author: pim-van-der-wal
+published: true
 date: '2009-06-16 20:46:15'
 layout: post
 slug: cacti-and-mysql-counters-problem
