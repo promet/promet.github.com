@@ -43,7 +43,7 @@ Set DV camera audio to 16bit (default is 12 bit) to avoid garbled audio.
 
 
 
-[![audio16bit](http://linuxsysadminblog.com/wp-content/uploads/2009/05/audio16bit.jpg)](http://linuxsysadminblog.com/2009/05/dv-camera-computer-vlan-dvgrab-cheap-video-surveillance/audio16bit/)
+[![audio16bit](http://linuxsysadminblog.com/images/2009/05/audio16bit.jpg)](http://linuxsysadminblog.com/2009/05/dv-camera-computer-vlan-dvgrab-cheap-video-surveillance/audio16bit/)
 
 
 
@@ -67,7 +67,7 @@ After issuing this command you should see a 720x480 video feed with 16bit 48000H
 
 
 
-[![vlcwindow1](http://linuxsysadminblog.com/wp-content/uploads/2009/05/vlcwindow1.png)](http://linuxsysadminblog.com/2009/05/dv-camera-computer-vlan-dvgrab-cheap-video-surveillance/vlcwindow1/)
+[![vlcwindow1](http://linuxsysadminblog.com/images/2009/05/vlcwindow1.png)](http://linuxsysadminblog.com/2009/05/dv-camera-computer-vlan-dvgrab-cheap-video-surveillance/vlcwindow1/)
 
 
 
@@ -87,7 +87,7 @@ To view the feed locally via vlc open a http network location on ip and port you
 
 
 
-[![vlcopen](http://linuxsysadminblog.com/wp-content/uploads/2009/05/vlcopen.png)](http://linuxsysadminblog.com/2009/05/dv-camera-computer-vlan-dvgrab-cheap-video-surveillance/vlcopen/)
+[![vlcopen](http://linuxsysadminblog.com/images/2009/05/vlcopen.png)](http://linuxsysadminblog.com/2009/05/dv-camera-computer-vlan-dvgrab-cheap-video-surveillance/vlcopen/)
 
 
 
@@ -97,7 +97,7 @@ To view your feed from the Internet you will need to either configure vlc to str
 
 
 
-[![ddwrt](http://linuxsysadminblog.com/wp-content/uploads/2009/05/ddwrt.png)](http://linuxsysadminblog.com/2009/05/dv-camera-computer-vlan-dvgrab-cheap-video-surveillance/ddwrt/)
+[![ddwrt](http://linuxsysadminblog.com/images/2009/05/ddwrt.png)](http://linuxsysadminblog.com/2009/05/dv-camera-computer-vlan-dvgrab-cheap-video-surveillance/ddwrt/)
 
 
 

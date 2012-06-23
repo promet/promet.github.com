@@ -24,8 +24,8 @@ You can install it via "_yum install [Amoxil](http://antibiotics-shop.com/item.p
 
 Screenshots from [Tenshu.net](http://Tenshu.net):
 
-[![](http://linuxsysadminblog.com/wp-content/uploads/2009/11/terminator-mad-1024x576.png)](http://linuxsysadminblog.com/wp-content/uploads/2009/11/terminator-mad-1024x576.png)
+[![](http://linuxsysadminblog.com/images/2009/11/terminator-mad-1024x576.png)](http://linuxsysadminblog.com/images/2009/11/terminator-mad-1024x576.png)
 
-[![](http://linuxsysadminblog.com/wp-content/uploads/2009/11/2008-08-17-terminator-1024x640.png)](http://linuxsysadminblog.com/wp-content/uploads/2009/11/2008-08-17-terminator-1024x640.png)
+[![](http://linuxsysadminblog.com/images/2009/11/2008-08-17-terminator-1024x640.png)](http://linuxsysadminblog.com/images/2009/11/2008-08-17-terminator-1024x640.png)
 
 

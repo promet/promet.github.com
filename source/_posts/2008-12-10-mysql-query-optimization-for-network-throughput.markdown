@@ -32,4 +32,4 @@ In and by them selves these queries look pretty harmless. 2000 rows is not that 
 
 We rewrote query and pushed to production on that same day. Yes, I know that a previous blog post tells us not to do that but in this case I'm glad we did. Network traffic dropped below 10Mb/s and the web site was flying. Below is the Cacti graph that shows that difference. Shortly after 15:00 we implemented the optimization and traffic dropped dramatically.
 
-[caption id="attachment_162" align="alignnone" width="500" caption="Network traffic decrease after query optimization"][![](http://linuxsysadminblog.com/wp-content/uploads/2008/12/network_traffic_improvement.png)](http://linuxsysadminblog.com/wp-content/uploads/2008/12/network_traffic_improvement.png)[/caption] 
+[caption id="attachment_162" align="alignnone" width="500" caption="Network traffic decrease after query optimization"][![](http://linuxsysadminblog.com/images/2008/12/network_traffic_improvement.png)](http://linuxsysadminblog.com/images/2008/12/network_traffic_improvement.png)[/caption] 

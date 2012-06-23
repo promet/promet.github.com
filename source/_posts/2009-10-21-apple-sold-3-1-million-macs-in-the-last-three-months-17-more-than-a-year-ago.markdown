@@ -15,7 +15,7 @@ I thought that at least 10% of our readers would appreciate this information - o
 
 Why 10%?  According to our analytics here is our visitors operating system breakdown is as follows:
 
-[caption id="attachment_910" align="aligncenter" width="489" caption="linux system admin blog google analytics operatin system breakdown"][![linux system admin blog google analytics operatin system breakdown](http://linuxsysadminblog.com/wp-content/uploads/2009/10/linux-blog-analytics-operating-system-stats.png)](http://linuxsysadminblog.com/wp-content/uploads/2009/10/linux-blog-analytics-operating-system-stats.png)[/caption]
+[caption id="attachment_910" align="aligncenter" width="489" caption="linux system admin blog google analytics operatin system breakdown"][![linux system admin blog google analytics operatin system breakdown](http://linuxsysadminblog.com/images/2009/10/linux-blog-analytics-operating-system-stats.png)](http://linuxsysadminblog.com/images/2009/10/linux-blog-analytics-operating-system-stats.png)[/caption]
 
 Our top three visitors OS:
 

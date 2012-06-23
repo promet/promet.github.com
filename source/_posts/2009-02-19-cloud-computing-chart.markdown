@@ -18,6 +18,6 @@ tags:
 
 Here is a great chart from _James Maguire_ article ["Five Companies Shaping Cloud Computing: Who Wins?"](http://itmanagement.earthweb.com/entdev/article.php/11070_3798591_6/Five-Companies-Shaping-Cloud-Computing-Who-Wins.htm), that provides an overall comparative look at the current vendors in cloud computing:
 
-![cloud-computing-chart](http://linuxsysadminblog.com/wp-content/uploads/2009/02/cloud-computing-chart.jpg)
+![cloud-computing-chart](http://linuxsysadminblog.com/images/2009/02/cloud-computing-chart.jpg)
 
 While you are here you go ahead and read his [article](http://itmanagement.earthweb.com/entdev/article.php/11070_3798591_1/Five-Companies-Shaping-Cloud-Computing-Who-Wins.htm) also as it has some good information on the future of the “big five” in cloud computing.

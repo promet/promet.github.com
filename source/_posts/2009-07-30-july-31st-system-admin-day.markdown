@@ -26,7 +26,7 @@ See what its all about here:
 
 Here is one of our own getting some appreciation from our colleagues.
 
-[caption id="attachment_823" align="alignleft" width="300" caption="Max, our gets nominated as a favorite linux system administrator by some of his office fans"]![Max, our gets nominated as a favorite linux system administrator by some of his office fans](http://linuxsysadminblog.com/wp-content/uploads/2009/07/LinuxSystemAdmin-gets-love-from-ladies-300x225.jpg)[/caption]
+[caption id="attachment_823" align="alignleft" width="300" caption="Max, our gets nominated as a favorite linux system administrator by some of his office fans"]![Max, our gets nominated as a favorite linux system administrator by some of his office fans](http://linuxsysadminblog.com/images/2009/07/LinuxSystemAdmin-gets-love-from-ladies-300x225.jpg)[/caption]
 
 So don't forget to buy your system administrator a coffee, beer, donut, or whatever he prefers, and dont ask any stupid questions tomorrow.
 

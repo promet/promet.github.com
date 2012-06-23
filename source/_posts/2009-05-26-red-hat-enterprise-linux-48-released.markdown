@@ -16,7 +16,7 @@ tags:
 
 With the **8th update** of their venerable **Red Hat Enterprise Linux 4** version (_first released in February 200_5), RedHat switches to "[production 2 lifecycle phase](http://press.redhat.com/2008/07/23/support-for-red-hat-enterprise-linux-improved-through-enhanced-product-life-cycle/)", where it helps customers transition to **RHEL5**. Ideally everyone will upgrade to rhel5 by the **end of the year - Q4 200**9 (in case not done already, this is a good time to plan for this).
 
-[![7years_4](http://linuxsysadminblog.com/wp-content/uploads/2009/05/7years_4.png)](http://www.redhat.com/security/updates/errata/)
+[![7years_4](http://linuxsysadminblog.com/images/2009/05/7years_4.png)](http://www.redhat.com/security/updates/errata/)
 
 General Availability:     February 14, 2005
 End of Production 1 phase:     March 31, 2009

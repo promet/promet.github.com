@@ -16,7 +16,7 @@ tags:
 One of my friend asked for help about virus appearing on his sites (mostly WordPress sites).  I checked it out and my Kaspersky Internet Security blocked the pages from loading, so i downloaded the files manually and scanned html with Kaspersky to determine affected files.
 
 
-![virus2](http://linuxsysadminblog.com/wp-content/uploads/2009/03/virus2-220x300.gif)
+![virus2](http://linuxsysadminblog.com/images/2009/03/virus2-220x300.gif)
 
 
 

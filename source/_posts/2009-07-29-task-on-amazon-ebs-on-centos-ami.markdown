@@ -100,4 +100,4 @@ controlling machine$: ec2-register bucket1/image.manifest.xml`
   * Test your new AMI - run new instance and check if your ebs volume is attached - goodluck!
 
 
-**Init Script Here: [ mountebs](http://linuxsysadminblog.com/wp-content/uploads/2009/07/mountebs)**
+**Init Script Here: [ mountebs](http://linuxsysadminblog.com/images/2009/07/mountebs)**

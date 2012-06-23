@@ -35,7 +35,7 @@ Here's a quick how-to for installing **[ImageMagick](http://www.imagemagick.org/
 **Imagick**
   Go to **WHM -> Software -> Module Installers -> PHP Pecl **(manage). On the box below "**Install a PHP Pecl**" enter "**imagick**" and click "**Install Now**" button - that's all.  
 
-Restart Apache and check your _**phpinfo**_ page to see the details of Imagick and ImageMagick as well.  See linked images for reference:  [image1](http://linuxsysadminblog.com/wp-content/uploads/2009/05/install.jpg), [image2](http://linuxsysadminblog.com/wp-content/uploads/2009/05/installed.jpg).
+Restart Apache and check your _**phpinfo**_ page to see the details of Imagick and ImageMagick as well.  See linked images for reference:  [image1](http://linuxsysadminblog.com/images/2009/05/install.jpg), [image2](http://linuxsysadminblog.com/images/2009/05/installed.jpg).
 
 **Uninstall:**
 

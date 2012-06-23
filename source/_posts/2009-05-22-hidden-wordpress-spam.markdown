@@ -17,7 +17,7 @@ tags:
 
 A month ago one of our customers complained on lots of spam comments appearing on his [Wordpress](http://wordpress.org) site.  There's no development changes, including updates, to that site since it was launched and it runs on WP version 2.3.3.  We managed the issue by activating the [Akismet](http://codex.wordpress.org/Akismet) plugin and upgrading the Wordpress to latest version (2.7.1 at this time).
 
-![reference](http://linuxsysadminblog.com/wp-content/uploads/2009/05/mh-300x185.jpg)
+![reference](http://linuxsysadminblog.com/images/2009/05/mh-300x185.jpg)
 
 Yesterday, the same customer reported back the spam results appearing on Google search from his site.  So i checked all the approved comments and pages on the site but i found nothing.   At first I thought it was on Google cache but i don't think it's the case since it's been a month since we implemented the spam filter and wp upgrade.  Then I checked on the database contents and found several spam messages inserted on blog posts, most of them were inserted at the end of posts.  
 

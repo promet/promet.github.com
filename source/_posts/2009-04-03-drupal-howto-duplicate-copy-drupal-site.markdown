@@ -36,12 +36,12 @@ This post cover the steps to copy, transfer, or duplicate a Drupal site to new d
 **Shell / Bash Scripts:**
 
 
-1.)  Copy Drupal Site with CiviCRM.  [**Download here!**](http://linuxsysadminblog.com/wp-content/uploads/2009/04/copy_drupal_with_civicrm.sh)
+1.)  Copy Drupal Site with CiviCRM.  [**Download here!**](http://linuxsysadminblog.com/images/2009/04/copy_drupal_with_civicrm.sh)
 
 
 
 
-2.)  Copy Drupal Site without CiviCRM.  [**Download here!**](http://linuxsysadminblog.com/wp-content/uploads/2009/04/copy_drupal_without_civicrm.sh)
+2.)  Copy Drupal Site without CiviCRM.  [**Download here!**](http://linuxsysadminblog.com/images/2009/04/copy_drupal_without_civicrm.sh)
 
 
 
