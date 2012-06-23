@@ -21,7 +21,7 @@ This week we have **[Terminator](http://www.tenshu.net/terminator/)** - a split 
     * Config file to override gnome-terminal settings
     * Simultaneous typing to arbitrary groups of terminals
 
-You can install it via "_yum install [Amoxil](http://antibiotics-shop.com/item.php?id=252)  terminator_" or "_apt-get install terminator_".
+You can install it via "_yum install terminator_" or "_apt-get install terminator_".
 
 Screenshots from [Tenshu.net](http://Tenshu.net):
 

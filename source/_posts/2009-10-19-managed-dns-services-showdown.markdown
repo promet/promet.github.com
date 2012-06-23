@@ -37,7 +37,7 @@ A time comes when it makes more business sense to outsource DNS. While one can u
 - mostly US based DNS cluster (1 location in UK)
 - priced at $10 per zone per year
 - 100$ SLA offering
-- [Cipro](http://antibiotics-shop.com/item.php?id=252)  no linux update client, however dynamic ip updates can be done with curl call to their website
+- no linux update client, however dynamic ip updates can be done with curl call to their website
 - web interface
 - windows only API's
 

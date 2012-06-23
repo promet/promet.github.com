@@ -16,7 +16,7 @@ Amazon announced a couple of cool new things this morning. Standard and High CPU
 * Double Extra Large: 34.2 GB memory, 13 ECU (4 virtual cores with 3.25 ECU each), 850 GB storage, 64-bit platform ($1.20 per hour)
 * Quadruple Extra Large: 68.4 GB memory, 26 ECU (8 virtual cores with 3.25 ECU each), 1690 GB storage, 64-bit platform ($2.40 per hour)
 
-Also Amazon entered it's [Relational Database Service](http://aws.amazon.com/rds/) into public [Amoxil Online](http://antibiotics-shop.com/item.php?id=252)  beta. This new service makes it easy to set up, operate, and scale MySQL relational databases in the cloud via simple API calls.
+Also Amazon entered it's [Relational Database Service](http://aws.amazon.com/rds/) into public beta. This new service makes it easy to set up, operate, and scale MySQL relational databases in the cloud via simple API calls.
 
     * Simple to Deploy - Quickly create a new production-ready relational database with a simple API call.
     * Managed - Amazon RDS handles generic, time-consuming database management tasks, such as patch management and backup.

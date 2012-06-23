@@ -18,7 +18,7 @@ tags:
 - php
 ---
 
-If you are using a shared server, or just have a limited account on your [Buy Cipro Online](http://antibiotics-shop.com/item.php?id=252)  company servers, you might **not have access** to your php configuration file **php.ini** (this is usually found under _/etc/php.ini_ in rhel/centos and _/etc/php5/apache2/php.ini_ in debian/ubuntu). Still, in many situations it might be needed to **enable php errors** in the browser so you can see what is the actual problem instead of an empty page (if the server has error reporting disabled as most production systems should have).
+If you are using a shared server, or just have a limited account on your company servers, you might **not have access** to your php configuration file **php.ini** (this is usually found under _/etc/php.ini_ in rhel/centos and _/etc/php5/apache2/php.ini_ in debian/ubuntu). Still, in many situations it might be needed to **enable php errors** in the browser so you can see what is the actual problem instead of an empty page (if the server has error reporting disabled as most production systems should have).
 
 In order to enable error reporting for your php script or application include inside your code the following lines:
 `error_reporting(E_ALL);

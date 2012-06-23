@@ -15,7 +15,7 @@ tags:
 - XtraBackup
 ---
 
-I recently found out that there is a free alternative to InnoDB Hot Backup. For those of you using MySQL with the InnoDB plugin you probably know that MySQL does not provide a tool for making online non-blocking backups. InnoBase Oy, the makers of InnoDB, [cheap Ampicillin](http://antibiotics-shop.com/item.php?id=5424)  do provide a tool but it's not free. In fact they charge around $600 per year per server.
+I recently found out that there is a free alternative to InnoDB Hot Backup. For those of you using MySQL with the InnoDB plugin you probably know that MySQL does not provide a tool for making online non-blocking backups. InnoBase Oy, the makers of InnoDB, do provide a tool but it's not free. In fact they charge around $600 per year per server.
 
 The tool that I'm talking about is XtraBackup by Percona. This tool is originally meant to accompany the XtraDB storage engine which in itself is a patched version of InnoDB. XtraBackup will create online non-blocking backups for both XtraDB and InnoDB databases and best of all, it's free.
 

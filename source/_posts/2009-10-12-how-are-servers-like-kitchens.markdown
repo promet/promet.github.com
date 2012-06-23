@@ -11,7 +11,7 @@ categories:
 - Installation
 ---
 
-So a sys admin, an architect and a project manager walk into a bar... so I wish this was a beginning of a good joke, but essentially that was the story last weekend [Buy Cipro](http://antibiotics-shop.com/item.php?id=252)  and I want to share the delicous morsel of wisdom I have learned from the architect.
+So a sys admin, an architect and a project manager walk into a bar... so I wish this was a beginning of a good joke, but essentially that was the story last weekend and I want to share the delicous morsel of wisdom I have learned from the architect.
 
 The project manager was asking the system admin to explain what is more important and what brings more performance improvement - server memory or faster CPU.  The system admin was doing a great job providing a technical explanation when unexpectedly the architect stepped in and provided a beatiful explanation.
 
