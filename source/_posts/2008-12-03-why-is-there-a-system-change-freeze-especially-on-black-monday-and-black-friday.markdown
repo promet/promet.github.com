@@ -1,5 +1,6 @@
 ---
 published: true
+comments: true
 author: andrew-kucharski
 date: '2008-12-03 18:53:34'
 layout: post
@@ -23,7 +24,6 @@ I always thought that they just weren't confident in their system folks and scof
 I think this story convinced me that doing production work these days on the bussiest web days is not a good idea.  Maybe microsoft should have borrowed a page from the mainframe policy manual - don't do system updates on black monday or black friday as it may cause system outage.
 
 This story: [Microsoft Says Sorry For Black Friday Cashback Outage](http://www.efluxmedia.com/news_Microsoft_Says_Sorry_For_Black_Friday_Cashback_Outage_30408.html)
-
 
 > For Internet users, [Black Friday](http://www.efluxmedia.com/news_Microsoft_Says_Sorry_For_Black_Friday_Cashback_Outage_30408.html#) was supposed to be about buying and cashing back, but [Microsoft’s](http://www.efluxmedia.com/news_Microsoft_Says_Sorry_For_Black_Friday_Cashback_Outage_30408.html#) Live Search cashback machine apparently broke down just as customers “barged in” to make some early morning purchases.
 

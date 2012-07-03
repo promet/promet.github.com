@@ -1,5 +1,6 @@
 ---
 published: true
+comments: true
 author: max-veprinsky
 date: '2008-07-07 06:58:48'
 layout: post
@@ -14,11 +15,8 @@ tags:
 - whm
 ---
 
-**Issue: Hosting account do not show up in WHM
-**
+**Issue: Hosting account do not show up in WHM**
 
-Cause: /etc/trueuserdomains file which holds a list of account on the server is empty
-Solution: restore contents of /etc/trueuserdomains and update cpanel with /scripts/upcp
+*Cause*: `/etc/trueuserdomains` file which holds a list of account on the server is empty
 
-    
-    linuxsysadminblog.com: linsysad
+*Solution*: restore contents of `/etc/trueuserdomains` and update cpanel with `/scripts/upcp`

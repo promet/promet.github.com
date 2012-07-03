@@ -1,4 +1,5 @@
 ---
+comments: true
 date: '2008-06-12 14:29:26'
 layout: post
 slug: down-time
@@ -14,32 +15,23 @@ published: true
 author: andrew-kucharski
 ---
 
-Any host or system admin hates the words "its not working" or "its down".  When I see a big site take a hit or is town there are two reactions that I generally have:
-
-
-
+Any host or system admin hates the words *its not working* or *its down*.  When I see a big site take a hit or is town there are two reactions that I generally have:
 	
-  * Site Down - those poor bastards (system admins) their life must suck right now
+* Site Down - those poor bastards (system admins) their life must suck right now
 
-	
-  * Site Down - SEE!!! It happens to them too!  No one is perfect!  No one is immune!
-
+* Site Down - SEE!!! It happens to them too!  No one is perfect!  No one is immune!
 
 Here is a story that elicited these feelings in today's Slashdot stories:
 
-
-> 
-`+--------------------------------------------------------------------+
+`
++--------------------------------------------------------------------+
 | US Amazon.com Website Down For Over 1 Hour                         |
 |   from the there-goes-the-bottom-line dept.                        |
 |   posted by ScuttleMonkey on Friday June 06, @15:10 (The Internet) |
 |   [http://tech.slashdot.org/article.pl?sid=08/06/06/199211  ](http://tech.slashdot.org/comments.pl?sid=08/06/06/199211)        |
 +--------------------------------------------------------------------+
-
-CorporalKlinger writes "CNET News is reporting that Amazon's US website, Amazon.com, has been unreachable since 10:30 AM PDT today. As of posting, visiting www.amazon.com produces an 'Http/1.1 Service Unavailable' message. According to CNET, "Based on last quarter's revenue of $4.13 billion, a full-scale global outage would cost Amazon more than [0]$31,000 per minute on average." Some of Amazon's international websites still appear to be working, and some pages on the US Amazon.com site load if accessed using HTTPS instead of HTTP."
-
-Discuss this story at:
-    [http://tech.slashdot.org/comments.pl?sid=08/06/06/199211](http://tech.slashdot.org/comments.pl?sid=08/06/06/199211)
 `
 
+CorporalKlinger writes *CNET News is reporting that Amazon's US website, Amazon.com, has been unreachable since 10:30 AM PDT today. As of posting, visiting www.amazon.com produces an 'Http/1.1 Service Unavailable' message. According to CNET, "Based on last quarter's revenue of $4.13 billion, a full-scale global outage would cost Amazon more than [0]$31,000 per minute on average." Some of Amazon's international websites still appear to be working, and some pages on the US Amazon.com site load if accessed using HTTPS instead of HTTP.*
 
+Discuss this story at: [http://tech.slashdot.org/comments.pl?sid=08/06/06/199211](http://tech.slashdot.org/comments.pl?sid=08/06/06/199211)

@@ -1,4 +1,5 @@
 ---
+comments: true
 published: true
 date: '2008-06-04 05:38:20'
 layout: post
@@ -13,13 +14,14 @@ author: gerold-mercadero
 
 To install Subversion (SVN) login to your server (shell) and execute:
 
+```
 yum install subversion
+```
 
 If `perl-URI` is not installed edit `/etc/yum.conf` and remove `perl*` then execute:
 
+```
 yum install perl-URI
+```
 
 Restore `perl*` on `/etc/yum.conf`.
-
-
-
