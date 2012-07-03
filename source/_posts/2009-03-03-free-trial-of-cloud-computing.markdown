@@ -1,6 +1,7 @@
 ---
 author: pim-van-der-wal
 published: true
+comments: true
 date: '2009-03-03 08:55:17'
 layout: post
 slug: free-trial-of-cloud-computing

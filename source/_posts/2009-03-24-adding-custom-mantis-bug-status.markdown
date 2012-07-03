@@ -1,5 +1,6 @@
 ---
 published: true
+comments: true
 author: gerold-mercadero
 date: '2009-03-24 03:15:52'
 layout: post
@@ -19,27 +20,31 @@ To do this we need to edit two files, _config_inc.php_ and _custom_strings_inc.p
 **Changes to config_inc.php:**
 
 Find this line (bottom):
-`$g_status_enum_string = '10:new,20:feedback,30:acknowledged,40:confirmed,50:assigned,
-80:resolved,90:closed';`
-
-
+```
+$g_status_enum_string = '10:new,20:feedback,30:acknowledged,40:confirmed,50:assigned,
+80:resolved,90:closed';
+```
 
 and insert your new bug status together with its number.  You can assign the number depending on the level of status that you want.  Example my GTG status is higher than "resolved" but less than "closed" so i can assign 81 to 89.
-`$g_status_enum_string = '10:new,20:feedback,30:acknowledged,40:confirmed,50:assigned,
-80:resolved,85:GTG,90:closed';`
+```
+$g_status_enum_string = '10:new,20:feedback,30:acknowledged,40:confirmed,50:assigned,
+80:resolved,85:GTG,90:closed';
+```
 
 Assign a color for your bug status, example:
-`$g_status_colors['GTG'] = '#cceedd';`
+```
+$g_status_colors['GTG'] = '#cceedd';
+```
 
 **Changes to custom_strings_inc.php:**
 
 Create definition for your new status:
-`$g_status_enum_string = '10:new,20:feedback,30:acknowledged,40:confirmed,50:assigned,
+```
+$g_status_enum_string = '10:new,20:feedback,30:acknowledged,40:confirmed,50:assigned,
 80:resolved,85:GTG,90:closed';
 $s_GTG_bug_button = "GTG Issue";
 $s_GTG_bug_title = "Set Issue to GTG";
-$s_email_notification_title_for_status_bug_GTG = "The following issue is GTG.";`
+$s_email_notification_title_for_status_bug_GTG = "The following issue is GTG.";
+```
 
 That's all and you should see your new status.
-
-

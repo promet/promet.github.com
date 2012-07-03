@@ -1,5 +1,6 @@
 ---
 published: true
+comments: true
 author: marius-ducea
 date: '2009-01-27 06:18:17'
 layout: post

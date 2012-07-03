@@ -1,5 +1,6 @@
 ---
 published: true
+comments: true
 author: max-veprinsky
 date: '2009-11-22 15:58:02'
 layout: post

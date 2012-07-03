@@ -1,5 +1,6 @@
 ---
 published: true
+comments: true
 author: gerold-mercadero
 date: '2009-07-01 10:14:11'
 layout: post
@@ -33,42 +34,72 @@ I based this guide plainly from this [Drupal  page](http://drupal.org/node/4848
 **1)  ApacheSolr Drupal Module**
 
 **1.1)** [**Download**](http://drupal.org/project/apachesolr) and install ApacheSolr module to your site/s. Traditional download, extract, and enable method.
+
 **1.2)** [**Download**](http://code.google.com/p/solr-php-client/) SolrPHPClient (PHP library) and extract the the files inside of your ApacheSolr Drupal module.
-Example: `sites/all/modules/apachesolr/SolrPhpClient`
+Example:
+```
+sites/all/modules/apachesolr/SolrPhpClient
+```
 
 **2) Solr:**
 
 **2.1)** Select a directory where you want to put your Solr files as long as it is not accessible to the web.
-Example: `/home/solr`
+Example:
+```
+/home/solr
+```
+
 **2.2)** [**Download**](http://people.apache.org/builds/lucene/solr/nightly/) nightly build of Solr and extract to your selected directory.
-Example: `/home/solr/apache-solr-nightly`
+Example:
+```
+/home/solr/apache-solr-nightly
+```
+
 **2.3)** Copy _example_ directory to another directory like _drupal_.
 Example:
-`cp -r /home/solr/apache-solr-nightly/example /home/solr/apache-solr-nightly/drupal`
+```
+cp -r /home/solr/apache-solr-nightly/example /home/solr/apache-solr-nightly/drupal
+```
+
 **2.4)** Copy _schema.xml_ and _solrconfig.xml_ files from your ApacheSolr Drupal module.
-`cp /path_to_site/sites/all/modules/apachesolr/schema.xml /home/solr/apache-solr-nightly/drupal/schema.xml
-cp /path_to_site/sites/all/modules/apachesolr/solrconfig.xml /home/solr/apache-solr-nightly/drupal/solrconfig.xml`
+```
+cp /path_to_site/sites/all/modules/apachesolr/schema.xml /home/solr/apache-solr-nightly/drupal/schema.xml
+cp /path_to_site/sites/all/modules/apachesolr/solrconfig.xml /home/solr/apache-solr-nightly/drupal/solrconfig.xml
+```
+
 **2.5)** Copy "`/home/solr/apache-solr-nightly/drupal/multicore/solr.xml`" to "`/home/solr/apache-solr-nightly/drupal/solr/solr.xml`"
+
 **2.6)** Create directory for each site that will use the ApacheSolr inside "`/home/solr/apache-solr-nightly/drupal/solr`" and copy
 `/home/solr/apache-solr-nightly/drupal/conf` to each of them.
 Example:
-`mkdir /home/solr/apache-solr-nightly/drupal/solr/site_drupalsite1
+```
+mkdir /home/solr/apache-solr-nightly/drupal/solr/site_drupalsite1
 cp -r /home/solr/apache-solr-nightly/drupal/conf /home/solr/apache-solr-nightly/drupal/solr/site_drupalsite1/
 mkdir /home/solr/apache-solr-nightly/drupal/solr/site_drupalsite2
-cp -r /home/solr/apache-solr-nightly/drupal/conf /home/solr/apache-solr-nightly/drupal/solr/site_drupalsite2/`
+cp -r /home/solr/apache-solr-nightly/drupal/conf /home/solr/apache-solr-nightly/drupal/solr/site_drupalsite2/
+```
+
 **2.7)** Edit `/home/solr/apache-solr-nightly/drupal/solr.xml` and add the details/path of your site/s.
 Example:
-`<cores adminPath="/admin/cores">
+```
+<cores adminPath="/admin/cores">
 <core name="drupalsite1" instanceDir="site_drupalsite1" />
 <core name="drupalsite2" instanceDir="site_drupalsite2" />
-</cores>`
+</cores>
+```
+
 **2.8)** Start the Jetty servlet container.
-`cd /home/solr/apache-solr-nightly/drupal/
-java -jar start.jar`
+```
+cd /home/solr/apache-solr-nightly/drupal/
+java -jar start.jar
+```
+
 **2.9) **Finally, visit _Drupal Admin_ settings for ApacheSolr module to set the correct Solr path.  
 Example:
-`Drupal Site1:  /solr/drupalsite1
-Drupal Site2:  /solr/drupalsite2`
+```
+Drupal Site1:  /solr/drupalsite1
+Drupal Site2:  /solr/drupalsite2
+```
 
 That's it - we now have our complete ApacheSolr search integration.  Check the ApacheSolr documentation for more details on using this module.
 

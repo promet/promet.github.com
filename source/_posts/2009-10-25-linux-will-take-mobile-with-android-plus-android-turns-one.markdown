@@ -1,5 +1,6 @@
 ---
 published: true
+comments: true
 author: andrew-kucharski
 date: '2009-10-25 23:34:30'
 layout: post

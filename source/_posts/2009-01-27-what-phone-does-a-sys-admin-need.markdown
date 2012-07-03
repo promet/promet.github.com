@@ -1,6 +1,7 @@
 ---
 author: pim-van-der-wal
 published: true
+comments: true
 date: '2009-01-27 07:58:37'
 layout: post
 slug: what-phone-does-a-sys-admin-need
@@ -15,8 +16,6 @@ tags:
 ---
 
 Recently we were discussing our favorite phones and gadgets. By now we use our phones as mobile terminals so when the question of upgrading came up we looked at the requirements we have from that perspective. The first requirement is an SSH client of course. Most smart phones do have an SSH client of sorts but whether it's a stable app or it's an unstable afterthought is pretty important. By Googling around a bit I found that the SSH clients on the Windows Mobile platform receive less than favorable reviews so I'll be staying away from those. Problems trying to connect and general instability seem to be the most common problems. Three manufacturers who appear to have decent SSH clients are Apple, Google and RIM. The Blackberries have been around in that arena for the longest time and have a very good track record.
-
-
 
 Multi tasking is next on my list. I don't want to have to close any apps (like the SSH client) to be able to do some browsing. Granted, we're looking at phones and not laptops but when there is an emergency that requires the use of an SSH client on my phone communication with other people (chat, e-mail) is right up there in urgency. So far from our three contenders both the RIM Blackberries and the Google Android phones meet that criterium. The Apple iPhone however does not.
 

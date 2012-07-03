@@ -1,6 +1,7 @@
 ---
 author: pim-van-der-wal
 published: true
+comments: true
 date: '2009-02-04 15:54:30'
 layout: post
 slug: extending-the-slow-query-log

@@ -1,5 +1,6 @@
 ---
 published: true
+comments: true
 author: max-veprinsky
 date: '2009-03-17 15:03:56'
 layout: post
@@ -20,12 +21,14 @@ Many ftp client will try to establish a **passive** connection with a server by 
 
 When you are managing multiple ftp servers is it rather impractical to configure specific passive port ranges for each ftp server and open these ports in the firewall. A quick and much more practical solution is to use the stateful application inspection feature of the Adaptive Security Appliance.  To set-up inspection of the FTP protocol which will dynamically allow secondary ports to pass as well as allow NAT traversal of these ports we first must create an inspection policy for all interfaces which will inspect services on their standard ports:
 
-`class-map global-class
-  match default-inspection-traffic`
+```
+class-map global-class
+match default-inspection-traffic
+```
 
 Next configure a policy map and inspection of the ftp protocol:
-
-`policy-map global-policy
+```
+policy-map global-policy
  class global-class
-  inspect ftp`
-
+  inspect ftp
+```

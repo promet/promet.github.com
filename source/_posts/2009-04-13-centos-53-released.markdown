@@ -1,5 +1,6 @@
 ---
 published: true
+comments: true
 author: max-veprinsky
 date: '2009-04-13 10:37:29'
 layout: post
@@ -11,7 +12,9 @@ categories:
 - Installation
 ---
 
-CentOS recently released distro version 5.3 During updating from 5.2 "rpmdb: **unable to lock mutex**: Invalid argument" error may be displayed. This can be resolved by updating glibc first.
-`yum clean all && yum update glibc\* && yum update`
+CentOS recently released distro version 5.3 During updating from 5.2 `rpmdb: **unable to lock mutex**: Invalid argument` error may be displayed. This can be resolved by updating glibc first.
+```
+yum clean all && yum update glibc\* && yum update
+```
 
 Check out [release notes](http://wiki.centos.org/Manuals/ReleaseNotes/CentOS5.3) for other important information regarding this release.

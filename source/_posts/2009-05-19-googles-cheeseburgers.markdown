@@ -1,5 +1,6 @@
 ---
 published: true
+comments: true
 author: max-veprinsky
 date: '2009-05-19 06:59:43'
 layout: post
@@ -14,7 +15,6 @@ categories:
 From the [register](http://www.theregister.co.uk/2009/05/12/google_climate/):
 
 Google has declared newspapers, orange juice and cheeseburgers that much more harmful to the planet than running a vast network of datacentres.
-
 
 Urs Hölzle, senior vice president operations at Happyland Central, took to the Google blog today to put its claims that the average Google search "uses about 1 kJ of energy and emits about 0.2 grams of carbon dioxide" in context.
 

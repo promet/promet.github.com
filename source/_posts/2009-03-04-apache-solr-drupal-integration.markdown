@@ -1,5 +1,6 @@
 ---
 published: true
+comments: true
 author: andrew-kucharski
 date: '2009-03-04 12:25:15'
 layout: post
@@ -16,9 +17,7 @@ I am at Drupal Conference attending the Acquia Apache Solr presentation. This in
 
 [Apache Solr](http://lucene.apache.org/solr/) is an open source project:
 
-
 > Solr is an open source enterprise search server based on the         [Lucene Java](http://lucene.apache.org/java/) search library, with XML/HTTP and JSON APIs,         hit highlighting, faceted search, caching, replication, a web administration interface and many more features.         It runs in a Java servlet container such as [Tomcat](http://tomcat.apache.org/).
-
 
 Apache Solr has a lot of promise improving the search results which, considering the down sides of drupal search, would greatly improve the user experience.
 

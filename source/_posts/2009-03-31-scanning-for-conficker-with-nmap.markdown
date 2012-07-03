@@ -1,5 +1,6 @@
 ---
 published: true
+comments: true
 author: max-veprinsky
 date: '2009-03-31 00:31:23'
 layout: post
@@ -16,7 +17,9 @@ While [Conficker](https://www.honeynet.org/files/KYE-Conficker.pdf) is not a new
 Why just in time you may ask? Well because the worm is said to become active on April 1st. It is unknown if all infected PC will be used for bad deeds. I'm sure no one needs a reminder of the SQL Slammer worm of 2003/2004 where 5 of the 11 root DNS servers went down, ATM's where knocked offline due to massive DDOS attacks. I understand the symbolism of April 1st being April fools day, but as the doctor always says: It's far easier to prevent then to treat.
 
 Using the [latest development version of Nmap](http://download.insecure.org/nmap-dist/nmap-4.85BETA4-1.i386.rpm) one would run a command to scan systems for Conficker signature.
-`nmap -PN -T4 -p139,445 -n -v --script=smb-check-vulns --script-args safe=1 [targetnetworks]`
+```
+nmap -PN -T4 -p139,445 -n -v --script=smb-check-vulns --script-args safe=1 [targetnetworks]
+```
 
 Or by updating your [Nessus](http://www.nessus.org) server's plugins `nessus-update-plugins` create and run a scan that includes [plugin id #36036](http://www.nessus.org/plugins/index.php?view=single&id=36036) (if you don't pay for Nessus Professional feed you will have to wait 7 days to receive the plugin)
 

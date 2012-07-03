@@ -1,5 +1,6 @@
 ---
 published: true
+comments: true
 author: andrew-kucharski
 date: '2009-05-11 09:21:03'
 layout: post
@@ -16,7 +17,6 @@ When AdBard went off the air earlier this year, I wasn't so nice to it in my pos
 Good Luck!
 
 Here is an excerpt from their latest newsletter to previous participants:
-
 
 > 
 The new network has been redesigned under the guidance of the Free Software Foundation, offering an even greater focus on the importance of Free/Libre and Open Source Software.  The FSF will continue to take an advisory role in the network.

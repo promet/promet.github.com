@@ -1,5 +1,6 @@
 ---
 published: true
+comments: true
 author: gerold-mercadero
 date: '2009-07-03 06:39:57'
 layout: post
@@ -19,8 +20,7 @@ We checked the Ffmpeg versions, and on local we have SVN-r15451 while the server
 
 You can tell the difference from the sample videos (first 5 seconds) below - both were encoded using the same parameters.
 
-Using Ffmpeg SVN-r14991:
-[flashvideo file=http://staging.powerlearning21.com/carol/gee/2b.flv /]
+Using [Ffmpeg SVN-r14991](http://staging.powerlearning21.com/carol/gee/2b.flv)
 
-Using Ffmpeg SVN-r15451 and SVN-r19313:
-[flashvideo file=http://staging.powerlearning21.com/carol/gee/48b.flv /] 
+Using [Ffmpeg SVN-r15451 and SVN-r19313](http://staging.powerlearning21.com/carol/gee/48b.flv)
+

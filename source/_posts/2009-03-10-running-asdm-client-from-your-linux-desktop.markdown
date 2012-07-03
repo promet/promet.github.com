@@ -1,5 +1,6 @@
 ---
 published: true
+comments: true
 author: max-veprinsky
 date: '2009-03-10 16:13:30'
 layout: post
@@ -21,10 +22,12 @@ For those of us who use Linux as a desktop replacement for Windows would find it
 Once you do upgrade your PIX/ASA to the latest version you may run into another issue where your bundled version of java not connect with ASDM. The remedy for this if you are using Fedora 10 can be [found here](http://linuxsysadminblog.com/2009/02/upgrade-to-java-se-6-update-12-on-fedora-10/).
 
 Now assuming that you have asdm loaded and opened access to outside over port 4443 with:
-`http server enable 4443
-http 0.0.0.0 0.0.0.0 outside`
+```
+http server enable 4443
+http 0.0.0.0 0.0.0.0 outside
+```
 
 You can connect to your PIX/ASA over port 4443 and download the asdm.jnlp file to your pc via web browser at https://external_ip_of_asa:4443 
 
-Once you posses the asdm.jnlp file issue `**javaws asdm.jnlp**` in terminal. Upon successful login this will create .asdm folder in your home directory with files inside, as well as a desktop shortcut. After this the asdm.jnlp is no longer needed and can be erased. 
+Once you posses the asdm.jnlp file issue `javaws asdm.jnlp` in terminal. Upon successful login this will create `.asdm` folder in your home directory with files inside, as well as a desktop shortcut. After this the `asdm.jnlp` is no longer needed and can be erased. 
 

@@ -1,5 +1,6 @@
 ---
 published: true
+comments: true
 author: andrew-kucharski
 date: '2009-01-30 01:08:24'
 layout: post
@@ -22,15 +23,8 @@ Steve's Performance golden rule:
 
 Here is the older Yahoo video 
 
-
-
 [Steve Souders: "High Performance Web Sites: 14 Rules for Faster Pages"](http://video.yahoo.com/watch/1040890/3880720) @ [Yahoo! Video](http://video.yahoo.com)
 
-
-;
-
 Followed by the more recent Google talk
-
-
 
 Check out Yslow firefox plug in as well as the [IBM Page Detailer](http://www.alphaworks.ibm.com/tech/pagedetailer) - its the product he uses to map out the front end work of the browser.  Great tools to start thinking about why your website is slow or why pages are loading slow.

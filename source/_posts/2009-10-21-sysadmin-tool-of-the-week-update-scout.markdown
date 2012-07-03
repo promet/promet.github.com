@@ -1,5 +1,6 @@
 ---
 published: true
+comments: true
 author: gerold-mercadero
 date: '2009-10-21 18:02:08'
 layout: post

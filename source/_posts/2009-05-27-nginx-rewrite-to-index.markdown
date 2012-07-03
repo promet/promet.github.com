@@ -1,5 +1,6 @@
 ---
 published: true
+comments: true
 author: max-veprinsky
 date: '2009-05-27 19:25:06'
 layout: post
@@ -16,11 +17,12 @@ tags:
 
 Looking to rewrite all file requests to index?
 
-` location / {
+```
+location / {
 root /var/www/nginx-default;
 index index.html;
 if (!-e $request_filename) {
 rewrite . /index.html last;
 }
 }
-`
+```

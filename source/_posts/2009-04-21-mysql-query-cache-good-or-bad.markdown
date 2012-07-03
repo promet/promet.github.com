@@ -1,6 +1,7 @@
 ---
 author: pim-van-der-wal
 published: true
+comments: true
 date: '2009-04-21 20:55:06'
 layout: post
 slug: mysql-query-cache-good-or-bad

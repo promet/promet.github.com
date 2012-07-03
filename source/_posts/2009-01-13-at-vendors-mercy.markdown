@@ -1,6 +1,7 @@
 ---
 author: max-veprinsky
 published: true
+comments: true
 date: '2009-01-13 08:00:43'
 layout: post
 slug: at-vendors-mercy

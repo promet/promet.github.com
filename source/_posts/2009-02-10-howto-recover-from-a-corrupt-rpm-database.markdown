@@ -1,5 +1,6 @@
 ---
 published: true
+comments: true
 author: marius-ducea
 date: '2009-02-10 06:27:13'
 layout: post
@@ -14,7 +15,7 @@ tags:
 - Centos
 - fedora
 - rhel
-- rpm
+- rpms
 - yum
 ---
 

@@ -1,5 +1,6 @@
 ---
 published: true
+comments: true
 author: max-veprinsky
 date: '2009-02-09 17:10:53'
 layout: post
@@ -21,27 +22,35 @@ After our ASA units were updated to the latest version of ASDM my **Java** clien
 The install steps are:
 
 Grand executable permission to installer file
-`chmod +x jdk-6u12-linux-i586-rpm.bin`
+```
+chmod +x jdk-6u12-linux-i586-rpm.bin
+```
 
 Run installer file
-`./jdk-6u12-linux-i586-rpm.bin`
+```
+./jdk-6u12-linux-i586-rpm.bin
+```
 
 Rename symbolic links pointing to old java programs
-`cd /etc/alternatives
+```
+cd /etc/alternatives
 mv java java_old
 mv javaws java_old
-mv keytool keytool_old`
+mv keytool keytool_old
+```
 
 Create new symbolic links
-`cd /etc/alternatives
+```
+cd /etc/alternatives
 ln -s /usr/java/latest/bin/java java
 ln -s /usr/java/latest/bin/javaws javaws
-ln -s /usr/java/latest/bin/keytool keytool`
+ln -s /usr/java/latest/bin/keytool keytool
+```
 
 Verify that new java version is installed
-`javaws`
-_Java(TM) Web Start 1.6.0_12 
+```
+javaws
+Java(TM) Web Start 1.6.0_12 
 Usage: javaws [run-options] 	
-      	  javaws [control-options]
-_
-
+ 	javaws [control-options]
+```

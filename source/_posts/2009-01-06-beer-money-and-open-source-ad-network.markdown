@@ -1,6 +1,7 @@
 ---
 author: andrew-kucharski
 published: true
+comments: true
 date: '2009-01-06 00:36:16'
 layout: post
 slug: beer-money-and-open-source-ad-network
@@ -17,16 +18,10 @@ Beer money and open source ad network don't really have anything to do with each
 
 Here is what the good folks at [Ad Bard] are all about:
 
-
 > At Ad Bard, we believe that advertisements can be an effective way for FLOSS oriented websites to generate regular income while remaining useful, relevant, and non-obnoxious.
 
 Our advertising community is entirely built with free/libre and open source software, with all involved algorithms and schemas freely available for public scrutiny.
 
-
 Its also worth to note that their site is running on the [Drupal](http://www.drupal.org) platform.
 
 Linux System Admin Blog became an accepted member late last year and we plan on running some ads shortly.  So when you see our ads, be encouraged that they are part of the FLOSS community and will do us some good by supplying the badly needed happy hour.   Here is one right now...
-
-
-
-

@@ -1,5 +1,6 @@
 ---
 published: true
+comments: true
 author: marius-ducea
 date: '2009-06-02 09:57:46'
 layout: post
@@ -43,14 +44,16 @@ For other distributions you can either use their internal packaging mechanism (i
 **Extract **the EC2 APi tools (it is a zip archive called **ec2-api-tools.zip**) and move it under a folder of your preferece. I like to use **~/.ec2** for this, but you can use any folder you prefer. Also copy the **private key** and **X.509 certificate** in the same directory. Those files will look like _cert-xxx.pem_ and _pk-xxx.pem_.
 
 Next we will have to **export some shell variables**. A good place to put this is in ~/.bashrc:
-`export EC2_HOME=~/.ec2
+```
+export EC2_HOME=~/.ec2
 export PATH=$PATH:$EC2_HOME/bin
 export EC2_PRIVATE_KEY=$EC2_HOME/pk-xxx.pem
 export EC2_CERT=$EC2_HOME/cert-xxx.pem
 #Java home for debian default install path:
 export JAVA_HOME=/usr
 #add ec2 tools to default path
-export PATH=~/.ec2/bin:$PATH`
+export PATH=~/.ec2/bin:$PATH
+```
 
 Finally source the file to have the changes active in your current shell session:
 `source ~/.bashrc`

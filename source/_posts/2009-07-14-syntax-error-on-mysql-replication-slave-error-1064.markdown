@@ -1,6 +1,7 @@
 ---
 author: pim-van-der-wal
 published: true
+comments: true
 date: '2009-07-14 20:52:38'
 layout: post
 slug: syntax-error-on-mysql-replication-slave-error-1064
@@ -21,6 +22,8 @@ Here's an interesting one, what if you have a MySQL replication setup and the sl
 To fix this you can use the CHANGE MASTER command to set the slave to the master bin log file and position that shows up in the SHOW SLAVE STATUS output. Make sure you use the Relay_Master_Log_File and Exec_Master_Log_Pos fields since they indicate what position in the master binlog the slave actually thought it was executing. Keep in mind that corruption and its effects are hard to predict. It will definitely be useful to compare the master and slave afterward using the [MaatKit ](http://www.maatkit.org/)tools.
 
 As some more background, the server log will be probably show and error like this to indicate there was a network error:
-[ERROR] Error reading packet from server: Lost connection to MySQL server during query (server_errno=2013)
+```
+Error reading packet from server: Lost connection to MySQL server during query (server_errno=2013)
+```
 
 And finally, if you do read the entire bug thread you will notice that the original developer of MySQL also has an opinion on this.

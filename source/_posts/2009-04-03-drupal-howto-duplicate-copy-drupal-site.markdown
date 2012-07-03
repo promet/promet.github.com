@@ -1,5 +1,6 @@
 ---
 published: true
+comments: true
 author: gerold-mercadero
 date: '2009-04-03 04:48:11'
 layout: post
@@ -20,13 +21,11 @@ This post cover the steps to copy, transfer, or duplicate a Drupal site to new d
 
 **Database:**
 
-
 1.) Create an sql dump of your source database (use mysqldump)
 2.) Update references to domain/url and path or home directory (you can user perl/sed commands)
 3.) Import to your destination database (using mysql).
 
 **Files/Codes:**
-
 
 1.)  Copy all files from your source directory or account to the destination site.
 2.)  Update references to database name, database user, database password, home directory of drupal installation, and domain name or url.
@@ -36,15 +35,8 @@ This post cover the steps to copy, transfer, or duplicate a Drupal site to new d
 
 **Shell / Bash Scripts:**
 
-
 1.)  Copy Drupal Site with CiviCRM.  [**Download here!**](http://linuxsysadminblog.com/images/2009/04/copy_drupal_with_civicrm.sh)
-
-
-
 
 2.)  Copy Drupal Site without CiviCRM.  [**Download here!**](http://linuxsysadminblog.com/images/2009/04/copy_drupal_without_civicrm.sh)
 
-
-
-**Note: **You can modify these scripts to work with sub-domains.** **Let me know if you have questions or suggestions or if you need help.**
-**
+**Note:** You can modify these scripts to work with sub-domains. Let me know if you have questions or suggestions or if you need help.
