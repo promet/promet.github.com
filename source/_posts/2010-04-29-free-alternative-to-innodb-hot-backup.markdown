@@ -1,5 +1,6 @@
 ---
 date: '2010-04-29 08:28:22'
+comments: true
 layout: post
 author: pim-van-der-wal
 published: true

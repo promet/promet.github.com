@@ -1,4 +1,5 @@
 ---
+comments: true
 date: '2010-03-18 16:53:29'
 layout: post
 author: marius-ducea

@@ -1,4 +1,5 @@
 ---
+comments: true
 published: true
 author: gerold-mercadero
 date: '2010-02-15 00:42:10'

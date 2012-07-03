@@ -1,4 +1,5 @@
 ---
+comments: true
 date: '2011-04-01 13:11:45'
 layout: post
 author: gerold-mercadero

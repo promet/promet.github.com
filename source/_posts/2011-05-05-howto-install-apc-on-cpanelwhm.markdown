@@ -1,5 +1,6 @@
 ---
 date: '2011-05-05 21:07:16'
+comments: true
 layout: post
 author: marius-ducea
 published: true

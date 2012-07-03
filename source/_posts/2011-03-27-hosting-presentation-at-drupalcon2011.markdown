@@ -1,4 +1,5 @@
 ---
+comments: true
 date: '2011-03-27 19:08:20'
 layout: post
 author: andrew-kucharski
