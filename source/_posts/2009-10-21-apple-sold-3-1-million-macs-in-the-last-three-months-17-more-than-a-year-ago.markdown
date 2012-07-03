@@ -17,7 +17,7 @@ I thought that at least 10% of our readers would appreciate this information - o
 
 Why 10%?  According to our analytics here is our visitors operating system breakdown is as follows:
 
-[caption id="attachment_910" align="aligncenter" width="489" caption="linux system admin blog google analytics operatin system breakdown"][![linux system admin blog google analytics operatin system breakdown](http://linuxsysadminblog.com/images/2009/10/linux-blog-analytics-operating-system-stats.png)](http://linuxsysadminblog.com/images/2009/10/linux-blog-analytics-operating-system-stats.png)[/caption]
+[![linux system admin blog google analytics operatin system breakdown](http://linuxsysadminblog.com/images/2009/10/linux-blog-analytics-operating-system-stats.png)](http://linuxsysadminblog.com/images/2009/10/linux-blog-analytics-operating-system-stats.png)
 
 Our top three visitors OS:
 
@@ -29,4 +29,4 @@ Our top three visitors OS:
 
 We're drawing a different audience than the [typical install base](http://en.wikipedia.org/wiki/Usage_share_of_desktop_operating_systems) according to wikipedia.
 
-[caption id="" align="aligncenter" width="470" caption="Wikipedia os distribution September 2009"]![Wikipedia os distribution September 2009](http://upload.wikimedia.org/wikipedia/commons/b/b5/Operating_system_usage_share.svg)[/caption] 
+![Wikipedia os distribution September 2009](http://upload.wikimedia.org/wikipedia/commons/b/b5/Operating_system_usage_share.svg) 

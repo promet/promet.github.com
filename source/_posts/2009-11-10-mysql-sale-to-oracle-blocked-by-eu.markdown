@@ -51,6 +51,6 @@ Here is a quick recap of MySQL history, and how it got where it is today:
   * Sun hemerages money, [Oracle steps in to buy Sun/MySQL](http://www.sun.com/aboutsun/pr/2009-04/sunflash.20090420.1.xml).
 
 
-[caption id="attachment_990" align="aligncenter" width="205" caption="sun mysql logo"][![sun mysql logo](http://linuxsysadminblog.com/images/2009/11/logo_mysql_sun.gif)](http://linuxsysadminblog.com/images/2009/11/logo_mysql_sun.gif)[/caption]
+[![sun mysql logo](http://linuxsysadminblog.com/images/2009/11/logo_mysql_sun.gif)](http://linuxsysadminblog.com/images/2009/11/logo_mysql_sun.gif)
 
 So where does this leave MySQL and hundreds of sites that depend on it?  Sun has predominantly been a hardware company.  Oracle recently introduced its software running on Sun hardware (You may have seen the ads comparing Oracle Running on Sun being x number of faster than same software running on IBM hardware).  Oracle maintains that MySQL will continue to stand alone as a open-source product.  However that may just be the problem that the EU has with it, saying that because it will be owned by Oracle, which already has a powerful commercial product, the merger will prevent MySQL from becoming another powerful database commercial competitor.  So, what do you think?  Will MySQL wilt in the shadow of the mighty Oracle?

@@ -28,7 +28,7 @@ The post lists a number of tools everyone should be using already, such as [YSlo
 
 Here is a sample report:
 
-[caption id="attachment_1076" align="aligncenter" width="750" caption="webmaster tools page speed chart"][![google webmaster tools page load speed chart](http://linuxsysadminblog.com/images/2010/04/chart.png)](http://linuxsysadminblog.com/images/2010/04/chart.png)[/caption]
+[![google webmaster tools page load speed chart](http://linuxsysadminblog.com/images/2010/04/chart.png)](http://linuxsysadminblog.com/images/2010/04/chart.png)
 
 
 > Performance overview
