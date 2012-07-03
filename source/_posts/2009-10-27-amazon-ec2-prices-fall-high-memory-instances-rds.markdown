@@ -19,9 +19,9 @@ Amazon announced a couple of cool new things this morning. Standard and High CPU
 
 Also Amazon entered it's [Relational Database Service](http://aws.amazon.com/rds/) into public beta. This new service makes it easy to set up, operate, and scale MySQL relational databases in the cloud via simple API calls.
 
-    * Simple to Deploy - Quickly create a new production-ready relational database with a simple API call.
-    * Managed - Amazon RDS handles generic, time-consuming database management tasks, such as patch management and backup.
-    * Compatible - All of your existing MySQL database tools, applications, and drivers will still work.
-    * Scalable - With a simple API call you can scale the compute and storage resources available to your database to meet your business needs and application load.
-    * Reliable - Amazon RDS runs on the same highly reliable infrastructure used by other Amazon Web Services. Amazon RDS also gives you additional peace of mind by providing an automated database backup facility.
-    * Inexpensive - You pay very low rates and only for the resources you actually consume. There are no long-term contracts or up-front commitments to use Amazon RDS.
+* Simple to Deploy - Quickly create a new production-ready relational database with a simple API call.
+* Managed - Amazon RDS handles generic, time-consuming database management tasks, such as patch management and backup.
+* Compatible - All of your existing MySQL database tools, applications, and drivers will still work.
+* Scalable - With a simple API call you can scale the compute and storage resources available to your database to meet your business needs and application load.
+* Reliable - Amazon RDS runs on the same highly reliable infrastructure used by other Amazon Web Services. Amazon RDS also gives you additional peace of mind by providing an automated database backup facility.
+* Inexpensive - You pay very low rates and only for the resources you actually consume. There are no long-term contracts or up-front commitments to use Amazon RDS.

@@ -16,6 +16,6 @@ So a sys admin, an architect and a project manager walk into a bar... so I wish 
 
 The project manager was asking the system admin to explain what is more important and what brings more performance improvement - server memory or faster CPU.  The system admin was doing a great job providing a technical explanation when unexpectedly the architect stepped in and provided a beatiful explanation.
 
-"In terms of server performance, the CPU is like the stove, and memor is like the having more pots.  Both can increase performance in a unique way. "
+*In terms of server performance, the CPU is like the stove, and memor is like the having more pots.  Both can increase performance in a unique way.*
 
 Think about it.  Is there a better analogy out there?

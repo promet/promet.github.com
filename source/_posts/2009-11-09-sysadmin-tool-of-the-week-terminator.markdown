@@ -15,14 +15,14 @@ categories:
 This week we have **[Terminator](http://www.tenshu.net/terminator/)** - a split window terminal emulator.  This tool is very helpful if you use terminal windows to connect to several servers at the same time.  Usually, we have multiple separate windows or the tabs, but on this one you can have split windows or grid.  Below are the features and those in bold are the features i really like.
 
 **Features:**
-    * **Arrange terminals in a grid**
-    * Tabs
-    * Drag and drop re-ordering of terminals
-    * **Lots of keyboard shortcuts**
-    * Config file to override gnome-terminal settings
-    * Simultaneous typing to arbitrary groups of terminals
+* Arrange terminals in a grid
+* Tabs
+* Drag and drop re-ordering of terminals
+* Lots of keyboard shortcuts
+* Config file to override gnome-terminal settings
+* Simultaneous typing to arbitrary groups of terminals
 
-You can install it via "_yum install terminator_" or "_apt-get install terminator_".
+You can install it via `yum install terminator` or `apt-get install terminator`.
 
 Screenshots from [Tenshu.net](http://Tenshu.net):
 

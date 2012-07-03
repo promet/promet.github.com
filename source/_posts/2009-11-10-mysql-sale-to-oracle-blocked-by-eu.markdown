@@ -14,42 +14,16 @@ categories:
 
 Today the EU [createded a serious road block](http://online.wsj.com/article/SB10001424052748703808904574526072224895160.html) on the road to the merger of Sun Microsystems and Oracle.  Here is the timeline of events up to now.
 
-
-> 
-
-> 
 > European antitrust authorities formally objected to Oracle Corp.'s proposed purchase of Sun Microsystems Inc., complicating a $7.4 billion deal that U.S. officials had already blessed.
-> 
-> 
 
-> 
 > The companies said Monday that the European Commission, the European Union's executive arm, issued a statement of objections regarding the deal, which they said focuses on whether Oracle's takeover of Sun's MySQL database software would reduce competition in the database market.
-> 
-> 
-
-
-
-
 
 Here is a quick recap of MySQL history, and how it got where it is today:
 
-
-
-
-
-
-	
-  * [MySQL is born in 1994](http://en.wikipedia.org/wiki/MySQL#Product_History).
-
-	
-  * MySQL becomes the most used and popular database used by websites.
-
-	
-  * Sun Microsystems buys MySQL for 1.0 Billion Dollars.
-
-	
-  * Sun hemerages money, [Oracle steps in to buy Sun/MySQL](http://www.sun.com/aboutsun/pr/2009-04/sunflash.20090420.1.xml).
-
+* [MySQL is born in 1994](http://en.wikipedia.org/wiki/MySQL#Product_History).
+* MySQL becomes the most used and popular database used by websites.
+* Sun Microsystems buys MySQL for 1.0 Billion Dollars.
+* Sun hemerages money, [Oracle steps in to buy Sun/MySQL](http://www.sun.com/aboutsun/pr/2009-04/sunflash.20090420.1.xml).
 
 [![sun mysql logo](http://linuxsysadminblog.com/images/2009/11/logo_mysql_sun.gif)](http://linuxsysadminblog.com/images/2009/11/logo_mysql_sun.gif)
 
