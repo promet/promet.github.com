@@ -7,7 +7,7 @@ comments: true
 slug: integrate-redmine-with-sendgrid
 tags: [redmine, sendgrid]
 categories: [redmine,sendgrid]
-published: false
+published: true
 ---
 
 One thing everybody wants when deploying applications is integrating them with other applications or services.  Two popular apps and services out there for small businesses that manage project management and email are Redmine and SendGrid.  
@@ -24,11 +24,11 @@ Before I get started I'll admit that I had a working redmine install and this wo
 # gem install json
 # gem install sendgrid
 ```
-The bulk of this funcionality is provided by the sendgrid gem which originates from here: https://github.com/stephenb/sendgrid.  Git a lot of credit its creator.
+The bulk of this funcionality is provided by the sendgrid gem which originates from here: [https://github.com/stephenb/sendgrid](https://github.com/stephenb/sendgrid).  Give a lot of credit to its creator.
 
 #### Redmine Configuration File
 
-If your Redmine install was something like /var/www/redmine, your configuration file will be /var/www/redmine/config/configuration.yml.  If you have a relatively clean Redmine install, chances are you might not have one or it's a default template with a lot of examples.  You might find an example detailing how to integrate with GMail in the example file.  Our set up will be similar.  Paste the following into your configuration.yml file and change the necessary parameters.
+If your Redmine install is something like /var/www/redmine, your configuration file will be /var/www/redmine/config/configuration.yml.  If you have a relatively clean Redmine install, chances are you might not have one or it's a default template with a lot of examples.  You might find an example detailing how to integrate with GMail in the example file.  Our set up will be similar.  Paste the following into your configuration.yml file and change the necessary parameters.
 
 ```
 production:
@@ -62,7 +62,7 @@ Through your web browser, go to Administration -> Settings, and click the "Email
 
 ### Troubleshooting
 
-If you are getting auth errors, make sure you are just using your user_name parameter in the configuration.yml file.
+If you are getting auth errors, make sure you are just using your user_name parameter in the configuration.yml file (i.e. just "redmine").
 
 If you think you can't reach the service, try this quick connection test:
 
