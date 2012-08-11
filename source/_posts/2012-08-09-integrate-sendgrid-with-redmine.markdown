@@ -20,9 +20,7 @@ Before I get started I'll admit that I had a working redmine install and this wo
 2. Here are a few gems I put on sporatically when researching email integration, so make sure you have them.  Jump to where your redmine install is located (e.g. /var/www/redmine) and do the following:
 
 ```
-# gem install mail
-# gem install json
-# gem install sendgrid
+# gem install mail json sendgrid
 ```
 The bulk of this funcionality is provided by the sendgrid gem which originates from here: [https://github.com/stephenb/sendgrid](https://github.com/stephenb/sendgrid).  Give a lot of credit to its creator.
 
