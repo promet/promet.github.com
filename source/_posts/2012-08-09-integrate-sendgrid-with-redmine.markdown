@@ -5,8 +5,12 @@ author: greg-palmier
 date: 2012-08-09 17:03
 comments: true
 slug: integrate-redmine-with-sendgrid
-tags: [redmine, sendgrid]
-categories: [redmine,sendgrid]
+tags:
+- redmine
+- sendgrid
+categories:
+- redmine
+- sendgrid
 published: false
 ---
 
