@@ -16,17 +16,17 @@ published: false
 
 One thing everybody wants when deploying applications is integrating them with other applications or services.  Two popular apps and services out there for small businesses that manage project management and email are Redmine and SendGrid.  
 
-Before I get started I'll admit that I had a working redmine install and this won't be a "from scratch" how-to. 
 
-### Prereqs
+### Prerequisites
 
-1. First, create a sendgrid email address.  Let's say we have something like redmine@yourdomain.com that we want Redmine to send emails from.
-2. Here are a few gems I put on sporatically when researching email integration, so make sure you have them.  Jump to where your redmine install is located (e.g. /var/www/redmine) and do the following:
+1. A working Redmine install.
+2. A sendgrid email address.  Let's say we have something like redmine@yourdomain.com that we want Redmine to send emails from.
+3. Here are a few gems I put on sporatically when researching email integration, so make sure you have them.  Jump to where your redmine install is located (e.g. /var/www/redmine) and do the following:
 
 ```
 # gem install mail json sendgrid
 ```
-The bulk of this funcionality is provided by the sendgrid gem which originates from here: [https://github.com/stephenb/sendgrid](https://github.com/stephenb/sendgrid).  Give a lot of credit to its creator.
+The core of this funcionality is provided by the sendgrid gem which originates from here: [https://github.com/stephenb/sendgrid](https://github.com/stephenb/sendgrid). 
 
 #### Redmine Configuration File
 
@@ -58,7 +58,7 @@ Remove empty sections like this.  You can edit things towards the beginning of y
 
 Through your web browser, go to Administration -> Settings, and click the "Email Notifications" Tab.
  
-1.  Set your emission email address field to: redmine@yourdomain.com (the sendgrid account you created).
+1.  Set the emission email address field to: redmine@yourdomain.com (the sendgrid account you created).
 2.  Fix your footer URL to match your domain so users can go directly to their account settings.
 3.  Test your settings by clicking the link "Send a test email" in the lower right hand corner.
 
