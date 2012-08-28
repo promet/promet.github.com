@@ -11,7 +11,7 @@ tags:
 categories:
 - redmine
 - sendgrid
-published: false
+published: true
 ---
 
 One thing everybody wants when deploying applications is integrating them with other applications or services.  Two popular apps and services out there for small businesses that manage project management and email are Redmine and SendGrid.  
