@@ -32,7 +32,7 @@ Overview of "bare-metal" restore process:
 create, format, and mount logical volumes to use on the vm that you want to restore or re-create, based on its original vm disk properties such as size, names, etc.
 copy all files from backup location to the newly mounted lvm disk
 
-
+<!--more-->
 adjust necessary xen vm configs (if any, like new ip address) and start/create the vm using the volume with restored contents or files, and you're done.
 In the restore example below I'll refer to the vm as "domain.com" and we will restore the backups to a different volume with the same config as the original.  Then we'll start the vm, domain.com, using the restored volume.
 

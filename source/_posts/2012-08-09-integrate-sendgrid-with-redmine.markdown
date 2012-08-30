@@ -31,7 +31,7 @@ The core of this funcionality is provided by the sendgrid gem which originates f
 #### Redmine Configuration File
 
 If your Redmine install is something like /var/www/redmine, your configuration file will be /var/www/redmine/config/configuration.yml.  If you have a relatively clean Redmine install, chances are you might not have one or it's a default template with a lot of examples.  You might find an example detailing how to integrate with GMail in the example file.  Our set up will be similar.  Paste the following into your configuration.yml file and change the necessary parameters.
-
+<!--more-->
 ```
 production:
   delivery_method: :smtp
