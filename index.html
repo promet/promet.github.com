@@ -1,0 +1,920 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Linux Sysadmin Blog</title>
+  <meta name="author" content="Promet OPS Team">
+
+  
+  <meta name="description" content="This guide covers the process for doing bulk import of existing DNS zones from a Cpanel or BIND server to Softlayer&#8217;s DNS servers (ns1/ns2. &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://linuxsysadminblog.com/">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="/javascripts/ender.js"></script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <link href="/atom.xml" rel="alternate" title="Linux Sysadmin Blog" type="application/atom+xml">
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+<!-- Google Form for Contact Page -->
+<!-- jQuery -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+<script type="text/javascript">
+    // Avoid conflict with ender.js.
+jQuery.noConflict();
+</script>
+<!-- jQuery Form Plugin -->
+<script src="http://malsup.github.com/jquery.form.js"></script>
+<script src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.9/jquery.validate.min.js"></script> 
+<script src="/javascripts/google_form.js"></script>
+<!-- Google Form for Contact Page End here -->
+
+
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-120251-38']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">Linux Sysadmin Blog</a></h1>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:linuxsysadminblog.com" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/our-team">Our Team</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+  <li><a href="/blog/about">About</a></li>
+  <li><a href="/blog/contact">Contact</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div class="blog-index">
+  
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/2012/11/howto-bulk-import-dns-zones-to-softlayer-dns-using-cpanel/">HowTo: Bulk Import DNS Zones to Softlayer DNS Using Cpanel</a></h1>
+    
+    
+      <p class="meta">
+        
+  
+
+
+<span class="byline author vcard">Posted by <span class="fn"><a href="/blog/our-team/gerold-mercadero.html">Gerold Mercadero</a></span></span>
+
+ - 
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-11-13T01:08:00+08:00" pubdate data-updated="true">Nov 13<span>th</span>, 2012</time>
+        
+         | <a href="/2012/11/howto-bulk-import-dns-zones-to-softlayer-dns-using-cpanel/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>This guide covers the process for doing bulk import of existing DNS zones from a Cpanel or BIND server to Softlayer&#8217;s DNS servers (<em>ns1/ns2.softlayer.com</em>).  This is useful if you need to add hundreds of zones, if for example you are moving your DNS hosting servers to Softlayer&#8217;s free DNS hosting.  Currently, Softlayer doesn&#8217;t have a tool to do bulk import of zones with existing records. Although you can create a default zone template and bulk add zones but this doesn&#8217;t fit for existing zones.</p>
+
+<h3>Requirements:</h3>
+
+<p>1.) DNS zones on a Cpanel server (WHM or DNSOnly).</p>
+
+<p>If you are not using a Cpanel server then you can stand up a Cpanel VPS this process and install Cpanel DNSOnly as it is free or install Cpanel WHM and automatically it will have 15-day trial license, or you can get a one month WHM VPS license for $15/month.
+DNSOnly should be fine and easier/faster to install but you cannot view the DNS zones from its UI, although you can view or edit the zone files directly (<em>ex: /var/named/domain.db</em>).
+Then import your zones to Cpanel server. There are lots of guides or discussions online in doing this. Some mentioned that you can move the named.conf and zone files as-is and adjust the formatting to match Cpanel&#8217;s.
+In our case we were running Cpanel server so we copied straight our &#8220;/var/named/*.db&#8221; files to Cpanel DNSOnly to import zones.</p>
+
+<p>2.) Softlayer API key for your account.</p>
+
+<p>  You will need this later to connect your Cpanel DNS server in a cluster setup with Softlayer&#8217;s DNS servers. Cpanel have DNS cluster functionality with SoftLayer and VPS.NET.</p>
+
+<h3>The Import Process:</h3>
+
+<p>1.) Configure your Cpanel DNS cluster to connect to Softlayer&#8217;s DNS servers.</p>
+
+<ul>
+<li>Login to Cpanel WHM or DNSOnly, then go to <em>Cluster/Remote Access</em>  ->> <em>Configure Cluster</em>.</li>
+<li>select <em>Enable DNS clustering</em></li>
+<li>On <em>Backend Type</em> dropdown, you will see <em>cPanel</em> only. Then click on <em>(Show All)</em> link next to it and the page will reload and you will see two more options: <em>Softlayer</em> and <em>VPS.NET</em>. Select <em>Softlayer</em> and click on *Configure button.
+<a href="http://linuxsysadminblog.com/images/2012/cluster-setup.png"><img src="http://linuxsysadminblog.com/images/2012/cluster-setup.png" alt="cluster-setup" /></a></li>
+<li>On <em>SoftLayer DNS Remote Configuration</em> page, enter your Softlayer API user and key. On <em>DNS role</em> choose <em>Synchronize changes</em> from dropdown list and click on <em>Submit</em>.
+<a href="http://linuxsysadminblog.com/images/2012/softlyer-dns-config.png"><img src="http://linuxsysadminblog.com/images/2012/softlyer-dns-config.png" alt="softlyer-dns-config" /></a></li>
+</ul>
+
+
+<p>2.) Synchronize DNS Records across clusters. DNS Cluster is now your Cpanel server and Softlayer servers.</p>
+
+<ul>
+<li>From Cpanel WHM or DNSOnly admin, go to * DNS Functions<em> ->> </em>Synchronize DNS Records*</li>
+<li>Select <em>Synchronize all zones to all servers</em> and check the box that says <em>Synchronize zones that are not configured on this server</em>. Then hit <em>Synchronize</em> button.
+<a href="http://linuxsysadminblog.com/images/2012/sync-dns.png"><img src="http://linuxsysadminblog.com/images/2012/sync-dns.png" alt="sync-dns" /></a></li>
+<li>The dns sync process will run and it will take some time depending on the number of zones and records that you have. Wait until it&#8217;s finish and you&#8217;re done.</li>
+<li>Once this starts you can login to your Softlayer portal and go to <em>Public Network</em> ->> <em>Domain Name System</em> and you will start seeing zones and see the progress on how many are imported.</li>
+</ul>
+
+
+<p><em>That is all. You can shutdown or remove your Cpanel DNSOnly/WHM server when if not needed.</em></p>
+
+<h3>Notes:</h3>
+
+<ul>
+<li>Cpanel have DNS cluster functionality with SoftLayer and VPS.NET so you might be able to use this guide to bulk import zones to VPS.NET.</li>
+<li>At this time of writing, we encountered a problem with Cpanel DNS cluster integration with Softlayer and we cannot modify the dns records that were imported initially.  When we update them it reverts to the original records from initial import. We disabled the DNS cluster setup from Cpanel and we update our DNS zones/records right from Softlayer portal.</li>
+<li>Above info refers to BIND server as the default DNS server on Cpanel.</li>
+</ul>
+
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/2012/08/integrate-sendgrid-with-redmine/">Integrate Sendgrid With Redmine</a></h1>
+    
+    
+      <p class="meta">
+        
+  
+
+
+<span class="byline author vcard">Posted by <span class="fn"><a href="/blog/our-team/greg-palmier.html">Greg Palmier</a></span></span>
+
+ - 
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-08-09T17:03:00+08:00" pubdate data-updated="true">Aug 9<span>th</span>, 2012</time>
+        
+         | <a href="/2012/08/integrate-sendgrid-with-redmine/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>One thing everybody wants when deploying applications is integrating them with other applications or services.  Two popular apps and services out there for small businesses that manage project management and email are Redmine and SendGrid.</p>
+
+<h3>Prerequisites</h3>
+
+<ol>
+<li>A working Redmine install.</li>
+<li>A sendgrid email address.  Let&#8217;s say we have something like redmine@yourdomain.com that we want Redmine to send emails from.</li>
+<li>Here are a few gems I put on sporatically when researching email integration, so make sure you have them.  Jump to where your redmine install is located (e.g. /var/www/redmine) and do the following:</li>
+</ol>
+
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'># gem install mail json sendgrid</span></code></pre></td></tr></table></div></figure>
+
+
+<p>The core of this funcionality is provided by the sendgrid gem which originates from here: <a href="https://github.com/stephenb/sendgrid">https://github.com/stephenb/sendgrid</a>.</p>
+
+<h4>Redmine Configuration File</h4>
+
+<p>If your Redmine install is something like /var/www/redmine, your configuration file will be /var/www/redmine/config/configuration.yml.  If you have a relatively clean Redmine install, chances are you might not have one or it&#8217;s a default template with a lot of examples.  You might find an example detailing how to integrate with GMail in the example file.  Our set up will be similar.  Paste the following into your configuration.yml file and change the necessary parameters.</p>
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/2012/08/integrate-sendgrid-with-redmine/">Read on &rarr;</a>
+    </footer>
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/2012/07/rsback-task-x-is-locked-and-cannot-be-executed/">Rsback: Task X Is Locked and Cannot Be Executed</a></h1>
+    
+    
+      <p class="meta">
+        
+  
+
+
+<span class="byline author vcard">Posted by <span class="fn"><a href="/blog/our-team/gerold-mercadero.html">Gerold Mercadero</a></span></span>
+
+ - 
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-07-24T16:40:00+08:00" pubdate data-updated="true">Jul 24<span>th</span>, 2012</time>
+        
+         | <a href="/2012/07/rsback-task-x-is-locked-and-cannot-be-executed/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p><em>Rsback Error</em>:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>  rsback: [date/time] *** task 'x' is locked and cannot be executed.</span></code></pre></td></tr></table></div></figure>
+
+
+<p>I got the above error when I was trying to re-run the rsback task that I previously killed its schedule backup process.  I had issue with the server being backup so I had to terminate the process.</p>
+
+<p>This error shows up and prevents the backup task from running because the lock file is still present, which indicats that a process could still be running.  In order to fix this you need to remove the lock file and re-run the backup task.  Look at your rsback config (<em>/etc/rsback/rsback.conf</em>) to find out the location of your rsback lock files, default is &#8221;<em>lock_dir = /var/lock/subsys</em>&#8221;.  In there you will see rsback lock files as &#8221;<em>rsback.backup_task_name.lock</em>&#8221;, and just delete that file.</p>
+
+<p>For those who doesn&#8217;t know or heard of <a href="http://sourceforge.net/projects/rsback/">rsback</a> below is a short description from sourceforge.</p>
+
+<p>  <em>rsback makes rotating backups using the common rsync program combined with hard-link copies on Unix-based backup hosts. This results in a fast and disk space saving backup technique.</em></p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/2012/06/restore-xen-vm-from-lvm-snapshot-backups/">Restore Xen VM From LVM Snapshot Backups</a></h1>
+    
+    
+      <p class="meta">
+        
+  
+
+
+<span class="byline author vcard">Posted by <span class="fn"><a href="/blog/our-team/gerold-mercadero.html">Gerold Mercadero</a></span></span>
+
+ - 
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-06-22T20:21:00+08:00" pubdate data-updated="true">Jun 22<span>nd</span>, 2012</time>
+        
+         | <a href="/2012/06/restore-xen-vm-from-lvm-snapshot-backups/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>What&#8217;s the use of backups if you can&#8217;t restore from them? ;)</p>
+
+<p>In the previous post on &#8220;Backup Xen with LVM and Rsnapshot&#8221; we worked on creating backups of Xen (guest/domain) VMs with LVM, and here we&#8217;ll cover the process of restoring from these backups.</p>
+
+<p>What is covered here:</p>
+
+<p>Restoring specific files or directories
+Doing &#8220;bare-metal&#8221; type of restore. We will re-create the VM from our rsnapshot backups.
+Restore Process:</p>
+
+<p>1.) Restoring specific files or directories only</p>
+
+<p>While this restore scenario is a no-brainer, still I&#8217;ll just want to mention it here as well.  Basically this one is the usual copying of files (via cp, scp, ftp, rsync, etc) from your source or backup server to the destination server.</p>
+
+<p>2.) &#8220;Bare-metal&#8221; restore (creates complete vm image from backup).</p>
+
+<p>Overview of &#8220;bare-metal&#8221; restore process:</p>
+
+<p>create, format, and mount logical volumes to use on the vm that you want to restore or re-create, based on its original vm disk properties such as size, names, etc.
+copy all files from backup location to the newly mounted lvm disk</p>
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/2012/06/restore-xen-vm-from-lvm-snapshot-backups/">Read on &rarr;</a>
+    </footer>
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/2012/06/debian-6-backup-xen-with-lvm-and-rsnapshot/">Debian 6: Backup Xen With LVM and Rsnapshot</a></h1>
+    
+    
+      <p class="meta">
+        
+  
+
+
+<span class="byline author vcard">Posted by <span class="fn"><a href="/blog/our-team/gerold-mercadero.html">Gerold Mercadero</a></span></span>
+
+ - 
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-06-22T05:38:00+08:00" pubdate data-updated="true">Jun 22<span>nd</span>, 2012</time>
+        
+         | <a href="/2012/06/debian-6-backup-xen-with-lvm-and-rsnapshot/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>This is a draft of my installation process which is mainly based from this blog:  <a href="http://backdrift.org/efficient-xen-backups-using-lvm-and-rsnapshot">Efficient Xen Backups Using LVM and Rsnapshot</a>.</p>
+
+<p>Our setup is on Debian 6 server with 2TB disk running 10 vpses. We followed the above guide with notes on errors we encountered, mostly rsnapshot related. We are keeping daily backup locally, on a separate partition, and copies them to our remote server every week.</p>
+
+<p>The Setup (mostly defaults):
+vg path is /dev
+vg name is vg0</p>
+
+<p>Setup Process:</p>
+
+<p>Create logical partition to store backups locally.  Size is 100GB and named it backups.  Format it with ext3 and mounted it to /backups.</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>lvcreate -L 100G -n backups vg0
+</span><span class='line'>mkfs -t ext3 -v /dev/vg0/backups
+</span><span class='line'>mkdir /backups
+</span><span class='line'>mount /dev/vg0/backups /backups</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Install and configure rsnapshot.  Make sure you use TAB correctly as it will complain or give you an error if you don&#8217;t.</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>aptitude install rsnapshot
+</span><span class='line'>vi /etc/rsnapshot.conf</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Here&#8217;s my rsnapshot config changes and/or additions:</p>
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/2012/06/debian-6-backup-xen-with-lvm-and-rsnapshot/">Read on &rarr;</a>
+    </footer>
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/2012/06/gitolite-add-edit-or-delete-git-repository-name/">Gitolite: Add, Edit, or Delete Git Repository Name</a></h1>
+    
+    
+      <p class="meta">
+        
+  
+
+
+<span class="byline author vcard">Posted by <span class="fn"><a href="/blog/our-team/gerold-mercadero.html">Gerold Mercadero</a></span></span>
+
+ - 
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-06-05T06:23:23+08:00" pubdate data-updated="true">Jun 5<span>th</span>, 2012</time>
+        
+         | <a href="/2012/06/gitolite-add-edit-or-delete-git-repository-name/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>I can&#8217;t find commands in gitolite to manage repository or project name, so here&#8217;s what I got from other sources.</p>
+
+<p><strong>Add or create repository</strong></p>
+
+<ul>
+<li>Add entry for new project or repository in your gitolite config (<em>conf/gitolite.conf</em>)</li>
+<li>Commit and push your changes. this will create and initialize your new repo.</li>
+</ul>
+
+
+<p><strong>Rename a repository</strong></p>
+
+<ul>
+<li>Modify the name of repo in your gitolite config (<em>conf/gitolite.conf</em>)</li>
+<li>Move or rename the actual directory (depending on where you install it, ex: <em>/home/git/repositories</em>) to match your changes in gitolite config.</li>
+<li>Commit and push your changes.</li>
+</ul>
+
+
+<p><strong>Note</strong>: Obviously, this changes the remote url of your repo, so don&#8217;t forget to change your git remote url config in your project clones.</p>
+
+<p><strong>Delete a repository</strong>:</p>
+
+<ul>
+<li>Open your gitolite config and remove the project from there. commit and push your changes.</li>
+<li>Then delete its git directory (ex: /home/git/repositories/projectname.git)</li>
+<li>You can also remove users/keys that are no longer used</li>
+</ul>
+
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/2012/06/install-vsftpd-server-with-virtual-user-and-directory/">Install Vsftpd Server With Virtual User and Directory</a></h1>
+    
+    
+      <p class="meta">
+        
+  
+
+
+<span class="byline author vcard">Posted by <span class="fn"><a href="/blog/our-team/gerold-mercadero.html">Gerold Mercadero</a></span></span>
+
+ - 
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-06-04T09:15:33+08:00" pubdate data-updated="true">Jun 4<span>th</span>, 2012</time>
+        
+         | <a href="/2012/06/install-vsftpd-server-with-virtual-user-and-directory/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>Here&#8217;s a summary for <a href="http://vsftpd.beasts.org">vsftpd</a> setup with virtual user and directory in Debian.  It&#8217;s probably the same process on other Debian-based distros as well as Redhat-based distros. No need to define what&#8217;s vsftpd and what&#8217;s virtual users - let&#8217;s just proceed to the setup. :)</p>
+
+<p>Install VSFTPD:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>aptitude install vsftpd</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Choose what method to use for virtual user authentication.  Let&#8217;s use pam passwd module (libpam-pwdfile), I guess this is the most common and easy to setup.  You can also use libpam-mysql if you want to manage your ftp users via mysql database, like if you want integrate it with your application that&#8217;s using mysql as backend.</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>aptitude install libpam-pwdfile</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Next create your password file (example: <em>/etc/vsftpd_users.conf</em>) which contain the list of virtual users and password hash.  You can use <a href="http://httpd.apache.org/docs/2.0/programs/htpasswd.html">htpasswd</a> that&#8217;s included in Apache or go to this website, <a href="http://www.htaccesstools.com/htpasswd-generator/">htaccesstools.com</a> to generate the list of users and passwords.</p>
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/2012/06/install-vsftpd-server-with-virtual-user-and-directory/">Read on &rarr;</a>
+    </footer>
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/2012/04/yum-there-are-unfinished-transactions-remaining-you-might-consider-running-yum-complete-transaction-first-to-finish-them/">YUM: There Are Unfinished Transactions Remaining. You Might Consider Running Yum-complete-transaction First to Finish Them.</a></h1>
+    
+    
+      <p class="meta">
+        
+  
+
+
+<span class="byline author vcard">Posted by <span class="fn"><a href="/blog/our-team/gerold-mercadero.html">Gerold Mercadero</a></span></span>
+
+ - 
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-04-30T07:34:45+08:00" pubdate data-updated="true">Apr 30<span>th</span>, 2012</time>
+        
+         | <a href="/2012/04/yum-there-are-unfinished-transactions-remaining-you-might-consider-running-yum-complete-transaction-first-to-finish-them/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>Yum Error:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>There are unfinished transactions remaining. You might consider running yum-complete-transaction first to finish them.</span></code></pre></td></tr></table></div></figure>
+
+
+<p>With <em>unfinished transactions</em>, yum refers to any incomplete or aborted transactions, such as package installations or updates.  Obviously, yum wants you to run <code>yum-complete-transaction</code> command to fix the problem.  If you can&#8217;t find <em>yum-complete-transaction</em> on your system, probably you don&#8217;t have the package &#8221;<em>yum-utils</em>&#8221; installed, so install it first with <code>yum install yum-utils</code>.</p>
+
+<p>If you run <em>yum-complete-transaction</em> command, it will find and resolve the latest corrupted/aborted transaction and try to complete or fix it, and you have to run it again until all issues are fixed.  Running that command will tell you how many transactions are left to complete, package name, and so on.  Try running <code>/usr/sbin/yum-complete-transaction --help</code> for options in using this commands.</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/2011/05/howto-install-apc-on-cpanelwhm/">HowTo Install APC on CPanel/WHM</a></h1>
+    
+    
+      <p class="meta">
+        
+  
+
+
+<span class="byline author vcard">Posted by <span class="fn"><a href="/blog/our-team/marius-ducea.html">Marius Ducea</a></span></span>
+
+ - 
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2011-05-05T21:07:16+08:00" pubdate data-updated="true">May 5<span>th</span>, 2011</time>
+        
+         | <a href="/2011/05/howto-install-apc-on-cpanelwhm/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p><strong>CPanel</strong> includes support in their installer for <strong>eaccelerator</strong>; still, for some strange reason they don&#8217;t include support for <strong><a href="http://pecl.php.net/package/APC">APC</a></strong> also. So, if you want to install APC on your CPanel powered server, you will have to go back at the command line and install it manually.</p>
+
+<p>Here are the steps needed to install the latest version of APC (3.1.8 at the time of writing this article; please check for the latest version available when you are reading this and make the changes accordingly):</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>cd /usr/local/src
+</span><span class='line'>wget http://pecl.php.net/get/APC-3.1.8.tgz
+</span><span class='line'>tar -zxvf APC-3.1.8.tgz
+</span><span class='line'>cd APC-3.1.8
+</span><span class='line'>phpize
+</span><span class='line'>./configure --enable-apc --enable-apc-mmap --with-apxs --with-php-config=/usr/local/bin/php-config
+</span><span class='line'>make
+</span><span class='line'>make install</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Next, activate the apc module in <strong>php.ini</strong> by adding something like this:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>extension="apc.so"
+</span><span class='line'>apc.enabled=1
+</span><span class='line'>apc.shm_segments=1
+</span><span class='line'>apc.shm_size=128</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Finally, you will have to <em>restart apache</em> and after that the APC module should be activated and in use. Hopefully, this will help you enable APC on your CPanel server in some very simple steps in less that 5minutes.</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/2011/04/amazon-aws-worse-failure/">Amazon AWS Worse Failure</a></h1>
+    
+    
+      <p class="meta">
+        
+  
+
+
+<span class="byline author vcard">Posted by <span class="fn"><a href="/blog/our-team/marius-ducea.html">Marius Ducea</a></span></span>
+
+ - 
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2011-04-22T15:59:01+08:00" pubdate data-updated="true">Apr 22<span>nd</span>, 2011</time>
+        
+         | <a href="/2011/04/amazon-aws-worse-failure/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>I&#8217;m sure almost everyone is aware at this point on the <strong>failure</strong> that caused Amazon cloud computing solution AWS to be down yesterday (and still is at some smaller extend happening at this time as we can see on their <a href="http://status.aws.amazon.com/">status</a> page) for most of the day. This has affected a few big (Reddit, Foursquare, Quora, Heroku, Engine Yard, for ex.) and many small sites hosted in the <strong>us-east-1</strong> AWS region. This happened regardless on the availability zone you were in the region US-EAST (this is the oldest one and still the default for many client tools) and questioned the <a href="http://aws.amazon.com/ec2/faqs/#How_isolated_are_Availability_Zones_from_one_another">independence and isolation</a> of the availability zones in the AWS infrastructure design.</p>
+
+<p>The failure was specifically related to the <strong>EBS</strong> drives that made customer instances non responding, but also prevented them to start or stop new instances with the same EBS volumes (that probably 99% have tried immediately as they got paged). There are some sites that had failover mechanisms, but if they were in the same availability zone it was useless (something that looked like a good solution and fast and cost effective). Others, many startups, found out that they had no such mechanism at all, and that they depended way too much on the Amazon reliability. Until this issue, Amazon had a great uptime record; there were many issues but with individual instances, but not such a global issue. You would expect people running their application in the cloud to expect failures and be prepared and I&#8217;m sure most of them are compared with applications deployed in the regular datacenter, but apparently there is still much work to be done.</p>
+
+<p>Overall I believe this showed (if we needed a reminder), that failures can happen and anyone can suffer from such a problem (Google had problems, Facebook the same, and Twitter is most of the time down, and now was just Amazon&#8217;s turn). We need to be prepared and build and architect our applications with this in mind and be ready to failover. A great example of this is the twilio application design: <a href="http://www.twilio.com/engineering/2011/04/22/why-twilio-wasnt-affected-by-todays-aws-issues/">http://www.twilio.com/engineering/2011/04/22/why-twilio-wasnt-affected-by-todays-aws-issues/</a></p>
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/2011/04/amazon-aws-worse-failure/">Read on &rarr;</a>
+    </footer>
+  
+
+
+    </article>
+  
+  <div class="pagination">
+    
+      <a class="prev" href="/blog/page/2/">&larr; Older</a>
+    
+    <a href="/blog/archives">Blog Archives</a>
+    
+  </div>
+</div>
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/2012/11/howto-bulk-import-dns-zones-to-softlayer-dns-using-cpanel/">HowTo: Bulk Import DNS Zones to Softlayer DNS using Cpanel</a>
+      </li>
+    
+      <li class="post">
+        <a href="/2012/08/integrate-sendgrid-with-redmine/">Integrate Sendgrid with Redmine</a>
+      </li>
+    
+      <li class="post">
+        <a href="/2012/07/rsback-task-x-is-locked-and-cannot-be-executed/">rsback: task x is locked and cannot be executed</a>
+      </li>
+    
+      <li class="post">
+        <a href="/2012/06/restore-xen-vm-from-lvm-snapshot-backups/">Restore Xen VM from LVM Snapshot Backups</a>
+      </li>
+    
+      <li class="post">
+        <a href="/2012/06/debian-6-backup-xen-with-lvm-and-rsnapshot/">Debian 6: Backup Xen with LVM and Rsnapshot</a>
+      </li>
+    
+  </ul>
+</section>
+
+<section>
+  <h1>GitHub Repos</h1>
+  <ul id="gh_repos">
+    <li class="loading">Status updating&#8230;</li>
+  </ul>
+  
+  <a href="https://github.com/promet">@promet</a> on GitHub
+  
+  <script type="text/javascript">
+    $.domReady(function(){
+        if (!window.jXHR){
+            var jxhr = document.createElement('script');
+            jxhr.type = 'text/javascript';
+            jxhr.src = '/javascripts/libs/jXHR.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(jxhr, s);
+        }
+
+        github.showRepos({
+            user: 'promet',
+            count: 0,
+            skip_forks: true,
+            target: '#gh_repos'
+        });
+    });
+  </script>
+  <script src="/javascripts/github.js" type="text/javascript"> </script>
+</section>
+
+
+<section>
+  <h1>Latest Tweets</h1>
+  <ul id="tweets">
+    <li class="loading">Status updating&#8230;</li>
+  </ul>
+  <script type="text/javascript">
+    $.domReady(function(){
+      getTwitterFeed("linuxsysadmnblg", 4, false);
+    });
+  </script>
+  <script src="/javascripts/twitter.js" type="text/javascript"> </script>
+  
+    <a href="http://twitter.com/linuxsysadmnblg" class="twitter-follow-button" data-show-count="false">Follow @linuxsysadmnblg</a>
+  
+</section>
+
+
+
+
+
+  
+</aside>
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2012 - Promet OPS Team -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'linuxsysadminblog';
+      
+        
+        var disqus_script = 'count.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'http://' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) {return;}
+  js = d.createElement(s); js.id = id;
+  js.src = "//connect.facebook.net/en_US/all.js#appId=212934732101925&xfbml=1";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = 'http://platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>

@@ -1,0 +1,416 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>HowTo: Get started with Amazon EC2 api tools - Linux Sysadmin Blog</title>
+  <meta name="author" content="Promet OPS Team">
+
+  
+  <meta name="description" content="This article is meant to be a quick quide that will introduce the things needed to get you started with Amazon EC2. All this information can be found &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://linuxsysadminblog.com/2009/06/howto-get-started-with-amazon-ec2-api-tools/">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="/javascripts/ender.js"></script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <link href="/atom.xml" rel="alternate" title="Linux Sysadmin Blog" type="application/atom+xml">
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+<!-- Google Form for Contact Page -->
+<!-- jQuery -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+<script type="text/javascript">
+    // Avoid conflict with ender.js.
+jQuery.noConflict();
+</script>
+<!-- jQuery Form Plugin -->
+<script src="http://malsup.github.com/jquery.form.js"></script>
+<script src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.9/jquery.validate.min.js"></script> 
+<script src="/javascripts/google_form.js"></script>
+<!-- Google Form for Contact Page End here -->
+
+
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-120251-38']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">Linux Sysadmin Blog</a></h1>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:linuxsysadminblog.com" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/our-team">Our Team</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+  <li><a href="/blog/about">About</a></li>
+  <li><a href="/blog/contact">Contact</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      
+
+<div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">HowTo: Get Started With Amazon EC2 Api Tools</h1>
+    
+    
+      <p class="meta">
+        
+  
+
+
+<span class="byline author vcard">Posted by <span class="fn"><a href="/blog/our-team/marius-ducea.html">Marius Ducea</a></span></span>
+
+ - 
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2009-06-02T09:57:46+08:00" pubdate data-updated="true">Jun 2<span>nd</span>, 2009</time>
+        
+         | <a href="#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>This article is meant to be a quick quide that will introduce the things needed to <strong>get you started with Amazon EC2</strong>. All this information can be found in the EC2 api docs, and this is not meant to be a replacement of the documentation, just trying to show the things needed in a clear and short form.</p>
+
+<h3>Getting Started</h3>
+
+<p>First of all you will need one <a href="http://aws.amazon.com/"><strong>Amazon AWS</strong></a> <strong>account </strong>and enable the <strong>EC2 service</strong>; in case you don&#8217;t have this already now is the time to <a href="http://www.amazon.com/gp/aws/registration/registration-form.html">create</a> your account. Once you do that you can safely return to this doc ;-)</p>
+
+<p>Once you have your account working, while still on the aws site, go and create a new <strong>X.509 certificate</strong> (under the AWS Access Identifiers page, in the X.509 certificate section near the bottom, click Create New). Once this is done, you will want to <em>download locally the private key file and X.509 certificate</em>.</p>
+
+<h3>EC2 API tools</h3>
+
+<p>Next you will have to <a href="http://developer.amazonwebservices.com/connect/entry.jspa?externalID=351&amp;categoryID=88">download</a> and install the Amazon EC2 api tools on one system (controlling machine) that will be used to start your EC2 army of servers, and control their usage. You will want to use the latest version (2009-05-15 at this time) as it will support all the features Amazon is offering for the EC2 service.</p>
+
+<p>The only real dependency of the EC2 API tools is <strong>java </strong>(at least version 1.5) so we will want to install that first. If you are running debian you can easily do this just by running (for lenny):
+<code>aptitude install sun-java6-jre</code>
+while for etch you will have to use: <em>aptitude install sun-java5-jre</em>
+For other distributions you can either use their internal packaging mechanism (in case they provide sun-java packages) or just download the binary from sun and install it manually.</p>
+
+<p><strong>Extract </strong>the EC2 APi tools (it is a zip archive called <strong>ec2-api-tools.zip</strong>) and move it under a folder of your preferece. I like to use <strong>~/.ec2</strong> for this, but you can use any folder you prefer. Also copy the <strong>private key</strong> and <strong>X.509 certificate</strong> in the same directory. Those files will look like <em>cert-xxx.pem</em> and <em>pk-xxx.pem</em>.</p>
+
+<p>Next we will have to <strong>export some shell variables</strong>. A good place to put this is in ~/.bashrc:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>export EC2_HOME=~/.ec2
+</span><span class='line'>export PATH=$PATH:$EC2_HOME/bin
+</span><span class='line'>export EC2_PRIVATE_KEY=$EC2_HOME/pk-xxx.pem
+</span><span class='line'>export EC2_CERT=$EC2_HOME/cert-xxx.pem
+</span><span class='line'>#Java home for debian default install path:
+</span><span class='line'>export JAVA_HOME=/usr
+</span><span class='line'>#add ec2 tools to default path
+</span><span class='line'>export PATH=~/.ec2/bin:$PATH</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Finally source the file to have the changes active in your current shell session:
+<code>source ~/.bashrc</code>
+or just open a new shell before starting to use the API tools.</p>
+
+<h3>EC2 Keypair</h3>
+
+<p>We will need to create one <strong>keypair </strong>that will be used to connect using <strong>ssh</strong> to the EC2 instances we will be using. We will use the <strong>ec2-add-keypair</strong> utility to create the key and register it with amazon:
+<code>ec2-add-keypair my-keypair</code>
+This will print out the private key that we will have to save in a file:
+`cat > ~/.ec2/id_rsa-my-keypair</p>
+
+<h1>paste the private key content</h1>
+
+<p>sudo chmod 600 <code>`~/.ec2/id_rsa-my-keypair</code></p>
+
+<h3>Running your first EC2 instance</h3>
+
+<p>Amazon EC2 uses the concept of <strong>AMIs </strong>= Amazon Machine Images. Any EC2 instance is started from one AMI. You can either use standard, public AMIs or create and customize your own private images. Creating or modifying existing AMIs is beyond the scope of this article, but just as a general information this is done using special AMI tools. Also before building your AMI you will want to ensure if you want to use a &#8216;small&#8217; type of image (i386 os) or a &#8216;large&#8217; type of instance (64bit os). These are described under<a href="http://aws.amazon.com/ec2/instance-types/"> http://aws.amazon.com/ec2/instance-types/</a></p>
+
+<p>For the scope of our article we will find a standard public image and start one instance of it to see that all is working properly with the EC2 api tools. You can see all the public images using:
+<code>ec2-describe-images -a</code>
+(over 2,300 images ;) ). You should probably grep the result to get any useful information. There are many good public images to use, like for example the <a href="http://alestic.com/">alestic</a> ones (for debian and ubuntu)
+Having the AMI id of the image we want to use we are ready to start our fist EC2 instance:
+<code>ec2-run-instances ami-e348af8a -k my-keypair</code>
+that will start a small instance with a 32bit debian lenny server instance from alestic.com.</p>
+
+<p><code>ec2-describe-instances</code>
+- this will describe the status of all the running instances, with their hostname, instance id, etc.</p>
+
+<p><code>ec2-authorize default -p 22</code>
+- in order to connect to your instance you will need to customize the &#8216;default&#8217; firewall rules for your account. The above rule will allow ssh on port 22 from anywhere. If you want to open http traffic you will have to add a rule like this:
+<code>ec2-authorize default -p 80</code></p>
+
+<p>Finally we can ssh to the ec2 instance using:
+<code>ssh -i ~/.ec2/id_rsa-my-keypair root@ec2-XXX-XXX-XXX-XXX.z-2.compute-1.amazonaws.com</code>
+where ec2-XXX-XXX-XXX-XXX.z-2.compute-1.amazonaws.com is the actual hostname of the instance as obtained from ec2-describe-instances.</p>
+
+<p><em>Note</em>: don&#8217;t forget to <strong>stop your instance</strong> when you no longer need it. EC2 is a service paid as you use, hence if you forget your instance running you will be billed for it ;-). You can do this by running <strong>shutdown </strong>inside the instance or by using:
+<code>ec2-terminate-instances i-yourinstance</code>
+and verify with <strong>ec2-describe-instances</strong> that the instance is indeed stopped.</p>
+
+<p>Next step is to create/customize your own EC2 AMI images based on your needs. This will be covered in a future article. Hopefully you found this article useful, and it will get you on track quickly with Amazon EC2 api tools.</p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+
+<span class="byline author vcard">Posted by <span class="fn"><a href="/blog/our-team/marius-ducea.html">Marius Ducea</a></span></span>
+
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2009-06-02T09:57:46+08:00" pubdate data-updated="true">Jun 2<span>nd</span>, 2009</time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/category/cli/'>CLI</a>, <a class='category' href='/category/howto/'>HowTo</a>, <a class='category' href='/category/cloud-computing/'>cloud computing</a>, <a class='category' href='/category/sysadmin/'>sysadmin</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://linuxsysadminblog.com/2009/06/howto-get-started-with-amazon-ec2-api-tools/" data-via="linuxsysadmnblg" data-counturl="http://linuxsysadminblog.com/2009/06/howto-get-started-with-amazon-ec2-api-tools/" >Tweet</a>
+  
+  
+  
+    <div class="fb-like" data-send="true" data-width="450" data-show-faces="false"></div>
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/2009/05/moving-magento-sites/" title="Previous Post: Moving Magento Sites">&laquo; Moving Magento Sites</a>
+      
+      
+        <a class="basic-alignment right" href="/2009/06/new-debian-apt-keys/" title="next Post: New Debian apt keys">New Debian apt keys &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
+
+  <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/2012/11/howto-bulk-import-dns-zones-to-softlayer-dns-using-cpanel/">HowTo: Bulk Import DNS Zones to Softlayer DNS using Cpanel</a>
+      </li>
+    
+      <li class="post">
+        <a href="/2012/08/integrate-sendgrid-with-redmine/">Integrate Sendgrid with Redmine</a>
+      </li>
+    
+      <li class="post">
+        <a href="/2012/07/rsback-task-x-is-locked-and-cannot-be-executed/">rsback: task x is locked and cannot be executed</a>
+      </li>
+    
+      <li class="post">
+        <a href="/2012/06/restore-xen-vm-from-lvm-snapshot-backups/">Restore Xen VM from LVM Snapshot Backups</a>
+      </li>
+    
+      <li class="post">
+        <a href="/2012/06/debian-6-backup-xen-with-lvm-and-rsnapshot/">Debian 6: Backup Xen with LVM and Rsnapshot</a>
+      </li>
+    
+  </ul>
+</section>
+
+<section>
+  <h1>GitHub Repos</h1>
+  <ul id="gh_repos">
+    <li class="loading">Status updating...</li>
+  </ul>
+  
+  <a href="https://github.com/promet">@promet</a> on GitHub
+  
+  <script type="text/javascript">
+    $.domReady(function(){
+        if (!window.jXHR){
+            var jxhr = document.createElement('script');
+            jxhr.type = 'text/javascript';
+            jxhr.src = '/javascripts/libs/jXHR.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(jxhr, s);
+        }
+
+        github.showRepos({
+            user: 'promet',
+            count: 0,
+            skip_forks: true,
+            target: '#gh_repos'
+        });
+    });
+  </script>
+  <script src="/javascripts/github.js" type="text/javascript"> </script>
+</section>
+
+
+<section>
+  <h1>Latest Tweets</h1>
+  <ul id="tweets">
+    <li class="loading">Status updating...</li>
+  </ul>
+  <script type="text/javascript">
+    $.domReady(function(){
+      getTwitterFeed("linuxsysadmnblg", 4, false);
+    });
+  </script>
+  <script src="/javascripts/twitter.js" type="text/javascript"> </script>
+  
+    <a href="http://twitter.com/linuxsysadmnblg" class="twitter-follow-button" data-show-count="false">Follow @linuxsysadmnblg</a>
+  
+</section>
+
+
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2012 - Promet OPS Team -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'linuxsysadminblog';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://linuxsysadminblog.com/2009/06/howto-get-started-with-amazon-ec2-api-tools/';
+        var disqus_url = 'http://linuxsysadminblog.com/2009/06/howto-get-started-with-amazon-ec2-api-tools/';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'http://' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) {return;}
+  js = d.createElement(s); js.id = id;
+  js.src = "//connect.facebook.net/en_US/all.js#appId=212934732101925&xfbml=1";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = 'http://platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>

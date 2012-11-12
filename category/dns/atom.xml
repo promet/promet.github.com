@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: dns | Linux Sysadmin Blog]]></title>
+  <link href="http://linuxsysadminblog.com/category/dns/atom.xml" rel="self"/>
+  <link href="http://linuxsysadminblog.com/"/>
+  <updated>2012-11-13T01:37:44+08:00</updated>
+  <id>http://linuxsysadminblog.com/</id>
+  <author>
+    <name><![CDATA[Promet OPS Team]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[HowTo: Bulk Import DNS Zones to Softlayer DNS using Cpanel]]></title>
+    <link href="http://linuxsysadminblog.com/2012/11/howto-bulk-import-dns-zones-to-softlayer-dns-using-cpanel/"/>
+    <updated>2012-11-13T01:08:00+08:00</updated>
+    <id>http://linuxsysadminblog.com/2012/11/howto-bulk-import-dns-zones-to-softlayer-dns-using-cpanel</id>
+    <content type="html"><![CDATA[<p>This guide covers the process for doing bulk import of existing DNS zones from a Cpanel or BIND server to Softlayer's DNS servers (<em>ns1/ns2.softlayer.com</em>).  This is useful if you need to add hundreds of zones, if for example you are moving your DNS hosting servers to Softlayer's free DNS hosting.  Currently, Softlayer doesn't have a tool to do bulk import of zones with existing records. Although you can create a default zone template and bulk add zones but this doesn't fit for existing zones.</p>
+
+<h3>Requirements:</h3>
+
+<p>1.) DNS zones on a Cpanel server (WHM or DNSOnly).</p>
+
+<p>If you are not using a Cpanel server then you can stand up a Cpanel VPS this process and install Cpanel DNSOnly as it is free or install Cpanel WHM and automatically it will have 15-day trial license, or you can get a one month WHM VPS license for $15/month.
+DNSOnly should be fine and easier/faster to install but you cannot view the DNS zones from its UI, although you can view or edit the zone files directly (<em>ex: /var/named/domain.db</em>).
+Then import your zones to Cpanel server. There are lots of guides or discussions online in doing this. Some mentioned that you can move the named.conf and zone files as-is and adjust the formatting to match Cpanel's.
+In our case we were running Cpanel server so we copied straight our "/var/named/*.db" files to Cpanel DNSOnly to import zones.</p>
+
+<p>2.) Softlayer API key for your account.</p>
+
+<p>  You will need this later to connect your Cpanel DNS server in a cluster setup with Softlayer's DNS servers. Cpanel have DNS cluster functionality with SoftLayer and VPS.NET.</p>
+
+<h3>The Import Process:</h3>
+
+<p>1.) Configure your Cpanel DNS cluster to connect to Softlayer's DNS servers.</p>
+
+<ul>
+<li>Login to Cpanel WHM or DNSOnly, then go to <em>Cluster/Remote Access</em>  ->> <em>Configure Cluster</em>.</li>
+<li>select <em>Enable DNS clustering</em></li>
+<li>On <em>Backend Type</em> dropdown, you will see <em>cPanel</em> only. Then click on <em>(Show All)</em> link next to it and the page will reload and you will see two more options: <em>Softlayer</em> and <em>VPS.NET</em>. Select <em>Softlayer</em> and click on *Configure button.
+<a href="http://linuxsysadminblog.com/images/2012/cluster-setup.png"><img src="http://linuxsysadminblog.com/images/2012/cluster-setup.png" alt="cluster-setup" /></a></li>
+<li>On <em>SoftLayer DNS Remote Configuration</em> page, enter your Softlayer API user and key. On <em>DNS role</em> choose <em>Synchronize changes</em> from dropdown list and click on <em>Submit</em>.
+<a href="http://linuxsysadminblog.com/images/2012/softlyer-dns-config.png"><img src="http://linuxsysadminblog.com/images/2012/softlyer-dns-config.png" alt="softlyer-dns-config" /></a></li>
+</ul>
+
+
+<p>2.) Synchronize DNS Records across clusters. DNS Cluster is now your Cpanel server and Softlayer servers.</p>
+
+<ul>
+<li>From Cpanel WHM or DNSOnly admin, go to * DNS Functions<em> ->> </em>Synchronize DNS Records*</li>
+<li>Select <em>Synchronize all zones to all servers</em> and check the box that says <em>Synchronize zones that are not configured on this server</em>. Then hit <em>Synchronize</em> button.
+<a href="http://linuxsysadminblog.com/images/2012/sync-dns.png"><img src="http://linuxsysadminblog.com/images/2012/sync-dns.png" alt="sync-dns" /></a></li>
+<li>The dns sync process will run and it will take some time depending on the number of zones and records that you have. Wait until it's finish and you're done.</li>
+<li>Once this starts you can login to your Softlayer portal and go to <em>Public Network</em> ->> <em>Domain Name System</em> and you will start seeing zones and see the progress on how many are imported.</li>
+</ul>
+
+
+<p><em>That is all. You can shutdown or remove your Cpanel DNSOnly/WHM server when if not needed.</em></p>
+
+<h3>Notes:</h3>
+
+<ul>
+<li>Cpanel have DNS cluster functionality with SoftLayer and VPS.NET so you might be able to use this guide to bulk import zones to VPS.NET.</li>
+<li>At this time of writing, we encountered a problem with Cpanel DNS cluster integration with Softlayer and we cannot modify the dns records that were imported initially.  When we update them it reverts to the original records from initial import. We disabled the DNS cluster setup from Cpanel and we update our DNS zones/records right from Softlayer portal.</li>
+<li>Above info refers to BIND server as the default DNS server on Cpanel.</li>
+</ul>
+
+]]></content>
+  </entry>
+  
+</feed>

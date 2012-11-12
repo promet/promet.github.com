@@ -1,0 +1,567 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>nginx proxy loadbalacing - Linux Sysadmin Blog</title>
+  <meta name="author" content="Promet OPS Team">
+
+  
+  <meta name="description" content="One of many uses of NGINX is http/https proxy load balancing. This guide is Debian specific so your milage with other flavors may vary. In this &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://linuxsysadminblog.com/2009/01/nginx-proxy-loadbalacing/">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="/javascripts/ender.js"></script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <link href="/atom.xml" rel="alternate" title="Linux Sysadmin Blog" type="application/atom+xml">
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+<!-- Google Form for Contact Page -->
+<!-- jQuery -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+<script type="text/javascript">
+    // Avoid conflict with ender.js.
+jQuery.noConflict();
+</script>
+<!-- jQuery Form Plugin -->
+<script src="http://malsup.github.com/jquery.form.js"></script>
+<script src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.9/jquery.validate.min.js"></script> 
+<script src="/javascripts/google_form.js"></script>
+<!-- Google Form for Contact Page End here -->
+
+
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-120251-38']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">Linux Sysadmin Blog</a></h1>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:linuxsysadminblog.com" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/our-team">Our Team</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+  <li><a href="/blog/about">About</a></li>
+  <li><a href="/blog/contact">Contact</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      
+
+<div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">Nginx Proxy Loadbalacing</h1>
+    
+    
+      <p class="meta">
+        
+  
+
+
+<span class="byline author vcard">Posted by <span class="fn"><a href="/blog/our-team/max-veprinsky.html">Max Veprinsky</a></span></span>
+
+ - 
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2009-01-23T19:57:37+08:00" pubdate data-updated="true">Jan 23<span>rd</span>, 2009</time>
+        
+         | <a href="#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>One of many uses of <a href="http://wiki.codemongers.com/Main">NGINX</a> is http/https proxy load balancing. This guide is Debian specific so your milage with other flavors may vary. In this example we always redirect http to https.</p>
+
+<p>The main nginx configation file is <code>/etc/nginx/nginx.conf</code> and below is a sample configuration file:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>user www-data;
+</span><span class='line'>worker_processes 5;
+</span><span class='line'>
+</span><span class='line'>error_log /var/log/nginx/error.log;
+</span><span class='line'>pid /var/run/nginx.pid;
+</span><span class='line'>
+</span><span class='line'>events {
+</span><span class='line'>worker_connections 1024;
+</span><span class='line'>}
+</span><span class='line'>
+</span><span class='line'>http {
+</span><span class='line'>include /etc/nginx/mime.types;
+</span><span class='line'>default_type application/octet-stream;
+</span><span class='line'>
+</span><span class='line'>access_log /var/log/nginx/access.log;
+</span><span class='line'>
+</span><span class='line'>sendfile on;
+</span><span class='line'>#tcp_nopush on;
+</span><span class='line'>
+</span><span class='line'>#keepalive_timeout 0;
+</span><span class='line'>keepalive_timeout 65;
+</span><span class='line'>tcp_nodelay on;
+</span><span class='line'>
+</span><span class='line'>#gzip on;
+</span><span class='line'>
+</span><span class='line'>upstream lb2 {
+</span><span class='line'>server 10.0.0.10; #webserver10
+</span><span class='line'>server 10.0.0.20; #webserver20
+</span><span class='line'>}
+</span><span class='line'>
+</span><span class='line'>include /etc/nginx/conf.d/*.conf;
+</span><span class='line'>include /etc/nginx/sites-enabled/*;
+</span><span class='line'>}</span></code></pre></td></tr></table></div></figure>
+
+
+<p>To add a site:</p>
+
+<p><strong>Prepare SSL</strong></p>
+
+<ol>
+<li>Create a .pem file which contains the certificate, certificate signing request and private key in the following format(certificate request section optional):</li>
+</ol>
+
+
+<p>Example: <code>mysite.com.pem</code></p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>-----BEGIN RSA PRIVATE KEY-----
+</span><span class='line'>MIICXQIBAAKBgQC5EAGorvRHq1MfWliXCpsVotv9wNTblylHKb3FjJJm/BvVtXaB
+</span><span class='line'>KhcfFU8vJDVVFs890oKwSiemGyu1I9E/AzDWl53mhep4J+BJRODg2ehVgB4paR4t
+</span><span class='line'>79klgFr8ewjHYEMOh+5L6y5nx5t5CDRXY2khkKOaVAP1IXT0mvJ6vyhvmwIDAQAB
+</span><span class='line'>AoGALxNKSL2QeDa1o1EZHfrdrmhKK8eEngNaxbZxhrIWf8n7zqYlaf/p98c06Fn+
+</span><span class='line'>kxGFUEWfZvbGFTPuL1rYHH5USqLTMEw4eevft4ouxekymTMQktR1arurjQ3F8cxC
+</span><span class='line'>-----END RSA PRIVATE KEY-----
+</span><span class='line'>-----BEGIN CERTIFICATE REQUEST-----
+</span><span class='line'>MIICJTCCAY4CAQAwgbYxCzAJBgNVBAYTAlVTMRMwEQYDVQQIEwpDYWxpZm9ybmlh
+</span><span class='line'>MRAwDgYDVQQHEwdDYW1wYmVsMRowGAYDVQQKExFBbWVyaWNhbiBXaXJlbGVzczEl
+</span><span class='line'>MCMGA1UECxMcY295b3RlLnByb21ldGhvc3RjaGljYWdvLmNvbTEaMBgGA1UEAxMR
+</span><span class='line'>d3d3LmxlbnBob25lcy5jb20xITAfBgkqhkiG9w0BCQEWEmRuc0Bwcm9tZXRob3N0
+</span><span class='line'>LmNvbTCBnzANBgkqhkiG9w0BAQEFAAOBjQAwgYkCgYEAuRABqK70R6tTH1pYlwqb
+</span><span class='line'>-----END CERTIFICATE REQUEST-----
+</span><span class='line'>-----BEGIN CERTIFICATE-----
+</span><span class='line'>MIIDPDCCAqWgAwIBAgIDCnu5MA0GCSqGSIb3DQEBBQUAME4xCzAJBgNVBAYTAlVT
+</span><span class='line'>MRAwDgYDVQQKEwdFcXVpZmF4MS0wKwYDVQQLEyRFcXVpZmF4IFNlY3VyZSBDZXJ0
+</span><span class='line'>aWZpY2F0ZSBBdXRob3JpdHkwHhcNMDkwMTE2MTMyNDU4WhcNMTEwMTE3MTMyNDU4
+</span><span class='line'>WjCBxjELMAkGA1UEBhMCVVMxGjAYBgNVBAoTEXd3dy5sZW5waG9uZXMuY29tMRMw
+</span><span class='line'>EQYDVQQLEwpHVDk5MDc4NTE5MTEwLwYDVQQLEyhTZWUgd3d3Lmdlb3RydXN0LmNv
+</span><span class='line'>bS9yZXNvdXJjZXMvY3BzIChjKTA5MTcwNQYDVQQLEy5Eb21haW4gQ29udHJvbCBW
+</span><span class='line'>YWxpZGF0ZWQgLSBRdWlja1NTTCBQcmVtaXVtKFIpMRowGAYDVQQDExF3d3cubGVu
+</span><span class='line'>-----END CERTIFICATE-----</span></code></pre></td></tr></table></div></figure>
+
+
+<ol>
+<li>Copy .pem file to <code>/etc/nginx/ssl</code> directory with <code>600 (-rw-------)</code> permissions and owned by user/group <code>root</code></li>
+</ol>
+
+
+<p><strong>Create site configuration file</strong></p>
+
+<p>1 . Site configuration file goes in <code>/etc/nginx/site-available/</code> directory with the name of the site&#8217;s URL.</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>server {
+</span><span class='line'>listen 192.168.1.1:80;
+</span><span class='line'>server_name www.mysite.com mysite.com;
+</span><span class='line'>access_log /var/log/nginx/access_http.log;
+</span><span class='line'>rewrite ^/(.*) https://www.mysite.com/$1 permanent;
+</span><span class='line'>}
+</span><span class='line'>
+</span><span class='line'>#HTTPS
+</span><span class='line'>server {
+</span><span class='line'>listen 192.168.1.1:443;
+</span><span class='line'>server_name www.mysite.com mysite.com;
+</span><span class='line'>access_log /var/log/nginx/access.log;
+</span><span class='line'>
+</span><span class='line'>ssl on;
+</span><span class='line'>ssl_certificate /etc/nginx/ssl/mysite.com.pem;
+</span><span class='line'>ssl_certificate_key /etc/nginx/ssl/mysite.com.pem;
+</span><span class='line'>ssl_session_timeout 5m;
+</span><span class='line'>
+</span><span class='line'>location / {
+</span><span class='line'>proxy_set_header X-Real-IP $remote_addr;
+</span><span class='line'>proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+</span><span class='line'>proxy_set_header Host $http_host;
+</span><span class='line'>proxy_set_header X-NginX-Proxy true;
+</span><span class='line'>
+</span><span class='line'>proxy_pass http://lb2/;
+</span><span class='line'>proxy_redirect off;
+</span><span class='line'>}
+</span><span class='line'>}</span></code></pre></td></tr></table></div></figure>
+
+
+<ol>
+<li>Place a symbolic link to configuration file in /etc/nginx/sites-enabled:</li>
+</ol>
+
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>ln -s /etc/nginx/sites-available/mysite.com /etc/nginx/sites-enabled/mysite.com</span></code></pre></td></tr></table></div></figure>
+
+
+<ol>
+<li>Reload nginx configuration</li>
+</ol>
+
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>/etc/init.d/nginx reload</span></code></pre></td></tr></table></div></figure>
+
+
+<ol>
+<li>Check if nginx process has started and is listening on configured IP:</li>
+</ol>
+
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>netstat -alnp
+</span><span class='line'>Active Internet connections (servers and established)
+</span><span class='line'>Proto Recv-Q Send-Q Local Address           Foreign Address         State       PID/Program name
+</span><span class='line'>tcp        0      0 192.168.1.1:80        0.0.0.0:*               LISTEN     9593/nginx
+</span><span class='line'>tcp        0      0 192.168.1.1:443       0.0.0.0:*               LISTEN     9593/nginx</span></code></pre></td></tr></table></div></figure>
+
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+
+<span class="byline author vcard">Posted by <span class="fn"><a href="/blog/our-team/max-veprinsky.html">Max Veprinsky</a></span></span>
+
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2009-01-23T19:57:37+08:00" pubdate data-updated="true">Jan 23<span>rd</span>, 2009</time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/category/installation/'>Installation</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://linuxsysadminblog.com/2009/01/nginx-proxy-loadbalacing/" data-via="linuxsysadmnblg" data-counturl="http://linuxsysadminblog.com/2009/01/nginx-proxy-loadbalacing/" >Tweet</a>
+  
+  
+  
+    <div class="fb-like" data-send="true" data-width="450" data-show-faces="false"></div>
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/2009/01/red-hat-enterprise-linux-53-released/" title="Previous Post: Red Hat Enterprise Linux 5.3 Released">&laquo; Red Hat Enterprise Linux 5.3 Released</a>
+      
+      
+        <a class="basic-alignment right" href="/2009/01/5-most-popular-linux-blog-posts-on-linux-system-admin-blog/" title="next Post: 5 most popular linux blog posts on linux system admin blog">5 most popular linux blog posts on linux system admin blog &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
+
+  <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/2012/11/howto-bulk-import-dns-zones-to-softlayer-dns-using-cpanel/">HowTo: Bulk Import DNS Zones to Softlayer DNS using Cpanel</a>
+      </li>
+    
+      <li class="post">
+        <a href="/2012/08/integrate-sendgrid-with-redmine/">Integrate Sendgrid with Redmine</a>
+      </li>
+    
+      <li class="post">
+        <a href="/2012/07/rsback-task-x-is-locked-and-cannot-be-executed/">rsback: task x is locked and cannot be executed</a>
+      </li>
+    
+      <li class="post">
+        <a href="/2012/06/restore-xen-vm-from-lvm-snapshot-backups/">Restore Xen VM from LVM Snapshot Backups</a>
+      </li>
+    
+      <li class="post">
+        <a href="/2012/06/debian-6-backup-xen-with-lvm-and-rsnapshot/">Debian 6: Backup Xen with LVM and Rsnapshot</a>
+      </li>
+    
+  </ul>
+</section>
+
+<section>
+  <h1>GitHub Repos</h1>
+  <ul id="gh_repos">
+    <li class="loading">Status updating...</li>
+  </ul>
+  
+  <a href="https://github.com/promet">@promet</a> on GitHub
+  
+  <script type="text/javascript">
+    $.domReady(function(){
+        if (!window.jXHR){
+            var jxhr = document.createElement('script');
+            jxhr.type = 'text/javascript';
+            jxhr.src = '/javascripts/libs/jXHR.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(jxhr, s);
+        }
+
+        github.showRepos({
+            user: 'promet',
+            count: 0,
+            skip_forks: true,
+            target: '#gh_repos'
+        });
+    });
+  </script>
+  <script src="/javascripts/github.js" type="text/javascript"> </script>
+</section>
+
+
+<section>
+  <h1>Latest Tweets</h1>
+  <ul id="tweets">
+    <li class="loading">Status updating...</li>
+  </ul>
+  <script type="text/javascript">
+    $.domReady(function(){
+      getTwitterFeed("linuxsysadmnblg", 4, false);
+    });
+  </script>
+  <script src="/javascripts/twitter.js" type="text/javascript"> </script>
+  
+    <a href="http://twitter.com/linuxsysadmnblg" class="twitter-follow-button" data-show-count="false">Follow @linuxsysadmnblg</a>
+  
+</section>
+
+
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2012 - Promet OPS Team -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'linuxsysadminblog';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://linuxsysadminblog.com/2009/01/nginx-proxy-loadbalacing/';
+        var disqus_url = 'http://linuxsysadminblog.com/2009/01/nginx-proxy-loadbalacing/';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'http://' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) {return;}
+  js = d.createElement(s); js.id = id;
+  js.src = "//connect.facebook.net/en_US/all.js#appId=212934732101925&xfbml=1";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = 'http://platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>

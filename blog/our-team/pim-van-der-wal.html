@@ -1,0 +1,1385 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Pim Van der Wal - Linux Sysadmin Blog</title>
+  <meta name="author" content="Promet OPS Team">
+
+  
+  <meta name="description" content="Pim Van Der Wal Pim Van der Wal 2010 Free alternative to InnoDB Hot Backup
+Apr 29 2010
+by Pim Van der Wal posted in MySQL, backup 2009 Syntax error &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://linuxsysadminblog.com/blog/our-team/pim-van-der-wal.html">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="/javascripts/ender.js"></script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <link href="/atom.xml" rel="alternate" title="Linux Sysadmin Blog" type="application/atom+xml">
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+<!-- Google Form for Contact Page -->
+<!-- jQuery -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+<script type="text/javascript">
+    // Avoid conflict with ender.js.
+jQuery.noConflict();
+</script>
+<!-- jQuery Form Plugin -->
+<script src="http://malsup.github.com/jquery.form.js"></script>
+<script src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.9/jquery.validate.min.js"></script> 
+<script src="/javascripts/google_form.js"></script>
+<!-- Google Form for Contact Page End here -->
+
+
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-120251-38']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">Linux Sysadmin Blog</a></h1>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:linuxsysadminblog.com" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/our-team">Our Team</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+  <li><a href="/blog/about">About</a></li>
+  <li><a href="/blog/contact">Contact</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article role="article">
+  
+  <header>
+    <h1 class="entry-title">Pim Van Der Wal</h1>
+    
+  </header>
+  
+  
+
+<div id="author-top-links" style="margin:-10px 0 8px 0;">
+  
+
+  
+</div>
+
+<img alt="Pim Van der Wal" src="http://gravatar.com/avatar/?s=200" width="200" height="200" style="float:left; margin-right: 1.5em;" />
+
+<div style="border-bottom:1px solid #ddd; padding:0 0 10px 0;">
+  Pim Van der Wal
+  <div style="clear:both;"></div>
+</div>
+
+<div id="blog-archives">
+
+  
+    
+  
+
+  
+    
+  
+
+  
+    
+  
+
+  
+    
+  
+
+  
+    
+  
+
+  
+    
+  
+
+  
+    
+  
+
+  
+    
+  
+
+  
+    
+  
+
+  
+    
+  
+
+  
+    
+  
+
+  
+    
+  
+
+  
+    
+  
+
+  
+    
+  
+
+  
+    
+  
+
+  
+    
+  
+
+  
+    
+  
+
+  
+    
+  
+
+  
+    
+  
+
+  
+    
+  
+
+  
+    
+  
+
+  
+    
+  
+
+  
+    
+  
+
+  
+    
+  
+
+  
+    
+  
+
+  
+    
+  
+
+  
+    
+  
+
+  
+    
+  
+
+  
+    
+  
+
+  
+    
+  
+
+  
+    
+  
+
+  
+    
+  
+
+  
+    
+  
+
+  
+    
+  
+
+  
+    
+  
+
+  
+    
+    
+    
+      
+      <h2>2010</h2>
+    
+    <article>
+      
+<h1><a href="/2010/04/free-alternative-to-innodb-hot-backup/">Free alternative to InnoDB Hot Backup</a></h1>
+<time datetime="2010-04-29T08:28:22+08:00" pubdate><span class='month'>Apr</span> <span class='day'>29</span> <span class='year'>2010</span></time>
+<span class="archive_author">by <a href="/blog/our-team/pim-van-der-wal.html">Pim Van der Wal</a></span>
+
+<footer>
+  <span class="categories">posted in <a class='category' href='/category/mysql/'>MySQL</a>, <a class='category' href='/category/backup/'>backup</a></span>
+</footer>
+
+
+    </article>
+    
+  
+
+  
+    
+  
+
+  
+    
+  
+
+  
+    
+  
+
+  
+    
+  
+
+  
+    
+  
+
+  
+    
+  
+
+  
+    
+  
+
+  
+    
+  
+
+  
+    
+  
+
+  
+    
+  
+
+  
+    
+  
+
+  
+    
+  
+
+  
+    
+  
+
+  
+    
+  
+
+  
+    
+  
+
+  
+    
+  
+
+  
+    
+  
+
+  
+    
+  
+
+  
+    
+  
+
+  
+    
+  
+
+  
+    
+  
+
+  
+    
+  
+
+  
+    
+  
+
+  
+    
+  
+
+  
+    
+  
+
+  
+    
+  
+
+  
+    
+  
+
+  
+    
+  
+
+  
+    
+  
+
+  
+    
+  
+
+  
+    
+  
+
+  
+    
+  
+
+  
+    
+  
+
+  
+    
+  
+
+  
+    
+  
+
+  
+    
+  
+
+  
+    
+  
+
+  
+    
+  
+
+  
+    
+  
+
+  
+    
+  
+
+  
+    
+  
+
+  
+    
+  
+
+  
+    
+    
+    
+      
+      <h2>2009</h2>
+    
+    <article>
+      
+<h1><a href="/2009/07/syntax-error-on-mysql-replication-slave-error-1064/">Syntax error on MySQL replication slave (error 1064)</a></h1>
+<time datetime="2009-07-14T20:52:38+08:00" pubdate><span class='month'>Jul</span> <span class='day'>14</span> <span class='year'>2009</span></time>
+<span class="archive_author">by <a href="/blog/our-team/pim-van-der-wal.html">Pim Van der Wal</a></span>
+
+<footer>
+  <span class="categories">posted in <a class='category' href='/category/mysql/'>MySQL</a>, <a class='category' href='/category/replication/'>Replication</a></span>
+</footer>
+
+
+    </article>
+    
+  
+
+  
+    
+  
+
+  
+    
+  
+
+  
+    
+  
+
+  
+    
+  
+
+  
+    
+  
+
+  
+    
+    
+    
+    <article>
+      
+<h1><a href="/2009/06/cacti-and-mysql-counters-problem/">Cacti and MySQL counters problem</a></h1>
+<time datetime="2009-06-16T20:46:15+08:00" pubdate><span class='month'>Jun</span> <span class='day'>16</span> <span class='year'>2009</span></time>
+<span class="archive_author">by <a href="/blog/our-team/pim-van-der-wal.html">Pim Van der Wal</a></span>
+
+<footer>
+  <span class="categories">posted in <a class='category' href='/category/cacti/'>Cacti</a>, <a class='category' href='/category/mysql/'>MySQL</a>, <a class='category' href='/category/monitoring/'>monitoring</a></span>
+</footer>
+
+
+    </article>
+    
+  
+
+  
+    
+  
+
+  
+    
+  
+
+  
+    
+  
+
+  
+    
+  
+
+  
+    
+  
+
+  
+    
+  
+
+  
+    
+  
+
+  
+    
+  
+
+  
+    
+  
+
+  
+    
+  
+
+  
+    
+  
+
+  
+    
+  
+
+  
+    
+  
+
+  
+    
+  
+
+  
+    
+  
+
+  
+    
+  
+
+  
+    
+  
+
+  
+    
+  
+
+  
+    
+  
+
+  
+    
+  
+
+  
+    
+  
+
+  
+    
+  
+
+  
+    
+  
+
+  
+    
+  
+
+  
+    
+  
+
+  
+    
+  
+
+  
+    
+    
+    
+    <article>
+      
+<h1><a href="/2009/04/mysql-query-cache-good-or-bad/">MySQL Query Cache, Good or Bad?</a></h1>
+<time datetime="2009-04-21T20:55:06+08:00" pubdate><span class='month'>Apr</span> <span class='day'>21</span> <span class='year'>2009</span></time>
+<span class="archive_author">by <a href="/blog/our-team/pim-van-der-wal.html">Pim Van der Wal</a></span>
+
+<footer>
+  <span class="categories">posted in <a class='category' href='/category/mysql/'>MySQL</a>, <a class='category' href='/category/performance/'>Performance</a></span>
+</footer>
+
+
+    </article>
+    
+  
+
+  
+    
+  
+
+  
+    
+  
+
+  
+    
+  
+
+  
+    
+  
+
+  
+    
+  
+
+  
+    
+  
+
+  
+    
+  
+
+  
+    
+  
+
+  
+    
+  
+
+  
+    
+  
+
+  
+    
+  
+
+  
+    
+  
+
+  
+    
+  
+
+  
+    
+  
+
+  
+    
+  
+
+  
+    
+  
+
+  
+    
+  
+
+  
+    
+  
+
+  
+    
+  
+
+  
+    
+  
+
+  
+    
+  
+
+  
+    
+    
+    
+    <article>
+      
+<h1><a href="/2009/03/free-trial-of-cloud-computing/">Free trial of cloud computing</a></h1>
+<time datetime="2009-03-03T08:55:17+08:00" pubdate><span class='month'>Mar</span> <span class='day'>03</span> <span class='year'>2009</span></time>
+<span class="archive_author">by <a href="/blog/our-team/pim-van-der-wal.html">Pim Van der Wal</a></span>
+
+<footer>
+  <span class="categories">posted in <a class='category' href='/category/cloud-computing/'>cloud computing</a></span>
+</footer>
+
+
+    </article>
+    
+  
+
+  
+    
+  
+
+  
+    
+  
+
+  
+    
+  
+
+  
+    
+  
+
+  
+    
+  
+
+  
+    
+    
+    
+    <article>
+      
+<h1><a href="/2009/02/cloud-computing-scenarios-for-database-servers/">Cloud computing scenario's for database servers</a></h1>
+<time datetime="2009-02-17T10:09:35+08:00" pubdate><span class='month'>Feb</span> <span class='day'>17</span> <span class='year'>2009</span></time>
+<span class="archive_author">by <a href="/blog/our-team/pim-van-der-wal.html">Pim Van der Wal</a></span>
+
+<footer>
+  <span class="categories">posted in <a class='category' href='/category/down-time/'>Down Time</a>, <a class='category' href='/category/mysql/'>MySQL</a>, <a class='category' href='/category/performance/'>Performance</a>, <a class='category' href='/category/replication/'>Replication</a>, <a class='category' href='/category/hosting/'>hosting</a></span>
+</footer>
+
+
+    </article>
+    
+  
+
+  
+    
+  
+
+  
+    
+  
+
+  
+    
+  
+
+  
+    
+    
+    
+    <article>
+      
+<h1><a href="/2009/02/extending-the-slow-query-log/">Extending the slow query log</a></h1>
+<time datetime="2009-02-04T15:54:30+08:00" pubdate><span class='month'>Feb</span> <span class='day'>04</span> <span class='year'>2009</span></time>
+<span class="archive_author">by <a href="/blog/our-team/pim-van-der-wal.html">Pim Van der Wal</a></span>
+
+<footer>
+  <span class="categories">posted in <a class='category' href='/category/mysql/'>MySQL</a>, <a class='category' href='/category/performance/'>Performance</a></span>
+</footer>
+
+
+    </article>
+    
+  
+
+  
+    
+  
+
+  
+    
+  
+
+  
+    
+  
+
+  
+    
+  
+
+  
+    
+  
+
+  
+    
+  
+
+  
+    
+    
+    
+    <article>
+      
+<h1><a href="/2009/01/what-phone-does-a-sys-admin-need/">What phone does a sys admin need?</a></h1>
+<time datetime="2009-01-27T07:58:37+08:00" pubdate><span class='month'>Jan</span> <span class='day'>27</span> <span class='year'>2009</span></time>
+<span class="archive_author">by <a href="/blog/our-team/pim-van-der-wal.html">Pim Van der Wal</a></span>
+
+<footer>
+  <span class="categories">posted in <a class='category' href='/category/installation/'>Installation</a></span>
+</footer>
+
+
+    </article>
+    
+  
+
+  
+    
+  
+
+  
+    
+  
+
+  
+    
+  
+
+  
+    
+  
+
+  
+    
+  
+
+  
+    
+  
+
+  
+    
+  
+
+  
+    
+  
+
+  
+    
+  
+
+  
+    
+  
+
+  
+    
+    
+    
+    <article>
+      
+<h1><a href="/2009/01/monitoring-a-java-application-from-nagios/">Monitoring a Java application from Nagios</a></h1>
+<time datetime="2009-01-05T16:16:47+08:00" pubdate><span class='month'>Jan</span> <span class='day'>05</span> <span class='year'>2009</span></time>
+<span class="archive_author">by <a href="/blog/our-team/pim-van-der-wal.html">Pim Van der Wal</a></span>
+
+<footer>
+  <span class="categories">posted in <a class='category' href='/category/nagios/'>Nagios</a>, <a class='category' href='/category/monitoring/'>monitoring</a></span>
+</footer>
+
+
+    </article>
+    
+  
+
+  
+    
+  
+
+  
+    
+    
+    
+      
+      <h2>2008</h2>
+    
+    <article>
+      
+<h1><a href="/2008/12/mysql-query-optimization-for-network-throughput/">MySQL query optimization for network throughput</a></h1>
+<time datetime="2008-12-10T10:42:46+08:00" pubdate><span class='month'>Dec</span> <span class='day'>10</span> <span class='year'>2008</span></time>
+<span class="archive_author">by <a href="/blog/our-team/pim-van-der-wal.html">Pim Van der Wal</a></span>
+
+<footer>
+  <span class="categories">posted in <a class='category' href='/category/mysql/'>MySQL</a>, <a class='category' href='/category/performance/'>Performance</a></span>
+</footer>
+
+
+    </article>
+    
+  
+
+  
+    
+  
+
+  
+    
+  
+
+  
+    
+  
+
+  
+    
+  
+
+  
+    
+  
+
+  
+    
+  
+
+  
+    
+  
+
+  
+    
+    
+    
+    <article>
+      
+<h1><a href="/2008/11/server-and-backup-woes/">Server and backup woes</a></h1>
+<time datetime="2008-11-17T08:31:58+08:00" pubdate><span class='month'>Nov</span> <span class='day'>17</span> <span class='year'>2008</span></time>
+<span class="archive_author">by <a href="/blog/our-team/pim-van-der-wal.html">Pim Van der Wal</a></span>
+
+<footer>
+  <span class="categories">posted in <a class='category' href='/category/down-time/'>Down Time</a>, <a class='category' href='/category/mysql/'>MySQL</a>, <a class='category' href='/category/cpanel/'>cpanel</a>, <a class='category' href='/category/hosting/'>hosting</a>, <a class='category' href='/category/monitoring/'>monitoring</a>, <a class='category' href='/category/sysadmin/'>sysadmin</a></span>
+</footer>
+
+
+    </article>
+    
+  
+
+  
+    
+  
+
+  
+    
+  
+
+  
+    
+    
+    
+    <article>
+      
+<h1><a href="/2008/10/homegrown-mysql-monitoring/">Homegrown MySQL monitoring</a></h1>
+<time datetime="2008-10-23T07:46:49+08:00" pubdate><span class='month'>Oct</span> <span class='day'>23</span> <span class='year'>2008</span></time>
+<span class="archive_author">by <a href="/blog/our-team/pim-van-der-wal.html">Pim Van der Wal</a></span>
+
+<footer>
+  <span class="categories">posted in <a class='category' href='/category/mysql/'>MySQL</a>, <a class='category' href='/category/nagios/'>Nagios</a>, <a class='category' href='/category/monitoring/'>monitoring</a>, <a class='category' href='/category/sysadmin/'>sysadmin</a></span>
+</footer>
+
+
+    </article>
+    
+  
+
+  
+    
+  
+
+  
+    
+  
+
+  
+    
+  
+
+  
+    
+    
+    
+    <article>
+      
+<h1><a href="/2008/10/pci-dss-compliance-for-dummies/">PCI DSS compliance for dummies</a></h1>
+<time datetime="2008-10-14T13:37:16+08:00" pubdate><span class='month'>Oct</span> <span class='day'>14</span> <span class='year'>2008</span></time>
+<span class="archive_author">by <a href="/blog/our-team/pim-van-der-wal.html">Pim Van der Wal</a></span>
+
+<footer>
+  <span class="categories">posted in <a class='category' href='/category/pci-compliance/'>PCI Compliance</a></span>
+</footer>
+
+
+    </article>
+    
+  
+
+  
+    
+    
+    
+    <article>
+      
+<h1><a href="/2008/10/rebuilding-the-mysql-replication-slave/">MySQL replication problems</a></h1>
+<time datetime="2008-10-09T14:16:26+08:00" pubdate><span class='month'>Oct</span> <span class='day'>09</span> <span class='year'>2008</span></time>
+<span class="archive_author">by <a href="/blog/our-team/pim-van-der-wal.html">Pim Van der Wal</a></span>
+
+<footer>
+  <span class="categories">posted in <a class='category' href='/category/mysql/'>MySQL</a>, <a class='category' href='/category/replication/'>Replication</a>, <a class='category' href='/category/monitoring/'>monitoring</a></span>
+</footer>
+
+
+    </article>
+    
+  
+
+  
+    
+  
+
+  
+    
+    
+    
+    <article>
+      
+<h1><a href="/2008/09/run-parts-not-running-all-the-scripts-in-etccrondaily/">run-parts not running all the scripts in /etc/cron.daily</a></h1>
+<time datetime="2008-09-18T17:22:02+08:00" pubdate><span class='month'>Sep</span> <span class='day'>18</span> <span class='year'>2008</span></time>
+<span class="archive_author">by <a href="/blog/our-team/pim-van-der-wal.html">Pim Van der Wal</a></span>
+
+<footer>
+  <span class="categories">posted in <a class='category' href='/category/sysadmin/'>sysadmin</a></span>
+</footer>
+
+
+    </article>
+    
+  
+
+  
+    
+  
+
+  
+    
+    
+    
+    <article>
+      
+<h1><a href="/2008/09/when-mysql-starts-counting-sheep/">When MySQL starts counting sheep</a></h1>
+<time datetime="2008-09-04T07:41:00+08:00" pubdate><span class='month'>Sep</span> <span class='day'>04</span> <span class='year'>2008</span></time>
+<span class="archive_author">by <a href="/blog/our-team/pim-van-der-wal.html">Pim Van der Wal</a></span>
+
+<footer>
+  <span class="categories">posted in <a class='category' href='/category/mysql/'>MySQL</a>, <a class='category' href='/category/performance/'>Performance</a>, <a class='category' href='/category/monitoring/'>monitoring</a></span>
+</footer>
+
+
+    </article>
+    
+  
+
+  
+    
+    
+    
+    <article>
+      
+<h1><a href="/2008/08/enabling-and-using-the-slow-query-log-in-mysql/">Enabling and using the slow query log in MySQL</a></h1>
+<time datetime="2008-08-26T17:39:10+08:00" pubdate><span class='month'>Aug</span> <span class='day'>26</span> <span class='year'>2008</span></time>
+<span class="archive_author">by <a href="/blog/our-team/pim-van-der-wal.html">Pim Van der Wal</a></span>
+
+<footer>
+  <span class="categories">posted in <a class='category' href='/category/mysql/'>MySQL</a>, <a class='category' href='/category/performance/'>Performance</a></span>
+</footer>
+
+
+    </article>
+    
+  
+
+  
+    
+  
+
+  
+    
+  
+
+  
+    
+  
+
+  
+    
+  
+
+  
+    
+  
+
+  
+    
+    
+    
+    <article>
+      
+<h1><a href="/2008/07/changing-the-mysql-replication-master-host/">Changing the MySQL replication master host</a></h1>
+<time datetime="2008-07-24T10:09:22+08:00" pubdate><span class='month'>Jul</span> <span class='day'>24</span> <span class='year'>2008</span></time>
+<span class="archive_author">by <a href="/blog/our-team/pim-van-der-wal.html">Pim Van der Wal</a></span>
+
+<footer>
+  <span class="categories">posted in <a class='category' href='/category/mysql/'>MySQL</a></span>
+</footer>
+
+
+    </article>
+    
+  
+
+  
+    
+  
+
+  
+    
+  
+
+  
+    
+  
+
+  
+    
+    
+    
+    <article>
+      
+<h1><a href="/2008/06/mysql-error-1449-there-is-no-usernamehost-registered/">MySQL error 1449 "There is no 'username'@'host' registered"</a></h1>
+<time datetime="2008-06-27T07:53:31+08:00" pubdate><span class='month'>Jun</span> <span class='day'>27</span> <span class='year'>2008</span></time>
+<span class="archive_author">by <a href="/blog/our-team/pim-van-der-wal.html">Pim Van der Wal</a></span>
+
+<footer>
+  <span class="categories">posted in <a class='category' href='/category/mysql/'>MySQL</a></span>
+</footer>
+
+
+    </article>
+    
+  
+
+  
+    
+  
+
+  
+    
+    
+    
+    <article>
+      
+<h1><a href="/2008/06/implementing-aes-encryption-in-the-front-end/">Implementing AES encryption in the front-end</a></h1>
+<time datetime="2008-06-20T08:24:56+08:00" pubdate><span class='month'>Jun</span> <span class='day'>20</span> <span class='year'>2008</span></time>
+<span class="archive_author">by <a href="/blog/our-team/pim-van-der-wal.html">Pim Van der Wal</a></span>
+
+<footer>
+  <span class="categories">posted in <a class='category' href='/category/installation/'>Installation</a></span>
+</footer>
+
+
+    </article>
+    
+  
+
+  
+    
+  
+
+  
+    
+  
+
+  
+    
+  
+
+  
+    
+  
+
+  
+    
+  
+
+  
+    
+  
+
+</div>
+
+
+
+  
+</article>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/2012/11/howto-bulk-import-dns-zones-to-softlayer-dns-using-cpanel/">HowTo: Bulk Import DNS Zones to Softlayer DNS using Cpanel</a>
+      </li>
+    
+      <li class="post">
+        <a href="/2012/08/integrate-sendgrid-with-redmine/">Integrate Sendgrid with Redmine</a>
+      </li>
+    
+      <li class="post">
+        <a href="/2012/07/rsback-task-x-is-locked-and-cannot-be-executed/">rsback: task x is locked and cannot be executed</a>
+      </li>
+    
+      <li class="post">
+        <a href="/2012/06/restore-xen-vm-from-lvm-snapshot-backups/">Restore Xen VM from LVM Snapshot Backups</a>
+      </li>
+    
+      <li class="post">
+        <a href="/2012/06/debian-6-backup-xen-with-lvm-and-rsnapshot/">Debian 6: Backup Xen with LVM and Rsnapshot</a>
+      </li>
+    
+  </ul>
+</section>
+
+<section>
+  <h1>GitHub Repos</h1>
+  <ul id="gh_repos">
+    <li class="loading">Status updating...</li>
+  </ul>
+  
+  <a href="https://github.com/promet">@promet</a> on GitHub
+  
+  <script type="text/javascript">
+    $.domReady(function(){
+        if (!window.jXHR){
+            var jxhr = document.createElement('script');
+            jxhr.type = 'text/javascript';
+            jxhr.src = '/javascripts/libs/jXHR.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(jxhr, s);
+        }
+
+        github.showRepos({
+            user: 'promet',
+            count: 0,
+            skip_forks: true,
+            target: '#gh_repos'
+        });
+    });
+  </script>
+  <script src="/javascripts/github.js" type="text/javascript"> </script>
+</section>
+
+
+<section>
+  <h1>Latest Tweets</h1>
+  <ul id="tweets">
+    <li class="loading">Status updating...</li>
+  </ul>
+  <script type="text/javascript">
+    $.domReady(function(){
+      getTwitterFeed("linuxsysadmnblg", 4, false);
+    });
+  </script>
+  <script src="/javascripts/twitter.js" type="text/javascript"> </script>
+  
+    <a href="http://twitter.com/linuxsysadmnblg" class="twitter-follow-button" data-show-count="false">Follow @linuxsysadmnblg</a>
+  
+</section>
+
+
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2012 - Promet OPS Team -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'linuxsysadminblog';
+      
+        
+        var disqus_script = 'count.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'http://' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) {return;}
+  js = d.createElement(s); js.id = id;
+  js.src = "//connect.facebook.net/en_US/all.js#appId=212934732101925&xfbml=1";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = 'http://platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>

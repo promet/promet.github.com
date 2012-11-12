@@ -1,0 +1,310 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: Debian | Linux Sysadmin Blog]]></title>
+  <link href="http://linuxsysadminblog.com/category/debian/atom.xml" rel="self"/>
+  <link href="http://linuxsysadminblog.com/"/>
+  <updated>2012-11-13T01:37:44+08:00</updated>
+  <id>http://linuxsysadminblog.com/</id>
+  <author>
+    <name><![CDATA[Promet OPS Team]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Restore Xen VM from LVM Snapshot Backups]]></title>
+    <link href="http://linuxsysadminblog.com/2012/06/restore-xen-vm-from-lvm-snapshot-backups/"/>
+    <updated>2012-06-22T20:21:00+08:00</updated>
+    <id>http://linuxsysadminblog.com/2012/06/restore-xen-vm-from-lvm-snapshot-backups</id>
+    <content type="html"><![CDATA[<p>What's the use of backups if you can't restore from them? ;)</p>
+
+<p>In the previous post on "Backup Xen with LVM and Rsnapshot" we worked on creating backups of Xen (guest/domain) VMs with LVM, and here we'll cover the process of restoring from these backups.</p>
+
+<p>What is covered here:</p>
+
+<p>Restoring specific files or directories
+Doing "bare-metal" type of restore. We will re-create the VM from our rsnapshot backups.
+Restore Process:</p>
+
+<p>1.) Restoring specific files or directories only</p>
+
+<p>While this restore scenario is a no-brainer, still I'll just want to mention it here as well.  Basically this one is the usual copying of files (via cp, scp, ftp, rsync, etc) from your source or backup server to the destination server.</p>
+
+<p>2.) "Bare-metal" restore (creates complete vm image from backup).</p>
+
+<p>Overview of "bare-metal" restore process:</p>
+
+<p>create, format, and mount logical volumes to use on the vm that you want to restore or re-create, based on its original vm disk properties such as size, names, etc.
+copy all files from backup location to the newly mounted lvm disk</p>
+
+<!--more-->
+
+
+<p>adjust necessary xen vm configs (if any, like new ip address) and start/create the vm using the volume with restored contents or files, and you're done.
+In the restore example below I'll refer to the vm as "domain.com" and we will restore the backups to a different volume with the same config as the original.  Then we'll start the vm, domain.com, using the restored volume.</p>
+
+<p>Here's the sample VM configuration that we will use.
+orignal vm disks: /dev/vg0/domain.com-disk (10GB) and /dev/vg0/domain.com-swap (512MB)
+backup located at "/backup" of host machine
+disks configurations to use on restored vm: /dev/vg0/domain-restore.com-disk (10GB) and /dev/vg0/domain-restore.com-swap (512MB)
+To start we determine the virtual machine  to restore as well as the backup to use  for restore.</p>
+
+<p>Then we'll create logical volumes with the same values as the running volumes as defined in our /etc/xen/domain.com.cfg.  Please note that you don't have to re-create the swap disk if you want, but in this example we'll just create another one.</p>
+
+<p>```</p>
+
+<pre><code>lvcreate -L 10G -n domain-restore.com-disk vg0
+lvcreate -L 512M -n domain-restore.com-swap vg0
+</code></pre>
+
+<p>```
+Format the "-disk" and mount it somewhere on host machine (ex: /backup-restore) and copy backup files into it, and unmount it after copying.</p>
+
+<p>```</p>
+
+<pre><code>mkfs -t ext3 -v /dev/vg0/domain-restore.com-disk
+mkdir /backup-restore
+mount /dev/vg0/domain-restore.com-disk /backup-restore
+cp -rpfv /backup/domain.com-disk/* /backup-restore/
+umount /dev/vg0/domain-restore.com-disk
+rmdir /backup-restore
+</code></pre>
+
+<p>```
+We now have the volume that contains the restored files at /dev/vg0/domain-restore-disk and ready to use by our domain.com VM.</p>
+
+<p>Let's shutdown "domain.com" machine and change its disk configuration to use the new/restored volume.</p>
+
+<p><code>
+xm shutdown domain.com
+</code></p>
+
+<p>Then we'll update our vm xen config to let our "domain.com" vm use the "domain-restore-disk".  We'll modify /etc/xen/original.domain.com.cfg and change the disks to point to new volumes with restored contents.</p>
+
+<p>From:
+<code>
+'phy:/dev/vg0/domain.com-disk,xvda2,w',
+'phy:/dev/vg0/domain.com-swap,xvda1,w',
+</code></p>
+
+<p>To:
+<code>
+'phy:/dev/vg0/domain-restore.com-disk,xvda2,w',
+'phy:/dev/vg0/domain-restore.com-swap,xvda1,w',
+</code></p>
+
+<p>Start our domain.com machine on its restored contents.</p>
+
+<p><code>
+xm create /etc/xen/domain.com.cfg
+</code></p>
+
+<p>That's all - you should have your vm running from its restored state! If everything is not ok you can quickly configure your vm to use the original volumes and restart it.</p>
+
+<p>If you do not want to touch your live machine, you can just create another vm with the same config as the live one, create new volumes and restore your backups to that vm.</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Debian 6: Backup Xen with LVM and Rsnapshot]]></title>
+    <link href="http://linuxsysadminblog.com/2012/06/debian-6-backup-xen-with-lvm-and-rsnapshot/"/>
+    <updated>2012-06-22T05:38:00+08:00</updated>
+    <id>http://linuxsysadminblog.com/2012/06/debian-6-backup-xen-with-lvm-and-rsnapshot</id>
+    <content type="html"><![CDATA[<p>This is a draft of my installation process which is mainly based from this blog:  <a href="http://backdrift.org/efficient-xen-backups-using-lvm-and-rsnapshot">Efficient Xen Backups Using LVM and Rsnapshot</a>.</p>
+
+<p>Our setup is on Debian 6 server with 2TB disk running 10 vpses. We followed the above guide with notes on errors we encountered, mostly rsnapshot related. We are keeping daily backup locally, on a separate partition, and copies them to our remote server every week.</p>
+
+<p>The Setup (mostly defaults):
+vg path is /dev
+vg name is vg0</p>
+
+<p>Setup Process:</p>
+
+<p>Create logical partition to store backups locally.  Size is 100GB and named it backups.  Format it with ext3 and mounted it to /backups.</p>
+
+<p><code>
+lvcreate -L 100G -n backups vg0
+mkfs -t ext3 -v /dev/vg0/backups
+mkdir /backups
+mount /dev/vg0/backups /backups
+</code></p>
+
+<p>Install and configure rsnapshot.  Make sure you use TAB correctly as it will complain or give you an error if you don't.</p>
+
+<p><code>
+aptitude install rsnapshot
+vi /etc/rsnapshot.conf
+</code></p>
+
+<p>Here's my rsnapshot config changes and/or additions:</p>
+
+<!--more-->
+
+
+<p>```
+snapshot_root /backups/    #this is a mounted partition
+interval daily 1    # i removed all other schedule and one daily copy only
+linux_lvm_cmd_lvcreate /sbin/lvcreate
+linux_lvm_cmd_lvremove /sbin/lvremove
+linux_lvm_cmd_mount /bin/mount
+linux_lvm_cmd_umount /bin/umount
+linux_lvm_snapshotsize 2G
+linux_lvm_snapshotname rsnapshot
+linux_lvm_vgpath /dev
+linux_lvm_mountpath /mnt/lvm-snapshot</p>
+
+<h1>Backups Tasks for all VMs</h1>
+
+<p>backup lvm://vg0/vm_1_name_disk/ vm_1_name_disk/
+backup lvm://vg0/vm_2_name_disk/ vm_2_name_disk/
+backup lvm://vg0/vm_10_name_disk/ vm_10_name_disk/
+```</p>
+
+<p>Schedule daily backup task in crontab (/etc/crontab). Note that rsnapshot is in /usr/bin/rsnapshot on Debian.</p>
+
+<p><code>
+01 01 * * * root /usr/bin/rsnapshot daily
+</code></p>
+
+<p>You can then run the rsnapshot task to make sure everything is working, from your config file to creating and mounting lvm snapshots. Execution time depends on number of vms and their size. You can ran them individually if needed.</p>
+
+<p><code>
+/usr/bin/rsnapshot daily
+</code></p>
+
+<p>Then I setup another backup task from remote backup server to pick up our local backups at /backups. You can also configure rsnapshot to backup your snapshots directly to your remote backup location (usiang rsync/ssh), depends on how you want to backup your data.</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Install vsftpd Server With Virtual User and Directory]]></title>
+    <link href="http://linuxsysadminblog.com/2012/06/install-vsftpd-server-with-virtual-user-and-directory/"/>
+    <updated>2012-06-04T09:15:33+08:00</updated>
+    <id>http://linuxsysadminblog.com/2012/06/install-vsftpd-server-with-virtual-user-and-directory</id>
+    <content type="html"><![CDATA[<p>Here's a summary for <a href="http://vsftpd.beasts.org">vsftpd</a> setup with virtual user and directory in Debian.  It's probably the same process on other Debian-based distros as well as Redhat-based distros. No need to define what's vsftpd and what's virtual users - let's just proceed to the setup. :)</p>
+
+<p>Install VSFTPD:</p>
+
+<p><code>
+aptitude install vsftpd
+</code></p>
+
+<p>Choose what method to use for virtual user authentication.  Let's use pam passwd module (libpam-pwdfile), I guess this is the most common and easy to setup.  You can also use libpam-mysql if you want to manage your ftp users via mysql database, like if you want integrate it with your application that's using mysql as backend.</p>
+
+<p><code>
+aptitude install libpam-pwdfile
+</code></p>
+
+<p>Next create your password file (example: <em>/etc/vsftpd_users.conf</em>) which contain the list of virtual users and password hash.  You can use <a href="http://httpd.apache.org/docs/2.0/programs/htpasswd.html">htpasswd</a> that's included in Apache or go to this website, <a href="http://www.htaccesstools.com/htpasswd-generator/">htaccesstools.com</a> to generate the list of users and passwords.</p>
+
+<!--more-->
+
+
+<p>Once you have the list of users (example: <em>demo1</em> and <em>demo2</em>), you have to create their virtual directory as well, let's say I want to set ftp users home directory inside <em>/home/ftpusers</em>.  This will be their home directory and they can't see or navigate outside of their home dir. Make sure they're writable as well.</p>
+
+<p><code>
+mkdir /home/ftpusers /home/ftpusers/demo1 /home/ftpusers/demo2
+</code></p>
+
+<p>Then update your vsftpd config (<em>/etc/vsftpd.conf</em>) and make sure you have the configs below enabled. Please take note that some of these configs might me enabled by default.  Also, you might want to read the detailed description on <em>/etc/vsftpd.conf</em> file about the configurations that you want to enable/disable, example: allow local system users to connect to ftp, disable anonymous ftp access, welcome message, and so on.</p>
+
+<p><code>
+listen=YES
+anonymous_enable=NO
+local_enable=YES
+write_enable=YES
+dirmessage_enable=YES
+use_localtime=YES
+xferlog_enable=YES
+connect_from_port_20=YES
+chroot_local_user=YES
+secure_chroot_dir=/var/run/vsftpd/empty
+pam_service_name=vsftpd
+virtual_use_local_privs=YES
+guest_enable=YES
+user_sub_token=$USER
+local_root=/home/vsftpd/$USER
+</code>
+Finally update the pam config (/etc/pam.d/vsftpd) with the lines below and remote or comment out existing lines in there.</p>
+
+<p><code>
+auth    required pam_pwdfile.so pwdfile /etc/vsftpd_users.conf
+account required pam_permit.so
+</code>
+Restart vsftpd and connect to your ftp server:</p>
+
+<p><code>
+/etc/init.d/vsftpd restart
+</code></p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Debian FTP archive for Etch - archive.debian.org]]></title>
+    <link href="http://linuxsysadminblog.com/2010/07/debian-ftp-archive-for-etch-archive-debian-org/"/>
+    <updated>2010-07-09T19:49:17+08:00</updated>
+    <id>http://linuxsysadminblog.com/2010/07/debian-ftp-archive-for-etch-archive-debian-org</id>
+    <content type="html"><![CDATA[<p><strong>Debian Etch</strong> has been discontinued for a while now, and in an ideal world everyone has upgraded to <strong>lenny</strong> a long time ago. Still, this is not always possible and there are some systems out there that are still running etch, some for a good reason, some just because their admins are lazy ;) . Recently we worked on a project with such a system that was still running etch, and the devs on the team told us  that all is working perfect but they are no longer able to install new packages using apt tools. Hmm... let's see.</p>
+
+<p>And indeed running apt update was giving a  <strong>404 error</strong>, as the etch files are no longer in the main ftp archive (on ftp.debian.org):</p>
+
+<p><code>
+apt-get update
+Ign http://ftp.debian.org etch Release.gpg
+Ign http://ftp.debian.org etch Release
+Ign http://ftp.debian.org etch/main Packages
+Ign http://ftp.debian.org etch/non-free Packages
+Ign http://ftp.debian.org etch/contrib Packages
+Err http://ftp.debian.org etch/main Packages
+404 Not Found [IP: 130.89.149.226 80]
+Err http://ftp.debian.org etch/non-free Packages
+404 Not Found [IP: 130.89.149.226 80]
+Err http://ftp.debian.org etch/contrib Packages
+404 Not Found [IP: 130.89.149.226 80]
+Fetched 4B in 1s (3B/s)
+Reading package lists... Done
+W: Couldn't stat source package list http://ftp.debian.org etch/main Packages (/var/lib/apt/lists/ftp.debian.org_debian_dists_etch_main_binary-i386_Packages) - stat (2 No such file or directory)
+W: Couldn't stat source package list http://ftp.debian.org etch/non-free Packages (/var/lib/apt/lists/ftp.debian.org_debian_dists_etch_non-free_binary-i386_Packages) - stat (2 No such file or directory)
+W: Couldn't stat source package list http://ftp.debian.org etch/contrib Packages (/var/lib/apt/lists/ftp.debian.org_debian_dists_etch_contrib_binary-i386_Packages) - stat (2 No such file or directory)
+W: You may want to run apt-get update to correct these problems
+</code></p>
+
+<p>and the apt sources line causing this error was (from <strong>/etc/apt/sources.list</strong>):
+<code>deb http://ftp.debian.org/debian/ etch main non-free contrib</code></p>
+
+<p>We could not upgrade the machine because of internal constrains, and this was not even the scope of our project, but we needed to install some new debian packages we had to point the apt sources to a new place and this is to the <strong>archive.debian.org</strong> that continues (and will continue) to have the etch files. Basically our new apt sources became:
+<code>deb http://archive.debian.org/debian/ etch main non-free contrib</code>
+and this made it possible to complete our project and install the needed libraries. A few weeks after we finished the project we were hired for a new project to perform the upgrade to lenny, but this is a different storry.</p>
+
+<p>I hope you found this post useful, in case for some reason you are <em>still running etch and need to find a proper etch mirror to install new softwares as needed</em>. Of course I would urge you to upgrade to lenny, or even to squeeze if possible, as etch is no longer supported, you have no longer security patches, etc.</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[cvs [checkout aborted]: absolute pathnames invalid for server]]></title>
+    <link href="http://linuxsysadminblog.com/2010/02/cvs-checkout-aborted-absolute-pathnames-invalid-for-server/"/>
+    <updated>2010-02-03T04:44:00+08:00</updated>
+    <id>http://linuxsysadminblog.com/2010/02/cvs-checkout-aborted-absolute-pathnames-invalid-for-server</id>
+    <content type="html"><![CDATA[<p>Absolute Path Error:
+<code>
+cvs [checkout aborted]: absolute pathnames invalid for server (specified `/path/drupalsite/')
+</code></p>
+
+<p>Ok, I got the error above when I performed Drupal CVS update on our Debian server (newly installed CVS 1.12.13).  The same command works on other server with older CVS installation.  The issue is the reference to local cvs directory where I used absolute path (-d /path/drupalsite/), which is a bug (security hole on client side) - it was fixed on newer CVS version to use relative path.</p>
+
+<p>Drupal Checkout Command:
+<code>
+cvs -z6 -d:pserver:anonymous:anonymous@cvs.drupal.org:/cvs/drupal co -r DRUPAL-6-15 -d /path/drupalsite/ drupal
+</code></p>
+
+<p>Use of Relative Path (sample)
+<code>
+cd /path
+cvs -z6 -d:pserver:anonymous:anonymous@cvs.drupal.org:/cvs/drupal co -r DRUPAL-6-15 -d drupalsite drupal
+</code></p>
+]]></content>
+  </entry>
+  
+</feed>

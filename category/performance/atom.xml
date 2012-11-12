@@ -1,0 +1,255 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: Performance | Linux Sysadmin Blog]]></title>
+  <link href="http://linuxsysadminblog.com/category/performance/atom.xml" rel="self"/>
+  <link href="http://linuxsysadminblog.com/"/>
+  <updated>2012-11-13T01:37:44+08:00</updated>
+  <id>http://linuxsysadminblog.com/</id>
+  <author>
+    <name><![CDATA[Promet OPS Team]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[A Day in the Life of Facebook Operations]]></title>
+    <link href="http://linuxsysadminblog.com/2010/09/a-day-in-the-life-of-facebook-operations/"/>
+    <updated>2010-09-30T14:23:51+08:00</updated>
+    <id>http://linuxsysadminblog.com/2010/09/a-day-in-the-life-of-facebook-operations</id>
+    <content type="html"><![CDATA[<p>Notes from the "A Day in the Life of Facebook Operations" presentation by Tom Cook, Systems Engineer, Facebook at <a href="http://omniti.com/surge/2010">Surge2010</a> conference.</p>
+
+<p>So far this is the most attended session.  Standing room only available only before it start.</p>
+
+<p>What does facebook sysadmins have to support?</p>
+
+<ul>
+<li><p>Monthly 700 million minutes of time spent on fb</p></li>
+<li><p>6billion pieces of content updated</p></li>
+<li><p>3 billion photos</p></li>
+<li><p>1 million connect implementations</p></li>
+<li><p>1/2 billion active users</p></li>
+</ul>
+
+
+<p>Infrastructure Growth</p>
+
+<ul>
+<li><p>fb reached a limit on leasing datacenter space</p></li>
+<li><p>fb is building their own http://www.facebook.com/prinevilledatacenter</p></li>
+<li><p>currently serving out of california and Virginia</p></li>
+</ul>
+
+
+<p>Initially a LAMP stack.  LB -> Web Servers -> Services/Memcached/Databases</p>
+
+<p>Originally facebook was a simple Apache PHP site.  When fb started hitting a limit on this, they started compiling PHP into C++ (<a href="http://developers.facebook.com/blog/post/358">HipHop</a> for PHP).</p>
+
+<p>FB claims to be the biggest memcache deployment in the world.  They server 300 Terbytes of memcached data out of memory.</p>
+
+<p><a href="http://www.facebook.com/MySQLatFacebook">MySQL improvement</a>s contributed back is flashcache.</p>
+
+<p>Services supported</p>
+
+<ul>
+<li><p>News Feed</p></li>
+<li><p>Search</p></li>
+<li><p>Cache</p></li>
+</ul>
+
+
+<p>Service implementation languages</p>
+
+<ul>
+<li><p>C++</p></li>
+<li><p>PHP - front end</p></li>
+<li><p>python</p></li>
+<li><p>Ruby</p></li>
+<li><p>Java</p></li>
+<li><p>erlang (chat room)</p></li>
+</ul>
+
+
+<p>How do they talk between these?  Json?  SOAP?  No, fb implemented Thrift - ligtwaith software framework for cross language development, a common glue behind all facebook systems.</p>
+
+<p>For Systems, what does fb have to worry about on a daily basis?</p>
+
+<ul>
+<li><p>deployment</p></li>
+<li><p>monitoring</p></li>
+<li><p>data manaement</p></li>
+<li><p>Core operating updates</p></li>
+</ul>
+
+
+<p>Facebook OS is.... CentOS!</p>
+
+<p>Systems Management</p>
+
+<ul>
+<li><p>Configuration Management</p></li>
+<li><p>CFengine for system management</p></li>
+<li><p>On Demand</p></li>
+</ul>
+
+
+<p>Deployments</p>
+
+<ul>
+<li><p>Web Push - new code gets deployed to fb at least once a day.  Its a coordinated push, everyone is aware, notification happens to dev team.  Everyone sites on IRC during the push.  It is undestood by engineers and the rest of the company</p>
+
+<ul>
+<li><p>push software built over on-demand control tools</p></li>
+<li><p>code distributed via internal BitTorrent swarm</p></li>
+<li><p>php gets compiled, the few hundred MB binary gets rapidly pushed bia bit torrent.</p></li>
+<li><p>it takes one minute to push across the entire network</p></li>
+</ul>
+</li>
+<li><p>Backend Deployments - only Engineering and Operations.  Engineers write, test and display</p>
+
+<ul>
+<li><p>Quickly make performance decisions</p></li>
+<li><p>Expose changes to subset of real traffic</p></li>
+<li><p>No 'commit and quit'</p></li>
+<li><p>Deeply involved in moving services to production</p></li>
+<li><p>Ops 'embeded' into engineering teams</p></li>
+</ul>
+</li>
+<li><p>Heavy Change logging - pin pointing code to every push and change</p></li>
+</ul>
+
+
+<p>Monitoring and Metrics of servers and performance at facebook</p>
+
+<ul>
+<li><p><a href="http://ganglia.sourceforge.net/">Ganglia</a> - aggregated metrics</p>
+
+<ul>
+<li><p>fast</p></li>
+<li><p>straightforward</p></li>
+<li><p>nested grids &amp; pools</p></li>
+<li><p>over 5 million monitored metrics</p></li>
+</ul>
+</li>
+<li><p>facebook inhouse monitoring system</p></li>
+</ul>
+
+
+<p>Monitoring - facebook still uses <a href="http://www.nagios.org/">Nagios</a>!</p>
+
+<p>To manage complexity and the number of alarms and systems monitoring the fb team uses aggregation.  Initially alarms were managed by email.</p>
+
+<p>Scribe - high performance logging application.  Initially used syslog.  Also used Hadoop and Hive.</p>
+
+<p>How does it work and gets done?</p>
+
+<ul>
+<li><p>clear delineation of dependencies and responsibilities</p></li>
+<li><p>Constant Failure</p></li>
+<li><p>Servers were the first line of defense, then started focusing on racks</p></li>
+<li><p>Now is focused on clusters.  Logical delineation based on function (web, db, feed, etc)</p></li>
+<li><p>Next stage is datacenters - what to do if a natural disaster strikes?</p></li>
+<li><p>Constant Communication - information is shared constantly.</p>
+
+<ul>
+<li><p>IRC</p></li>
+<li><p>lots of automated bots, get and set data</p></li>
+<li><p>internal news updates</p></li>
+<li><p>"Headers" on internal tools</p></li>
+<li><p>Change log/feeds</p></li>
+</ul>
+</li>
+<li><p>Small teams</p></li>
+</ul>
+
+
+<p>Interesting fact - each fb server gets an update on average every eight minutes.</p>
+
+<p>Busiest day for FB is day after halloween :)</p>
+
+<p>URLS to check out:</p>
+
+<p><a href="http://www.facebook.com/Engineering">facebook.com/engineering</a></p>
+
+<p><a href="http://developers.facebook.com/opensource/">facebook.com/opensource</a></p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Drupal Performance talk video from Drupal Con 2010]]></title>
+    <link href="http://linuxsysadminblog.com/2010/07/drupal-performance-talk-video-from-drupal-con-2010/"/>
+    <updated>2010-07-29T23:01:17+08:00</updated>
+    <id>http://linuxsysadminblog.com/2010/07/drupal-performance-talk-video-from-drupal-con-2010</id>
+    <content type="html"><![CDATA[<p>I have already mentioned that <a href="http://linuxsysadminblog.com/2010/04/google-will-use-site-performance-and-page-load-speed-in-serp-ranking-sysadmin-seo-here-we-come/">google will start penalizing your site</a> in search if it is not fast enough.  I have recently given a presentation at Drupal Con about Drupal performance and page speed.  Below is a video of our session - its currently the fifth most watched session from the conference according to <a href="http://www.archive.org/search.php?query=DrupalCon%20SF%202010&amp;sort=-downloads">archive.org</a>.  Alternatively, there are several different formats <a href="http://www.archive.org/details/MakeDrupalRunFast-IncreasePageLoadSpeed">there as well</a>.</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Google will use site performance and page load speed in SERP ranking - sysadmin SEO here we come]]></title>
+    <link href="http://linuxsysadminblog.com/2010/04/google-will-use-site-performance-and-page-load-speed-in-serp-ranking-sysadmin-seo-here-we-come/"/>
+    <updated>2010-04-13T23:48:56+08:00</updated>
+    <id>http://linuxsysadminblog.com/2010/04/google-will-use-site-performance-and-page-load-speed-in-serp-ranking-sysadmin-seo-here-we-come</id>
+    <content type="html"><![CDATA[<p>Page Load speed just became a lot more important - Google announced recently that it will use <a href="http://googlewebmastercentral.blogspot.com/2010/04/using-site-speed-in-web-search-ranking.html">page speed in its SERP</a> rankings.  Here is a quote that will make the SEO and marketing folks knock on sysadmin doors:</p>
+
+<blockquote><p>We encourage you to start looking at your site's speed (the tools above provide a great starting point) — not only to improve your ranking in search engines, but also to improve everyone's experience on the Internet.</p></blockquote>
+
+<p>The post lists a number of tools everyone should be using already, such as <a href="http://developer.yahoo.com/yslow/">YSlow</a>, google's own <a href="http://code.google.com/speed/page-speed/">PageSpeed</a>, <a href="http://www.webpagetest.org/">online speed waterfall diagram</a> tool and webmaster tools.  Webmaster tools recently added a beta feature which provides data about your sites speed relative to other sites on the internet.</p>
+
+<p>Here is a sample report:</p>
+
+<p><a href="http://linuxsysadminblog.com/images/2010/04/chart.png"><img src="http://linuxsysadminblog.com/images/2010/04/chart.png" alt="google webmaster tools page load speed chart" /></a></p>
+
+<blockquote><p>Performance overview
+On average, pages in your site take 6.3 seconds to load (updated on Apr 11, 2010). This is slower than 83% of sites. These estimates are of medium accuracy (between 100 and 1000 data points). The chart below shows how your site's average page load time has changed over the last few months. For your reference, it also shows the 20th percentile value across all sites, separating slow and fast load times.</p></blockquote>
+
+<p>Linus System admin blog will have a series on page speed improvement.  Stay tuned!</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Enable/Disable APC on virtual host level]]></title>
+    <link href="http://linuxsysadminblog.com/2010/03/enabledisable-apc-on-virtual-host-level/"/>
+    <updated>2010-03-18T16:53:29+08:00</updated>
+    <id>http://linuxsysadminblog.com/2010/03/enabledisable-apc-on-virtual-host-level</id>
+    <content type="html"><![CDATA[<p><a href="http://pecl.php.net/package/APC"><strong>APC</strong></a> (Alternative PHP Cache) is a free, open, and robust framework for caching and optimizing PHP intermediate code. <strong>APC</strong> is a great tool to speed up a php driven site and I can't even think of a big site running on a php framework without an <em>opcode cache</em> (other good choices are <strong>eaccelerator</strong> or <strong>xcache</strong>). Why would not everyone want to use this? The reason why this is not enabled by default everywhere is because in certain situations it can break things. Most peoples will not see any problems, but still, if you run a server with many clients sharing the same apache service this might be a problem (as the apc module loading it is a server-wide config). This post will show how we can use APC globally and disable it for some vhosts (that might have a problem with using APC) or the reverse to just use it one a special vhost that might need this.</p>
+
+<p>I'll assume that you have installed apc already, if this is not the case this will probably be something as simple as running
+<code>pecl install apc</code>
+or downloading the archive from pecl and running:
+<code>phpize; ./configure; make; make install</code></p>
+
+<p>The APC extension needs to be enabled either in <strong>php.ini</strong> or in one included file with a line like this:
+<code>extension=apc.so</code>
+there are many other parameters that apc can be fine tuned (see the official doc for more info), but without any other change, just with this line apc will be enabled on all the vhosts on the server.</p>
+
+<p><strong>Disabling some vhosts from using APC</strong>
+- if we want to disable APC for a particular vhost we just have to add to the vhost config or to .htaccess:
+<code>php_flag apc.cache_by_default Off</code></p>
+
+<p><strong>Enabling APC only on some vhosts</strong>
+- if we want to have APC disabled by default globally we will have in php.ini:</p>
+
+<pre><code>&lt;code&gt;extension=apc.so
+[apc]
+apc.cache_by_default=0 # disable by default
+... other apc settings...&lt;/code&gt;
+</code></pre>
+
+<p>and we will enable APC for the particular vhost config or using .htaccess using:
+<code>php_flag apc.cache_by_default On</code></p>
+
+<p>Hopefully you found this post useful and this will give you a reason to use APC with more confidence knowing that you have the granularity to disable/enable it as needed in a shared environment.</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Google to offer free DNS service]]></title>
+    <link href="http://linuxsysadminblog.com/2009/12/google-to-offer-free-dns-service/"/>
+    <updated>2009-12-03T21:55:05+08:00</updated>
+    <id>http://linuxsysadminblog.com/2009/12/google-to-offer-free-dns-service</id>
+    <content type="html"><![CDATA[
+]]></content>
+  </entry>
+  
+</feed>

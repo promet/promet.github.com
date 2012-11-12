@@ -1,0 +1,940 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Linux Sysadmin Blog</title>
+  <meta name="author" content="Promet OPS Team">
+
+  
+  <meta name="description" content="The ASA 5505 is the smallest (and cheapest) solution from the current Cisco hardware security appliances. Still, if we have the proper software &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://linuxsysadminblog.com/blog/page/15/">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="/javascripts/ender.js"></script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <link href="/atom.xml" rel="alternate" title="Linux Sysadmin Blog" type="application/atom+xml">
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+<!-- Google Form for Contact Page -->
+<!-- jQuery -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+<script type="text/javascript">
+    // Avoid conflict with ender.js.
+jQuery.noConflict();
+</script>
+<!-- jQuery Form Plugin -->
+<script src="http://malsup.github.com/jquery.form.js"></script>
+<script src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.9/jquery.validate.min.js"></script> 
+<script src="/javascripts/google_form.js"></script>
+<!-- Google Form for Contact Page End here -->
+
+
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-120251-38']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">Linux Sysadmin Blog</a></h1>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:linuxsysadminblog.com" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/our-team">Our Team</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+  <li><a href="/blog/about">About</a></li>
+  <li><a href="/blog/contact">Contact</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div class="blog-index">
+  
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/2009/02/cisco-asa-5505-activestandby-failover-configuration/">Cisco ASA 5505: Active/Standby Failover Configuration</a></h1>
+    
+    
+      <p class="meta">
+        
+  
+
+
+<span class="byline author vcard">Posted by <span class="fn"><a href="/blog/our-team/marius-ducea.html">Marius Ducea</a></span></span>
+
+ - 
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2009-02-17T06:35:57+08:00" pubdate data-updated="true">Feb 17<span>th</span>, 2009</time>
+        
+         | <a href="/2009/02/cisco-asa-5505-activestandby-failover-configuration/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>The <strong>ASA 5505</strong> is the smallest (and cheapest) solution from the current Cisco hardware security appliances. Still, if we have the proper software license (like <em>Security Plus</em> for example) we can use the ASA5505 to setup rather complex solutions. This post will show how we can setup a pair of <strong>ASA5505 in failover configuration</strong>, solution that can be very useful in a small office where we want to achieve a high availability and we can&#8217;t tolerate a failure of our frontend firewall.</p>
+
+<h3>Prerequisites</h3>
+
+<p>Before even starting, let&#8217;s check that our ASA5505&#8217;s are running the appropriate software license. For example the sh run command will output something like this:
+<code>sh ver
+...
+Licensed features for this platform:
+Maximum Physical Interfaces  : 8
+VLANs                        : 20, DMZ Unrestricted
+Inside Hosts                 : Unlimited
+**Failover                   : Active/Standby**
+VPN-DES                      : Enabled
+VPN-3DES-AES                 : Enabled
+VPN Peers                    : 25
+WebVPN Peers                 : 2
+Dual ISPs                    : Enabled
+VLAN Trunk Ports             : 8
+AnyConnect for Mobile        : Disabled
+AnyConnect for Linksys phone : Disabled
+Advanced Endpoint Assessment : Disabled
+UC Proxy Sessions            : 2
+This platform has an ASA 5505 Security Plus license.
+.</code>
+You should look at the Failover feature and you should have &#8221;<strong>Active/Standby</strong>&#8221;. If this outputs <em>disabled</em>, you will have to order and install a software license upgrade from Cisco in order to be able to use the ASA&#8217;s in failover.</p>
+
+<p>Cisco (as always) has a very complex <a href="http://www.cisco.com/en/US/docs/security/asa/asa72/configuration/guide/failover.html#wp1064158">documentation</a> on how you can achieve this. Still, it is hard to digest, as they try to cover all possible devices on the same page (even the obsolete pix500); even more the ASA5505 has some particularities compared with the rest of the ASA 5500 range of products and <strong>this is not very clearly explained</strong>. <em>Hopefully this post will be more useful and simpler to follow.</em></p>
+
+<p>First we need to understand some limitations of our devices. The ASA5505 can <strong>only perform Active/Standby</strong> failover and <strong>not Active/Active</strong>. If you need that, you will have to look at a higher range device. Also they can only perform <strong>LAN-Based Failover</strong> (as opposed to old pixes that can use cable based failover) and they <strong>don&#8217;t support Stateful Failover</strong> (meaning all active connections will be lost after a failover event). Also both units must have the same hardware, software configuration, and proper license and run in same mode (single or multiple, transparent or routed).</p>
+
+<h3>Configuring the Primary Unit</h3>
+
+<p>For each of the IPs assigned to the interfaces of the ASA we will need to <strong>allocate a secondary IP</strong> from the same network range; this will be used as the IP of the standby unit, while the main IPs will always be used by the primary (active) unit and will be normally used by the clients (as default gateways for ex). The first step is to <strong>configure the active and standby IP addresses for each data interface</strong>; the cisco documentation is confusing here and it is not clear that on the <strong>ASA5505 </strong>this is done for <strong>each of the used vlans, and not real interfaces</strong>:
+<code>conf t
+(config)#interface Vlan1
+(config-if)#ip address active_addr netmask standby standby_addr</code>
+for ex:
+<code>(config-if)#ip address 192.168.0.1 255.255.255.0 standby 192.168.0.2</code></p>
+
+<p>Once we have defined all standby IPs we can move forward&#8230;
+You will also need to define <strong>one interface that will be used for failover</strong>. You can either cross-connect this between the 2 ASAs or you can use a switch with a dedicated vlan for this. The later one is preferred as it will more accurately detect if one ASA is down. Again in the documentation this is not clear how to do it on the ASA5505 and it discusses about <em>real interfaces</em>, while on the <strong>ASA5505 we have to use vlans</strong>.</p>
+
+<p><strong>The trick is to create a new vlan and don&#8217;t assign any ip on the vlan inteface:</strong>
+<code>interface Vlan32
+description LAN Failover Interface
+no shutdown</code>
+the ip will be assigned by the failover commands;
+Finally <strong>enable failover</strong>:
+<code>failover
+failover lan unit primary
+failover lan interface failover Vlan32
+failover interface ip failover 192.168.255.1 255.255.255.0 standby 192.168.255.2</code>
+(where you will use one unused ip range for the failover ips).</p>
+
+<p>Save the running config: <strong>copy running-config startup-config</strong></p>
+
+<h3>Configuring the Secondary Unit</h3>
+
+<p>The configuration of the secondary, standby unit is very simple as it needs <strong>only the failover interface configuration</strong>.  The secondary unit requires these commands to initially communicate with the primary unit, and get its configuration from the active unit.</p>
+
+<p>As with the main ASA we have to define the <strong>vlan that will be used for failover</strong> first:
+<code>interface Vlan32
+description LAN Failover Interface
+no shutdown</code></p>
+
+<p>And next we just have to enable failover and set this unit as secondary:
+<code>failover
+failover lan unit secondary
+failover lan interface failover Vlan32
+failover interface ip failover 192.168.255.1 255.255.255.0 standby 192.168.255.2</code></p>
+
+<p>After this, the active unit sends the configuration in running memory to the standby unit. As the configuration synchronizes, the messages &#8220;Beginning configuration replication: Sending to mate&#8221; and &#8220;End Configuration Replication to mate&#8221; appear on the active unit console.</p>
+
+<h3>Verifying the Failover Configuration</h3>
+
+<p>The command <strong>show failover</strong> can be used to show the status of the failover operation; the output on the active device will look similar to:
+<code>sh failover
+Failover On
+Failover unit Primary
+Failover LAN Interface: failover Vlan32 (up)
+Unit Poll frequency 1 seconds, holdtime 15 seconds
+Interface Poll frequency 5 seconds, holdtime 25 seconds
+Interface Policy 1
+Monitored Interfaces 5 of 250 maximum
+Version: Ours 8.0(4), Mate 8.0(4)
+Last Failover at: 02:28:31 CST Jan 23 2009
+This host: Primary - Active
+Active time: 2166923 (sec)
+slot 0: ASA5505 hw/sw rev (1.0/8.0(4)) status (Up Sys)
+Interface inside (10.10.10.1): Normal
+Interface outside (192.168.0.1): Normal
+slot 1: empty
+Other host: Secondary - Standby Ready
+Active time: 378 (sec)
+slot 0: ASA5505 hw/sw rev (1.0/8.0(4)) status (Up Sys)
+Interface inside (10.10.10.2): Normal
+Interface outside (192.168.0.2): Normal
+slot 1: empty</code></p>
+
+<p>Finally, you will probably want to test the failover functionality and maybe tune the triggers of the failover, but maybe we will talk about this in a future post.
+<em>I hope you found this post useful and helped to explain better the steps needed to configure the Active/Standby Failover on the ASA5505.</em></p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/2009/02/howto-recover-from-a-corrupt-rpm-database/">HowTo Recover From a Corrupt Rpm Database</a></h1>
+    
+    
+      <p class="meta">
+        
+  
+
+
+<span class="byline author vcard">Posted by <span class="fn"><a href="/blog/our-team/marius-ducea.html">Marius Ducea</a></span></span>
+
+ - 
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2009-02-10T06:27:13+08:00" pubdate data-updated="true">Feb 10<span>th</span>, 2009</time>
+        
+         | <a href="/2009/02/howto-recover-from-a-corrupt-rpm-database/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>RedHat based systems (rhel/fedora/centos) use rpm/yum to install and upgrade packages. If the <strong>rpm database gets corrupted</strong> in some way it will break all the functionality of rpm and other tools that rely on it like yum for example. We have seen this either showing some errors on the console, or most frequently just by hanging and not performing any rpm related operations (even simple view operations like rpm -qa, or yum update, etc.). You will have to kill the processes and then find a way to rebuild your rpm database. <em>This post will show how to rebuild your rpm database and bring back to life your rpm command.</em></p>
+
+<p>First we need to <strong>backup our existing database</strong> (just in case); this is located in <strong>/var/lib/rpm</strong> and depending on your distribution the content of the folder might look like this:
+<code>/var/lib/rpm
+-rw-r--r--  1 rpm  rpm   5464064 Feb  9 04:17 Basenames
+-rw-r--r--  1 rpm  rpm     12288 Feb  3 05:03 Conflictname
+-rw-r--r--  1 root root        0 Aug 25 02:48 __db.000
+-rw-r--r--  1 root root    24576 Aug 14 04:02 __db.001
+-rw-r--r--  1 root root  1318912 Aug 14 04:02 __db.002
+-rw-r--r--  1 root root   450560 Aug 14 04:02 __db.003
+-rw-r--r--  1 rpm  rpm   1982464 Feb  9 04:17 Dirnames
+-rw-r--r--  1 rpm  rpm   5259264 Feb  9 04:17 Filemd5s
+-rw-r--r--  1 rpm  rpm     24576 Feb  9 04:17 Group
+-rw-r--r--  1 rpm  rpm     28672 Feb  9 04:17 Installtid
+-rw-r--r--  1 rpm  rpm     45056 Feb  9 04:17 Name
+-rw-r--r--  1 rpm  rpm  31707136 Feb  9 04:17 Packages
+-rw-r--r--  1 rpm  rpm    339968 Feb  9 04:17 Providename
+-rw-r--r--  1 rpm  rpm    106496 Feb  9 04:17 Provideversion
+-rw-r--r--  1 rpm  rpm     12288 Dec  2 08:45 Pubkeys
+-rw-r--r--  1 rpm  rpm    253952 Feb  9 04:17 Requirename
+-rw-r--r--  1 rpm  rpm    167936 Feb  9 04:17 Requireversion
+-rw-r--r--  1 rpm  rpm     86016 Feb  9 04:17 Sha1header
+-rw-r--r--  1 rpm  rpm     49152 Feb  9 04:17 Sigmd5
+-rw-r--r--  1 rpm  rpm     12288 Jan 15 21:09 Triggername</code></p>
+
+<p>Let&#8217;s just <strong>backup </strong>all the /var/lib/rpm folder to have its original state:
+<code>cd /var/lib
+tar czvf rpmdb.tar.gz rpm</code></p>
+
+<p>Finally let&#8217;s <strong>rebuild </strong>the rpm database:
+<code>cd /var/lib/rpm
+rm -f __db*
+rpm --rebuilddb -vv</code></p>
+
+<p>After this, your rpm commands should be working again. (just try a <em>yum update</em> or a rpm query like: <em>rpm -qa php</em>). If this will not fix it try to see what error messages you got from the above commands or from your system logs.</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/2009/02/upgrade-to-java-se-6-update-12-on-fedora-10/">Upgrade to Java SE 6 Update 12 on Fedora 10</a></h1>
+    
+    
+      <p class="meta">
+        
+  
+
+
+<span class="byline author vcard">Posted by <span class="fn"><a href="/blog/our-team/max-veprinsky.html">Max Veprinsky</a></span></span>
+
+ - 
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2009-02-09T17:10:53+08:00" pubdate data-updated="true">Feb 9<span>th</span>, 2009</time>
+        
+         | <a href="/2009/02/upgrade-to-java-se-6-update-12-on-fedora-10/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>After our ASA units were updated to the latest version of ASDM my <strong>Java</strong> client would no longer connect to ASDM. An upgrade to the latest version of Java was in order. Since fedora yum repository does not yet offer the latest version of Java I downloaded the latest rpm variant of <strong>JDK</strong> from http://java.sun.com/javase/downloads/index.jsp</p>
+
+<p>The install steps are:</p>
+
+<p>Grand executable permission to installer file</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>chmod +x jdk-6u12-linux-i586-rpm.bin</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Run installer file</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>./jdk-6u12-linux-i586-rpm.bin</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Rename symbolic links pointing to old java programs</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>cd /etc/alternatives
+</span><span class='line'>mv java java_old
+</span><span class='line'>mv javaws java_old
+</span><span class='line'>mv keytool keytool_old</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Create new symbolic links</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>cd /etc/alternatives
+</span><span class='line'>ln -s /usr/java/latest/bin/java java
+</span><span class='line'>ln -s /usr/java/latest/bin/javaws javaws
+</span><span class='line'>ln -s /usr/java/latest/bin/keytool keytool</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Verify that new java version is installed</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>javaws
+</span><span class='line'>Java(TM) Web Start 1.6.0_12 
+</span><span class='line'>Usage: javaws [run-options]   
+</span><span class='line'>  javaws [control-options]</span></code></pre></td></tr></table></div></figure>
+
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/2009/02/extending-the-slow-query-log/">Extending the Slow Query Log</a></h1>
+    
+    
+      <p class="meta">
+        
+  
+
+
+<span class="byline author vcard">Posted by <span class="fn"><a href="/blog/our-team/pim-van-der-wal.html">Pim Van der Wal</a></span></span>
+
+ - 
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2009-02-04T15:54:30+08:00" pubdate data-updated="true">Feb 4<span>th</span>, 2009</time>
+        
+         | <a href="/2009/02/extending-the-slow-query-log/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>Andy posted some very good links recently to video&#8217;s on how to optimize your web site. Although I spend more time optimizing the database you always have to go where the actual performance is lost. For MySQL the place to check for performance issues is the slow query log which I have mentioned in earlier posts. The limitation of this log is that a query has to take at least one second to appear in this log. This skips over queries that are executed thousands if not millions of times and which take less than a second. These queries might have just as much of a performance impact as queries that last several seconds each.</p>
+
+<p>In the article below it shows how to patch the slow query log to track queries that last less than a second. Obviously you don&#8217;t want to have this running continually in production because the amount of logging would be enormous but in test environments or for a limited time in production this can be very useful. Be prepared to analyse some huge amounts of data though.</p>
+
+<p><a href="http://www.mysqlperformanceblog.com/2006/09/06/slow-query-log-analyzes-tools/">http://www.mysqlperformanceblog.com/2006/09/06/slow-query-log-analyzes-tools/</a></p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/2009/02/cisco-asa-5505-asdm-error-unconnected-sockets-not-implemented/">Cisco ASA 5505 ASDM Error: Unconnected Sockets Not Implemented</a></h1>
+    
+    
+      <p class="meta">
+        
+  
+
+
+<span class="byline author vcard">Posted by <span class="fn"><a href="/blog/our-team/marius-ducea.html">Marius Ducea</a></span></span>
+
+ - 
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2009-02-03T07:53:51+08:00" pubdate data-updated="true">Feb 3<span>rd</span>, 2009</time>
+        
+         | <a href="/2009/02/cisco-asa-5505-asdm-error-unconnected-sockets-not-implemented/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>If you run a version of <strong>Java JRE newer than v6 Update 10</strong> (latest at this time is <em>V6 Update 12</em>) and see this error when trying to connect to a Cisco ASA ASDM interface:
+<code>
+ASDM is unable to continue loading. Click OK to exit from ASDM
+Unconnected sockets not implemented.
+</code>
+then you are probably running an older ASA software (6.1.5 released on 09-OCT-2008 and older ones have this issue) and you need to upgrade in order to fix this issue. Any version newer than <strong>6.1.5.51</strong> (that is the latest one available at this time) will work as expected. This version was released by Cisco to fix this issue on 16-DEC-2008.</p>
+
+<p>The upgrade is simple and you can use my <a href="http://linuxsysadminblog.com/2009/01/howto-upgrade-asdm-using-cli-on-cisco-asa5500/">step by step guide</a> for this; just keep in mind you will have to reboot do activate the upgrade. After this, your ASDM should be working again.</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/2009/02/adbard-dont-die/">AdBard - Dont Die!</a></h1>
+    
+    
+      <p class="meta">
+        
+  
+
+
+<span class="byline author vcard">Posted by <span class="fn"><a href="/blog/our-team/andrew-kucharski.html">Andrew Kucharski</a></span></span>
+
+ - 
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2009-02-02T14:37:49+08:00" pubdate data-updated="true">Feb 2<span>nd</span>, 2009</time>
+        
+         | <a href="/2009/02/adbard-dont-die/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>So a couple of weeks ago I touted the <a href="http://adbard.net/">AdBard</a> folks and their FLOSS oriented ad network system.  Today we received the following email from them.  What is worse, is that the ads have already stopped appearing on the site.</p>
+
+<p>It looks like they will be teaming up with  <a href="http://www.fsf.org/">Free Software Foundation</a>.</p>
+
+<blockquote><p>This email details your current earnings from your participation in the Ad Bard Network.  We are also excited to announce major changes to our network, including general improvements and the direct participation of the Free Software Foundation.  However, our planned changes require that we temporarily suspend the entire network for the month of February.  As a member you will be receiving payment for your outstanding earnings balances, and then if you elect to participate in our newly structured network you will be required to sign up again.  We apologize for the inconvenience of this, but hope that it helps achieve the end goal of increasing the earnings of member websites and improving the desirability of the network for advertisers.</p>
+
+<h2>Statistics:</h2>
+
+<p>LInux System Admin Blog average ad impressions:
+Hourly:           nn
+Daily:           nnn
+Monthly:      nnnnn</p>
+
+<p>Outstanding earnings: $nnn</p>
+
+<p>Due to the upgrade in process, please remove the JavaScript snippet from your website at this time.  No further advertisements will be displayed through this snippet, and before the end of February 2009 the handling for this javascript will be disabled and could result in an error on your website.  If you will require more than 2 weeks to remove the snippet, please send us an email and we will work with you as necessary.  A new snippet will be provided for the new website.</p>
+
+<p>We will be issuing payments for all outstanding earnings through PayPal or via a check.  If your payment information has changed, please respond
+to this email with updated details.  Please be sure to include your Ad Bard username in your email.</p>
+
+<p>If you have converted earnings into unused coupons, please reply to this email with details so that we are sure to properly credit you
+back.</p>
+
+<p>Details about our enhanced network will be posted to <a href="http://adbard.net/">http://adbard.net/</a> over the upcoming month.  You will also be receiving an update via email when it is possible to sign up for the new network.  A few of the planned changes include a limited number of advertising slots, the ability to participate in approving which FLOSS-appropriate advertisements are accepted, and improvements to our payment algorithms.
+The Free Software Foundation is actively advising us in this effort, and will help campaign for the new network once it goes live.</p>
+
+<p>Thank you for your patience and participation in our evolving network. We hope that you like the changes that will be happening this month, and
+that you will continue to participate.</p>
+
+<p>Cheers, -Jeremy</p>
+
+<p>&#8211;
+Jeremy Andrews
+877-875-8824 x100
+Tag1 Consulting, Inc.
+<a href="http://tag1consulting.com/"> </a></p></blockquote>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/2009/01/web-site-performance-sys-admins-may-be-of-little-help-call-the-designer/">Web Site Slow? To Improve Performance - Sys Admins May Be of Little Help - Call the Designer</a></h1>
+    
+    
+      <p class="meta">
+        
+  
+
+
+<span class="byline author vcard">Posted by <span class="fn"><a href="/blog/our-team/andrew-kucharski.html">Andrew Kucharski</a></span></span>
+
+ - 
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2009-01-30T01:08:24+08:00" pubdate data-updated="true">Jan 30<span>th</span>, 2009</time>
+        
+         | <a href="/2009/01/web-site-performance-sys-admins-may-be-of-little-help-call-the-designer/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>Here are two videos by Steve Souders, former chief performance Yahoo, currently at Google.  He determined that 95% of the wait on loading the Yahoo page is after the initial apache response is sent to the browser.  Doing more research he determined that this is about a 80/20 rule on most popular web sites.  It has enlightened me as to where to look to determine why web sites are slow. </p>
+
+<p>Although this video has been around for a while, its a must for system admins who bang their heads at trying to squeeze performance  out of the 10 to 20 percent of the user wait time they are responsible for.  </p>
+
+<p>Steve&#8217;s Performance golden rule:</p>
+
+<p><strong>80% to 90% of the end-user response time is spent on the front end.  Start there.</strong></p>
+
+<p>Here is the older Yahoo video </p>
+
+<p><a href="http://video.yahoo.com/watch/1040890/3880720">Steve Souders: &#8220;High Performance Web Sites: 14 Rules for Faster Pages&#8221;</a> @ <a href="http://video.yahoo.com">Yahoo! Video</a></p>
+
+<p>Followed by the more recent Google talk</p>
+
+<p>Check out Yslow firefox plug in as well as the <a href="http://www.alphaworks.ibm.com/tech/pagedetailer">IBM Page Detailer</a> - its the product he uses to map out the front end work of the browser.  Great tools to start thinking about why your website is slow or why pages are loading slow.</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/2009/01/enforce-ssl-for-google-services/">Enforce SSL for Google Services</a></h1>
+    
+    
+      <p class="meta">
+        
+  
+
+
+<span class="byline author vcard">Posted by <span class="fn"><a href="/blog/our-team/max-veprinsky.html">Max Veprinsky</a></span></span>
+
+ - 
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2009-01-27T16:30:45+08:00" pubdate data-updated="true">Jan 27<span>th</span>, 2009</time>
+        
+         | <a href="/2009/01/enforce-ssl-for-google-services/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>Most Google services are now avaible over <strong>encrypted</strong> ssl connections. <strong>Google Apps</strong> now offers the option to enforce ssl for most of it&#8217;s services. Here is the overview:</p>
+
+<p><code>
+Email - Yes.
+Calendar - Yes.
+Docs - Yes.
+Sites - Yes.
+Chat - Yes. SSL supports Chat in Gmail. The Google Talk Client is always over a secure connection (TLS).
+Video - Not available.
+Start Page - Not available. This includes start page gadgets for email, chat, calendar, and docs account.
+</code></p>
+
+<p>To enable SSL enforcement in Google Apps services login as an Administrative user for your Google Apps hosted domain, click on <em>Domain Settings</em> tab and check <em>SSL</em> checkbox.</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/2009/01/google-cutting-back-on-apps-services/">Google Cutting Back on Apps Services.</a></h1>
+    
+    
+      <p class="meta">
+        
+  
+
+
+<span class="byline author vcard">Posted by <span class="fn"><a href="/blog/our-team/max-veprinsky.html">Max Veprinsky</a></span></span>
+
+ - 
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2009-01-27T16:13:01+08:00" pubdate data-updated="true">Jan 27<span>th</span>, 2009</time>
+        
+         | <a href="/2009/01/google-cutting-back-on-apps-services/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>The good days of having a customized start page for <strong>Google Apps</strong> are over. As of December 1st 2008 Google has ceased offering the <strong>Start Page</strong> Service to all new Google Apps customers.  This isn&#8217;t the only cut back Google has made as now only 100 <strong>e-mail  accounts</strong> are available with the free <strong>Standard</strong> version of Google Apps. I&#8217;m predicting that soon Google will make the Documents service only available to new paid customers of the Google Apps Suite.</p>
+
+<p>Better stock up on those free and wonderful Google hosted services while they are still available.</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/2009/01/xvidencopts-is-not-an-mencoder-option/">Xvidencopts Is Not an MEncoder Option</a></h1>
+    
+    
+      <p class="meta">
+        
+  
+
+
+<span class="byline author vcard">Posted by <span class="fn"><a href="/blog/our-team/gerold-mercadero.html">Gerold Mercadero</a></span></span>
+
+ - 
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2009-01-27T08:18:41+08:00" pubdate data-updated="true">Jan 27<span>th</span>, 2009</time>
+        
+         | <a href="/2009/01/xvidencopts-is-not-an-mencoder-option/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>If you get this error you probably compiled mencoder and mplayer without Xvid support.</p>
+
+<p>To fix this error you need to re-compile mencoder and add Xvid codec support.  Please refer to this guide <a href="http://linuxsysadminblog.com/2009/01/compile-mplayermencoder-with-xvid-and-h264-codec-support/"><strong>Compile Mencoder and Mplayer with Xvid and H264 Support</strong></a></p>
+</div>
+  
+  
+
+
+    </article>
+  
+  <div class="pagination">
+    
+      <a class="prev" href="/blog/page/16/">&larr; Older</a>
+    
+    <a href="/blog/archives">Blog Archives</a>
+    
+    <a class="next" href="/blog/page/14/">Newer &rarr;</a>
+    
+  </div>
+</div>
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/2012/11/howto-bulk-import-dns-zones-to-softlayer-dns-using-cpanel/">HowTo: Bulk Import DNS Zones to Softlayer DNS using Cpanel</a>
+      </li>
+    
+      <li class="post">
+        <a href="/2012/08/integrate-sendgrid-with-redmine/">Integrate Sendgrid with Redmine</a>
+      </li>
+    
+      <li class="post">
+        <a href="/2012/07/rsback-task-x-is-locked-and-cannot-be-executed/">rsback: task x is locked and cannot be executed</a>
+      </li>
+    
+      <li class="post">
+        <a href="/2012/06/restore-xen-vm-from-lvm-snapshot-backups/">Restore Xen VM from LVM Snapshot Backups</a>
+      </li>
+    
+      <li class="post">
+        <a href="/2012/06/debian-6-backup-xen-with-lvm-and-rsnapshot/">Debian 6: Backup Xen with LVM and Rsnapshot</a>
+      </li>
+    
+  </ul>
+</section>
+
+<section>
+  <h1>GitHub Repos</h1>
+  <ul id="gh_repos">
+    <li class="loading">Status updating&#8230;</li>
+  </ul>
+  
+  <a href="https://github.com/promet">@promet</a> on GitHub
+  
+  <script type="text/javascript">
+    $.domReady(function(){
+        if (!window.jXHR){
+            var jxhr = document.createElement('script');
+            jxhr.type = 'text/javascript';
+            jxhr.src = '/javascripts/libs/jXHR.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(jxhr, s);
+        }
+
+        github.showRepos({
+            user: 'promet',
+            count: 0,
+            skip_forks: true,
+            target: '#gh_repos'
+        });
+    });
+  </script>
+  <script src="/javascripts/github.js" type="text/javascript"> </script>
+</section>
+
+
+<section>
+  <h1>Latest Tweets</h1>
+  <ul id="tweets">
+    <li class="loading">Status updating&#8230;</li>
+  </ul>
+  <script type="text/javascript">
+    $.domReady(function(){
+      getTwitterFeed("linuxsysadmnblg", 4, false);
+    });
+  </script>
+  <script src="/javascripts/twitter.js" type="text/javascript"> </script>
+  
+    <a href="http://twitter.com/linuxsysadmnblg" class="twitter-follow-button" data-show-count="false">Follow @linuxsysadmnblg</a>
+  
+</section>
+
+
+
+
+
+  
+</aside>
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2012 - Promet OPS Team -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'linuxsysadminblog';
+      
+        
+        var disqus_script = 'count.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'http://' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) {return;}
+  js = d.createElement(s); js.id = id;
+  js.src = "//connect.facebook.net/en_US/all.js#appId=212934732101925&xfbml=1";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = 'http://platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>

@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: Replication | Linux Sysadmin Blog]]></title>
+  <link href="http://linuxsysadminblog.com/category/replication/atom.xml" rel="self"/>
+  <link href="http://linuxsysadminblog.com/"/>
+  <updated>2012-11-13T01:37:44+08:00</updated>
+  <id>http://linuxsysadminblog.com/</id>
+  <author>
+    <name><![CDATA[Promet OPS Team]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Syntax error on MySQL replication slave (error 1064)]]></title>
+    <link href="http://linuxsysadminblog.com/2009/07/syntax-error-on-mysql-replication-slave-error-1064/"/>
+    <updated>2009-07-14T20:52:38+08:00</updated>
+    <id>http://linuxsysadminblog.com/2009/07/syntax-error-on-mysql-replication-slave-error-1064</id>
+    <content type="html"><![CDATA[<p>Here's an interesting one, what if you have a MySQL replication setup and the slave stops replicating with a syntax error? The slave should be executing the exact same commands as the master, right? Well, as it turns out, yes and no. There is a bug in MySQL that has been fixed in 5.0.56 according to the <a href="http://bugs.mysql.com/bug.php?id=26489">bug report</a>. It's a long story and it's worth the read but what happens is that a timeout in the network connection between the master and the slave can cause the master to resend part of packet that it sent before. The slave handled the previous packet correctly so it's not expecting a resend and as a result it starts writing some garbage to the relay log (which is where it stored the statements it will execute). The SQL command gets mangled in the process and when the slave tries to execute it, voila, a syntax error.</p>
+
+<p>To fix this you can use the CHANGE MASTER command to set the slave to the master bin log file and position that shows up in the SHOW SLAVE STATUS output. Make sure you use the Relay_Master_Log_File and Exec_Master_Log_Pos fields since they indicate what position in the master binlog the slave actually thought it was executing. Keep in mind that corruption and its effects are hard to predict. It will definitely be useful to compare the master and slave afterward using the <a href="http://www.maatkit.org/">MaatKit </a>tools.</p>
+
+<p>As some more background, the server log will be probably show and error like this to indicate there was a network error:
+<code>
+Error reading packet from server: Lost connection to MySQL server during query (server_errno=2013)
+</code></p>
+
+<p>And finally, if you do read the entire bug thread you will notice that the original developer of MySQL also has an opinion on this.</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Cloud computing scenario's for database servers]]></title>
+    <link href="http://linuxsysadminblog.com/2009/02/cloud-computing-scenarios-for-database-servers/"/>
+    <updated>2009-02-17T10:09:35+08:00</updated>
+    <id>http://linuxsysadminblog.com/2009/02/cloud-computing-scenarios-for-database-servers</id>
+    <content type="html"><![CDATA[<p>We've been investigating the possibilities of using cloud computing for our clients. Especially Amazon EC2 has the potential to be be really effective in offering flexible, pay-as-you-go computing. From my own perspective I have been looking at how to use cloud computing in combination with MySQL and I must say that I'm a bit sceptical about the effectiveness of cloud computing in replacing the primary database server. First off there does not seem to be that much in the way of performance data for this type of installation. Can a cloud server really offer the I/O performance necessary to replace a dedicated database server? And even if the performance is equal, what is the main advantage? Scaling web sites is done by adding more servers in most cases but the same approach only works for database servers when clusters are used. So in what other scenario's does cloud computing give us an edge?</p>
+
+<p><strong>Temporary reporting servers</strong></p>
+
+<p>Create a one time copy of an existing production database server to run specific heavy reports. This is ideal for monthly reports since the server only needs to be up and running for several hours per month.</p>
+
+<p><strong>Backup database server</strong></p>
+
+<p>This is a backup solution where the server is only allocated once there is a problem with the primary server which makes a lot of sense because the client only pays for the server once it is used. One downside to this scenario is that the server has to created and loaded with the latest backup which will result in a decent amount of downtime but at least all of this can be automated. A bigger problem is the loss of data since the latest backup.For our high availability sites we have a standby database server replicating all changes from the master so we can switch over at a moment's notice without losing any data.</p>
+
+<p><strong>Migrations</strong></p>
+
+<p>Performing a migration or a system upgrade usually brings some downtime. Promoting a standby system to primary creates a single point of failure so it makes sense to create a remporary standby of the standby.</p>
+
+<p><strong>Development branches and testing environments</strong></p>
+
+<p>For development branches we usually only need an extra database for a short amount of time although truth be told, those database are not very large in general so we tend to put them on the same development database server anyway. The same is true for testing and QA. These activities usually occur in cycles which means that they are very attractive targets for cloud based servers.</p>
+
+<p><strong>Alternative data center</strong></p>
+
+<p>Yes, it happened to us once that our datacenter went off line due to a very heavy attack. Instead of finding another data center for these eventualities it could be useful to have cloud based backup servers defined. However, this requires the extra effort of keeping these instances up to date for this eventuality. Additionally, DNS caching will stop the switch from being instantaneous. A geographical load balancing solution would be the answer to that but at that point the cost for preparing for this eventuality will have to be compared to the loss due to down time.</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[MySQL replication problems]]></title>
+    <link href="http://linuxsysadminblog.com/2008/10/rebuilding-the-mysql-replication-slave/"/>
+    <updated>2008-10-09T14:16:26+08:00</updated>
+    <id>http://linuxsysadminblog.com/2008/10/rebuilding-the-mysql-replication-slave</id>
+    <content type="html"><![CDATA[<p>We are using a replication setup for our databases. The master database takes care of all the transactions and the slave database is used for hot standby, making backups and running reports. Running mysqldump for backups locks the main tables one by one (we're using the MyISAM storage engine) and was causing user interruptions. Hence using the replication slave for this is quite effective but it makes it very important to monitor the replication lag. If the replication stops the backups fall behind and suddenly the hot standby is not so hot anymore. A second problem is that the reports are reporting on stale data.</p>
+
+<p>Recently our master database server decided it was time for a break and spontaneusly rebooted. Since the server immediately came back up and started all services correctly production was only interrupted for a couple of minutes. A little later alerts started coming in that the replication lag was growing. It turns out the replication slave had gotten confused and was processing old replication logs. This means that transactions from a month ago were being processed again. This could be measured in several ways. The lag was showing a number of seconds equivalent to about a month This meant that the records it was trying to insert already existed and we were getting the 1062 MySQL error. This means that the primary key already exists and the new insert cannot complete. This stops replication dead in its tracks. The second way to see that old transactions are being processed is to look when the duplicate records were originally inserted. This is not always possible, but in this case there was a timestamp in the records.</p>
+
+<p>Our conclusion was that we needed to take two actions. First of all we needed to rebuild the replication slave database and restart replication from scratch. To do this you have to lock the entire database while making a mysqldump (FLUSH TABLES WITH READ LOCK).  This would lock out users for 10 to 15 minutes which is unacceptable during the daytime so we decided to execute this later in the evening when fewer users were online. The second action was to let the replication catch up so that we would have a reasonably consistent database in the mean time. This was done by adding the following line to the MySQL configuration file:
+<code>
+slave-skip-errors=1062
+</code>
+After that the replication slave server was restarted and the database caught up in 2 hours of processing. The reason we considered this an intermediate solution is that we don't delete many records. The applications execute mainly updates and inserts to modify data. As long as the latest updates are executed last the data will be in decent shape. After that we rebuilt the complete slave database at a more convenient time and all was well again.....</p>
+]]></content>
+  </entry>
+  
+</feed>

@@ -1,0 +1,194 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: backup | Linux Sysadmin Blog]]></title>
+  <link href="http://linuxsysadminblog.com/category/backup/atom.xml" rel="self"/>
+  <link href="http://linuxsysadminblog.com/"/>
+  <updated>2012-11-13T01:37:44+08:00</updated>
+  <id>http://linuxsysadminblog.com/</id>
+  <author>
+    <name><![CDATA[Promet OPS Team]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Restore Xen VM from LVM Snapshot Backups]]></title>
+    <link href="http://linuxsysadminblog.com/2012/06/restore-xen-vm-from-lvm-snapshot-backups/"/>
+    <updated>2012-06-22T20:21:00+08:00</updated>
+    <id>http://linuxsysadminblog.com/2012/06/restore-xen-vm-from-lvm-snapshot-backups</id>
+    <content type="html"><![CDATA[<p>What's the use of backups if you can't restore from them? ;)</p>
+
+<p>In the previous post on "Backup Xen with LVM and Rsnapshot" we worked on creating backups of Xen (guest/domain) VMs with LVM, and here we'll cover the process of restoring from these backups.</p>
+
+<p>What is covered here:</p>
+
+<p>Restoring specific files or directories
+Doing "bare-metal" type of restore. We will re-create the VM from our rsnapshot backups.
+Restore Process:</p>
+
+<p>1.) Restoring specific files or directories only</p>
+
+<p>While this restore scenario is a no-brainer, still I'll just want to mention it here as well.  Basically this one is the usual copying of files (via cp, scp, ftp, rsync, etc) from your source or backup server to the destination server.</p>
+
+<p>2.) "Bare-metal" restore (creates complete vm image from backup).</p>
+
+<p>Overview of "bare-metal" restore process:</p>
+
+<p>create, format, and mount logical volumes to use on the vm that you want to restore or re-create, based on its original vm disk properties such as size, names, etc.
+copy all files from backup location to the newly mounted lvm disk</p>
+
+<!--more-->
+
+
+<p>adjust necessary xen vm configs (if any, like new ip address) and start/create the vm using the volume with restored contents or files, and you're done.
+In the restore example below I'll refer to the vm as "domain.com" and we will restore the backups to a different volume with the same config as the original.  Then we'll start the vm, domain.com, using the restored volume.</p>
+
+<p>Here's the sample VM configuration that we will use.
+orignal vm disks: /dev/vg0/domain.com-disk (10GB) and /dev/vg0/domain.com-swap (512MB)
+backup located at "/backup" of host machine
+disks configurations to use on restored vm: /dev/vg0/domain-restore.com-disk (10GB) and /dev/vg0/domain-restore.com-swap (512MB)
+To start we determine the virtual machine  to restore as well as the backup to use  for restore.</p>
+
+<p>Then we'll create logical volumes with the same values as the running volumes as defined in our /etc/xen/domain.com.cfg.  Please note that you don't have to re-create the swap disk if you want, but in this example we'll just create another one.</p>
+
+<p>```</p>
+
+<pre><code>lvcreate -L 10G -n domain-restore.com-disk vg0
+lvcreate -L 512M -n domain-restore.com-swap vg0
+</code></pre>
+
+<p>```
+Format the "-disk" and mount it somewhere on host machine (ex: /backup-restore) and copy backup files into it, and unmount it after copying.</p>
+
+<p>```</p>
+
+<pre><code>mkfs -t ext3 -v /dev/vg0/domain-restore.com-disk
+mkdir /backup-restore
+mount /dev/vg0/domain-restore.com-disk /backup-restore
+cp -rpfv /backup/domain.com-disk/* /backup-restore/
+umount /dev/vg0/domain-restore.com-disk
+rmdir /backup-restore
+</code></pre>
+
+<p>```
+We now have the volume that contains the restored files at /dev/vg0/domain-restore-disk and ready to use by our domain.com VM.</p>
+
+<p>Let's shutdown "domain.com" machine and change its disk configuration to use the new/restored volume.</p>
+
+<p><code>
+xm shutdown domain.com
+</code></p>
+
+<p>Then we'll update our vm xen config to let our "domain.com" vm use the "domain-restore-disk".  We'll modify /etc/xen/original.domain.com.cfg and change the disks to point to new volumes with restored contents.</p>
+
+<p>From:
+<code>
+'phy:/dev/vg0/domain.com-disk,xvda2,w',
+'phy:/dev/vg0/domain.com-swap,xvda1,w',
+</code></p>
+
+<p>To:
+<code>
+'phy:/dev/vg0/domain-restore.com-disk,xvda2,w',
+'phy:/dev/vg0/domain-restore.com-swap,xvda1,w',
+</code></p>
+
+<p>Start our domain.com machine on its restored contents.</p>
+
+<p><code>
+xm create /etc/xen/domain.com.cfg
+</code></p>
+
+<p>That's all - you should have your vm running from its restored state! If everything is not ok you can quickly configure your vm to use the original volumes and restart it.</p>
+
+<p>If you do not want to touch your live machine, you can just create another vm with the same config as the live one, create new volumes and restore your backups to that vm.</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Debian 6: Backup Xen with LVM and Rsnapshot]]></title>
+    <link href="http://linuxsysadminblog.com/2012/06/debian-6-backup-xen-with-lvm-and-rsnapshot/"/>
+    <updated>2012-06-22T05:38:00+08:00</updated>
+    <id>http://linuxsysadminblog.com/2012/06/debian-6-backup-xen-with-lvm-and-rsnapshot</id>
+    <content type="html"><![CDATA[<p>This is a draft of my installation process which is mainly based from this blog:  <a href="http://backdrift.org/efficient-xen-backups-using-lvm-and-rsnapshot">Efficient Xen Backups Using LVM and Rsnapshot</a>.</p>
+
+<p>Our setup is on Debian 6 server with 2TB disk running 10 vpses. We followed the above guide with notes on errors we encountered, mostly rsnapshot related. We are keeping daily backup locally, on a separate partition, and copies them to our remote server every week.</p>
+
+<p>The Setup (mostly defaults):
+vg path is /dev
+vg name is vg0</p>
+
+<p>Setup Process:</p>
+
+<p>Create logical partition to store backups locally.  Size is 100GB and named it backups.  Format it with ext3 and mounted it to /backups.</p>
+
+<p><code>
+lvcreate -L 100G -n backups vg0
+mkfs -t ext3 -v /dev/vg0/backups
+mkdir /backups
+mount /dev/vg0/backups /backups
+</code></p>
+
+<p>Install and configure rsnapshot.  Make sure you use TAB correctly as it will complain or give you an error if you don't.</p>
+
+<p><code>
+aptitude install rsnapshot
+vi /etc/rsnapshot.conf
+</code></p>
+
+<p>Here's my rsnapshot config changes and/or additions:</p>
+
+<!--more-->
+
+
+<p>```
+snapshot_root /backups/    #this is a mounted partition
+interval daily 1    # i removed all other schedule and one daily copy only
+linux_lvm_cmd_lvcreate /sbin/lvcreate
+linux_lvm_cmd_lvremove /sbin/lvremove
+linux_lvm_cmd_mount /bin/mount
+linux_lvm_cmd_umount /bin/umount
+linux_lvm_snapshotsize 2G
+linux_lvm_snapshotname rsnapshot
+linux_lvm_vgpath /dev
+linux_lvm_mountpath /mnt/lvm-snapshot</p>
+
+<h1>Backups Tasks for all VMs</h1>
+
+<p>backup lvm://vg0/vm_1_name_disk/ vm_1_name_disk/
+backup lvm://vg0/vm_2_name_disk/ vm_2_name_disk/
+backup lvm://vg0/vm_10_name_disk/ vm_10_name_disk/
+```</p>
+
+<p>Schedule daily backup task in crontab (/etc/crontab). Note that rsnapshot is in /usr/bin/rsnapshot on Debian.</p>
+
+<p><code>
+01 01 * * * root /usr/bin/rsnapshot daily
+</code></p>
+
+<p>You can then run the rsnapshot task to make sure everything is working, from your config file to creating and mounting lvm snapshots. Execution time depends on number of vms and their size. You can ran them individually if needed.</p>
+
+<p><code>
+/usr/bin/rsnapshot daily
+</code></p>
+
+<p>Then I setup another backup task from remote backup server to pick up our local backups at /backups. You can also configure rsnapshot to backup your snapshots directly to your remote backup location (usiang rsync/ssh), depends on how you want to backup your data.</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Free alternative to InnoDB Hot Backup]]></title>
+    <link href="http://linuxsysadminblog.com/2010/04/free-alternative-to-innodb-hot-backup/"/>
+    <updated>2010-04-29T08:28:22+08:00</updated>
+    <id>http://linuxsysadminblog.com/2010/04/free-alternative-to-innodb-hot-backup</id>
+    <content type="html"><![CDATA[<p>I recently found out that there is a free alternative to InnoDB Hot Backup. For those of you using MySQL with the InnoDB plugin you probably know that MySQL does not provide a tool for making online non-blocking backups. InnoBase Oy, the makers of InnoDB, do provide a tool but it's not free. In fact they charge around $600 per year per server.</p>
+
+<p>The tool that I'm talking about is XtraBackup by Percona. This tool is originally meant to accompany the XtraDB storage engine which in itself is a patched version of InnoDB. XtraBackup will create online non-blocking backups for both XtraDB and InnoDB databases and best of all, it's free.</p>
+
+<p>For those of you who are not that familiar with MySQL backups, the standard way of doing backups is with mysqldump. This can be done with the database online but it blocks the tables it's backing up which is not acceptable for production environments. It also takes a good amount of time to restore a mysqldump since it writes out everything as SQL statements which then have to be processed again. A binary copy is much faster to restore but commonly requires the server to be stopped. The best alternative is to create an LVM snapshot of the binary files but this requires LVM to be set up and enough disk space to perform the LVM snapshot. All in all it's nice to have a free alternative although I have to add the footnote that I haven't tested it on any decently sized database to check what the performance impact is.</p>
+]]></content>
+  </entry>
+  
+</feed>

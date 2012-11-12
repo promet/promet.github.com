@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: News | Linux Sysadmin Blog]]></title>
+  <link href="http://linuxsysadminblog.com/category/news/atom.xml" rel="self"/>
+  <link href="http://linuxsysadminblog.com/"/>
+  <updated>2012-11-13T01:37:44+08:00</updated>
+  <id>http://linuxsysadminblog.com/</id>
+  <author>
+    <name><![CDATA[Promet OPS Team]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Apache Now Supports Multiple SSL on Single IP Address]]></title>
+    <link href="http://linuxsysadminblog.com/2009/11/apache-now-supports-multiple-ssl-on-single-ip-address/"/>
+    <updated>2009-11-24T01:08:23+08:00</updated>
+    <id>http://linuxsysadminblog.com/2009/11/apache-now-supports-multiple-ssl-on-single-ip-address</id>
+    <content type="html"><![CDATA[<p>With the release of Apache 2.2.12, we can now configure multiple SSL sites in one IP address.  It is available of you have Server Name Indication (SNI) extension for OpenSSL.  Visit TechRepublic's post on "<a href="http://blogs.techrepublic.com.com/opensource/?p=987">Configure Apache to support multiple SSL sites on a single IP address</a>" for details and vhost sample configuration.  And for complete reference please refer to this page "<a href="http://wiki.apache.org/httpd/NameBasedSSLVHostsWithSNI">SSL with Virtual Hosts Using SNI</a>" and <a href="http://httpd.apache.org/docs/2.2/mod/mod_ssl.html#sslstrictsnivhostcheck">Apache mod_ssl documentation</a>.</p>
+
+<p>We'll try this on our server and hopefully offer this to our shared hosting clients who wants SSL but not interested in paying extra for a dedicated ip address.  :)</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Google webmail bites it.]]></title>
+    <link href="http://linuxsysadminblog.com/2009/09/google-webmail-bites-it/"/>
+    <updated>2009-09-01T16:33:10+08:00</updated>
+    <id>http://linuxsysadminblog.com/2009/09/google-webmail-bites-it</id>
+    <content type="html"><![CDATA[<p>Google webmail is down people...</p>
+
+<p><a href="http://linuxsysadminblog.com/2009/09/google-webmail-bites-it/gmail_bites_it-3/"><img src="http://linuxsysadminblog.com/images/2009/09/gmail_bites_it2-150x150.png" alt="google webmail down" /></a></p>
+
+<p>However mail can be retrieved and sent via IMAP/POP and SMTP. Fire up your favourite email client (I like <a href="http://www.mozillamessaging.com/en-US/thunderbird/">Mozilla Thunderbird</a>) in the meantime.</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[System Admin Day - July 31st]]></title>
+    <link href="http://linuxsysadminblog.com/2009/07/july-31st-system-admin-day/"/>
+    <updated>2009-07-30T13:41:14+08:00</updated>
+    <id>http://linuxsysadminblog.com/2009/07/july-31st-system-admin-day</id>
+    <content type="html"><![CDATA[<p>We will celebrate the Linux System Administrator Appriciation day tomorrow.  Yes, there is such a thing, if its in wikipedia (<a href="http://en.wikipedia.org/wiki/System_Administrator_Appreciation_Day">wiki system administrator appreciation Day</a>), than it must be true!</p>
+
+<p>See what its all about here:</p>
+
+<blockquote><p><strong>System Administrator Appreciation Day</strong>, also known as <strong>Sysadmin Day</strong>, <strong>SysAdminDay</strong> or <strong>SAAD</strong>, was created by <a href="http://en.wikipedia.org/wiki/System_administrator">system administrator</a> Ted Kekatos. Kekatos was inspired to create the special day by a <a href="http://en.wikipedia.org/wiki/Hewlett-Packard">Hewlett-Packard</a> magazine advertisement in which a system administrator is presented with flowers and fruit-baskets by grateful co-workers as thanks for installing new printers.</p></blockquote>
+
+<p>Here is one of our own getting some appreciation from our colleagues.</p>
+
+<p><img src="http://linuxsysadminblog.com/images/2009/07/LinuxSystemAdmin-gets-love-from-ladies-300x225.jpg" alt="Max, our gets nominated as a favorite linux system administrator by some of his office fans" /></p>
+
+<p>So don't forget to buy your system administrator a coffee, beer, donut, or whatever he prefers, and dont ask any stupid questions tomorrow.</p>
+
+<p><strong>The system administrator song</strong></p>
+
+<p>And here is a link to another System administrator song from the UK</p>
+
+<p>http://www.ukuug.org/sysadminday/</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[When Open Source kills]]></title>
+    <link href="http://linuxsysadminblog.com/2009/05/when-open-source-kills/"/>
+    <updated>2009-05-27T11:39:25+08:00</updated>
+    <id>http://linuxsysadminblog.com/2009/05/when-open-source-kills</id>
+    <content type="html"><![CDATA[<p><a href="http://en.wikipedia.org/wiki/ReiserFS">RieserFS</a> is a journalling filesystem that is excellent when dealing with small files under 4K in size. When used with <a href="http://en.wikipedia.org/wiki/Tail_packing">tail-packing</a> it is 10-15x faster then ext2/ext3. ReiserFS was first included in Linux kernel 2.4.1 and even used  as default filesystem in SUSE Enterprise Linux and others. What many may not know is that <a href="http://en.wikipedia.org/wiki/Hans_Reiser">Reiser killed</a>, LITERALLY. The man behind this filesystem has been convicted of second degree murder for killing his wife. While this isn't exactly breaking new it just goes to show you that extroverted geeks have it in them.</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Red Hat Enterprise Linux 4.8 released]]></title>
+    <link href="http://linuxsysadminblog.com/2009/05/red-hat-enterprise-linux-48-released/"/>
+    <updated>2009-05-26T03:04:20+08:00</updated>
+    <id>http://linuxsysadminblog.com/2009/05/red-hat-enterprise-linux-48-released</id>
+    <content type="html"><![CDATA[<p>With the <strong>8th update</strong> of their venerable <strong>Red Hat Enterprise Linux 4</strong> version (_first released in February 200_5), RedHat switches to "<a href="http://press.redhat.com/2008/07/23/support-for-red-hat-enterprise-linux-improved-through-enhanced-product-life-cycle/">production 2 lifecycle phase</a>", where it helps customers transition to <strong>RHEL5</strong>. Ideally everyone will upgrade to rhel5 by the <strong>end of the year - Q4 200</strong>9 (in case not done already, this is a good time to plan for this).</p>
+
+<p><a href="http://www.redhat.com/security/updates/errata/"><img src="http://linuxsysadminblog.com/images/2009/05/7years_4.png" alt="7years_4" /></a></p>
+
+<p>General Availability:     February 14, 2005
+End of Production 1 phase:     March 31, 2009
+End of Production 2 phase:     No earlier than Q4 of 2009
+End of Production 3 phase:     February 29, 2012</p>
+
+<p>Key features in <strong>Red Hat Enterprise Linux 4.8</strong> include:</p>
+
+<ul>
+<li><p>Improved virtualization performance and scale</p></li>
+<li><p>Improved Windows interoperability and file system support</p></li>
+<li><p>General performance improvements</p></li>
+<li><p>Storage and filesystem enhancements</p></li>
+<li><p>Enhanced developer support</p></li>
+</ul>
+
+
+<p>For full details check out the <a href="http://press.redhat.com/2009/05/18/red-hat-enterprise-linux-4-8-now-available/">press release</a>.</p>
+
+<p><em>Note: as usual, people using Centos4 will have to wait for a couple of weeks to have cento4.8 available for upgrade.</em></p>
+]]></content>
+  </entry>
+  
+</feed>

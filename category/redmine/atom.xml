@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: redmine | Linux Sysadmin Blog]]></title>
+  <link href="http://linuxsysadminblog.com/category/redmine/atom.xml" rel="self"/>
+  <link href="http://linuxsysadminblog.com/"/>
+  <updated>2012-11-13T01:37:44+08:00</updated>
+  <id>http://linuxsysadminblog.com/</id>
+  <author>
+    <name><![CDATA[Promet OPS Team]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Integrate Sendgrid with Redmine]]></title>
+    <link href="http://linuxsysadminblog.com/2012/08/integrate-sendgrid-with-redmine/"/>
+    <updated>2012-08-09T17:03:00+08:00</updated>
+    <id>http://linuxsysadminblog.com/2012/08/integrate-sendgrid-with-redmine</id>
+    <content type="html"><![CDATA[<p>One thing everybody wants when deploying applications is integrating them with other applications or services.  Two popular apps and services out there for small businesses that manage project management and email are Redmine and SendGrid.</p>
+
+<h3>Prerequisites</h3>
+
+<ol>
+<li>A working Redmine install.</li>
+<li>A sendgrid email address.  Let's say we have something like redmine@yourdomain.com that we want Redmine to send emails from.</li>
+<li>Here are a few gems I put on sporatically when researching email integration, so make sure you have them.  Jump to where your redmine install is located (e.g. /var/www/redmine) and do the following:</li>
+</ol>
+
+
+<p>```</p>
+
+<h1>gem install mail json sendgrid</h1>
+
+<p>```
+The core of this funcionality is provided by the sendgrid gem which originates from here: <a href="https://github.com/stephenb/sendgrid">https://github.com/stephenb/sendgrid</a>.</p>
+
+<h4>Redmine Configuration File</h4>
+
+<p>If your Redmine install is something like /var/www/redmine, your configuration file will be /var/www/redmine/config/configuration.yml.  If you have a relatively clean Redmine install, chances are you might not have one or it's a default template with a lot of examples.  You might find an example detailing how to integrate with GMail in the example file.  Our set up will be similar.  Paste the following into your configuration.yml file and change the necessary parameters.</p>
+
+<!--more-->
+
+
+<p>```
+production:
+  delivery_method: :smtp
+  smtp_settings:</p>
+
+<pre><code>tls: true
+enable_starttls_auto: true
+address: "smtp.sendgrid.net"
+port: 587
+authentication: :plain
+domain: "yourdomain.com"
+user_name: "sendgrid_auth_name"
+password: "sendgrid_auth_password"
+</code></pre>
+
+<p>```</p>
+
+<p>Now if you already had a configuration.yml file for the install you jumped into, there are overrides which show up as a blank section at the end which will prevent this integration from working. It might look like:</p>
+
+<p><code>
+production:
+</code></p>
+
+<p>Remove empty sections like this.  You can edit things towards the beginning of your config file all day long and these blank sections will override your settings.</p>
+
+<h3>Redmine Settings</h3>
+
+<p>Through your web browser, go to Administration -> Settings, and click the "Email Notifications" Tab.</p>
+
+<ol>
+<li>Set the emission email address field to: redmine@yourdomain.com (the sendgrid account you created).</li>
+<li>Fix your footer URL to match your domain so users can go directly to their account settings.</li>
+<li>Test your settings by clicking the link "Send a test email" in the lower right hand corner.</li>
+</ol>
+
+
+<h3>Troubleshooting</h3>
+
+<p>If you are getting auth errors, make sure you are just using your user_name parameter in the configuration.yml file (i.e. just "redmine").</p>
+
+<p>If you think you can't reach the service, try this quick connection test:</p>
+
+<p><code>
+$ telnet smtp.sendgrid.net 587
+</code>
+If successful, you'll see some response like this:</p>
+
+<p><code>
+$ telnet smtp.sendgrid.net 587
+Trying 50.97.69.147...
+Connected to smtp.sendgrid.net.
+Escape character is '^]'.
+220 mi1 ESMTP service ready
+</code></p>
+]]></content>
+  </entry>
+  
+</feed>

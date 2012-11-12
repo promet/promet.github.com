@@ -1,0 +1,965 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Linux Sysadmin Blog</title>
+  <meta name="author" content="Promet OPS Team">
+
+  
+  <meta name="description" content="Security should be practiced in all area. This is where the DiD or Defense-in-Depth Layer comes in. Defense in Depth is a multiple defensive strategy &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://linuxsysadminblog.com/blog/page/18/">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="/javascripts/ender.js"></script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <link href="/atom.xml" rel="alternate" title="Linux Sysadmin Blog" type="application/atom+xml">
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+<!-- Google Form for Contact Page -->
+<!-- jQuery -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+<script type="text/javascript">
+    // Avoid conflict with ender.js.
+jQuery.noConflict();
+</script>
+<!-- jQuery Form Plugin -->
+<script src="http://malsup.github.com/jquery.form.js"></script>
+<script src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.9/jquery.validate.min.js"></script> 
+<script src="/javascripts/google_form.js"></script>
+<!-- Google Form for Contact Page End here -->
+
+
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-120251-38']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">Linux Sysadmin Blog</a></h1>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:linuxsysadminblog.com" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/our-team">Our Team</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+  <li><a href="/blog/about">About</a></li>
+  <li><a href="/blog/contact">Contact</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div class="blog-index">
+  
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/2008/11/denial-of-service-attack-and-the-defense-in-depth-layer/">Denial of Service Attack and the Defense-in-Depth Layer</a></h1>
+    
+    
+      <p class="meta">
+        
+  
+
+
+<span class="byline author vcard">Posted by <span class="fn"><a href="/blog/our-team/rachel-jaro.html">Rachel Jaro</a></span></span>
+
+ - 
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2008-11-20T08:20:29+08:00" pubdate data-updated="true">Nov 20<span>th</span>, 2008</time>
+        
+         | <a href="/2008/11/denial-of-service-attack-and-the-defense-in-depth-layer/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>Security should be practiced in all area. This is where the DiD or Defense-in-Depth Layer comes in.</p>
+
+<p><strong>Defense in Depth</strong> is a multiple defensive strategy recommended as a secure practices by CERT and other security organizations. Security experts apply multiple defenses and countermeasures in many areas of their system or operations. There is no single generic list of the layers so it can vary on what you are trying to protect. There are 5 common layers in the DiD: Physical, Network, Host, Application and Data layer. We will discuss 4 layers in order to secure us from DoS or <a href="http://linuxsysadminblog.com/2008/11/denial-of-service-dos-attacks-becoming-more-common/">Denial of Service attack</a> and those are  Network, Host and Application and Physical.</p>
+
+<p><em>Physical</em>: The physical access to the resources (including humans)</p>
+
+<p><em>Network</em>: Layer at which data is accepted into the system from the network. The primary components that make up your network infrastructure are routers, firewalls, and switches.  A well designed and properly implemented network architecture provides highly available, secure, scalable, manageable, and reliable services.</p>
+
+<p><em>Host</em>: Hosts come in two types: clients and servers. Securing both effectively requires striking a balance between the degree of hardening and the level of usability.</p>
+
+<p><em>Application</em>: For the purpose of this article, application refers to an interactive software application that uses a web browser as the user interface to typically access a database for the content or commonly called web app.</p>
+
+<p>In <a href="http://linuxsysadminblog.com/2008/11/denial-of-service-dos-attacks-becoming-more-common/">DoS attack</a>, a vulnerability in one layer is a vulnerability in the other layers. It can attack on any level unlike other kind of attacks. Microsoft has well explained the <a href="http://msdn.microsoft.com/en-us/library/aa302418.aspx#c02618429_004">network, host and application threats and countermeasures</a>. The following are list of appropriate actions to address DoS:</p>
+
+<p><strong>Network Layer</strong></p>
+
+<ul>
+<li>Apply the latest service packs.</li>
+<li>Harden the TCP/IP stack by applying the appropriate registry settings to increase the size of the TCP connection queue, decrease the connection establishment period, and employ dynamic backlog mechanisms to ensure that the connection queue is never exhausted.</li>
+<li>Use a network Intrusion Detection System (IDS) because these can automatically detect and respond to SYN attacks.</li>
+</ul>
+
+
+<p><strong>Host Layer</strong></p>
+
+<ul>
+<li>Configure your applications, services, and operating system with denial of service in mind.</li>
+<li>Stay current with patches and security updates.</li>
+<li>Harden the TCP/IP stack against denial of service.</li>
+<li>Make sure your account lockout policies cannot be exploited to lock out well known service accounts.</li>
+<li>Make sure your application is capable of handling high volumes of traffic and that thresholds are in place to handle abnormally high loads.</li>
+<li>Review your application&#8217;s failover functionality.</li>
+<li>Use an IDS that can detect potential denial of service attacks.</li>
+</ul>
+
+
+<p><strong>Application Layer</strong></p>
+
+<ul>
+<li>Thoroughly validate all input data at the server.</li>
+<li>Use exception handling throughout your application&#8217;s code base.</li>
+<li>Apply the latest patches.</li>
+</ul>
+
+
+<p><strong>Physical Layer</strong></p>
+
+<p>The one last layer that was not given proper attention. The problem with our community is the lack of information regarding security issues. Help educate the common users on this kind of attack. An innocent employee or community can be used to execute a DDoS attack.</p>
+
+<p>Again, security must be practiced in all areas of operations. DoS attack could take any form. Having DiD, if one layer fails then another layer will likely succeed.</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/2008/11/server-and-backup-woes/">Server and Backup Woes</a></h1>
+    
+    
+      <p class="meta">
+        
+  
+
+
+<span class="byline author vcard">Posted by <span class="fn"><a href="/blog/our-team/pim-van-der-wal.html">Pim Van der Wal</a></span></span>
+
+ - 
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2008-11-17T08:31:58+08:00" pubdate data-updated="true">Nov 17<span>th</span>, 2008</time>
+        
+         | <a href="/2008/11/server-and-backup-woes/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>Looking back it seems like most posts on this blog are helpful tips and not reports of problems we encountered. Not that we don&#8217;t have any problems but we mostly report our solutions instead of the actual problems. Of course now and again a problem comes along that doesn&#8217;t have a solution ready to copy-paste into a blog post. A week ago a wrong modification in a shell script resulted in the deletion of a good number of files before we caught it. The command below ended up being run with 2 empty variables:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>rm -fr ${DIR}/${SUBDIR}</span></code></pre></td></tr></table></div></figure>
+
+
+<p><em>Hint: add the following alias for all users to prevent this: <code>alias rm='rm --preserve-root'</code></em></p>
+
+<p>We were lucky in two ways. First off, this was not a production server, just a development and testing server and secondly the databases and web sites on that server were unaffected. That&#8217;s where the good news ended and Murphy&#8217;s Law kicked in. A couple of days before we found that our backup server had a corrupt filesystem on its RAID array. Since we did not have enough space available on other servers to place all the backups on other servers we temporarily suspended (you guessed it) the backups of the development and testing server.</p>
+
+<h3>To undelete or not to undelete</h3>
+
+<p>To get back up and running we immediately closed off access to the server and considered how we could recover the deleted files. Unfortunately undeleting files on an ext3 file system can only be done under certain circumstances. If the deleted files are still opened by some process the lsof utility can help as is documented on some web sites (just Google &#8220;ext3 undelete lsof&#8221;) but for larger scale undeletes the first step is to create an image of the partition in question. That image can then be searched for inode entries which can be very useful for finding specific files. However, if you want perform a more general undelete this method is a lot less useful because the file names will not be recovered.</p>
+
+<p>Apart from the limited usefulness that creating this image would yield it would have taken several hours to complete during which development and testing would be at a standstill. We decided not to do this and instead take our losses instead. It is important to note what data we were losing at that point. Among the missing directories were some binary directories (/usr/sbin and such) which were easily recoverable by copying them from similarly configured servers. The most important missing data was the version control repository and a custom scripts directory. All the history of changes in the repository was lost but the latest state of the code was easily restored. We copied the latest code from the developer who had last performed a complete update (which is a part of the daily development process) and put that code into the repository again. Since the versions did not match up anymore after that (all code versions were reinitialized) all developers had to retrieve the complete set of code files again and copy their latest versions over it to keep working.</p>
+
+<p>Although this is definitely a loss for us the impact is limited by the fact that we keep copies of all released code. These copies were unaffected on the server in question but are also present on other servers. If need be we can go through that history to track down a change, but the comments are gone and it&#8217;s not a process the developers can do themselves.</p>
+
+<h3>Rebooting the server</h3>
+
+<p>After all this we were left with one task, rebooting that server. Since we did not know exactly what got deleted this might give us some severe problems. This was scheduled for a quiet night with several system admins present. Unfortunately our hand was forced when a change in the iptables configuration caused a kernel panic. Rebooting the server revealed several more problems, the main one being the privileges on the /tmp directory. This resulted in Apache not being able to write session info there and MySQL not being able to write temporary data either. This was quickly solved of course. Without going into too many details the final action we took was to update our Cpanel. This reinstalled many missing scripts and binaries.</p>
+
+<p>I bet you&#8217;re wondering why we don&#8217;t use off site backups. Well, we do actually. The problem is that this involves copying many gigabytes over a limited line so we made a selection of what needed to be copied and we focused mainly on all our production servers. The main purpose of our off site backups is to recover production servers in case our data center becomes unavailable.</p>
+
+<h3>Conclusions</h3>
+
+<p>It&#8217;s been an annoying experience and it&#8217;s hard to draw positive lessons from mr. Murphy&#8217;s teachings but all in all it could have been a lot worse. Production was not down or affected and even testing and development impact was pretty limited. The main things on our agenda after this are to review our backup strategy for essential locations and reviewing the use of root privileges on our servers. Although we use non-root users most of the time there are tasks that are made a lot quicker by changing to root. We all know the danger of this and need to be a lot more aware of it.</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/2008/11/can-your-isp-stop-a-40-gigabit-ddos-attack/">Can Your ISP Stop a 40 Gigabit DDoS Attack?</a></h1>
+    
+    
+      <p class="meta">
+        
+  
+
+
+<span class="byline author vcard">Posted by <span class="fn"><a href="/blog/our-team/andrew-kucharski.html">Andrew Kucharski</a></span></span>
+
+ - 
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2008-11-12T15:33:06+08:00" pubdate data-updated="true">Nov 12<span>th</span>, 2008</time>
+        
+         | <a href="/2008/11/can-your-isp-stop-a-40-gigabit-ddos-attack/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>The <a href="http://asert.arbornetworks.com/2008/11/2008-worldwide-infrastructure-security-report/">2008 Internet Security Report</a> put out by Arbor Networks has this eye popping blurb&#8230;</p>
+
+<blockquote><p><strong>Attacks Now Exceed 40 Gigabits</strong>
+&#8230;the largest DDoS attacks have now grown a hundredfold to break the 40 gigabit barrier this year. The growth in attack size continues to significantly outpace the corresponding increase in underlying transmission speed and ISP infrastructure investment</p></blockquote>
+
+<p><img src="http://asert.arbornetworks.com/uploads/2008/11/attacksize2008.png" alt="" /></p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/2008/11/denial-of-service-dos-attacks-becoming-more-common/">Denial of Service (DoS) Attacks Becoming More Common</a></h1>
+    
+    
+      <p class="meta">
+        
+  
+
+
+<span class="byline author vcard">Posted by <span class="fn"><a href="/blog/our-team/andrew-kucharski.html">Andrew Kucharski</a></span></span>
+
+ - 
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2008-11-10T14:56:10+08:00" pubdate data-updated="true">Nov 10<span>th</span>, 2008</time>
+        
+         | <a href="/2008/11/denial-of-service-dos-attacks-becoming-more-common/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>Within a week I had seen the term DOS or Denial of Service being mentioned in two mainstream publications, the WJS and more recently in this article - <a href="http://www.nytimes.com/2008/11/10/technology/internet/10attacks.html?th&amp;emc=th">Internet Attacks Grow More Potent</a> -  by the Wall Street Journal.</p>
+
+<blockquote><p>“We’re definitely seeing more targeted attacks toward e-commerce sites,” said Danny McPherson, chief security officer for Arbor Networks. “Most enterprises are connected to the Internet with a one-gigabit connection or less. Even a two-gigabit D.D.O.S. attack will take them offline.”</p></blockquote>
+
+<p>We have some experiences with this of course, luckily none of our customers was a targe of a DoS but if anyone on your network or even a datacenter is - you will most likely notice a latency at best and a DoS yourself.</p>
+
+<p>Most of the research I have seen on how to deal with a DoS attack points to the helplessness of the smaller DC and the hardware they have in order to deal with this.  They mostly have to work with the downstream providers to help them filter out the traffic.</p>
+
+<p>Keep the NOC number handy and remember to evengalize the application of personal firewalls and viruse software on windows machines&#8230; we dont want them to be an angry zombie mob.</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/2008/10/homegrown-mysql-monitoring/">Homegrown MySQL Monitoring</a></h1>
+    
+    
+      <p class="meta">
+        
+  
+
+
+<span class="byline author vcard">Posted by <span class="fn"><a href="/blog/our-team/pim-van-der-wal.html">Pim Van der Wal</a></span></span>
+
+ - 
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2008-10-23T07:46:49+08:00" pubdate data-updated="true">Oct 23<span>rd</span>, 2008</time>
+        
+         | <a href="/2008/10/homegrown-mysql-monitoring/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>If you can&#8217;t do it with a shell script it usually ain&#8217;t worth doin&#8217;, right? Of course the number and quality of monitoring tools available to sys admins has gone up dramatically. Thanks to Nagios and other great tools it&#8217;s pretty easy to keep track of what&#8217;s going on and where and get notified pretty quickly. But some times you just want to monitor a couple of things first to see if they are actually worth monitoring. In my case it started out as a temporary thing to keep track of a recurring problem. The number of MySQL connections would max out of from time to time and we needed to be alerted very quickly if this happened of course.</p>
+
+<p>So we let crontab run a shell script every minute which just executes one command:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>mysql -e "show processlist;" &gt; job.tmp</span></code></pre></td></tr></table></div></figure>
+
+
+<p>This command will let you track all user connections at that moment. Of course a lot can happen in a minute and there&#8217;s lots of stuff you won&#8217;t catch, but problems that are growing will manifest themselves here. To distill the number of running connections:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>CONNS=`cut ${SCRIPTS_DIR}/jobs.tmp -f5 | grep "Query" | wc -l | cut -f1 -d"/"`</span></code></pre></td></tr></table></div></figure>
+
+
+<p>The number of locked out queries:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>LOCKED=`cut ${SCRIPTS_DIR}/jobs.tmp -f7 | grep "Locked" | wc -l | cut -f1 -d"/"`</span></code></pre></td></tr></table></div></figure>
+
+
+<p>The longest running query:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>LONGRUN=`grep "Query" ${SCRIPTS_DIR}/jobs.tmp | cut -f6 | sort -n | tail -1`</span></code></pre></td></tr></table></div></figure>
+
+
+<p>In all these cases a simple if statement will mail the processlist in case a threshold is passed. No better way to get your attention then your mailbox filling up with an alert per minute. Besides, seeing the processlist at the time things started going wrong can be very useful in identifying the culprit.</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/2008/10/usb-mass-storage-buffer-io-error/">USB Mass Storage Buffer I/O Error</a></h1>
+    
+    
+      <p class="meta">
+        
+  
+
+
+<span class="byline author vcard">Posted by <span class="fn"><a href="/blog/our-team/max-veprinsky.html">Max Veprinsky</a></span></span>
+
+ - 
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2008-10-22T18:57:50+08:00" pubdate data-updated="true">Oct 22<span>nd</span>, 2008</time>
+        
+         | <a href="/2008/10/usb-mass-storage-buffer-io-error/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>While running rsync backups to a USB external disk I noticed an issue where the backup job would stop and /var/log/messages would spit out errors like:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>Buffer I/O error on device sdb1, logical block 102630553
+</span><span class='line'>scsi 3:0:0:0: rejecting I/O to dead device
+</span><span class='line'>sd 6:0:0:0: Device not ready: &lt;6&gt;: Current: sense key: Not Ready
+</span><span class='line'>Add. Sense: Logical unit not ready, initializing command required</span></code></pre></td></tr></table></div></figure>
+
+
+<p>These errors are NOT an indication of a bad disk but rather a what seems like a bug in the Mass Storage driver where after a period of inactivity the hard disk will go into a STANDBY state while the USB interface stays active and does not report the disk state to the OS thus creating a disconnect between the OS and the physical drive. The next disk access request does not bring the disk out of STANDBY mode and the OS thinks the device is dead. The STANDBY mode is a low energy state which also stops the platters from spinning.  While there are workarounds that involve udev rules, the simplest solution is to disable or increase the timout of STANDBY mode. To turn off STANDBY timer issue the following command:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>sdparm --clear STANDBY -S &lt;device&gt;</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Keep in mind that this will disable the STANDBY timer and will not spindown the platters.</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/2008/10/anti-virus-software-alone-not-enough/">Anti-virus Software Alone Not Enough</a></h1>
+    
+    
+      <p class="meta">
+        
+  
+
+
+<span class="byline author vcard">Posted by <span class="fn"><a href="/blog/our-team/max-veprinsky.html">Max Veprinsky</a></span></span>
+
+ - 
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2008-10-20T17:55:18+08:00" pubdate data-updated="true">Oct 20<span>th</span>, 2008</time>
+        
+         | <a href="/2008/10/anti-virus-software-alone-not-enough/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>As a part of PCI compliance and general Internet usage safe practices a company wide anti-virus policy is not just a good idea but a must. Today a number of free and fee-based subscription anti-virus clients are available for the Windows platform which in is use by 99 percent of Promet employees. The remaining 1 percent do not use Windows as their day to day OS hence this document will not apply.</p>
+
+<p>Of the 20+ anti virus client available this day I will review the free AVG and Avast! clients  with which I have spent some time testing and working with. Neither clients introduced any sluggishness to the system and are fairly transparent in day to day operation. The test rig is an average consumer grade PC with 1 GB of system memory, Pentium 4 2.66Ghz, 80GB disk running Windows XP with Service Pack 2.</p>
+
+<p>Functionality / protection</p>
+
+<ul>
+<li>AVG Basic: file   scanning, spyware, POP/IMAP</li>
+<li>Avast! Personal:  file scanning, POP/IMAP, webmail, IM, P2P, network</li>
+</ul>
+
+
+<p>Scan speed (measuring initial filesystem scan of 23.8GB)</p>
+
+<ul>
+<li>AVG Basic: 1H 57M</li>
+<li>Avast! Personal: 33M</li>
+</ul>
+
+
+<p>Resident memory usage</p>
+
+<ul>
+<li>AVG Basic: 50MB</li>
+<li>Avast! Personal: 60MB</li>
+</ul>
+
+
+<p>Next we will look at virus detection performance of these 2 clients as well as other more popular variants.</p>
+
+<p>Detection rates against Windows viruses, macros, worms, scripts, backdoors, trojans and other malware:</p>
+
+<ul>
+<li>AVG: 98.3 %</li>
+<li>Kaspersky: 97.8</li>
+<li>Avast!: 97.2</li>
+<li>Symantec:  96.9%</li>
+<li>McAfee: 93.6 %</li>
+</ul>
+
+
+<p>Detection rates against high polymorphic viruses (32/Bakaver.A, W32/Etap.D,W32/Insane.A, W32/Stepan.E, W32/Tuareg.H, W32/Zelly.A, W32/Zmist.B  and W32/Zmist.D. )</p>
+
+<ul>
+<li>AVG: 81.1%</li>
+<li>Kaspersky: 100%</li>
+<li>Avast!: 89.1%</li>
+<li>Symantec: 100%</li>
+<li>McAfee: 99.7%</li>
+</ul>
+
+
+<p>Source: http://www.av-comparatives.org/seiten/ergebnisse/report17.pdf</p>
+
+<p>No single anti-virus product offers complete protection against Internet threats. A combination of anti-virus and web browser embedded object blocker can provide fairly comprehensive solution. Unlike the past where nearly all virus infection occurred via e-mail attachments which contained malicious executable files, macros embedded into MS Office documents or even non-executable files containing virus payloads today a user can become easily infected by visiting a website. Unknown to the user a embedded javascript applets, flash containers can infect a system simply by loading them via web browser. Most often these embedded objects do not have a place on the screen or are called from hidden frames. In this situation  anti-virus software would not stop such objects from loading therefore a need for an embedded script blocker is required. The best and easiest to use plug in is available for the Mozilla Firefox (and browsers based on it) called NoScript. This add-on default behaviour is to block all browser embedded items letting the user decide which to allow.</p>
+
+<p><em>Examples</em>:</p>
+
+<p><a href="http://www.symantec.com/security_response/writeup.jsp?docid=2003-090514-4048-99">http://www.symantec.com/security_response/writeup.jsp?docid=2003-090514-4048-99</a>
+<a href="http://www.symantec.com/security_response/writeup.jsp?docid=2002-011011-3021-99">http://www.symantec.com/security_response/writeup.jsp?docid=2002-011011-3021-99</a>
+<a href="http://www.viruslist.com/en/viruses/encyclopedia?virusid=25834">http://www.viruslist.com/en/viruses/encyclopedia?virusid=25834</a></p>
+
+<p>Avast! Personal offers more features, faster scanning speeds, better detection rates. Combining Avast! Personal with a browser script blocker such as NoScript offers a more comprehensive virus prevention/detection solution.</p>
+
+<p><a href="http://www.avg.com/">http://www.avg.com/</a>
+<a href="http://www.avast.com/">http://www.avast.com/</a></p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/2008/10/zendoptimizer-installation-on-linux-server-with-ioncube/">ZendOptimizer Installation on Linux Server With IonCube</a></h1>
+    
+    
+      <p class="meta">
+        
+  
+
+
+<span class="byline author vcard">Posted by <span class="fn"><a href="/blog/our-team/gerold-mercadero.html">Gerold Mercadero</a></span></span>
+
+ - 
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2008-10-15T08:46:16+08:00" pubdate data-updated="true">Oct 15<span>th</span>, 2008</time>
+        
+         | <a href="/2008/10/zendoptimizer-installation-on-linux-server-with-ioncube/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>ZendOptimizer installation is very short and can be done with the following steps:</p>
+
+<p>1.)  Get the latest release from <strong><a href="http://www.zend.com/en/products/guard/downloads">Zend</a></strong>, available file format is <em>tar.gz</em> (ex:  <code>ZendOptimizer-3.3.0a-linux-glibc23-x86_64.tar.gz</code>).</p>
+
+<p>2.)  Extract the tarball at <code>/usr/local/src/</code>.</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>cd /usr/local/src/
+</span><span class='line'>tar xzpf ZendOptimizer-3.3.0a-linux-glibc23-x86_64.tar.gz</span></code></pre></td></tr></table></div></figure>
+
+
+<p>3.)  Go to the extracted Zend directory and run the install script to launch Zend Optimizer installer.  Follow instructions.</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>cd ZendOptimizer-3.3.0a-linux-glibc23-x86_64/
+</span><span class='line'>./install</span></code></pre></td></tr></table></div></figure>
+
+
+<p>After the installation most likely Apache will not start even if ZendOptimizer said that it restarted successfully, and you will get this error if you check PHP version (<code>php -v</code>):</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>PHP Fatal error:  [ionCube Loader] The Loader must appear as the first entry in the php.ini file in Unknown on line 0</span></code></pre></td></tr></table></div></figure>
+
+
+<p>The usual scenario is that the ZendOptimizer includes were added at the end of <code>php.ini</code> file while the IonCube on the include directory at <code>/etc/php.d/ioncube-loader.ini</code>.</p>
+
+<p><strong>You have two options to fix the issue</strong>:</p>
+
+<p><strong>Option 1.  Place both of the IonCube and ZendOptimizer includes in php.ini file.</strong></p>
+
+<p>Move the contents of <code>/etc/php.d/ioncube-loader.ini</code> and put it into <code>/etc/php.ini</code>, above the ZendOptimizer lines.  Sample code:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>zend_extension=/usr/lib64/php4/php_ioncube_loader_lin_4.3_x86_64.so
+</span><span class='line'>
+</span><span class='line'>[Zend]
+</span><span class='line'>zend_extension_manager.optimizer=/usr/local/Zend/lib/Optimizer-3.3.0
+</span><span class='line'>zend_extension_manager.optimizer_ts=/usr/local/Zend/lib/Optimizer_TS-3.3.0
+</span><span class='line'>zend_optimizer.version=3.3.0a
+</span><span class='line'>zend_extension=/usr/local/Zend/lib/ZendExtensionManager.so
+</span><span class='line'>zend_extension_ts=/usr/local/Zend/lib/ZendExtensionManager_TS.so</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Restart Apache ( <code>/etc/init.d/httpd restart</code> ).</p>
+
+<p><strong>Option 2.  Place the ZendOptimizer includes on PHP&#8217;s include directory.</strong></p>
+
+<p>Create a <code>.ini</code> file (ex: <code>zendoptimizer.ini</code>) inside PHP&#8217;s include directory at <code>/etc/php.d/</code>, and move the ZendOptimizer lines (sample below) from <code>/etc/php.ini</code>.</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>[Zend]
+</span><span class='line'>zend_extension_manager.optimizer=/usr/local/Zend/lib/Optimizer-3.3.0
+</span><span class='line'>zend_extension_manager.optimizer_ts=/usr/local/Zend/lib/Optimizer_TS-3.3.0
+</span><span class='line'>zend_optimizer.version=3.3.0a
+</span><span class='line'>zend_extension=/usr/local/Zend/lib/ZendExtensionManager.so
+</span><span class='line'>zend_extension_ts=/usr/local/Zend/lib/ZendExtensionManager_TS.so</span></code></pre></td></tr></table></div></figure>
+
+
+<p>PHP includes are loaded in alphabetical order so be sure to name your ZendOptimizer include file like <code>zendoptimizer.ini</code> so that this will be loaded after <code>ioncube-loader.ini</code>.</p>
+
+<p>Restart Apache ( <code>/etc/init.d/httpd restart</code> ).</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/2008/10/pci-dss-compliance-for-dummies/">PCI DSS Compliance for Dummies</a></h1>
+    
+    
+      <p class="meta">
+        
+  
+
+
+<span class="byline author vcard">Posted by <span class="fn"><a href="/blog/our-team/pim-van-der-wal.html">Pim Van der Wal</a></span></span>
+
+ - 
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2008-10-14T13:37:16+08:00" pubdate data-updated="true">Oct 14<span>th</span>, 2008</time>
+        
+         | <a href="/2008/10/pci-dss-compliance-for-dummies/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>One of our longer running projects for while now has been to become PCI DSS compliant. For those of you that have never heard of it, PCI stands for Payment Card Industry and DSS stands for Data Security Standards. Basically what it comes down to is that the credit card companies have gotten together and created a standard for data security for anyone dealing with credit card information (<a href="https://www.pcisecuritystandards.org">PCI Security Standards Council</a>). They then followed it up with a compliance program with audits and certifications and such. We think this is great. Credit card information should be treated with the utmost care and a lot of effort should be put into keeping that data secure. There are however some issues with the standards. Not that they&#8217;re bad as such but there are some inherent problems with standards that will be applied to both small web shops and large corporations. For the small shops the standard brings a lot of overhead and worse, requires things that are outside of the control of the company. For the large institutions the implementation of something that is seemingly trivial can take ages and lots of manpower.</p>
+
+<p>So, how are we as a growing company dealing with this? Well, after some initial investigation we found that the implementation allows some leeway. First of all there are compensating controls. These magic words are found throughout the specifications  and indicate that even if you are not fully compliant with a certain requirement you can still be overall compliant if you have some extra measures in place. For example, if you use FTP instead of the more secure SFTP and cannot switch over for some reason it is considered a compensating control if you only allow very strong passwords. There is, however, no exact definition of what is considered an acceptable compensating control and that brings us to the next point. The company auditing you for PCI compliance will be assigned by a credit card company or a bank who requests the compliance. The auditor and the sponsor together they will be the judges of where compensating controls are allowed and what compensating controls are acceptable. What works in one audit may therefore not necessarily be accepted in another.</p>
+
+<p>As a result of all of this achieving PCI DSS compliancy may not be quite as daunting a task as it seems to be when you first read through the requirements. Don&#8217;t get me wrong though, this is not a simple task and it depends a lot on how organized and security-aware your company is now, but for us it is more a path than one goal. Actually, the that&#8217;s another thing where some leeway is allowed. If there is a requirement with which you are not compliant and you don&#8217;t have compensating controls in place it may suffice to show a roadmap on how to implement this over time. You can even be overall compliant in that case. However, since the audits are at regular intervals expect the auditors to demand some progress and insight into that roadmap.</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/2008/10/rebuilding-the-mysql-replication-slave/">MySQL Replication Problems</a></h1>
+    
+    
+      <p class="meta">
+        
+  
+
+
+<span class="byline author vcard">Posted by <span class="fn"><a href="/blog/our-team/pim-van-der-wal.html">Pim Van der Wal</a></span></span>
+
+ - 
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2008-10-09T14:16:26+08:00" pubdate data-updated="true">Oct 9<span>th</span>, 2008</time>
+        
+         | <a href="/2008/10/rebuilding-the-mysql-replication-slave/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>We are using a replication setup for our databases. The master database takes care of all the transactions and the slave database is used for hot standby, making backups and running reports. Running mysqldump for backups locks the main tables one by one (we&#8217;re using the MyISAM storage engine) and was causing user interruptions. Hence using the replication slave for this is quite effective but it makes it very important to monitor the replication lag. If the replication stops the backups fall behind and suddenly the hot standby is not so hot anymore. A second problem is that the reports are reporting on stale data.</p>
+
+<p>Recently our master database server decided it was time for a break and spontaneusly rebooted. Since the server immediately came back up and started all services correctly production was only interrupted for a couple of minutes. A little later alerts started coming in that the replication lag was growing. It turns out the replication slave had gotten confused and was processing old replication logs. This means that transactions from a month ago were being processed again. This could be measured in several ways. The lag was showing a number of seconds equivalent to about a month This meant that the records it was trying to insert already existed and we were getting the 1062 MySQL error. This means that the primary key already exists and the new insert cannot complete. This stops replication dead in its tracks. The second way to see that old transactions are being processed is to look when the duplicate records were originally inserted. This is not always possible, but in this case there was a timestamp in the records.</p>
+
+<p>Our conclusion was that we needed to take two actions. First of all we needed to rebuild the replication slave database and restart replication from scratch. To do this you have to lock the entire database while making a mysqldump (FLUSH TABLES WITH READ LOCK).  This would lock out users for 10 to 15 minutes which is unacceptable during the daytime so we decided to execute this later in the evening when fewer users were online. The second action was to let the replication catch up so that we would have a reasonably consistent database in the mean time. This was done by adding the following line to the MySQL configuration file:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>slave-skip-errors=1062</span></code></pre></td></tr></table></div></figure>
+
+
+<p>After that the replication slave server was restarted and the database caught up in 2 hours of processing. The reason we considered this an intermediate solution is that we don&#8217;t delete many records. The applications execute mainly updates and inserts to modify data. As long as the latest updates are executed last the data will be in decent shape. After that we rebuilt the complete slave database at a more convenient time and all was well again&#8230;..</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  <div class="pagination">
+    
+      <a class="prev" href="/blog/page/19/">&larr; Older</a>
+    
+    <a href="/blog/archives">Blog Archives</a>
+    
+    <a class="next" href="/blog/page/17/">Newer &rarr;</a>
+    
+  </div>
+</div>
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/2012/11/howto-bulk-import-dns-zones-to-softlayer-dns-using-cpanel/">HowTo: Bulk Import DNS Zones to Softlayer DNS using Cpanel</a>
+      </li>
+    
+      <li class="post">
+        <a href="/2012/08/integrate-sendgrid-with-redmine/">Integrate Sendgrid with Redmine</a>
+      </li>
+    
+      <li class="post">
+        <a href="/2012/07/rsback-task-x-is-locked-and-cannot-be-executed/">rsback: task x is locked and cannot be executed</a>
+      </li>
+    
+      <li class="post">
+        <a href="/2012/06/restore-xen-vm-from-lvm-snapshot-backups/">Restore Xen VM from LVM Snapshot Backups</a>
+      </li>
+    
+      <li class="post">
+        <a href="/2012/06/debian-6-backup-xen-with-lvm-and-rsnapshot/">Debian 6: Backup Xen with LVM and Rsnapshot</a>
+      </li>
+    
+  </ul>
+</section>
+
+<section>
+  <h1>GitHub Repos</h1>
+  <ul id="gh_repos">
+    <li class="loading">Status updating&#8230;</li>
+  </ul>
+  
+  <a href="https://github.com/promet">@promet</a> on GitHub
+  
+  <script type="text/javascript">
+    $.domReady(function(){
+        if (!window.jXHR){
+            var jxhr = document.createElement('script');
+            jxhr.type = 'text/javascript';
+            jxhr.src = '/javascripts/libs/jXHR.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(jxhr, s);
+        }
+
+        github.showRepos({
+            user: 'promet',
+            count: 0,
+            skip_forks: true,
+            target: '#gh_repos'
+        });
+    });
+  </script>
+  <script src="/javascripts/github.js" type="text/javascript"> </script>
+</section>
+
+
+<section>
+  <h1>Latest Tweets</h1>
+  <ul id="tweets">
+    <li class="loading">Status updating&#8230;</li>
+  </ul>
+  <script type="text/javascript">
+    $.domReady(function(){
+      getTwitterFeed("linuxsysadmnblg", 4, false);
+    });
+  </script>
+  <script src="/javascripts/twitter.js" type="text/javascript"> </script>
+  
+    <a href="http://twitter.com/linuxsysadmnblg" class="twitter-follow-button" data-show-count="false">Follow @linuxsysadmnblg</a>
+  
+</section>
+
+
+
+
+
+  
+</aside>
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2012 - Promet OPS Team -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'linuxsysadminblog';
+      
+        
+        var disqus_script = 'count.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'http://' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) {return;}
+  js = d.createElement(s); js.id = id;
+  js.src = "//connect.facebook.net/en_US/all.js#appId=212934732101925&xfbml=1";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = 'http://platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>

@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: MySQL | Linux Sysadmin Blog]]></title>
+  <link href="http://linuxsysadminblog.com/category/mysql/atom.xml" rel="self"/>
+  <link href="http://linuxsysadminblog.com/"/>
+  <updated>2012-11-13T01:37:44+08:00</updated>
+  <id>http://linuxsysadminblog.com/</id>
+  <author>
+    <name><![CDATA[Promet OPS Team]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Free alternative to InnoDB Hot Backup]]></title>
+    <link href="http://linuxsysadminblog.com/2010/04/free-alternative-to-innodb-hot-backup/"/>
+    <updated>2010-04-29T08:28:22+08:00</updated>
+    <id>http://linuxsysadminblog.com/2010/04/free-alternative-to-innodb-hot-backup</id>
+    <content type="html"><![CDATA[<p>I recently found out that there is a free alternative to InnoDB Hot Backup. For those of you using MySQL with the InnoDB plugin you probably know that MySQL does not provide a tool for making online non-blocking backups. InnoBase Oy, the makers of InnoDB, do provide a tool but it's not free. In fact they charge around $600 per year per server.</p>
+
+<p>The tool that I'm talking about is XtraBackup by Percona. This tool is originally meant to accompany the XtraDB storage engine which in itself is a patched version of InnoDB. XtraBackup will create online non-blocking backups for both XtraDB and InnoDB databases and best of all, it's free.</p>
+
+<p>For those of you who are not that familiar with MySQL backups, the standard way of doing backups is with mysqldump. This can be done with the database online but it blocks the tables it's backing up which is not acceptable for production environments. It also takes a good amount of time to restore a mysqldump since it writes out everything as SQL statements which then have to be processed again. A binary copy is much faster to restore but commonly requires the server to be stopped. The best alternative is to create an LVM snapshot of the binary files but this requires LVM to be set up and enough disk space to perform the LVM snapshot. All in all it's nice to have a free alternative although I have to add the footnote that I haven't tested it on any decently sized database to check what the performance impact is.</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Syntax error on MySQL replication slave (error 1064)]]></title>
+    <link href="http://linuxsysadminblog.com/2009/07/syntax-error-on-mysql-replication-slave-error-1064/"/>
+    <updated>2009-07-14T20:52:38+08:00</updated>
+    <id>http://linuxsysadminblog.com/2009/07/syntax-error-on-mysql-replication-slave-error-1064</id>
+    <content type="html"><![CDATA[<p>Here's an interesting one, what if you have a MySQL replication setup and the slave stops replicating with a syntax error? The slave should be executing the exact same commands as the master, right? Well, as it turns out, yes and no. There is a bug in MySQL that has been fixed in 5.0.56 according to the <a href="http://bugs.mysql.com/bug.php?id=26489">bug report</a>. It's a long story and it's worth the read but what happens is that a timeout in the network connection between the master and the slave can cause the master to resend part of packet that it sent before. The slave handled the previous packet correctly so it's not expecting a resend and as a result it starts writing some garbage to the relay log (which is where it stored the statements it will execute). The SQL command gets mangled in the process and when the slave tries to execute it, voila, a syntax error.</p>
+
+<p>To fix this you can use the CHANGE MASTER command to set the slave to the master bin log file and position that shows up in the SHOW SLAVE STATUS output. Make sure you use the Relay_Master_Log_File and Exec_Master_Log_Pos fields since they indicate what position in the master binlog the slave actually thought it was executing. Keep in mind that corruption and its effects are hard to predict. It will definitely be useful to compare the master and slave afterward using the <a href="http://www.maatkit.org/">MaatKit </a>tools.</p>
+
+<p>As some more background, the server log will be probably show and error like this to indicate there was a network error:
+<code>
+Error reading packet from server: Lost connection to MySQL server during query (server_errno=2013)
+</code></p>
+
+<p>And finally, if you do read the entire bug thread you will notice that the original developer of MySQL also has an opinion on this.</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Cacti and MySQL counters problem]]></title>
+    <link href="http://linuxsysadminblog.com/2009/06/cacti-and-mysql-counters-problem/"/>
+    <updated>2009-06-16T20:46:15+08:00</updated>
+    <id>http://linuxsysadminblog.com/2009/06/cacti-and-mysql-counters-problem</id>
+    <content type="html"><![CDATA[<p>We recently came across a problem with Cacti and the MySQL counters. For those of you who don't know how to integrate MySQL statistics into Cacti have a look at this: <a href="http://code.google.com/p/mysql-cacti-templates/">http://code.google.com/p/mysql-cacti-templates/</a>. These templates are a great way to gain some insight into how your MySQL database servers perform. The templates are actually PHP pages that query the databases through a variety of commands like SHOW STATUS and SHOW ENGINE INNODB STATUS.</p>
+
+<p>The issue that we encountered was that some statistics like the InnoDB buffer pool activity were not displaying anything for one server. Other servers were displaying it just fine and other statistics for that server were also fine.</p>
+
+<p>Among other things the SHOW ENGINE INNODB STATUS command shows deadlock information pertaining to the last deadlock that the InnoDB engine encountered. In some cases this information will be quite extensive and this causes a problem. The output of this command is one giant text field with a limit of 64KB. If the deadlock information is very large other information will get cut off which means certain statistics are lost. The easy fix for this is to restart the database server but in case this is not an option you can always use the innotop utility to wipe the deadlock information by causing a small deadlock.</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[The Great Cloud Shootout at MySQL conference]]></title>
+    <link href="http://linuxsysadminblog.com/2009/04/the-great-cloud-shootout-at-mysql-conference/"/>
+    <updated>2009-04-30T21:29:38+08:00</updated>
+    <id>http://linuxsysadminblog.com/2009/04/the-great-cloud-shootout-at-mysql-conference</id>
+    <content type="html"><![CDATA[<p>MySQL conference notes on cloud computing shoot out text summary atranscript</p>
+
+<blockquote><p>Lew Tucker, Cloud CTO, sun
+Monty Taylor, MySQL Drissel Geek, Sun
+Jeremy Zawodny, MySQL hacker, craigslist
+Chander Kant, CEO, Zmanda
+Thorsten von Ficon, CTO, Rightscale
+Prashant Malik, Cassandra Dude, Facebook
+Mike Culver, Evangerlist, Amazon Web Services</p></blockquote>
+
+<p>Some interesting subjects touched upon were:</p>
+
+<p><strong>elasticity</strong> - allowing even a small company to shoot for the moon without shooting itself in the foot
+like utilities, much like electricity - you dont think about the electricyt company running out of electricity
+new way of packaging the technology with a pay as you go model, way to provision your application</p>
+
+<ul>
+<li>Different Types of Clouds</li>
+<li>Layers of Clouds</li>
+<li>Amazon like</li>
+<li>Google</li>
+<li><p>SaaS</p></li>
+<li><p>Who is the cloud for?</p></li>
+<li>even ERP in the cloud?</li>
+</ul>
+
+
+<p>How would an existing application benefit from the cloud?
+* scaling an application
+* leverage the collective scalability of the cloud
+* forklifting an application out of datacenter or in house colo
+* scalability testing?</p>
+
+<p>Cloud adoption barriers
+* privacy
+* performance
+* network latency
+* trust and privacy
+* mindset on owning your own datacenter
+* competition (lack of)</p>
+
+<p>What applications fit best into the cloud
+* own</p>
+
+<p>Business Opportunities?
+* dev pay - the customer signs up for SaaS or Software as an annuity
+* learn how to do performance tuning and optimization and do that for cloud infrastructures (41:50)</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[MySQL Query Cache, Good or Bad?]]></title>
+    <link href="http://linuxsysadminblog.com/2009/04/mysql-query-cache-good-or-bad/"/>
+    <updated>2009-04-21T20:55:06+08:00</updated>
+    <id>http://linuxsysadminblog.com/2009/04/mysql-query-cache-good-or-bad</id>
+    <content type="html"><![CDATA[<p>MySQL has a number of different caches. Most of those are dependent on the storage engine that is used. The key buffer for example caches the indexes for MyISAM tables while the caching of data is left to the OS. InnoDB has the buffer pool for both data and indexes and so on. The query cache however, is independent of the storage engine that is used. Unlike most caches it does not store records or pages of data but complete result sets and the queries that caused those results to be returned. This is a very disputable concept since the way that it works is that if any of the tables  used in a result set is modified, the whole cached result set is thrown out of the cache.</p>
+
+<p>The good news is that if you have data that does not change very much the query cache can give you an enormous performance boost. It even bypasses the query optimizer so that if the query is complex even more cpu time is saved. Knowing this you can optimize your application by chopping complex queries into smaller queries that only use that data that never changes.</p>
+
+<p>Of course there are some tricks to using the query cache. The first one is the size of the query cache. The default is 16MB which doesn't do much. However, keep in mind that any memory assigned to the query cache is removed from another cache so it's very important to strike a good balance. Of course the balance is very application dependent. The second parameter is the maximum allowed result set size. It really doesn't do any good to allow 16MB result sets into the cache because it would take only one badly written query to flush out the entire cache. 1MB is standard but in my personal experience queries that return 1MB of results on a frequent basis usually indicate that the software needs to be optimized.</p>
+
+<p>So when is the query cache a bad thing? Well, in short, when the cache gets flushed out all the time and only adds to the overhead it's usually better to assign the memory to storage engine dependent cache. If there are constant updates and inserts to most of your tables it will invalidate the results in the query cache pretty quickly and assigning memory to it is a waste of resources.</p>
+
+<p>Useful tools like <a href="http://wiki.mysqltuner.com/MySQLTuner">MySQL Tuner</a> will give some quick information about the efficiency of the query cache but I do think it is a bit quick in suggesting more memory for the cache.</p>
+]]></content>
+  </entry>
+  
+</feed>

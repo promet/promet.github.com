@@ -1,0 +1,386 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Upgrading to Trac 0.11 - Linux Sysadmin Blog</title>
+  <meta name="author" content="Promet OPS Team">
+
+  
+  <meta name="description" content="This article will outline the steps necessary to perform the upgrade from an older version of trac (normally 0.10 that many people are still running &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://linuxsysadminblog.com/2008/11/upgrading-to-trac-011/">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="/javascripts/ender.js"></script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <link href="/atom.xml" rel="alternate" title="Linux Sysadmin Blog" type="application/atom+xml">
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+<!-- Google Form for Contact Page -->
+<!-- jQuery -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+<script type="text/javascript">
+    // Avoid conflict with ender.js.
+jQuery.noConflict();
+</script>
+<!-- jQuery Form Plugin -->
+<script src="http://malsup.github.com/jquery.form.js"></script>
+<script src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.9/jquery.validate.min.js"></script> 
+<script src="/javascripts/google_form.js"></script>
+<!-- Google Form for Contact Page End here -->
+
+
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-120251-38']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">Linux Sysadmin Blog</a></h1>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:linuxsysadminblog.com" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/our-team">Our Team</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+  <li><a href="/blog/about">About</a></li>
+  <li><a href="/blog/contact">Contact</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      
+
+<div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">Upgrading to Trac 0.11</h1>
+    
+    
+      <p class="meta">
+        
+  
+
+
+<span class="byline author vcard">Posted by <span class="fn"><a href="/blog/our-team/marius-ducea.html">Marius Ducea</a></span></span>
+
+ - 
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2008-11-25T06:16:59+08:00" pubdate data-updated="true">Nov 25<span>th</span>, 2008</time>
+        
+         | <a href="#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>This article will outline the steps necessary to perform the <strong>upgrade </strong>from an older version of <strong>trac </strong>(normally 0.10 that many people are still running) to the latest stable branch <strong>0.11</strong> (more precisely 0.11.2 available at this time). The <a href="http://trac.edgewall.org/wiki/0.11/TracUpgrade">TracUpgrade</a> official documentation describes this in detail, but unfortunately misses some important steps that can leave you with a broken trac environment while trying to upgrade. Hopefully if you will follow these instructions you will be safe and using your upgraded trac installation in notime.</p>
+
+<h3>1. Backup your existing installation</h3>
+
+<p>This is obvious, but many times ignored. Here are the key locations of a normal trac 0.10 installation that you will need to save:
+<strong>/usr/lib/python2.x/site-packages/</strong> &lt;- anything related to trac (can be just trac, but also some plugins eggs). You will normally run python2.4 meaning this will be: /usr/lib/python2.4/site-packages; If you use other versions please change accordingly.
+<strong>/usr/share/trac</strong> &lt;- web files (htdocs and cgi-bin)
+<strong>/var/trac</strong> &lt;- this is the location where you deployed your project (depends on your setup)</p>
+
+<p>Just save them, in case you will need them later. I would also <strong>disable all the plugins</strong> you might be using in trac. Now you should remove the files from <em>/usr/lib/python2.x/site-packages/</em> and <em>/usr/share/trac</em> that are <strong>related to trac</strong>. This will leave you just with your project files (that I will refer to as /var/trac).</p>
+
+<h3>2. Install the new trac version</h3>
+
+<p>Depending on how you are installing this, packaged by your distribution or manually using easy_install, you should now <a href="http://trac.edgewall.org/wiki/0.11/TracInstall">install</a> the new version of trac.</p>
+
+<p>For example if you use easy_install this will look like:
+<code>sudo easy_install Trac</code>
+(that should install all the required modules, like Genshi for ex).</p>
+
+<p>If you are using a package this might look like:
+<code>yum install python-genshi
+rpm -Uvh trac-0.11.2.1-1.el5.rf.noarch.rpm</code>
+on a rpm based distro (using the <a href="https://rpmrepo.org/RPMforge">RPMforge</a> trac package), or:
+<code>aptitude -t etch-backports Buy Propecia Online  install trac</code>
+on debian using the backports 0.11 version.</p>
+
+<h3>3. Upgrade your Trac Environment</h3>
+
+<p>Since this is a major version change you will need to upgrade your project environment. This is done using the trac-admin command:
+<code>trac-admin /path/to/projenv upgrade
+trac-admin /path/to/projenv wiki upgrade</code>
+in my case this will look like this:
+<code>trac-admin /var/trac/myproject upgrade
+trac-admin /var/trac/myproject wiki upgrade</code></p>
+
+<p>After this step the trac documentation, is saying that we just have to restart apache and all should be ok. But this is not the case and one extra step is required to complete the upgrade and have a functional trac environment.</p>
+
+<h3>4. Deploying web files</h3>
+
+<p>This new version of trac is <strong>not deploying the web and cgi files</strong> as previous ones did. Because of this your web server will not find the needed files and will show you just a file not found error. In order to fix this we have to run:
+<code>trac-admin /path/to/projenv deploy /tmp/trac/</code>
+and this will extract all the needed files in /tmp/trac and you can copy them to the final destination: /usr/share/trac:
+<em>/tmp/trac/htdocs/common should go in /usr/share/trac/htdocs</em>
+and if you are using cgi-bin then copy the needed cgi version in /usr/share/trac/cgi-bin (or /usr/lib/cgi-bin, etc.) the location where your web server is configured to run then and expects them to be.</p>
+
+<h3>5. Reinstall plugins, etc.</h3>
+
+<p>After you restart your web server you should now have a functional trac 0.11 installation. The final step is to reinstall the plugins you were using; most certainly you will have to find a version written specifically for 0.11 as the old 0.10 version will not run. Normally you will find this information on the plugin homepage (<a href="http://trac-hacks.org/">track-hacks</a> probably) and the installation will look like:
+<code>easy_install http://trac-hacks.org/svn/accountmanagerplugin/trunk</code></p>
+
+<p>Hopefully this article will help you to upgrade safely to trac 0.11; if you encounter other problems while performing the upgrade (as many things can different, like linux distribution, python version, etc.) please check the <a href="http://trac.edgewall.org/">trac docs/tickets</a> or feel free to post a comment bellow with your problem.</p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+
+<span class="byline author vcard">Posted by <span class="fn"><a href="/blog/our-team/marius-ducea.html">Marius Ducea</a></span></span>
+
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2008-11-25T06:16:59+08:00" pubdate data-updated="true">Nov 25<span>th</span>, 2008</time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/category/centos/'>Centos</a>, <a class='category' href='/category/installation/'>Installation</a>, <a class='category' href='/category/sysadmin/'>sysadmin</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://linuxsysadminblog.com/2008/11/upgrading-to-trac-011/" data-via="linuxsysadmnblg" data-counturl="http://linuxsysadminblog.com/2008/11/upgrading-to-trac-011/" >Tweet</a>
+  
+  
+  
+    <div class="fb-like" data-send="true" data-width="450" data-show-faces="false"></div>
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/2008/11/denial-of-service-attack-and-the-defense-in-depth-layer/" title="Previous Post: Denial of Service Attack and the Defense-in-Depth Layer">&laquo; Denial of Service Attack and the Defense-in-Depth Layer</a>
+      
+      
+        <a class="basic-alignment right" href="/2008/11/cpanel-adding-custom-configuration-to-httpdconf/" title="next Post: Cpanel:  Adding custom configuration to httpd.conf">Cpanel:  Adding custom configuration to httpd.conf &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
+
+  <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/2012/11/howto-bulk-import-dns-zones-to-softlayer-dns-using-cpanel/">HowTo: Bulk Import DNS Zones to Softlayer DNS using Cpanel</a>
+      </li>
+    
+      <li class="post">
+        <a href="/2012/08/integrate-sendgrid-with-redmine/">Integrate Sendgrid with Redmine</a>
+      </li>
+    
+      <li class="post">
+        <a href="/2012/07/rsback-task-x-is-locked-and-cannot-be-executed/">rsback: task x is locked and cannot be executed</a>
+      </li>
+    
+      <li class="post">
+        <a href="/2012/06/restore-xen-vm-from-lvm-snapshot-backups/">Restore Xen VM from LVM Snapshot Backups</a>
+      </li>
+    
+      <li class="post">
+        <a href="/2012/06/debian-6-backup-xen-with-lvm-and-rsnapshot/">Debian 6: Backup Xen with LVM and Rsnapshot</a>
+      </li>
+    
+  </ul>
+</section>
+
+<section>
+  <h1>GitHub Repos</h1>
+  <ul id="gh_repos">
+    <li class="loading">Status updating...</li>
+  </ul>
+  
+  <a href="https://github.com/promet">@promet</a> on GitHub
+  
+  <script type="text/javascript">
+    $.domReady(function(){
+        if (!window.jXHR){
+            var jxhr = document.createElement('script');
+            jxhr.type = 'text/javascript';
+            jxhr.src = '/javascripts/libs/jXHR.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(jxhr, s);
+        }
+
+        github.showRepos({
+            user: 'promet',
+            count: 0,
+            skip_forks: true,
+            target: '#gh_repos'
+        });
+    });
+  </script>
+  <script src="/javascripts/github.js" type="text/javascript"> </script>
+</section>
+
+
+<section>
+  <h1>Latest Tweets</h1>
+  <ul id="tweets">
+    <li class="loading">Status updating...</li>
+  </ul>
+  <script type="text/javascript">
+    $.domReady(function(){
+      getTwitterFeed("linuxsysadmnblg", 4, false);
+    });
+  </script>
+  <script src="/javascripts/twitter.js" type="text/javascript"> </script>
+  
+    <a href="http://twitter.com/linuxsysadmnblg" class="twitter-follow-button" data-show-count="false">Follow @linuxsysadmnblg</a>
+  
+</section>
+
+
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2012 - Promet OPS Team -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'linuxsysadminblog';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://linuxsysadminblog.com/2008/11/upgrading-to-trac-011/';
+        var disqus_url = 'http://linuxsysadminblog.com/2008/11/upgrading-to-trac-011/';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'http://' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) {return;}
+  js = d.createElement(s); js.id = id;
+  js.src = "//connect.facebook.net/en_US/all.js#appId=212934732101925&xfbml=1";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = 'http://platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>

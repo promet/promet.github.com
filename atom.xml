@@ -1,0 +1,1097 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Linux Sysadmin Blog]]></title>
+  <link href="http://linuxsysadminblog.com/atom.xml" rel="self"/>
+  <link href="http://linuxsysadminblog.com/"/>
+  <updated>2012-11-13T01:37:44+08:00</updated>
+  <id>http://linuxsysadminblog.com/</id>
+  <author>
+    <name><![CDATA[Promet OPS Team]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[HowTo: Bulk Import DNS Zones to Softlayer DNS using Cpanel]]></title>
+    <link href="http://linuxsysadminblog.com/2012/11/howto-bulk-import-dns-zones-to-softlayer-dns-using-cpanel/"/>
+    <updated>2012-11-13T01:08:00+08:00</updated>
+    <id>http://linuxsysadminblog.com/2012/11/howto-bulk-import-dns-zones-to-softlayer-dns-using-cpanel</id>
+    <content type="html"><![CDATA[<p>This guide covers the process for doing bulk import of existing DNS zones from a Cpanel or BIND server to Softlayer&#8217;s DNS servers (<em>ns1/ns2.softlayer.com</em>).  This is useful if you need to add hundreds of zones, if for example you are moving your DNS hosting servers to Softlayer&#8217;s free DNS hosting.  Currently, Softlayer doesn&#8217;t have a tool to do bulk import of zones with existing records. Although you can create a default zone template and bulk add zones but this doesn&#8217;t fit for existing zones.</p>
+
+<h3>Requirements:</h3>
+
+<p>1.) DNS zones on a Cpanel server (WHM or DNSOnly).</p>
+
+<p>If you are not using a Cpanel server then you can stand up a Cpanel VPS this process and install Cpanel DNSOnly as it is free or install Cpanel WHM and automatically it will have 15-day trial license, or you can get a one month WHM VPS license for $15/month.
+DNSOnly should be fine and easier/faster to install but you cannot view the DNS zones from its UI, although you can view or edit the zone files directly (<em>ex: /var/named/domain.db</em>).
+Then import your zones to Cpanel server. There are lots of guides or discussions online in doing this. Some mentioned that you can move the named.conf and zone files as-is and adjust the formatting to match Cpanel&#8217;s.
+In our case we were running Cpanel server so we copied straight our &#8220;/var/named/*.db&#8221; files to Cpanel DNSOnly to import zones.</p>
+
+<p>2.) Softlayer API key for your account.</p>
+
+<p>  You will need this later to connect your Cpanel DNS server in a cluster setup with Softlayer&#8217;s DNS servers. Cpanel have DNS cluster functionality with SoftLayer and VPS.NET.</p>
+
+<h3>The Import Process:</h3>
+
+<p>1.) Configure your Cpanel DNS cluster to connect to Softlayer&#8217;s DNS servers.</p>
+
+<ul>
+<li>Login to Cpanel WHM or DNSOnly, then go to <em>Cluster/Remote Access</em>  ->> <em>Configure Cluster</em>.</li>
+<li>select <em>Enable DNS clustering</em></li>
+<li>On <em>Backend Type</em> dropdown, you will see <em>cPanel</em> only. Then click on <em>(Show All)</em> link next to it and the page will reload and you will see two more options: <em>Softlayer</em> and <em>VPS.NET</em>. Select <em>Softlayer</em> and click on *Configure button.
+<a href="http://linuxsysadminblog.com/images/2012/cluster-setup.png"><img src="http://linuxsysadminblog.com/images/2012/cluster-setup.png" alt="cluster-setup" /></a></li>
+<li>On <em>SoftLayer DNS Remote Configuration</em> page, enter your Softlayer API user and key. On <em>DNS role</em> choose <em>Synchronize changes</em> from dropdown list and click on <em>Submit</em>.
+<a href="http://linuxsysadminblog.com/images/2012/softlyer-dns-config.png"><img src="http://linuxsysadminblog.com/images/2012/softlyer-dns-config.png" alt="softlyer-dns-config" /></a></li>
+</ul>
+
+
+<p>2.) Synchronize DNS Records across clusters. DNS Cluster is now your Cpanel server and Softlayer servers.</p>
+
+<ul>
+<li>From Cpanel WHM or DNSOnly admin, go to * DNS Functions<em> ->> </em>Synchronize DNS Records*</li>
+<li>Select <em>Synchronize all zones to all servers</em> and check the box that says <em>Synchronize zones that are not configured on this server</em>. Then hit <em>Synchronize</em> button.
+<a href="http://linuxsysadminblog.com/images/2012/sync-dns.png"><img src="http://linuxsysadminblog.com/images/2012/sync-dns.png" alt="sync-dns" /></a></li>
+<li>The dns sync process will run and it will take some time depending on the number of zones and records that you have. Wait until it&#8217;s finish and you&#8217;re done.</li>
+<li>Once this starts you can login to your Softlayer portal and go to <em>Public Network</em> ->> <em>Domain Name System</em> and you will start seeing zones and see the progress on how many are imported.</li>
+</ul>
+
+
+<p><em>That is all. You can shutdown or remove your Cpanel DNSOnly/WHM server when if not needed.</em></p>
+
+<h3>Notes:</h3>
+
+<ul>
+<li>Cpanel have DNS cluster functionality with SoftLayer and VPS.NET so you might be able to use this guide to bulk import zones to VPS.NET.</li>
+<li>At this time of writing, we encountered a problem with Cpanel DNS cluster integration with Softlayer and we cannot modify the dns records that were imported initially.  When we update them it reverts to the original records from initial import. We disabled the DNS cluster setup from Cpanel and we update our DNS zones/records right from Softlayer portal.</li>
+<li>Above info refers to BIND server as the default DNS server on Cpanel.</li>
+</ul>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Integrate Sendgrid with Redmine]]></title>
+    <link href="http://linuxsysadminblog.com/2012/08/integrate-sendgrid-with-redmine/"/>
+    <updated>2012-08-09T17:03:00+08:00</updated>
+    <id>http://linuxsysadminblog.com/2012/08/integrate-sendgrid-with-redmine</id>
+    <content type="html"><![CDATA[<p>One thing everybody wants when deploying applications is integrating them with other applications or services.  Two popular apps and services out there for small businesses that manage project management and email are Redmine and SendGrid.</p>
+
+<h3>Prerequisites</h3>
+
+<ol>
+<li>A working Redmine install.</li>
+<li>A sendgrid email address.  Let&#8217;s say we have something like redmine@yourdomain.com that we want Redmine to send emails from.</li>
+<li>Here are a few gems I put on sporatically when researching email integration, so make sure you have them.  Jump to where your redmine install is located (e.g. /var/www/redmine) and do the following:</li>
+</ol>
+
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'># gem install mail json sendgrid</span></code></pre></td></tr></table></div></figure>
+
+
+<p>The core of this funcionality is provided by the sendgrid gem which originates from here: <a href="https://github.com/stephenb/sendgrid">https://github.com/stephenb/sendgrid</a>.</p>
+
+<h4>Redmine Configuration File</h4>
+
+<p>If your Redmine install is something like /var/www/redmine, your configuration file will be /var/www/redmine/config/configuration.yml.  If you have a relatively clean Redmine install, chances are you might not have one or it&#8217;s a default template with a lot of examples.  You might find an example detailing how to integrate with GMail in the example file.  Our set up will be similar.  Paste the following into your configuration.yml file and change the necessary parameters.</p>
+
+<!--more-->
+
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>production:
+</span><span class='line'>  delivery_method: :smtp
+</span><span class='line'>  smtp_settings:
+</span><span class='line'>    tls: true
+</span><span class='line'>    enable_starttls_auto: true
+</span><span class='line'>    address: "smtp.sendgrid.net"
+</span><span class='line'>    port: 587
+</span><span class='line'>    authentication: :plain
+</span><span class='line'>    domain: "yourdomain.com"
+</span><span class='line'>    user_name: "sendgrid_auth_name"
+</span><span class='line'>    password: "sendgrid_auth_password"</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Now if you already had a configuration.yml file for the install you jumped into, there are overrides which show up as a blank section at the end which will prevent this integration from working. It might look like:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>production:</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Remove empty sections like this.  You can edit things towards the beginning of your config file all day long and these blank sections will override your settings.</p>
+
+<h3>Redmine Settings</h3>
+
+<p>Through your web browser, go to Administration -> Settings, and click the &#8220;Email Notifications&#8221; Tab.</p>
+
+<ol>
+<li>Set the emission email address field to: redmine@yourdomain.com (the sendgrid account you created).</li>
+<li>Fix your footer URL to match your domain so users can go directly to their account settings.</li>
+<li>Test your settings by clicking the link &#8220;Send a test email&#8221; in the lower right hand corner.</li>
+</ol>
+
+
+<h3>Troubleshooting</h3>
+
+<p>If you are getting auth errors, make sure you are just using your user_name parameter in the configuration.yml file (i.e. just &#8220;redmine&#8221;).</p>
+
+<p>If you think you can&#8217;t reach the service, try this quick connection test:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>$ telnet smtp.sendgrid.net 587</span></code></pre></td></tr></table></div></figure>
+
+
+<p>If successful, you&#8217;ll see some response like this:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>$ telnet smtp.sendgrid.net 587
+</span><span class='line'>Trying 50.97.69.147...
+</span><span class='line'>Connected to smtp.sendgrid.net.
+</span><span class='line'>Escape character is '^]'.
+</span><span class='line'>220 mi1 ESMTP service ready</span></code></pre></td></tr></table></div></figure>
+
+
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[rsback: task x is locked and cannot be executed]]></title>
+    <link href="http://linuxsysadminblog.com/2012/07/rsback-task-x-is-locked-and-cannot-be-executed/"/>
+    <updated>2012-07-24T16:40:00+08:00</updated>
+    <id>http://linuxsysadminblog.com/2012/07/rsback-task-x-is-locked-and-cannot-be-executed</id>
+    <content type="html"><![CDATA[<p><em>Rsback Error</em>:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>  rsback: [date/time] *** task 'x' is locked and cannot be executed.</span></code></pre></td></tr></table></div></figure>
+
+
+<p>I got the above error when I was trying to re-run the rsback task that I previously killed its schedule backup process.  I had issue with the server being backup so I had to terminate the process.</p>
+
+<p>This error shows up and prevents the backup task from running because the lock file is still present, which indicats that a process could still be running.  In order to fix this you need to remove the lock file and re-run the backup task.  Look at your rsback config (<em>/etc/rsback/rsback.conf</em>) to find out the location of your rsback lock files, default is &#8221;<em>lock_dir = /var/lock/subsys</em>&#8221;.  In there you will see rsback lock files as &#8221;<em>rsback.backup_task_name.lock</em>&#8221;, and just delete that file.</p>
+
+<p>For those who doesn&#8217;t know or heard of <a href="http://sourceforge.net/projects/rsback/">rsback</a> below is a short description from sourceforge.</p>
+
+<p>  <em>rsback makes rotating backups using the common rsync program combined with hard-link copies on Unix-based backup hosts. This results in a fast and disk space saving backup technique.</em></p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Restore Xen VM from LVM Snapshot Backups]]></title>
+    <link href="http://linuxsysadminblog.com/2012/06/restore-xen-vm-from-lvm-snapshot-backups/"/>
+    <updated>2012-06-22T20:21:00+08:00</updated>
+    <id>http://linuxsysadminblog.com/2012/06/restore-xen-vm-from-lvm-snapshot-backups</id>
+    <content type="html"><![CDATA[<p>What&#8217;s the use of backups if you can&#8217;t restore from them? ;)</p>
+
+<p>In the previous post on &#8220;Backup Xen with LVM and Rsnapshot&#8221; we worked on creating backups of Xen (guest/domain) VMs with LVM, and here we&#8217;ll cover the process of restoring from these backups.</p>
+
+<p>What is covered here:</p>
+
+<p>Restoring specific files or directories
+Doing &#8220;bare-metal&#8221; type of restore. We will re-create the VM from our rsnapshot backups.
+Restore Process:</p>
+
+<p>1.) Restoring specific files or directories only</p>
+
+<p>While this restore scenario is a no-brainer, still I&#8217;ll just want to mention it here as well.  Basically this one is the usual copying of files (via cp, scp, ftp, rsync, etc) from your source or backup server to the destination server.</p>
+
+<p>2.) &#8220;Bare-metal&#8221; restore (creates complete vm image from backup).</p>
+
+<p>Overview of &#8220;bare-metal&#8221; restore process:</p>
+
+<p>create, format, and mount logical volumes to use on the vm that you want to restore or re-create, based on its original vm disk properties such as size, names, etc.
+copy all files from backup location to the newly mounted lvm disk</p>
+
+<!--more-->
+
+
+<p>adjust necessary xen vm configs (if any, like new ip address) and start/create the vm using the volume with restored contents or files, and you&#8217;re done.
+In the restore example below I&#8217;ll refer to the vm as &#8220;domain.com&#8221; and we will restore the backups to a different volume with the same config as the original.  Then we&#8217;ll start the vm, domain.com, using the restored volume.</p>
+
+<p>Here&#8217;s the sample VM configuration that we will use.
+orignal vm disks: /dev/vg0/domain.com-disk (10GB) and /dev/vg0/domain.com-swap (512MB)
+backup located at &#8220;/backup&#8221; of host machine
+disks configurations to use on restored vm: /dev/vg0/domain-restore.com-disk (10GB) and /dev/vg0/domain-restore.com-swap (512MB)
+To start we determine the virtual machine  to restore as well as the backup to use  for restore.</p>
+
+<p>Then we&#8217;ll create logical volumes with the same values as the running volumes as defined in our /etc/xen/domain.com.cfg.  Please note that you don&#8217;t have to re-create the swap disk if you want, but in this example we&#8217;ll just create another one.</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>lvcreate -L 10G -n domain-restore.com-disk vg0
+</span><span class='line'>lvcreate -L 512M -n domain-restore.com-swap vg0</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Format the &#8220;-disk&#8221; and mount it somewhere on host machine (ex: /backup-restore) and copy backup files into it, and unmount it after copying.</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>mkfs -t ext3 -v /dev/vg0/domain-restore.com-disk
+</span><span class='line'>mkdir /backup-restore
+</span><span class='line'>mount /dev/vg0/domain-restore.com-disk /backup-restore
+</span><span class='line'>cp -rpfv /backup/domain.com-disk/* /backup-restore/
+</span><span class='line'>umount /dev/vg0/domain-restore.com-disk
+</span><span class='line'>rmdir /backup-restore</span></code></pre></td></tr></table></div></figure>
+
+
+<p>We now have the volume that contains the restored files at /dev/vg0/domain-restore-disk and ready to use by our domain.com VM.</p>
+
+<p>Let&#8217;s shutdown &#8220;domain.com&#8221; machine and change its disk configuration to use the new/restored volume.</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>xm shutdown domain.com</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Then we&#8217;ll update our vm xen config to let our &#8220;domain.com&#8221; vm use the &#8220;domain-restore-disk&#8221;.  We&#8217;ll modify /etc/xen/original.domain.com.cfg and change the disks to point to new volumes with restored contents.</p>
+
+<p>From:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>'phy:/dev/vg0/domain.com-disk,xvda2,w',
+</span><span class='line'>'phy:/dev/vg0/domain.com-swap,xvda1,w',</span></code></pre></td></tr></table></div></figure>
+
+
+<p>To:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>'phy:/dev/vg0/domain-restore.com-disk,xvda2,w',
+</span><span class='line'>'phy:/dev/vg0/domain-restore.com-swap,xvda1,w',</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Start our domain.com machine on its restored contents.</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>xm create /etc/xen/domain.com.cfg</span></code></pre></td></tr></table></div></figure>
+
+
+<p>That&#8217;s all - you should have your vm running from its restored state! If everything is not ok you can quickly configure your vm to use the original volumes and restart it.</p>
+
+<p>If you do not want to touch your live machine, you can just create another vm with the same config as the live one, create new volumes and restore your backups to that vm.</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Debian 6: Backup Xen with LVM and Rsnapshot]]></title>
+    <link href="http://linuxsysadminblog.com/2012/06/debian-6-backup-xen-with-lvm-and-rsnapshot/"/>
+    <updated>2012-06-22T05:38:00+08:00</updated>
+    <id>http://linuxsysadminblog.com/2012/06/debian-6-backup-xen-with-lvm-and-rsnapshot</id>
+    <content type="html"><![CDATA[<p>This is a draft of my installation process which is mainly based from this blog:  <a href="http://backdrift.org/efficient-xen-backups-using-lvm-and-rsnapshot">Efficient Xen Backups Using LVM and Rsnapshot</a>.</p>
+
+<p>Our setup is on Debian 6 server with 2TB disk running 10 vpses. We followed the above guide with notes on errors we encountered, mostly rsnapshot related. We are keeping daily backup locally, on a separate partition, and copies them to our remote server every week.</p>
+
+<p>The Setup (mostly defaults):
+vg path is /dev
+vg name is vg0</p>
+
+<p>Setup Process:</p>
+
+<p>Create logical partition to store backups locally.  Size is 100GB and named it backups.  Format it with ext3 and mounted it to /backups.</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>lvcreate -L 100G -n backups vg0
+</span><span class='line'>mkfs -t ext3 -v /dev/vg0/backups
+</span><span class='line'>mkdir /backups
+</span><span class='line'>mount /dev/vg0/backups /backups</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Install and configure rsnapshot.  Make sure you use TAB correctly as it will complain or give you an error if you don&#8217;t.</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>aptitude install rsnapshot
+</span><span class='line'>vi /etc/rsnapshot.conf</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Here&#8217;s my rsnapshot config changes and/or additions:</p>
+
+<!--more-->
+
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>snapshot_root /backups/    #this is a mounted partition
+</span><span class='line'>interval daily 1    # i removed all other schedule and one daily copy only
+</span><span class='line'>linux_lvm_cmd_lvcreate /sbin/lvcreate
+</span><span class='line'>linux_lvm_cmd_lvremove /sbin/lvremove
+</span><span class='line'>linux_lvm_cmd_mount /bin/mount
+</span><span class='line'>linux_lvm_cmd_umount /bin/umount
+</span><span class='line'>linux_lvm_snapshotsize 2G
+</span><span class='line'>linux_lvm_snapshotname rsnapshot
+</span><span class='line'>linux_lvm_vgpath /dev
+</span><span class='line'>linux_lvm_mountpath /mnt/lvm-snapshot
+</span><span class='line'># Backups Tasks for all VMs
+</span><span class='line'>backup lvm://vg0/vm_1_name_disk/ vm_1_name_disk/
+</span><span class='line'>backup lvm://vg0/vm_2_name_disk/ vm_2_name_disk/
+</span><span class='line'>backup lvm://vg0/vm_10_name_disk/ vm_10_name_disk/</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Schedule daily backup task in crontab (/etc/crontab). Note that rsnapshot is in /usr/bin/rsnapshot on Debian.</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>01 01 * * * root /usr/bin/rsnapshot daily</span></code></pre></td></tr></table></div></figure>
+
+
+<p>You can then run the rsnapshot task to make sure everything is working, from your config file to creating and mounting lvm snapshots. Execution time depends on number of vms and their size. You can ran them individually if needed.</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>/usr/bin/rsnapshot daily</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Then I setup another backup task from remote backup server to pick up our local backups at /backups. You can also configure rsnapshot to backup your snapshots directly to your remote backup location (usiang rsync/ssh), depends on how you want to backup your data.</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Gitolite: Add, Edit, or Delete Git Repository Name]]></title>
+    <link href="http://linuxsysadminblog.com/2012/06/gitolite-add-edit-or-delete-git-repository-name/"/>
+    <updated>2012-06-05T06:23:23+08:00</updated>
+    <id>http://linuxsysadminblog.com/2012/06/gitolite-add-edit-or-delete-git-repository-name</id>
+    <content type="html"><![CDATA[<p>I can&#8217;t find commands in gitolite to manage repository or project name, so here&#8217;s what I got from other sources.</p>
+
+<p><strong>Add or create repository</strong></p>
+
+<ul>
+<li>Add entry for new project or repository in your gitolite config (<em>conf/gitolite.conf</em>)</li>
+<li>Commit and push your changes. this will create and initialize your new repo.</li>
+</ul>
+
+
+<p><strong>Rename a repository</strong></p>
+
+<ul>
+<li>Modify the name of repo in your gitolite config (<em>conf/gitolite.conf</em>)</li>
+<li>Move or rename the actual directory (depending on where you install it, ex: <em>/home/git/repositories</em>) to match your changes in gitolite config.</li>
+<li>Commit and push your changes.</li>
+</ul>
+
+
+<p><strong>Note</strong>: Obviously, this changes the remote url of your repo, so don&#8217;t forget to change your git remote url config in your project clones.</p>
+
+<p><strong>Delete a repository</strong>:</p>
+
+<ul>
+<li>Open your gitolite config and remove the project from there. commit and push your changes.</li>
+<li>Then delete its git directory (ex: /home/git/repositories/projectname.git)</li>
+<li>You can also remove users/keys that are no longer used</li>
+</ul>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Install vsftpd Server With Virtual User and Directory]]></title>
+    <link href="http://linuxsysadminblog.com/2012/06/install-vsftpd-server-with-virtual-user-and-directory/"/>
+    <updated>2012-06-04T09:15:33+08:00</updated>
+    <id>http://linuxsysadminblog.com/2012/06/install-vsftpd-server-with-virtual-user-and-directory</id>
+    <content type="html"><![CDATA[<p>Here&#8217;s a summary for <a href="http://vsftpd.beasts.org">vsftpd</a> setup with virtual user and directory in Debian.  It&#8217;s probably the same process on other Debian-based distros as well as Redhat-based distros. No need to define what&#8217;s vsftpd and what&#8217;s virtual users - let&#8217;s just proceed to the setup. :)</p>
+
+<p>Install VSFTPD:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>aptitude install vsftpd</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Choose what method to use for virtual user authentication.  Let&#8217;s use pam passwd module (libpam-pwdfile), I guess this is the most common and easy to setup.  You can also use libpam-mysql if you want to manage your ftp users via mysql database, like if you want integrate it with your application that&#8217;s using mysql as backend.</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>aptitude install libpam-pwdfile</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Next create your password file (example: <em>/etc/vsftpd_users.conf</em>) which contain the list of virtual users and password hash.  You can use <a href="http://httpd.apache.org/docs/2.0/programs/htpasswd.html">htpasswd</a> that&#8217;s included in Apache or go to this website, <a href="http://www.htaccesstools.com/htpasswd-generator/">htaccesstools.com</a> to generate the list of users and passwords.</p>
+
+<!--more-->
+
+
+<p>Once you have the list of users (example: <em>demo1</em> and <em>demo2</em>), you have to create their virtual directory as well, let&#8217;s say I want to set ftp users home directory inside <em>/home/ftpusers</em>.  This will be their home directory and they can&#8217;t see or navigate outside of their home dir. Make sure they&#8217;re writable as well.</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>mkdir /home/ftpusers /home/ftpusers/demo1 /home/ftpusers/demo2</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Then update your vsftpd config (<em>/etc/vsftpd.conf</em>) and make sure you have the configs below enabled. Please take note that some of these configs might me enabled by default.  Also, you might want to read the detailed description on <em>/etc/vsftpd.conf</em> file about the configurations that you want to enable/disable, example: allow local system users to connect to ftp, disable anonymous ftp access, welcome message, and so on.</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>listen=YES
+</span><span class='line'>anonymous_enable=NO
+</span><span class='line'>local_enable=YES
+</span><span class='line'>write_enable=YES
+</span><span class='line'>dirmessage_enable=YES
+</span><span class='line'>use_localtime=YES
+</span><span class='line'>xferlog_enable=YES
+</span><span class='line'>connect_from_port_20=YES
+</span><span class='line'>chroot_local_user=YES
+</span><span class='line'>secure_chroot_dir=/var/run/vsftpd/empty
+</span><span class='line'>pam_service_name=vsftpd
+</span><span class='line'>virtual_use_local_privs=YES
+</span><span class='line'>guest_enable=YES
+</span><span class='line'>user_sub_token=$USER
+</span><span class='line'>local_root=/home/vsftpd/$USER</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Finally update the pam config (/etc/pam.d/vsftpd) with the lines below and remote or comment out existing lines in there.</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>auth    required pam_pwdfile.so pwdfile /etc/vsftpd_users.conf
+</span><span class='line'>account required pam_permit.so</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Restart vsftpd and connect to your ftp server:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>/etc/init.d/vsftpd restart</span></code></pre></td></tr></table></div></figure>
+
+
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[YUM: There are unfinished transactions remaining. You might consider running yum-complete-transaction first to finish them.]]></title>
+    <link href="http://linuxsysadminblog.com/2012/04/yum-there-are-unfinished-transactions-remaining-you-might-consider-running-yum-complete-transaction-first-to-finish-them/"/>
+    <updated>2012-04-30T07:34:45+08:00</updated>
+    <id>http://linuxsysadminblog.com/2012/04/yum-there-are-unfinished-transactions-remaining-you-might-consider-running-yum-complete-transaction-first-to-finish-them</id>
+    <content type="html"><![CDATA[<p>Yum Error:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>There are unfinished transactions remaining. You might consider running yum-complete-transaction first to finish them.</span></code></pre></td></tr></table></div></figure>
+
+
+<p>With <em>unfinished transactions</em>, yum refers to any incomplete or aborted transactions, such as package installations or updates.  Obviously, yum wants you to run <code>yum-complete-transaction</code> command to fix the problem.  If you can&#8217;t find <em>yum-complete-transaction</em> on your system, probably you don&#8217;t have the package &#8221;<em>yum-utils</em>&#8221; installed, so install it first with <code>yum install yum-utils</code>.</p>
+
+<p>If you run <em>yum-complete-transaction</em> command, it will find and resolve the latest corrupted/aborted transaction and try to complete or fix it, and you have to run it again until all issues are fixed.  Running that command will tell you how many transactions are left to complete, package name, and so on.  Try running <code>/usr/sbin/yum-complete-transaction --help</code> for options in using this commands.</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[HowTo Install APC on CPanel/WHM]]></title>
+    <link href="http://linuxsysadminblog.com/2011/05/howto-install-apc-on-cpanelwhm/"/>
+    <updated>2011-05-05T21:07:16+08:00</updated>
+    <id>http://linuxsysadminblog.com/2011/05/howto-install-apc-on-cpanelwhm</id>
+    <content type="html"><![CDATA[<p><strong>CPanel</strong> includes support in their installer for <strong>eaccelerator</strong>; still, for some strange reason they don&#8217;t include support for <strong><a href="http://pecl.php.net/package/APC">APC</a></strong> also. So, if you want to install APC on your CPanel powered server, you will have to go back at the command line and install it manually.</p>
+
+<p>Here are the steps needed to install the latest version of APC (3.1.8 at the time of writing this article; please check for the latest version available when you are reading this and make the changes accordingly):</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>cd /usr/local/src
+</span><span class='line'>wget http://pecl.php.net/get/APC-3.1.8.tgz
+</span><span class='line'>tar -zxvf APC-3.1.8.tgz
+</span><span class='line'>cd APC-3.1.8
+</span><span class='line'>phpize
+</span><span class='line'>./configure --enable-apc --enable-apc-mmap --with-apxs --with-php-config=/usr/local/bin/php-config
+</span><span class='line'>make
+</span><span class='line'>make install</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Next, activate the apc module in <strong>php.ini</strong> by adding something like this:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>extension="apc.so"
+</span><span class='line'>apc.enabled=1
+</span><span class='line'>apc.shm_segments=1
+</span><span class='line'>apc.shm_size=128</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Finally, you will have to <em>restart apache</em> and after that the APC module should be activated and in use. Hopefully, this will help you enable APC on your CPanel server in some very simple steps in less that 5minutes.</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Amazon AWS worse failure]]></title>
+    <link href="http://linuxsysadminblog.com/2011/04/amazon-aws-worse-failure/"/>
+    <updated>2011-04-22T15:59:01+08:00</updated>
+    <id>http://linuxsysadminblog.com/2011/04/amazon-aws-worse-failure</id>
+    <content type="html"><![CDATA[<p>I&#8217;m sure almost everyone is aware at this point on the <strong>failure</strong> that caused Amazon cloud computing solution AWS to be down yesterday (and still is at some smaller extend happening at this time as we can see on their <a href="http://status.aws.amazon.com/">status</a> page) for most of the day. This has affected a few big (Reddit, Foursquare, Quora, Heroku, Engine Yard, for ex.) and many small sites hosted in the <strong>us-east-1</strong> AWS region. This happened regardless on the availability zone you were in the region US-EAST (this is the oldest one and still the default for many client tools) and questioned the <a href="http://aws.amazon.com/ec2/faqs/#How_isolated_are_Availability_Zones_from_one_another">independence and isolation</a> of the availability zones in the AWS infrastructure design.</p>
+
+<p>The failure was specifically related to the <strong>EBS</strong> drives that made customer instances non responding, but also prevented them to start or stop new instances with the same EBS volumes (that probably 99% have tried immediately as they got paged). There are some sites that had failover mechanisms, but if they were in the same availability zone it was useless (something that looked like a good solution and fast and cost effective). Others, many startups, found out that they had no such mechanism at all, and that they depended way too much on the Amazon reliability. Until this issue, Amazon had a great uptime record; there were many issues but with individual instances, but not such a global issue. You would expect people running their application in the cloud to expect failures and be prepared and I&#8217;m sure most of them are compared with applications deployed in the regular datacenter, but apparently there is still much work to be done.</p>
+
+<p>Overall I believe this showed (if we needed a reminder), that failures can happen and anyone can suffer from such a problem (Google had problems, Facebook the same, and Twitter is most of the time down, and now was just Amazon&#8217;s turn). We need to be prepared and build and architect our applications with this in mind and be ready to failover. A great example of this is the twilio application design: <a href="http://www.twilio.com/engineering/2011/04/22/why-twilio-wasnt-affected-by-todays-aws-issues/">http://www.twilio.com/engineering/2011/04/22/why-twilio-wasnt-affected-by-todays-aws-issues/</a></p>
+
+<!--more-->
+
+
+<p>Also I think Amazon will learn many things from this event, and hopefully one of them will be to <em>better communicate with their clients</em>. They can definitely improve on this, and not leave people to go to twitter or ec2 forums for the best updates on such problems instead from the source.</p>
+
+<p>I&#8217;ve also seen different providers (I will not give names but they are everywhere on twitter) come out and offer their services to people hit by this. I don&#8217;t believe this is the best approach to sell your very performant cloud solution or barebone datacenter servers or whatever, and probably it does worse for their reputation making them look like coyotes on a fallen prey. I&#8217;m sure like me, most people felt disgusted on their offers at this time, and it will definitely not make me look at their offering again.</p>
+
+<p>Now its time to get back to work on failover and redundancy design for our clients that need help with this. If you&#8217;ve been affected by this and want to share your story and what are your takeaways feel free to comment bellow on the post. If you need specialized help to design or implement a fully fault tolerant infrastructure feel free to <a href="http://www.prometsource.com/contact">contact us</a> anytime. We are here to help.</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Setup SSH Key Authentication]]></title>
+    <link href="http://linuxsysadminblog.com/2011/04/setup-ssh-key-authentication/"/>
+    <updated>2011-04-17T15:46:41+08:00</updated>
+    <id>http://linuxsysadminblog.com/2011/04/setup-ssh-key-authentication</id>
+    <content type="html"><![CDATA[<p>Setup ssh key authentication for password-less login between servers.  For use by ssh/sftp users or scripts.</p>
+
+<p><strong>Source Server </strong>(or local system)</p>
+
+<p>Generate RSA key for user on this system, you can also use DSA.  This asks for key pass-phrase but you can leave it blank.</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>ssh-keygen -t rsa</span></code></pre></td></tr></table></div></figure>
+
+
+<p>This asks for location to place the generated key, by default it will be your home directory (<em>ex: /home/your_username/.ssh/</em>).  This generates two files:  <em>id_rsa</em> and <em>id_rsa.pub</em>.  Content of <em>id_rsa.pub </em>is what we need to copy to destination server.</p>
+
+<p><strong>Destination Server </strong>(or remote server)</p>
+
+<p>Check if you have the directory <em>.ssh</em> on your home (<em>ex: /home/username/.ssh/</em>), if not, create that directory.</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>ls  ~/.ssh
+</span><span class='line'>mkdir  ~/.ssh</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Check if you have existing file <em>authorized_keys </em>on your <em>.ssh</em> directory, if not create it.</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>ls  ~/.ssh/ authorized_keys
+</span><span class='line'>touch   ~/.ssh/ authorized_keys</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Copy content of <em>id_rsa.pub </em>that you created<em> </em>from your source/local server, or execute this command from your <strong>source/local server</strong>:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>scp  ~/.ssh/id_rsa.pub username@remote_host:~/.ssh/authorized_keys</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Test your password-less login from source to destination server.</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[CentOS 5.6 released]]></title>
+    <link href="http://linuxsysadminblog.com/2011/04/centos-5-6-released/"/>
+    <updated>2011-04-15T14:44:29+08:00</updated>
+    <id>http://linuxsysadminblog.com/2011/04/centos-5-6-released</id>
+    <content type="html"><![CDATA[<p>While people are still waiting to for Centos 6 (after many month since RHEL6 was released) we got a little teaser in the <a href="http://lists.centos.org/pipermail/centos-announce/2011-April/017282.html">release</a> of <strong>Centos 5.6</strong> last week. This is a minor security release, but it also brings in some interesting additions like <strong>ext4</strong> support and <strong>php53</strong> packages among others.</p>
+
+<p>If you are running any Centos 5.x minor version you should be able to upgrade just by running:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>yum update</span></code></pre></td></tr></table></div></figure>
+
+
+<p>We already upgraded to Centos 5.6 all our servers and you should do the same also, and hopefully soon we will see the Centos6 release that everyone is waiting for.</p>
+
+<p>For the full list of packages changed/added please see the centos5.6 release notes: <a href="http://wiki.centos.org/Manuals/ReleaseNotes/CentOS5.6">http://wiki.centos.org/Manuals/ReleaseNotes/CentOS5.6</a></p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Setup SFTP-Only Access (Redhat-based Distro)]]></title>
+    <link href="http://linuxsysadminblog.com/2011/04/setup-sftp-only-access-redhat-based-distro/"/>
+    <updated>2011-04-12T14:41:17+08:00</updated>
+    <id>http://linuxsysadminblog.com/2011/04/setup-sftp-only-access-redhat-based-distro</id>
+    <content type="html"><![CDATA[<p>Setup sftp-only access on default Redhat/CentOS install.  Use built-in <em>sftp-server</em> which is non-chrooted and easy to setup.</p>
+
+<p><strong>Server: </strong>Locate sftp-server binary and add to your list of valid shells on the system.</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>which sftp-server</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Note:   This will most likely give you this: <em>/usr/libexec/openssh/sftp-server</em></p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>echo /usr/libexec/openssh/sftp-server &gt;&gt; /etc/shells</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Note:  You may want to backup your /etc/shells first</p>
+
+<p><strong>User Accounts</strong>:  Add or modify accounts to use sftp-server.</p>
+
+<p><strong>New User</strong></p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>useradd -s /usr/libexec/openssh/sftp-server  sftponlyuser</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Note:  Important parameter there is the <em>“-s /usr/libexec/openssh/sftp-server&#8221;</em>, which sets the default shell for this account.   By default you will have “<em>/bin/bash</em>”.</p>
+
+<p><strong>Existing User:</strong></p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>vi /etc/passwd</span></code></pre></td></tr></table></div></figure>
+
+
+<p><strong><em> </em></strong> Find the user that you want to configure for sftp only access and edit its shell.  For exampleyou will see a line “<em>username:x:500:500::/home/username:/bin/bash” _ change &#8221;</em>/bin/bash<em>&#8221; to &#8221;</em>/usr/libexec/openssh/sftp-server_&#8221; and save.  Note: _ Y_ou may want to backup your /etc/passwd file as well.</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Moving Drupal site with CiviCRM]]></title>
+    <link href="http://linuxsysadminblog.com/2011/04/moving-drupal-site-with-civicrm/"/>
+    <updated>2011-04-11T10:24:29+08:00</updated>
+    <id>http://linuxsysadminblog.com/2011/04/moving-drupal-site-with-civicrm</id>
+    <content type="html"><![CDATA[<p>The common headache for beginners who try to move their Drupal site with CiviCRM is the CiviCRM configuration on new location or domain.  I did this countless times and dealt with different problems before.  I&#8217;ve read many online tutorials and how-tos, and I finally have my notes which is working for me everytime i move Drupal and CiviCRM site.</p>
+
+<p>Let&#8217;s assume you already moved the databases (separate database for Drupal and CiviCRM as a recommended setup) and the files to new location and have set the correct file permissions as well.  Here is the part that you need for your CiviCRM to work on new location and domain:</p>
+
+<ul>
+<li>access your database and empty <code>civicrm.domain:config_backend</code>.  You see this anywhere with CiviCRM guide.</li>
+<li>update database details, site path/directory, and domain on <code>civicrm.settings.php</code></li>
+<li>emtpy <code>sites/default/files/civicrm/template_c</code> (or make this entire dir writable by web user)</li>
+<li>login to you new Drupal site and visit these urls:
+<code>http://sitename/civicrm/menu/rebuild?reset=1</code>
+<code>http://sitename/civicrm/admin/setting/updateConfigBackend?reset=1</code></li>
+</ul>
+
+
+<p><strong>Note:</strong> This will rebuild the settings for you - if not, repeat/review all the above steps.</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Install ApacheSolr in Ubuntu for Drupal]]></title>
+    <link href="http://linuxsysadminblog.com/2011/04/install-apachesolr-in-ubuntu-for-drupal/"/>
+    <updated>2011-04-03T14:26:25+08:00</updated>
+    <id>http://linuxsysadminblog.com/2011/04/install-apachesolr-in-ubuntu-for-drupal</id>
+    <content type="html"><![CDATA[<p>I&#8217;ve written few Drupal ApacheSolr install guides here and this one is basically an install draft for Ubuntu.</p>
+
+<p><strong>Environment: </strong>  <a href="http://www.ubuntu.com/">Ubuntu 10.10</a>, Apache, PHP, MySQL, <a href="http://drupal.org">Drupal 6.20</a></p>
+
+<p><strong>Things to install / setup</strong>:   <a href="http://apache.rediris.es/lucene/solr/">Solr</a>, <a href="http://tomcat.apache.org/download-60.cgi">Tomcat6</a>, <a href="http://drupal.org/project/apachesolr">ApacheSolr module for Drupal</a>, and <a href="http://code.google.com/p/solr-php-client/">SolrPHPClient library</a></p>
+
+<p><strong>1.)  Install Tomcat and setup your Tomcat admin user.</strong></p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>aptitude install tomcat6 tomcat6-admin tomcat6-common tomcat6-user
+</span><span class='line'>vi /etc/tomcat6/tomcat-users.xml
+</span><span class='line'>  &lt;role rolename="admin"/&gt;
+</span><span class='line'>  &lt;role rolename="manager"/&gt;
+</span><span class='line'>  &lt;user username="tomcat" password="password" roles="admin,manager"/&gt;
+</span><span class='line'>/etc/init.d/tomcat6 restart</span></code></pre></td></tr></table></div></figure>
+
+
+<p>If all is good you will be able to access Tomcat admin at <code>http://hostname:8080</code>.  Default page will show with links to admin section, etc.</p>
+
+<p><strong>2.)  Install Solr</strong></p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>wget http://apache.rediris.es/lucene/solr/1.4.1/apache-solr-1.4.1.zip</span></code></pre></td></tr></table></div></figure>
+
+
+<p><a href="http://apache.rediris.es/lucene/solr/"><em>check for updates</em></a></p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>unzip apache-solr-1.4.1.zip
+</span><span class='line'>mkdir /usr/share/tomcat6/webapps
+</span><span class='line'>cp apache-solr-1.4.1/dist/apache-solr-1.4.1.war /usr/share/tomcat6/webapps/solr.war
+</span><span class='line'>cp -r apache-solr-1.4.1/example/solr /usr/share/tomcat6/solr
+</span><span class='line'>vi /etc/tomcat6/Catalina/localhost/solr.xml
+</span><span class='line'>  &lt;Context docBase="/usr/share/tomcat6/webapps/solr.war" debug="0" privileged="true" allowLinking="true" crossContext="true"&gt;
+</span><span class='line'>  &lt;Environment name="solr/home" type="java.lang.String" value="/usr/share/tomcat6/solr" override="true" /&gt;
+</span><span class='line'>  &lt;/Context&gt;
+</span><span class='line'>chown -r tomcat6.tomcat6 /var/lib/tomcat6
+</span><span class='line'>/etc/init.d/tomcat6 restart</span></code></pre></td></tr></table></div></figure>
+
+
+<p>You should see Solr access on your Tomcat admin/manager page (<code>http://hostname:8080/manager/html</code>).</p>
+
+<p><strong>3.)  Connect Drupal Site to Solr (multi-core setup)</strong></p>
+
+<p>I already have a Drupal site with ApacheSolr module installed and SolrPHPclient library.</p>
+
+<!--more-->
+
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>cp /path/drupal_site/sites/all/modules/apachesolr/schema.xml /usr/share/tomcat6/solr/conf/schema.xml
+</span><span class='line'>cp /path/drupal_site/sites/all/modules/apachesolr/solrconfig.xml /usr/share/tomcat6/solr/conf/solrconfig.xml
+</span><span class='line'>cp apache-solr-1.4.1/example/multicore/solr.xml /usr/share/tomcat6/solr/
+</span><span class='line'>mkdir /usr/share/tomcat6/solr/site_sample1
+</span><span class='line'>cp -r /usr/share/tomcat6/solr/conf /usr/share/tomcat6/solr/site_sample1/conf
+</span><span class='line'>vi /usr/share/tomcat6/solr/solr.xml`
+</span><span class='line'>  &lt;core name="site1" instanceDir="site_sample1" /&gt;
+</span><span class='line'>chown -R tomcat6:root /usr/share/tomcat6/solr/
+</span><span class='line'>/etc/init.d/tomcat6 restart</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Visit ApacheSolr settings of your Drupal admin and enter the configuration:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>Solr Hostname: localhost
+</span><span class='line'>Solr Port: 8080
+</span><span class='line'>Solr Path: /solr/site1</span></code></pre></td></tr></table></div></figure>
+
+
+<p><strong>To add new site to Solr:</strong></p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>mkdir /usr/share/tomcat6/solr/site_sample2
+</span><span class='line'>cp -r /usr/share/tomcat6/solr/conf /usr/share/tomcat6/solr/site_sample2/conf
+</span><span class='line'>vi /usr/share/tomcat6/solr/solr.xml
+</span><span class='line'>  &lt;core name="site2" instanceDir="site_sample2" /&gt;</span></code></pre></td></tr></table></div></figure>
+
+
+<p>That&#8217;s All.</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[APC should be enabled by default]]></title>
+    <link href="http://linuxsysadminblog.com/2011/04/apc-should-be-enabled-by-default/"/>
+    <updated>2011-04-01T14:36:15+08:00</updated>
+    <id>http://linuxsysadminblog.com/2011/04/apc-should-be-enabled-by-default</id>
+    <content type="html"><![CDATA[<p><strong>PHP is slow</strong>. This should not be a huge revelation for any of us, and this is not because PHP is a bad programing language, or because Python or Ruby are better. This is because it is an <a href="http://en.wikipedia.org/wiki/Interpreted_language"><em>interpreted language</em></a>. Every time you execute a PHP script it is going to do the exact same thing and interpret your code and then execute it over and over. This is obviously slow and doesn&#8217;t compare with any compiled language like C++ for example. But we don&#8217;t want to write in C++ for our webapps, right? and we would like to use the PHP simplicity as many other open source products and developers; what can we do then? We can very easily enable any of the opcode cache available: <a href="http://pecl.php.net/package/APC"><strong>APC</strong></a>, <a href="http://eaccelerator.net/"><strong>eaccelerator</strong></a> or <a href="http://xcache.lighttpd.net/"><strong>xcache</strong></a> (I&#8217;m not aware of something similar for python or ruby, but if it exists you should probably use it also). An <strong>opcode cache</strong> or <strong>PHP accelerator</strong>, will cache the compiled form of the php scripts speeding up dramatically their execution time. Many people have done this a long time as they needed to improve the performance of their sites, and get results up to 20x speed up from plain PHP. A very simple step-by-step intro on how you can install APC can be found on this <a href="http://linuxsysadminblog.com/2010/03/enabledisable-apc-on-virtual-host-level/">older post</a>.</p>
+
+<p>Now here is the question a good friend of mine asked me a while ago: <strong>why is APC not enabled by default?</strong> Why do people have to do an extra step to install an external module for this (that many don&#8217;t). And my answer at that time was that opcode caches are not perfect, and depending by how you write your code they might cause problems and have it no longer functioning correctly. I think I was quite happy with my answer as myself I would always install an opcode cache on any high traffic site I managed from day one (most of the time APC, but also eaccelerator) and many time even running comparisons between them to see if one of them is faster. Still even today, in most of the <strong>performance projects</strong> we completed, we found people don&#8217;t do this, and they <strong>don&#8217;t have APC installed and enabled</strong>. There are some tricks on how to tune APC and improve even better its performance but here I&#8217;m talking just to have it installed. This is why I think that APC should be enabled by default everywhere (not only by &#8216;high traffic&#8217; sites). It should give PHP scripts a boost of performance and if you really have problems with it you can disable it on a vhost or directory level very simple just by adding in .htaccess:
+<code>php_flag apc.cache_by_default On
+</code></p>
+
+<p>I&#8217;m hoping more and more people will do this so we can focus on more serious performance problems in our PHP webapps. I don&#8217;t see why not, because this is very simple and there are plenty of <a href="http://www.google.com/search?q=howto+php+apc">howto&#8217;s</a> available. Still if you need help, and you would like us to do it for you, please <a href="http://www.prometsource.com/contact">contact us</a> and let us speed up your site.</p>
+
+<p>Note: if you have done this many years ago and want somethign even faster for your PHP code you should take a look at <a href="https://github.com/facebook/hiphop-php/wiki/"><strong>HipHop</strong></a> the project from Facebook to <strong>compile your php scripts</strong> (actually transforms PHP source code into highly optimized C++ and then uses g++ to compile it to machine code) and run them as executables (but this is going to be much harder to implement, but still a very interesting project to keep an eye).</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Gmail Shorcuts]]></title>
+    <link href="http://linuxsysadminblog.com/2011/04/gmail-shorcuts/"/>
+    <updated>2011-04-01T13:11:45+08:00</updated>
+    <id>http://linuxsysadminblog.com/2011/04/gmail-shorcuts</id>
+    <content type="html"><![CDATA[<p>Besides Gmail, many sites are moving to GoogleApps for hosting their emails, and if you use Gmail or GoogleApps a lot then you might love the keyboard shortcuts feature.</p>
+
+<p>You can quickly see available shortcut keys by typing &#8220;?&#8221; (<em>question mark, no qoutes</em>) and it will give you this screen.</p>
+
+<p><a href="http://linuxsysadminblog.com/images/2011/04/gmail_shortcut.png"><img src="http://linuxsysadminblog.com/images/2011/04/gmail_shortcut-300x175.png" alt="gmail shortcut" /></a></p>
+
+<p>Of course you need to enable keyboard shortcuts on your settings.  :)</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Hosting presentation at DrupalCon2011]]></title>
+    <link href="http://linuxsysadminblog.com/2011/03/hosting-presentation-at-drupalcon2011/"/>
+    <updated>2011-03-27T19:08:20+08:00</updated>
+    <id>http://linuxsysadminblog.com/2011/03/hosting-presentation-at-drupalcon2011</id>
+    <content type="html"><![CDATA[<p>Below is my presentation from Drupal Con 2011 where Promet Source, a <a href="http://www.prometsource.com">Drupal Development Company</a> based out of Chicago was a Gold sponsor.  Although none or our proposed talks got in, we did get a slot at the Main stage.  Below are the slides of my talk.  Basically we wanted to highlight that while we do focus on automation, performance and security, with Drupal the security updates must be integrated with human support to ensure that updates do not break the site.</p>
+
+<p><strong><a href="http://www.slideshare.net/akucharski/what-should-you-expect-from-your-drupal-web-host">What should you expect from your Drupal Web Host</a></strong></p>
+
+<p>View more <a href="http://www.slideshare.net/">presentations</a> from <a href="http://www.slideshare.net/akucharski">Promet Solutions</a></p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Setup Subversion (SVN) and mod_dav_svn on Cpanel Server]]></title>
+    <link href="http://linuxsysadminblog.com/2010/10/setup-subversion-svn-and-mod_dav_svn-on-cpanel-server/"/>
+    <updated>2010-10-18T06:00:06+08:00</updated>
+    <id>http://linuxsysadminblog.com/2010/10/setup-subversion-svn-and-mod_dav_svn-on-cpanel-server</id>
+    <content type="html"><![CDATA[<p>Quick install guide for SVN with mod_dav_svn (http/https) repository access on Cpanel server running CentOs5.</p>
+
+<p><strong>Configure Cpanel for SVN</strong></p>
+
+<p>Recompile Apache/PHP (<em>WHM -> Software -> EasyApache</em>) and enable support for the following:</p>
+
+<ul>
+<li>Dav (<em>Among other things mod_dav can be used by DAV enabled Frontpage clients instead of FP extensions</em>)</li>
+<li>BerkeleyDB.  <strong>Note</strong>: BerkeleyDB support (&#8221;<em>&#8211;with-berkeley-db</em>&#8221;) is not enabled by default in EasyApache so you need to add this manually to your EasyApache config using <a href="http://docs.cpanel.net/twiki/bin/view/EasyApache3/CustomConfigureFlags">this guide</a> or <a href="http://community.eapps.com/showthread.php?271-Adding-subversion-support-to-Apache">this one</a>.</li>
+</ul>
+
+
+<p><strong>Install Subversion and mod_dav_svn</strong></p>
+
+<p>Install subversion using yum (<em>yum install subversion</em>) or install it from source.  At this time CentOS repo version is 1.4.x and the latest from source is 1.6.x.</p>
+
+<p><strong>Install and enable mod_dav_svn in Cpanel</strong></p>
+
+<ul>
+<li>Install mod_dav_svn using yum (<em>yum install mod_dav_svn</em>) - version 1.4.x same as subersion above.</li>
+<li>Load mod_dav_svn module to Apache.  Go to <em>WHM -> Service Configuration -> Apache Configuration -> Include Editor -> Pre-Main Include</em>.   Select either &#8221;<em>All Versions</em>&#8221; or your current Apache version (ex: &#8221;<em>2.2.16</em>&#8221;) from drop-down list.  Or you can edit their corresponding file directly:
+
+<ul>
+<li>All Versions:  <em>/usr/local/apache/conf/includes/pre_main_global.conf</em></li>
+<li>Apache 2.2.16: <em>/usr/local/apache/conf/includes/pre_main_2.conf</em></li>
+</ul>
+</li>
+<li>Add the codes below and click &#8221;<em>Update</em>&#8221; button to save config. This will restart Apache if no error on your configuration.</li>
+</ul>
+
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>&lt;IfModule mod_dav.c&gt;
+</span><span class='line'>LoadModule dav_svn_module /usr/lib/httpd/modules/mod_dav_svn.so
+</span><span class='line'>LoadModule authz_svn_module /usr/lib/httpd/modules/mod_authz_svn.so
+</span><span class='line'>&lt;/IfModule&gt;</span></code></pre></td></tr></table></div></figure>
+
+
+<p><strong>Create repository and add http access (ex: http://domain.com/svn)</strong></p>
+
+<ul>
+<li>Create your repository: <code>svnadmin create /path/to/svn/repos</code></li>
+<li>Add the code below to your domain&#8217;s custom include file.  You need to create this file based on <a href="http://www.cpanel.net/documentation/easyapache/customdirectives.html">this guide</a> to preserve when you recompile Apache/PHP.
+Example file (Apache2,standard/non-ssl):  <code>/usr/local/apache/conf/userdata/std/2/cpanl_user/domain.com/svn.conf</code>
+File Contents:</li>
+</ul>
+
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>&lt;Location /svn&gt;
+</span><span class='line'>#  mod dav svn support and location of svn repo files
+</span><span class='line'>DAV svn
+</span><span class='line'>SVNPath /path/to/svn/repos
+</span><span class='line'># authentication for security, create using htpasswd
+</span><span class='line'>AuthType Basic
+</span><span class='line'>AuthName "SVN Access"
+</span><span class='line'>AuthUserFile /path/to/file/containing/user.pass
+</span><span class='line'>Require valid-user
+</span><span class='line'># added for permissions/access
+</span><span class='line'>Order allow,deny
+</span><span class='line'>Allow from all
+</span><span class='line'>&lt;/Location&gt;</span></code></pre></td></tr></table></div></figure>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Install Apache Solr and Tomcat for Drupal]]></title>
+    <link href="http://linuxsysadminblog.com/2010/10/install-apache-solr-and-tomcat-for-drupal/"/>
+    <updated>2010-10-17T05:10:55+08:00</updated>
+    <id>http://linuxsysadminblog.com/2010/10/install-apache-solr-and-tomcat-for-drupal</id>
+    <content type="html"><![CDATA[<p>Here&#8217;s my quick install guide for Solr, Tomcat, and Drupal ApacheSolr module for multiple sites.  Mostly I based the steps below from the following sites: <a href="http://wiki.apache.org/solr/SolrTomcat">wiki.apache.org</a> and <a href="http://www.drupalconnect.com/blog/steve/configuring-apache-solr-multi-core-drupal-and-tomcat-ubuntu-910">drupalconnect.com</a>.</p>
+
+<p><strong>Detailed Setup:</strong></p>
+
+<ul>
+<li>Drupal 6.19</li>
+<li>ApacheSolr module 6-1.1</li>
+<li>Apache Solr PHP Client Library: Rev.22</li>
+<li>Solr 1.4.1</li>
+<li>Tomcat 6.0.29</li>
+<li>SunJDK 6update21</li>
+<li>RHEL5.5x64</li>
+</ul>
+
+
+<p><strong>Install Process: Tomcat</strong></p>
+
+<ul>
+<li>Create <code>solr</code> user</li>
+<li>Download <a href="http://tomcat.apache.org/download-60.cgi">Tomcat6</a></li>
+<li>Extract to <code>/opt/tomcat</code>,  <em>this will be the <code>$CATALINA_HOME</code> directory, you can use any dir you want</em></li>
+<li>Edit <code>/opt/tomcat/conf/tomcat-users.xml</code> to enable Tomcat login.  See comments in this file.</li>
+</ul>
+
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>&lt;role rolename="manager"/&gt;
+</span><span class='line'>&lt;role rolename="admin"/&gt;
+</span><span class='line'>&lt;user username="tomcat" password="tomcat" roles="manager,admin"/&gt;</span></code></pre></td></tr></table></div></figure>
+
+
+<ul>
+<li>Test run your Tomcat:  <code>/opt/tomcat/bin/catalina.sh run</code>.  Chown all Tomcat files to <code>solr</code> user (<code>chown -R solr.solr /opt/tomcat</code>).  Default server setting will use port 8080, to customized edit the file <code>/opt/tomcat/conf/server.xml</code>.  If you encounter error on &#8221;<em>BASEDIR environment variable is not defined correctly&#8230;</em>&#8221;, check permissions of <code>.sh</code> files inside <code>/opt/tomcat/bin/</code> and make them executable (<code>chmod 755 /opt/tomcat/bin/*.sh</code>).</li>
+<li>Add startup (init) script.  Copy this <a href="http://wiki.apache.org/solr/SolrTomcat?action=AttachFile&amp;do=view&amp;target=tomcat6">Tomcat6 init file</a> from Apache.org to <em>/etc/init.d/tomcat6</em>.  Check and update variables like Java home, Tomcat directory, etc, if needed.  Add to startup <code>/sbin/chkconfig --add tomcat6</code> and <code>/sbin/chkconfig tomcat6 on</code>.  Dependencies: redhat-lsb (or lsb-base?)</li>
+<li>Visit your Tomcat Admin page.  ex <em>http://localhost:8080</em></li>
+</ul>
+
+
+<p><strong>Install Process: Solr</strong></p>
+
+<ul>
+<li>Download <a href="http://mirrors.igsobe.com/apache/lucene/solr/">Solr</a></li>
+<li>Extract to temporary location, ex: <code>/opt/apache-solr-1.4.1</code></li>
+<li>Copy <code>/opt/apache-solr-1.4.1/dist/apache-solr-1.4.1.war</code> to <code>/opt/tomcat/webapps/solr.war</code></li>
+<li>Copy <code>/opt/apache-solr-1.4.1/example/solr</code> directory to <code>/opt/tomcat/solr</code>  <em>this will be the <code>$SOLR_HOME</code> directory, you can use any dir you want</em></li>
+<li>Create file <code>/opt/tomcat/conf/Catalina/localhost/solr.xml</code> with the following configuration.  Make sure paths are correct.</li>
+</ul>
+
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>&lt;Context docBase="/opt/tomcat/webapps/solr.war" debug="0" privileged="true" allowLinking="true" crossContext="true"&gt;
+</span><span class='line'>&lt;Environment name="solr/home" type="java.lang.String" value="/opt/tomcat/solr" override="true" /&gt;
+</span><span class='line'>&lt;/Context&gt;</span></code></pre></td></tr></table></div></figure>
+
+
+<p><strong>Install Process: ApacheSolr Drupal module and SolrPHP client</strong></p>
+
+<ul>
+<li>Install/enable <a href="http://drupal.org/project/apachesolr">Drupal ApacheSolr</a> module. Drush, CVS, or traditional install - whatever you want.  Example: <code>/var/www/site1/sites/all/modules/apachesolr</code></li>
+<li>Download <a href="http://code.google.com/p/solr-php-client/">SolrPHP client library</a></li>
+</ul>
+
+
+<p><strong>Configure Solr for Multi-Core Setup</strong></p>
+
+<ul>
+<li>Copy <code>/var/www/site1/sites/all/modules/apachesolr/schema.xml</code> to <code>/opt/tomcat/solr/conf/schema.xml</code></li>
+<li>Copy <code>/var/www/site1/sites/all/modules/apachesolr/solrconfig.xml</code> to <code>/opt/tomcat/solr/conf/solrconfig.xml</code></li>
+<li>Copy <code>/opt/apache-solr-1.4.1/example/multicore/solr.xml</code> to <code>/opt/tomcat/solr/solr.xml</code></li>
+<li>Create directory for each site and copy <code>/opt/tomcat/solr/conf</code> directory to each of them. Example:</li>
+</ul>
+
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>mkdir /opt/tomcat/solr/site1
+</span><span class='line'>mkdir /opt/tomcat/solr/site2
+</span><span class='line'>cp -r /opt/tomcat/solr/conf /opt/tomcat/solr/site1/
+</span><span class='line'>cp -r /opt/tomcat/solr/conf /opt/tomcat/solr/site2/</span></code></pre></td></tr></table></div></figure>
+
+
+<ul>
+<li>Edit <code>/opt/tomcat/solr/solr.xml</code> with the following config:</li>
+</ul>
+
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>&lt;?xml version="1.0" encoding="UTF-8" ?&gt;
+</span><span class='line'>&lt;solr persistent="false"&gt;
+</span><span class='line'>&lt;cores adminPath="/admin/cores"&gt;
+</span><span class='line'>&lt;core name="site1" instanceDir="site1" /&gt;
+</span><span class='line'>&lt;core name="site1" instanceDir="site2" /&gt;
+</span><span class='line'>&lt;/cores&gt;
+</span><span class='line'>&lt;/solr&gt;</span></code></pre></td></tr></table></div></figure>
+
+
+<ul>
+<li>Start or Restart Tomcat: <code>/etc/init.d/tomcat6 start</code></li>
+<li>Visit <code>http://localhost:8080/</code> and go to you Solr App</li>
+</ul>
+
+
+<p><strong>Configure Drupal site:</strong></p>
+
+<ul>
+<li>Go to ApacheSolr settings <code>http://localhost/admin/settings/apachesolr</code></li>
+<li>Save your config and if all is good you&#8217;ll see message: <code>Your site has contacted the Apache Solr server.</code></li>
+</ul>
+
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>Solr host name: localhost
+</span><span class='line'>Solr port: 8080
+</span><span class='line'>Solr path (for site1): /solr/site1</span></code></pre></td></tr></table></div></figure>
+
+
+<ul>
+<li>Configure your search index.</li>
+</ul>
+
+]]></content>
+  </entry>
+  
+</feed>

@@ -1,0 +1,428 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>svnadmin: can't open file 'svn/db/fsfs.conf': No such file or directory - Linux Sysadmin Blog</title>
+  <meta name="author" content="Promet OPS Team">
+
+  
+  <meta name="description" content="While working on setting up a backup script for a subversion repository I encountred an interesting problem. I&#8217;ve done this before many times, &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://linuxsysadminblog.com/2010/06/svnadmin-cant-open-file-svndbfsfs-conf-no-such-file-or-directory/">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="/javascripts/ender.js"></script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <link href="/atom.xml" rel="alternate" title="Linux Sysadmin Blog" type="application/atom+xml">
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+<!-- Google Form for Contact Page -->
+<!-- jQuery -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+<script type="text/javascript">
+    // Avoid conflict with ender.js.
+jQuery.noConflict();
+</script>
+<!-- jQuery Form Plugin -->
+<script src="http://malsup.github.com/jquery.form.js"></script>
+<script src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.9/jquery.validate.min.js"></script> 
+<script src="/javascripts/google_form.js"></script>
+<!-- Google Form for Contact Page End here -->
+
+
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-120251-38']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">Linux Sysadmin Blog</a></h1>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:linuxsysadminblog.com" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/our-team">Our Team</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+  <li><a href="/blog/about">About</a></li>
+  <li><a href="/blog/contact">Contact</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      
+
+<div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">Svnadmin: Can't Open File 'svn/db/fsfs.conf': No Such File or Directory</h1>
+    
+    
+      <p class="meta">
+        
+  
+
+
+<span class="byline author vcard">Posted by <span class="fn"><a href="/blog/our-team/marius-ducea.html">Marius Ducea</a></span></span>
+
+ - 
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2010-06-13T00:37:48+08:00" pubdate data-updated="true">Jun 13<span>th</span>, 2010</time>
+        
+         | <a href="#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>While working on setting up a <em>backup script for a subversion repository</em> I encountred an interesting problem. I&#8217;ve done this before many times, on different repos, and haven&#8217;t seen any issues, but in this case the backup command that is using the built-in <strong>svnadmin hotcopy</strong> command was failing with this error:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>svnadmin hotcopy --clean-logs /svn/repo/ /backup/repo/
+</span><span class='line'>svnadmin: Can't open file '/svn/repo/db/fsfs.conf': No such file or directory</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Hmm&#8230; looking at the respective path I can see that the command is not lying and that file <strong>fsfs.conf</strong> is indeed not present. I could find a file <strong>fs-type</strong> but not fsfs.conf. So my only assumption was that this is an <em>older</em> repository created with an <em>older svn version</em> than the one we were running currently. Checking the existing svn version I got:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>svn --version
+</span><span class='line'>svn, version 1.6.11 (r934486)
+</span><span class='line'>compiled Apr 20 2010, 00:24:22</span></code></pre></td></tr></table></div></figure>
+
+
+<p>and the fact that this repo was very old (~2009) made my assumption sound correct. Ok, now what? Well in this situation my first thought was to use the <strong>svnadmin upgrade</strong> command; from the manual it looked like this is what I needed to fix this issue:</p>
+
+<p><em>&#8220;svnadmin help upgrade
+upgrade: usage: svnadmin upgrade REPOS_PATH</em></p>
+
+<p><em>Upgrade the repository located at REPOS_PATH to the latest supported
+schema version.</em></p>
+
+<p><em>This functionality is provided as a convenience for repository
+administrators who wish to make use of new Subversion functionality
+without having to undertake a potentially costly full repository dump
+and load operation.  As such, the upgrade performs only the minimum
+amount of work needed to accomplish this while still maintaining the
+integrity of the repository.  It does not guarantee the most optimized
+repository state as a dump and subsequent load would.&#8221;</em></p>
+
+<p>After I&#8217;ve made a manual backup archive of the repo (a simple tar.gz of the repo folder) I ran the upgrade command sure this is going to fix my issue:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>svnadmin upgrade /svn/repo/</span></code></pre></td></tr></table></div></figure>
+
+
+<p>and after it completed, I verified that svn was still working as expected and checked for the fsfs.conf file. But that was <strong>not created</strong>&#8230; Hmm&#8230; Let&#8217;s try the hotcopy command anyway:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>svnadmin hotcopy --clean-logs /svn/repo/ /tmp/repo/
+</span><span class='line'>svnadmin: Can't open file '/svn/repo/db/fsfs.conf': No such file or directory</span></code></pre></td></tr></table></div></figure>
+
+
+<p>the exact same error.</p>
+
+<p>Trying to understand what the fsfs.conf file contains I just created a new repository to see if it gets created. Indeed my v1.6.11 of svn created the file for a new repo, and after copying it to the location of my existing repository (as it was basically just an empty file) my issue was fixed and the hotcopy command started working. Here is the content of the file as created by my svn version, that I copied in the older repo to fix this problem:</p>
+
+<pre><code>&lt;code&gt;cat fsfs.conf
+### This file controls the configuration of the FSFS filesystem.
+
+[memcached-servers]
+### These options name memcached servers used to cache internal FSFS
+### data.  See http://www.danga.com/memcached/ for more information on
+### memcached.  To use memcached with FSFS, run one or more memcached
+### servers, and specify each of them as an option like so:
+# first-server = 127.0.0.1:11211
+# remote-memcached = mymemcached.corp.example.com:11212
+### The option name is ignored; the value is of the form HOST:PORT.
+### memcached servers can be shared between multiple repositories;
+### however, if you do this, you *must* ensure that repositories have
+### distinct UUIDs and paths, or else cached data from one repository
+### might be used by another accidentally.  Note also that memcached has
+### no authentication for reads or writes, so you must ensure that your
+### memcached servers are only accessible by trusted users.
+
+[caches]
+### When a cache-related error occurs, normally Subversion ignores it
+### and continues, logging an error if the server is appropriately
+### configured (and ignoring it with file:// access).  To make
+### Subversion never ignore cache errors, uncomment this line.
+# fail-stop = true
+
+[rep-sharing]
+### To conserve space, the filesystem can optionally avoid storing
+### duplicate representations.  This comes at a slight cost in performace,
+### as maintaining a database of shared representations can increase
+### commit times.  The space savings are dependent upon the size of the
+### repository, the number of objects it contains and the amount of
+### duplication between them, usually a function of the branching and
+### merging process.
+###
+### The following parameter enables rep-sharing in the repository.  It can
+### be switched on and off at will, but for best space-saving results
+### should be enabled consistently over the life of the repository.
+# enable-rep-sharing = false&lt;/code&gt;
+</code></pre>
+
+<p>Hopefully this will help others seeing the same issue I was experiencing.</p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+
+<span class="byline author vcard">Posted by <span class="fn"><a href="/blog/our-team/marius-ducea.html">Marius Ducea</a></span></span>
+
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2010-06-13T00:37:48+08:00" pubdate data-updated="true">Jun 13<span>th</span>, 2010</time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/category/tips-and-tricks/'>Tips and Tricks</a>, <a class='category' href='/category/svn/'>svn</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://linuxsysadminblog.com/2010/06/svnadmin-cant-open-file-svndbfsfs-conf-no-such-file-or-directory/" data-via="linuxsysadmnblg" data-counturl="http://linuxsysadminblog.com/2010/06/svnadmin-cant-open-file-svndbfsfs-conf-no-such-file-or-directory/" >Tweet</a>
+  
+  
+  
+    <div class="fb-like" data-send="true" data-width="450" data-show-faces="false"></div>
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/2010/06/google-500-error/" title="Previous Post: Google 500 Error">&laquo; Google 500 Error</a>
+      
+      
+        <a class="basic-alignment right" href="/2010/07/howto-remove-a-list-of-files/" title="next Post: HowTo remove a list of files">HowTo remove a list of files &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
+
+  <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/2012/11/howto-bulk-import-dns-zones-to-softlayer-dns-using-cpanel/">HowTo: Bulk Import DNS Zones to Softlayer DNS using Cpanel</a>
+      </li>
+    
+      <li class="post">
+        <a href="/2012/08/integrate-sendgrid-with-redmine/">Integrate Sendgrid with Redmine</a>
+      </li>
+    
+      <li class="post">
+        <a href="/2012/07/rsback-task-x-is-locked-and-cannot-be-executed/">rsback: task x is locked and cannot be executed</a>
+      </li>
+    
+      <li class="post">
+        <a href="/2012/06/restore-xen-vm-from-lvm-snapshot-backups/">Restore Xen VM from LVM Snapshot Backups</a>
+      </li>
+    
+      <li class="post">
+        <a href="/2012/06/debian-6-backup-xen-with-lvm-and-rsnapshot/">Debian 6: Backup Xen with LVM and Rsnapshot</a>
+      </li>
+    
+  </ul>
+</section>
+
+<section>
+  <h1>GitHub Repos</h1>
+  <ul id="gh_repos">
+    <li class="loading">Status updating...</li>
+  </ul>
+  
+  <a href="https://github.com/promet">@promet</a> on GitHub
+  
+  <script type="text/javascript">
+    $.domReady(function(){
+        if (!window.jXHR){
+            var jxhr = document.createElement('script');
+            jxhr.type = 'text/javascript';
+            jxhr.src = '/javascripts/libs/jXHR.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(jxhr, s);
+        }
+
+        github.showRepos({
+            user: 'promet',
+            count: 0,
+            skip_forks: true,
+            target: '#gh_repos'
+        });
+    });
+  </script>
+  <script src="/javascripts/github.js" type="text/javascript"> </script>
+</section>
+
+
+<section>
+  <h1>Latest Tweets</h1>
+  <ul id="tweets">
+    <li class="loading">Status updating...</li>
+  </ul>
+  <script type="text/javascript">
+    $.domReady(function(){
+      getTwitterFeed("linuxsysadmnblg", 4, false);
+    });
+  </script>
+  <script src="/javascripts/twitter.js" type="text/javascript"> </script>
+  
+    <a href="http://twitter.com/linuxsysadmnblg" class="twitter-follow-button" data-show-count="false">Follow @linuxsysadmnblg</a>
+  
+</section>
+
+
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2012 - Promet OPS Team -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'linuxsysadminblog';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://linuxsysadminblog.com/2010/06/svnadmin-cant-open-file-svndbfsfs-conf-no-such-file-or-directory/';
+        var disqus_url = 'http://linuxsysadminblog.com/2010/06/svnadmin-cant-open-file-svndbfsfs-conf-no-such-file-or-directory/';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'http://' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) {return;}
+  js = d.createElement(s); js.id = id;
+  js.src = "//connect.facebook.net/en_US/all.js#appId=212934732101925&xfbml=1";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = 'http://platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>

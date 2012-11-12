@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: Cacti | Linux Sysadmin Blog]]></title>
+  <link href="http://linuxsysadminblog.com/category/cacti/atom.xml" rel="self"/>
+  <link href="http://linuxsysadminblog.com/"/>
+  <updated>2012-11-13T01:37:44+08:00</updated>
+  <id>http://linuxsysadminblog.com/</id>
+  <author>
+    <name><![CDATA[Promet OPS Team]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Cacti and MySQL counters problem]]></title>
+    <link href="http://linuxsysadminblog.com/2009/06/cacti-and-mysql-counters-problem/"/>
+    <updated>2009-06-16T20:46:15+08:00</updated>
+    <id>http://linuxsysadminblog.com/2009/06/cacti-and-mysql-counters-problem</id>
+    <content type="html"><![CDATA[<p>We recently came across a problem with Cacti and the MySQL counters. For those of you who don't know how to integrate MySQL statistics into Cacti have a look at this: <a href="http://code.google.com/p/mysql-cacti-templates/">http://code.google.com/p/mysql-cacti-templates/</a>. These templates are a great way to gain some insight into how your MySQL database servers perform. The templates are actually PHP pages that query the databases through a variety of commands like SHOW STATUS and SHOW ENGINE INNODB STATUS.</p>
+
+<p>The issue that we encountered was that some statistics like the InnoDB buffer pool activity were not displaying anything for one server. Other servers were displaying it just fine and other statistics for that server were also fine.</p>
+
+<p>Among other things the SHOW ENGINE INNODB STATUS command shows deadlock information pertaining to the last deadlock that the InnoDB engine encountered. In some cases this information will be quite extensive and this causes a problem. The output of this command is one giant text field with a limit of 64KB. If the deadlock information is very large other information will get cut off which means certain statistics are lost. The easy fix for this is to restart the database server but in case this is not an option you can always use the innotop utility to wipe the deadlock information by causing a small deadlock.</p>
+]]></content>
+  </entry>
+  
+</feed>

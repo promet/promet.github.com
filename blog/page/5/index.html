@@ -1,0 +1,785 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Linux Sysadmin Blog</title>
+  <meta name="author" content="Promet OPS Team">
+
+  
+  <meta name="description" content="I noticed lots of email being relayed on one of our shared hosting server, CentOS5 with Cpanel and running Exim, and the strange thing is that the &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://linuxsysadminblog.com/blog/page/5/">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="/javascripts/ender.js"></script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <link href="/atom.xml" rel="alternate" title="Linux Sysadmin Blog" type="application/atom+xml">
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+<!-- Google Form for Contact Page -->
+<!-- jQuery -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+<script type="text/javascript">
+    // Avoid conflict with ender.js.
+jQuery.noConflict();
+</script>
+<!-- jQuery Form Plugin -->
+<script src="http://malsup.github.com/jquery.form.js"></script>
+<script src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.9/jquery.validate.min.js"></script> 
+<script src="/javascripts/google_form.js"></script>
+<!-- Google Form for Contact Page End here -->
+
+
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-120251-38']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">Linux Sysadmin Blog</a></h1>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:linuxsysadminblog.com" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/our-team">Our Team</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+  <li><a href="/blog/about">About</a></li>
+  <li><a href="/blog/contact">Contact</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div class="blog-index">
+  
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/2010/02/mail-relay-issue-on-cpanel-server/">Mail Relay Issue on Cpanel Server</a></h1>
+    
+    
+      <p class="meta">
+        
+  
+
+
+<span class="byline author vcard">Posted by <span class="fn"><a href="/blog/our-team/gerold-mercadero.html">Gerold Mercadero</a></span></span>
+
+ - 
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2010-02-16T09:05:00+08:00" pubdate data-updated="true">Feb 16<span>th</span>, 2010</time>
+        
+         | <a href="/2010/02/mail-relay-issue-on-cpanel-server/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>I noticed lots of email being relayed on one of our shared hosting server, CentOS5 with Cpanel and running Exim, and the strange thing is that the email server (MX) for these accounts are pointing to Google (GoogleApps), and we have correct entries for <em>localdomains</em> and <em>remotedomains</em> for these account.  The relayers (<em>&#8216;From&#8217;</em> server/address) looks like spam anyway.  From the mail logs I noticed that the relayed messages have &#8217;<em>fixed_login</em>&#8217; and key (&#8217;<em>rsa-sha1</em>&#8217;) for their authentications.</p>
+
+<p>Since the mail server for these accounts are pointing to other servers, I deleted all the email accounts, forwarders, mailinglists, etc.  After this I&#8217;ve seen sending error/failure messages from mail logs of the said accounts  It shows &#8217;<em>fixed_login authenticator failed for hostxx&#8217; [535 Incorrect authentication data]</em>.</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/2010/02/making-changes-to-drupal-core/">Making Changes to Drupal Core</a></h1>
+    
+    
+      <p class="meta">
+        
+  
+
+
+<span class="byline author vcard">Posted by <span class="fn"><a href="/blog/our-team/gerold-mercadero.html">Gerold Mercadero</a></span></span>
+
+ - 
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2010-02-15T00:42:10+08:00" pubdate data-updated="true">Feb 15<span>th</span>, 2010</time>
+        
+         | <a href="/2010/02/making-changes-to-drupal-core/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>Although we made it a standard not to make any changes to Drupal core and core modules, there are times that our developers really need to make changes to core modules in order to add the required functionality.  Cases like additional feature for &#8216;user&#8217; or &#8216;comment&#8217; modules and so on.  At this state we can&#8217;t perform automatic update on our sites as we might overwrite the changes - so we need to do the update manually.  Well, this is ok if you maintain one or two sites, but if you have more than 100 sites then it will take you some time.</p>
+
+<p>What we did to eliminate this issue and be able to update the site automatically was to create a copy of the original core modules (located in <em>/modules</em>), add our custom functionality, and put the modified copy into &#8216;contributed&#8217; modules directory (<em>/sites/all/modules</em>).  Drupal read the modules found on <em>/sites/all/modules</em> first and ignore the same copy (original) found on <em>/modules</em>.  Also, may want to change the module info or the package name to separate the modified modules from the original ones - ex: modified_core, custom, etc.  In the case that Drupal reads both of them, you can just disable the other one.</p>
+
+<p>Here&#8217;s our policy on working with Drupal modules:
+  - contributed or community modules at <em>/sites/all/modules</em>
+  - custom made modules at <em>/sites/all/modules/custom</em>
+  - modified core modules at <em>/sites/all/modules/core_modified</em></p>
+
+<p>Hope this helps.  :)</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/2010/02/drupal-core-killing-kittens/">Drupal Core - Killing Kittens</a></h1>
+    
+    
+      <p class="meta">
+        
+  
+
+
+<span class="byline author vcard">Posted by <span class="fn"><a href="/blog/our-team/andrew-kucharski.html">Andrew Kucharski</a></span></span>
+
+ - 
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2010-02-10T22:36:57+08:00" pubdate data-updated="true">Feb 10<span>th</span>, 2010</time>
+        
+         | <a href="/2010/02/drupal-core-killing-kittens/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>You may know that Drupal&#8217;s developers have a saying about hacking core, its whenever you hack core, god kills a kitten.</p>
+
+<p>Well, whether it may or may not be true, we have learned the hard way how much can go wrong when a developer hacks core to meet some requirements and does not tell the sysadmin team about it.  Drupal security updates are essential to the health of the site, as sysadmins, if we want to scale anything that we do, we can not manage many sites whos cores have been hacked.</p>
+
+<p>If you find yourslef in the situation where you have a hacked core&#8230; you may enjoy this while you pull your hair out or wipe your tears :)</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/2010/02/cvs-checkout-aborted-absolute-pathnames-invalid-for-server/">Cvs [Checkout Aborted]: Absolute Pathnames Invalid for Server</a></h1>
+    
+    
+      <p class="meta">
+        
+  
+
+
+<span class="byline author vcard">Posted by <span class="fn"><a href="/blog/our-team/gerold-mercadero.html">Gerold Mercadero</a></span></span>
+
+ - 
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2010-02-03T04:44:00+08:00" pubdate data-updated="true">Feb 3<span>rd</span>, 2010</time>
+        
+         | <a href="/2010/02/cvs-checkout-aborted-absolute-pathnames-invalid-for-server/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>Absolute Path Error:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>cvs [checkout aborted]: absolute pathnames invalid for server (specified `/path/drupalsite/')</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Ok, I got the error above when I performed Drupal CVS update on our Debian server (newly installed CVS 1.12.13).  The same command works on other server with older CVS installation.  The issue is the reference to local cvs directory where I used absolute path (-d /path/drupalsite/), which is a bug (security hole on client side) - it was fixed on newer CVS version to use relative path.</p>
+
+<p>Drupal Checkout Command:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>cvs -z6 -d:pserver:anonymous:anonymous@cvs.drupal.org:/cvs/drupal co -r DRUPAL-6-15 -d /path/drupalsite/ drupal</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Use of Relative Path (sample)</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>cd /path
+</span><span class='line'>cvs -z6 -d:pserver:anonymous:anonymous@cvs.drupal.org:/cvs/drupal co -r DRUPAL-6-15 -d drupalsite drupal</span></code></pre></td></tr></table></div></figure>
+
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/2010/02/drupal-performance-improvement-for-the-layment-presentation/">Drupal Performance Improvement for the Drupal Admins Presentation</a></h1>
+    
+    
+      <p class="meta">
+        
+  
+
+
+<span class="byline author vcard">Posted by <span class="fn"><a href="/blog/our-team/andrew-kucharski.html">Andrew Kucharski</a></span></span>
+
+ - 
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2010-02-02T17:24:57+08:00" pubdate data-updated="true">Feb 2<span>nd</span>, 2010</time>
+        
+         | <a href="/2010/02/drupal-performance-improvement-for-the-layment-presentation/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>Last December I gave a talk at the Chicago Drupal Meet Up on increasing your Drupal site&#8217;s performance.  I thought I would share the slides from that presentation with everyone - so here it is.  I tried to cover a fairly wide array of topics at a high level.  We started with page load performance definition, identifying the differences between the high availability and scalability concepts and then we jumped into page load performance.  The talk was very drupal specific in terms of load page improvement recommendations, and we covered a few MySQL drupal performance tweaks, some apache modules and tools, such as YSLOW, Google page speed and JMeter.</p>
+
+<p><a href="http://linuxsysadminblog.com/images/2010/02/Drupal.org-MakingDrupalFaster.v4.pdf">Drupal.org-MakingDrupalFaster.v4</a></p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/2009/12/google-to-offer-free-dns-service/">Google to Offer Free DNS Service</a></h1>
+    
+    
+      <p class="meta">
+        
+  
+
+
+<span class="byline author vcard">Posted by <span class="fn"><a href="/blog/our-team/andrew-kucharski.html">Andrew Kucharski</a></span></span>
+
+ - 
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2009-12-03T21:55:05+08:00" pubdate data-updated="true">Dec 3<span>rd</span>, 2009</time>
+        
+         | <a href="/2009/12/google-to-offer-free-dns-service/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content">
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/2009/11/black-friday-404-site-not-available-and-others-from-your-favorite-sites/">Black Friday - 404, Site Not Available, and Others From Your Favorite Sites</a></h1>
+    
+    
+      <p class="meta">
+        
+  
+
+
+<span class="byline author vcard">Posted by <span class="fn"><a href="/blog/our-team/andrew-kucharski.html">Andrew Kucharski</a></span></span>
+
+ - 
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2009-11-25T20:03:23+08:00" pubdate data-updated="true">Nov 25<span>th</span>, 2009</time>
+        
+         | <a href="/2009/11/black-friday-404-site-not-available-and-others-from-your-favorite-sites/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>My small collection of my favorite 404 and error messages on the web, from mostly big sites.  Some are humorous, some are quirky, and I think they are all great.  No one is perfect.</p>
+
+<p>Enjoy.</p>
+
+<p>Top web site error pages - my favorites.</p>
+
+<p>1) barrackobama.com - simple, to the point, diffusing.</p>
+
+<p><a href="http://linuxsysadminblog.com/images/2009/11/2008-08-25_1737obama.png"><img src="http://linuxsysadminblog.com/images/2009/11/2008-08-25_1737obama.png" alt="Obama.org site not availalble 404" /></a></p>
+
+<p>2) Plaxo.com - (oops! There seems to be a problem.  I&#8217;ll tell you what&#8230; let us fix it and this can be our little secret.)  humorous</p>
+
+<p><a href="http://linuxsysadminblog.com/images/2009/11/2008-09-23_0754-plaxoerror.png"><img src="http://linuxsysadminblog.com/images/2009/11/2008-09-23_0754-plaxoerror.png" alt="2008-09-23_0754-plaxoerror" /></a></p>
+
+<p>3) crowdspring.com - (our servers are currently fighting among themselves and we&#8217;re putting them into a timeout.) - if you have kids you will appreciate this.</p>
+
+<p><a href="http://linuxsysadminblog.com/images/2009/11/2009-05-08_1607.png"><img src="http://linuxsysadminblog.com/images/2009/11/2009-05-08_1607.png" alt="2009-05-08_1607" /></a></p>
+
+<p>4) youtube.com - (&#8220;The functionality is not available&#8230; Be cool - we&#8217;ll be back 100% in a bit.&#8221;) - I like the slang</p>
+
+<p><a href="http://linuxsysadminblog.com/images/2009/11/becool-youtube.JPG"><img src="http://linuxsysadminblog.com/images/2009/11/becool-youtube.JPG" alt="be cool - you tube 404 image" /></a></p>
+
+<p>5) Witter error - before the whale</p>
+
+<p><a href="http://linuxsysadminblog.com/images/2009/11/2009-10-02_1610.png"><img src="http://linuxsysadminblog.com/images/2009/11/2009-10-02_1610.png" alt="twitter error, before the whale" /></a></p>
+
+<p>6) Google apps error - not funny, not cool&#8230; common google, you can be fun too!</p>
+
+<p><a href="http://linuxsysadminblog.com/images/2009/11/google.png"><img src="http://linuxsysadminblog.com/images/2009/11/google.png" alt="google error" /></a></p>
+
+<p>7) suumbleupon.com error - (&#8220;we&#8217;ll be right back, in the mean time why dont you go outside and play for a while&#8221;) - LOVE this one</p>
+
+<p><a href="http://linuxsysadminblog.com/images/2009/11/stubmleupon.bmp"><img src="http://linuxsysadminblog.com/images/2009/11/stubmleupon.bmp" alt="stumble upon 404 - funny" /></a></p>
+
+<p>8) Facebook error - not funny at all, especially since it happens a lot</p>
+
+<p><a href="http://linuxsysadminblog.com/images/2009/11/facebook.png"><img src="http://linuxsysadminblog.com/images/2009/11/facebook.png" alt="facebook" /></a></p>
+
+<p>9) the now famous twitter whale - simply brilliant</p>
+
+<p><a href="http://linuxsysadminblog.com/images/2009/11/twitter-overcapacity.png"><img src="http://linuxsysadminblog.com/images/2009/11/twitter-overcapacity.png" alt="twitter whale" /></a></p>
+
+<p>10) technorati.com error (&#8220;Doh! The Technorati Monster escaped again.&#8221;) - good one</p>
+
+<p><a href="http://linuxsysadminblog.com/images/2009/11/technocrati.png"><img src="http://linuxsysadminblog.com/images/2009/11/technocrati.png" alt="techocrati 404" /></a></p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/2009/11/apache-now-supports-multiple-ssl-on-single-ip-address/">Apache Now Supports Multiple SSL on Single IP Address</a></h1>
+    
+    
+      <p class="meta">
+        
+  
+
+
+<span class="byline author vcard">Posted by <span class="fn"><a href="/blog/our-team/gerold-mercadero.html">Gerold Mercadero</a></span></span>
+
+ - 
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2009-11-24T01:08:23+08:00" pubdate data-updated="true">Nov 24<span>th</span>, 2009</time>
+        
+         | <a href="/2009/11/apache-now-supports-multiple-ssl-on-single-ip-address/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>With the release of Apache 2.2.12, we can now configure multiple SSL sites in one IP address.  It is available of you have Server Name Indication (SNI) extension for OpenSSL.  Visit TechRepublic&#8217;s post on &#8221;<a href="http://blogs.techrepublic.com.com/opensource/?p=987">Configure Apache to support multiple SSL sites on a single IP address</a>&#8221; for details and vhost sample configuration.  And for complete reference please refer to this page &#8221;<a href="http://wiki.apache.org/httpd/NameBasedSSLVHostsWithSNI">SSL with Virtual Hosts Using SNI</a>&#8221; and <a href="http://httpd.apache.org/docs/2.2/mod/mod_ssl.html#sslstrictsnivhostcheck">Apache mod_ssl documentation</a>.</p>
+
+<p>We&#8217;ll try this on our server and hopefully offer this to our shared hosting clients who wants SSL but not interested in paying extra for a dedicated ip address.  :)</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/2009/11/xen-vm-mount-external-devices/">XEN VM Mount External Devices</a></h1>
+    
+    
+      <p class="meta">
+        
+  
+
+
+<span class="byline author vcard">Posted by <span class="fn"><a href="/blog/our-team/max-veprinsky.html">Max Veprinsky</a></span></span>
+
+ - 
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2009-11-23T17:56:46+08:00" pubdate data-updated="true">Nov 23<span>rd</span>, 2009</time>
+        
+         | <a href="/2009/11/xen-vm-mount-external-devices/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>Adding additional block devices to XEN guests is accomplished using xm block-attach command. In this example I am exporting an external USB hard drive that was recognized as /dev/sda1 by the hosts kernel. Important thing to keep in mind is that you must use xvdX as the guest block device name.</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>xm block-attach 6 phy:/dev/sda1 /dev/xvda1 w</span></code></pre></td></tr></table></div></figure>
+
+
+<p>This command will export /dev/sda1 on host machine to guest domain 6 as <code>/dev/xvda1</code> with write permissions.</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/2009/11/upgrade-to-fedora-12/">Upgrade to Fedora 12</a></h1>
+    
+    
+      <p class="meta">
+        
+  
+
+
+<span class="byline author vcard">Posted by <span class="fn"><a href="/blog/our-team/max-veprinsky.html">Max Veprinsky</a></span></span>
+
+ - 
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2009-11-22T15:58:02+08:00" pubdate data-updated="true">Nov 22<span>nd</span>, 2009</time>
+        
+         | <a href="/2009/11/upgrade-to-fedora-12/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>Fedora release 12 became available to the public November 17, 2009. <a href="http://fedoraproject.org/wiki/Releases/12/FeatureList">New features</a> are plentiful and many are centred around KVM virtualization.</p>
+
+<p>If you are like me and still running Fedora 10 or 11 and do not wish to wait till a yum based update is pushed out you can kick off your adventure into Fedora 12 land manually. Set aside at least an hour of time where you will not be able to use the PC while the update is taking place. First thing is to review <a href="http://fedoraproject.org/wiki/PreUpgrade">Preupgrade Wiki Page</a>, once you feel confident that your system is ready (enough space in /boot, created backups of your data) issue (as root):</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>yum update && yum install preupgrade</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Followed by:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>preupgrade-cli "Fedora 12 (Constantine)"</span></code></pre></td></tr></table></div></figure>
+
+
+<p>After a lengthy download, reboot and update process you should be looking at Fedora 12 login prompt.</p>
+
+<p>If you used ext3 filesystem in your Fedora 10/11 system you can also migrate to ext4 filesystem by following the <a href="https://fedoraproject.org/wiki/Ext4_in_Fedora_11">Fedora ext4 Wiki guide</a>.</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  <div class="pagination">
+    
+      <a class="prev" href="/blog/page/6/">&larr; Older</a>
+    
+    <a href="/blog/archives">Blog Archives</a>
+    
+    <a class="next" href="/blog/page/4/">Newer &rarr;</a>
+    
+  </div>
+</div>
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/2012/11/howto-bulk-import-dns-zones-to-softlayer-dns-using-cpanel/">HowTo: Bulk Import DNS Zones to Softlayer DNS using Cpanel</a>
+      </li>
+    
+      <li class="post">
+        <a href="/2012/08/integrate-sendgrid-with-redmine/">Integrate Sendgrid with Redmine</a>
+      </li>
+    
+      <li class="post">
+        <a href="/2012/07/rsback-task-x-is-locked-and-cannot-be-executed/">rsback: task x is locked and cannot be executed</a>
+      </li>
+    
+      <li class="post">
+        <a href="/2012/06/restore-xen-vm-from-lvm-snapshot-backups/">Restore Xen VM from LVM Snapshot Backups</a>
+      </li>
+    
+      <li class="post">
+        <a href="/2012/06/debian-6-backup-xen-with-lvm-and-rsnapshot/">Debian 6: Backup Xen with LVM and Rsnapshot</a>
+      </li>
+    
+  </ul>
+</section>
+
+<section>
+  <h1>GitHub Repos</h1>
+  <ul id="gh_repos">
+    <li class="loading">Status updating&#8230;</li>
+  </ul>
+  
+  <a href="https://github.com/promet">@promet</a> on GitHub
+  
+  <script type="text/javascript">
+    $.domReady(function(){
+        if (!window.jXHR){
+            var jxhr = document.createElement('script');
+            jxhr.type = 'text/javascript';
+            jxhr.src = '/javascripts/libs/jXHR.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(jxhr, s);
+        }
+
+        github.showRepos({
+            user: 'promet',
+            count: 0,
+            skip_forks: true,
+            target: '#gh_repos'
+        });
+    });
+  </script>
+  <script src="/javascripts/github.js" type="text/javascript"> </script>
+</section>
+
+
+<section>
+  <h1>Latest Tweets</h1>
+  <ul id="tweets">
+    <li class="loading">Status updating&#8230;</li>
+  </ul>
+  <script type="text/javascript">
+    $.domReady(function(){
+      getTwitterFeed("linuxsysadmnblg", 4, false);
+    });
+  </script>
+  <script src="/javascripts/twitter.js" type="text/javascript"> </script>
+  
+    <a href="http://twitter.com/linuxsysadmnblg" class="twitter-follow-button" data-show-count="false">Follow @linuxsysadmnblg</a>
+  
+</section>
+
+
+
+
+
+  
+</aside>
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2012 - Promet OPS Team -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'linuxsysadminblog';
+      
+        
+        var disqus_script = 'count.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'http://' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) {return;}
+  js = d.createElement(s); js.id = id;
+  js.src = "//connect.facebook.net/en_US/all.js#appId=212934732101925&xfbml=1";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = 'http://platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>

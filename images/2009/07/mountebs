@@ -1,0 +1,94 @@
+#! /bin/bash
+#=======================================================================
+# chkconfig: 2345 86 16
+# description: assigns ebs volume to a device and mounts the device and start mysql
+#
+# Procedure to add a normal startup script in CentOS
+# - add two comments on the script:
+#   chkconfig: 2345 86 16
+#   description: mountebs etc..
+#   NOTE:  chkconfig: 2345 (runlevels for the service), 86 (sequence when the service is started - ref: /etc/rc3.d), 16 (sequence when the service is stopped - /etc/rc0.d)
+# - put script into /etc/init.d, chmod to 755
+# - add to chkconfig: chkconfig --add mountebs
+#
+#=======================================================================
+#  Here I added variables to make sure I have the correct paths
+export EC2_HOME="/root/.ec2"
+export PATH=$PATH:$EC2_HOME/bin
+#  You need to the certificate and private key of your AWS account here
+export EC2_PRIVATE_KEY=$EC2_HOME/pk-xxxx.pem
+export EC2_CERT=$EC2_HOME/cert-xxxx.pem
+export JAVA_HOME=/usr/java/default
+export PATH=/root/.ec2/bin:$PATH
+
+VOL="vol-xxxxxx"
+DEV="/dev/sdh"
+MOUNT_POINT="/ebs"
+MAX_TRIES=60
+
+prog=$(basename $0)
+logger="logger -t $prog"
+curl="curl --retry 3 --silent --show-error --fail"
+
+# start/stop functions for OS
+
+case "$1" in
+
+start)
+	ISMOUNTED=$(df | grep $DEV | wc -l)
+	if [ $ISMOUNTED -eq 1 ]
+	then
+		/bin/echo "Volume already mounted. Exiting.."
+		exit 1
+	fi
+
+	perl -MIO::Socket::INET -e '
+	until(new IO::Socket::INET("169.254.169.254:80")){print"Waiting for network...\n";sleep 1}
+	'  | $logger
+
+	INSTANCE=$($curl http://169.254.169.254/latest/meta-data/instance-id)
+
+	CTR=0
+	/bin/echo "Mounting Elastic Block Store Volumes."
+	/root/.ec2/bin/ec2-attach-volume $VOL -i $INSTANCE -d $DEV 2>/dev/null
+	#/bin/echo "ec2-attach-volume $VOL -i $INSTANCE -d $DEV 2>/dev/null"
+	
+	while [ ! -e "$DEV" ]; do
+		/bin/sleep 1
+		CTR=`expr $CTR + 1`
+		if [ $CTR -eq $MAX_TRIES ]
+		then
+			/bin/echo "WARNING: Cannot attach volume $VOL to $DEV -- Giving up after $MAX_TRIES attempts"
+			exit 1
+		fi
+	done
+
+	if [ ! -d $MOUNT_POINT ]; then
+		mkdir $MOUNT_POINT
+	fi
+
+    # mount using ext3
+    /bin/mount  -t xfs $DEV $MOUNT_POINT
+    /etc/init.d/mysqld start
+	;;
+
+stop)
+        /bin/echo "Unmounting Elastic Block Store Volumes."
+        # only detach if umount is successful.
+        /etc/init.d/mysqld stop
+        /bin/umount $MOUNT_POINT && ec2-detach-volume $VOL  2>/dev/null
+        rmdir $MOUNT_POINT
+
+        ;;
+restart)
+        stop
+        sleep 5
+        start
+        ;;
+*)
+        echo "Usage: $0 {start|stop|restart}"
+        exit 1
+        ;;
+esac
+
+exit 0

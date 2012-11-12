@@ -1,0 +1,245 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: Installation | Linux Sysadmin Blog]]></title>
+  <link href="http://linuxsysadminblog.com/category/installation/atom.xml" rel="self"/>
+  <link href="http://linuxsysadminblog.com/"/>
+  <updated>2012-11-13T01:37:44+08:00</updated>
+  <id>http://linuxsysadminblog.com/</id>
+  <author>
+    <name><![CDATA[Promet OPS Team]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Debian 6: Backup Xen with LVM and Rsnapshot]]></title>
+    <link href="http://linuxsysadminblog.com/2012/06/debian-6-backup-xen-with-lvm-and-rsnapshot/"/>
+    <updated>2012-06-22T05:38:00+08:00</updated>
+    <id>http://linuxsysadminblog.com/2012/06/debian-6-backup-xen-with-lvm-and-rsnapshot</id>
+    <content type="html"><![CDATA[<p>This is a draft of my installation process which is mainly based from this blog:  <a href="http://backdrift.org/efficient-xen-backups-using-lvm-and-rsnapshot">Efficient Xen Backups Using LVM and Rsnapshot</a>.</p>
+
+<p>Our setup is on Debian 6 server with 2TB disk running 10 vpses. We followed the above guide with notes on errors we encountered, mostly rsnapshot related. We are keeping daily backup locally, on a separate partition, and copies them to our remote server every week.</p>
+
+<p>The Setup (mostly defaults):
+vg path is /dev
+vg name is vg0</p>
+
+<p>Setup Process:</p>
+
+<p>Create logical partition to store backups locally.  Size is 100GB and named it backups.  Format it with ext3 and mounted it to /backups.</p>
+
+<p><code>
+lvcreate -L 100G -n backups vg0
+mkfs -t ext3 -v /dev/vg0/backups
+mkdir /backups
+mount /dev/vg0/backups /backups
+</code></p>
+
+<p>Install and configure rsnapshot.  Make sure you use TAB correctly as it will complain or give you an error if you don't.</p>
+
+<p><code>
+aptitude install rsnapshot
+vi /etc/rsnapshot.conf
+</code></p>
+
+<p>Here's my rsnapshot config changes and/or additions:</p>
+
+<!--more-->
+
+
+<p>```
+snapshot_root /backups/    #this is a mounted partition
+interval daily 1    # i removed all other schedule and one daily copy only
+linux_lvm_cmd_lvcreate /sbin/lvcreate
+linux_lvm_cmd_lvremove /sbin/lvremove
+linux_lvm_cmd_mount /bin/mount
+linux_lvm_cmd_umount /bin/umount
+linux_lvm_snapshotsize 2G
+linux_lvm_snapshotname rsnapshot
+linux_lvm_vgpath /dev
+linux_lvm_mountpath /mnt/lvm-snapshot</p>
+
+<h1>Backups Tasks for all VMs</h1>
+
+<p>backup lvm://vg0/vm_1_name_disk/ vm_1_name_disk/
+backup lvm://vg0/vm_2_name_disk/ vm_2_name_disk/
+backup lvm://vg0/vm_10_name_disk/ vm_10_name_disk/
+```</p>
+
+<p>Schedule daily backup task in crontab (/etc/crontab). Note that rsnapshot is in /usr/bin/rsnapshot on Debian.</p>
+
+<p><code>
+01 01 * * * root /usr/bin/rsnapshot daily
+</code></p>
+
+<p>You can then run the rsnapshot task to make sure everything is working, from your config file to creating and mounting lvm snapshots. Execution time depends on number of vms and their size. You can ran them individually if needed.</p>
+
+<p><code>
+/usr/bin/rsnapshot daily
+</code></p>
+
+<p>Then I setup another backup task from remote backup server to pick up our local backups at /backups. You can also configure rsnapshot to backup your snapshots directly to your remote backup location (usiang rsync/ssh), depends on how you want to backup your data.</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Install vsftpd Server With Virtual User and Directory]]></title>
+    <link href="http://linuxsysadminblog.com/2012/06/install-vsftpd-server-with-virtual-user-and-directory/"/>
+    <updated>2012-06-04T09:15:33+08:00</updated>
+    <id>http://linuxsysadminblog.com/2012/06/install-vsftpd-server-with-virtual-user-and-directory</id>
+    <content type="html"><![CDATA[<p>Here's a summary for <a href="http://vsftpd.beasts.org">vsftpd</a> setup with virtual user and directory in Debian.  It's probably the same process on other Debian-based distros as well as Redhat-based distros. No need to define what's vsftpd and what's virtual users - let's just proceed to the setup. :)</p>
+
+<p>Install VSFTPD:</p>
+
+<p><code>
+aptitude install vsftpd
+</code></p>
+
+<p>Choose what method to use for virtual user authentication.  Let's use pam passwd module (libpam-pwdfile), I guess this is the most common and easy to setup.  You can also use libpam-mysql if you want to manage your ftp users via mysql database, like if you want integrate it with your application that's using mysql as backend.</p>
+
+<p><code>
+aptitude install libpam-pwdfile
+</code></p>
+
+<p>Next create your password file (example: <em>/etc/vsftpd_users.conf</em>) which contain the list of virtual users and password hash.  You can use <a href="http://httpd.apache.org/docs/2.0/programs/htpasswd.html">htpasswd</a> that's included in Apache or go to this website, <a href="http://www.htaccesstools.com/htpasswd-generator/">htaccesstools.com</a> to generate the list of users and passwords.</p>
+
+<!--more-->
+
+
+<p>Once you have the list of users (example: <em>demo1</em> and <em>demo2</em>), you have to create their virtual directory as well, let's say I want to set ftp users home directory inside <em>/home/ftpusers</em>.  This will be their home directory and they can't see or navigate outside of their home dir. Make sure they're writable as well.</p>
+
+<p><code>
+mkdir /home/ftpusers /home/ftpusers/demo1 /home/ftpusers/demo2
+</code></p>
+
+<p>Then update your vsftpd config (<em>/etc/vsftpd.conf</em>) and make sure you have the configs below enabled. Please take note that some of these configs might me enabled by default.  Also, you might want to read the detailed description on <em>/etc/vsftpd.conf</em> file about the configurations that you want to enable/disable, example: allow local system users to connect to ftp, disable anonymous ftp access, welcome message, and so on.</p>
+
+<p><code>
+listen=YES
+anonymous_enable=NO
+local_enable=YES
+write_enable=YES
+dirmessage_enable=YES
+use_localtime=YES
+xferlog_enable=YES
+connect_from_port_20=YES
+chroot_local_user=YES
+secure_chroot_dir=/var/run/vsftpd/empty
+pam_service_name=vsftpd
+virtual_use_local_privs=YES
+guest_enable=YES
+user_sub_token=$USER
+local_root=/home/vsftpd/$USER
+</code>
+Finally update the pam config (/etc/pam.d/vsftpd) with the lines below and remote or comment out existing lines in there.</p>
+
+<p><code>
+auth    required pam_pwdfile.so pwdfile /etc/vsftpd_users.conf
+account required pam_permit.so
+</code>
+Restart vsftpd and connect to your ftp server:</p>
+
+<p><code>
+/etc/init.d/vsftpd restart
+</code></p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[HowTo Install APC on CPanel/WHM]]></title>
+    <link href="http://linuxsysadminblog.com/2011/05/howto-install-apc-on-cpanelwhm/"/>
+    <updated>2011-05-05T21:07:16+08:00</updated>
+    <id>http://linuxsysadminblog.com/2011/05/howto-install-apc-on-cpanelwhm</id>
+    <content type="html"><![CDATA[<p><strong>CPanel</strong> includes support in their installer for <strong>eaccelerator</strong>; still, for some strange reason they don't include support for <strong><a href="http://pecl.php.net/package/APC">APC</a></strong> also. So, if you want to install APC on your CPanel powered server, you will have to go back at the command line and install it manually.</p>
+
+<p>Here are the steps needed to install the latest version of APC (3.1.8 at the time of writing this article; please check for the latest version available when you are reading this and make the changes accordingly):
+<code>
+cd /usr/local/src
+wget http://pecl.php.net/get/APC-3.1.8.tgz
+tar -zxvf APC-3.1.8.tgz
+cd APC-3.1.8
+phpize
+./configure --enable-apc --enable-apc-mmap --with-apxs --with-php-config=/usr/local/bin/php-config
+make
+make install
+</code></p>
+
+<p>Next, activate the apc module in <strong>php.ini</strong> by adding something like this:
+<code>
+extension="apc.so"
+apc.enabled=1
+apc.shm_segments=1
+apc.shm_size=128
+</code></p>
+
+<p>Finally, you will have to <em>restart apache</em> and after that the APC module should be activated and in use. Hopefully, this will help you enable APC on your CPanel server in some very simple steps in less that 5minutes.</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Setup SFTP-Only Access (Redhat-based Distro)]]></title>
+    <link href="http://linuxsysadminblog.com/2011/04/setup-sftp-only-access-redhat-based-distro/"/>
+    <updated>2011-04-12T14:41:17+08:00</updated>
+    <id>http://linuxsysadminblog.com/2011/04/setup-sftp-only-access-redhat-based-distro</id>
+    <content type="html"><![CDATA[<p>Setup sftp-only access on default Redhat/CentOS install.  Use built-in <em>sftp-server</em> which is non-chrooted and easy to setup.</p>
+
+<p><strong>Server: </strong>Locate sftp-server binary and add to your list of valid shells on the system.</p>
+
+<p><code>
+which sftp-server
+</code></p>
+
+<p>Note:   This will most likely give you this: <em>/usr/libexec/openssh/sftp-server</em></p>
+
+<p><code>
+echo /usr/libexec/openssh/sftp-server &gt;&gt; /etc/shells
+</code></p>
+
+<p>Note:  You may want to backup your /etc/shells first</p>
+
+<p><strong>User Accounts</strong>:  Add or modify accounts to use sftp-server.</p>
+
+<p><strong>New User</strong></p>
+
+<p><code>
+useradd -s /usr/libexec/openssh/sftp-server  sftponlyuser
+</code></p>
+
+<p>Note:  Important parameter there is the <em>“-s /usr/libexec/openssh/sftp-server"</em>, which sets the default shell for this account.   By default you will have “<em>/bin/bash</em>”.</p>
+
+<p><strong>Existing User:</strong></p>
+
+<p><code>
+vi /etc/passwd
+</code></p>
+
+<p><strong><em> </em></strong> Find the user that you want to configure for sftp only access and edit its shell.  For exampleyou will see a line “<em>username:x:500:500::/home/username:/bin/bash” _ change "</em>/bin/bash<em>" to "</em>/usr/libexec/openssh/sftp-server_" and save.  Note: _ Y_ou may want to backup your /etc/passwd file as well.</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Moving Drupal site with CiviCRM]]></title>
+    <link href="http://linuxsysadminblog.com/2011/04/moving-drupal-site-with-civicrm/"/>
+    <updated>2011-04-11T10:24:29+08:00</updated>
+    <id>http://linuxsysadminblog.com/2011/04/moving-drupal-site-with-civicrm</id>
+    <content type="html"><![CDATA[<p>The common headache for beginners who try to move their Drupal site with CiviCRM is the CiviCRM configuration on new location or domain.  I did this countless times and dealt with different problems before.  I've read many online tutorials and how-tos, and I finally have my notes which is working for me everytime i move Drupal and CiviCRM site.</p>
+
+<p>Let's assume you already moved the databases (separate database for Drupal and CiviCRM as a recommended setup) and the files to new location and have set the correct file permissions as well.  Here is the part that you need for your CiviCRM to work on new location and domain:</p>
+
+<ul>
+<li>access your database and empty <code>civicrm.domain:config_backend</code>.  You see this anywhere with CiviCRM guide.</li>
+<li>update database details, site path/directory, and domain on <code>civicrm.settings.php</code></li>
+<li>emtpy <code>sites/default/files/civicrm/template_c</code> (or make this entire dir writable by web user)</li>
+<li>login to you new Drupal site and visit these urls:
+<code>http://sitename/civicrm/menu/rebuild?reset=1</code>
+<code>http://sitename/civicrm/admin/setting/updateConfigBackend?reset=1</code></li>
+</ul>
+
+
+<p><strong>Note:</strong> This will rebuild the settings for you - if not, repeat/review all the above steps.</p>
+]]></content>
+  </entry>
+  
+</feed>

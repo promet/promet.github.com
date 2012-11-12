@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: software / tools | Linux Sysadmin Blog]]></title>
+  <link href="http://linuxsysadminblog.com/category/software-tools/atom.xml" rel="self"/>
+  <link href="http://linuxsysadminblog.com/"/>
+  <updated>2012-11-13T01:37:44+08:00</updated>
+  <id>http://linuxsysadminblog.com/</id>
+  <author>
+    <name><![CDATA[Promet OPS Team]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[SysAdmin Tool of the Week: Terminator]]></title>
+    <link href="http://linuxsysadminblog.com/2009/11/sysadmin-tool-of-the-week-terminator/"/>
+    <updated>2009-11-09T11:48:56+08:00</updated>
+    <id>http://linuxsysadminblog.com/2009/11/sysadmin-tool-of-the-week-terminator</id>
+    <content type="html"><![CDATA[<p>This week we have <strong><a href="http://www.tenshu.net/terminator/">Terminator</a></strong> - a split window terminal emulator.  This tool is very helpful if you use terminal windows to connect to several servers at the same time.  Usually, we have multiple separate windows or the tabs, but on this one you can have split windows or grid.  Below are the features and those in bold are the features i really like.</p>
+
+<p><strong>Features:</strong>
+* Arrange terminals in a grid
+* Tabs
+* Drag and drop re-ordering of terminals
+* Lots of keyboard shortcuts
+* Config file to override gnome-terminal settings
+* Simultaneous typing to arbitrary groups of terminals</p>
+
+<p>You can install it via <code>yum install terminator</code> or <code>apt-get install terminator</code>.</p>
+
+<p>Screenshots from <a href="http://Tenshu.net">Tenshu.net</a>:</p>
+
+<p><a href="http://linuxsysadminblog.com/images/2009/11/terminator-mad-1024x576.png"><img src="http://linuxsysadminblog.com/images/2009/11/terminator-mad-1024x576.png" alt="" /></a></p>
+
+<p><a href="http://linuxsysadminblog.com/images/2009/11/2008-08-17-terminator-1024x640.png"><img src="http://linuxsysadminblog.com/images/2009/11/2008-08-17-terminator-1024x640.png" alt="" /></a></p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[SysAdmin Tool of the Week:  Update-Scout]]></title>
+    <link href="http://linuxsysadminblog.com/2009/10/sysadmin-tool-of-the-week-update-scout/"/>
+    <updated>2009-10-21T18:02:08+08:00</updated>
+    <id>http://linuxsysadminblog.com/2009/10/sysadmin-tool-of-the-week-update-scout</id>
+    <content type="html"><![CDATA[<p>Ok, we will start with this new section on our blog, the "SysAdmin Tool of the Week", to feature cool and useful tools used by <a href="http://prometsource.com">Promet</a> systems administrators.  This will include websites, software/applications, and hardware as well.</p>
+
+<p>For our Sysadmin Tool of the Week it is <a href="http://www.update-scout.com"><strong>Update Scout</strong></a>.  This site notifies you for updates or new version of software.  It contain hundreds (and increasing) of applications - linux, windows, mac, website apps and tools.  Like in my case I monitor Wordpress, Drupal, Apache, MySQL, KeePass, Nagios and many other, so it's very helpful to just wait for an email to arrive rather than thinking about them, checking manually, or sign up to each of them.</p>
+
+<p><strong>Get Started:</strong>
+* signup: just add your email and password
+* select applications you want to monitor for updates
+* add your own application if it's not on the list</p>
+
+<p><strong>Site Features:</strong>
+* Latest Updates, Latest Additions, Most Popular and Most Active sections
+* Browse list of monitored applications from A-Z or using tags
+* MyUpdate-Scout for list of your monitored applications</p>
+
+<p>Do you have similar or better tool than this?  :)</p>
+]]></content>
+  </entry>
+  
+</feed>

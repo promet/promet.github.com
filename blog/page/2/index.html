@@ -1,0 +1,1063 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Linux Sysadmin Blog</title>
+  <meta name="author" content="Promet OPS Team">
+
+  
+  <meta name="description" content="Setup ssh key authentication for password-less login between servers.  For use by ssh/sftp users or scripts. Source Server (or local system) Generate &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://linuxsysadminblog.com/blog/page/2/">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="/javascripts/ender.js"></script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <link href="/atom.xml" rel="alternate" title="Linux Sysadmin Blog" type="application/atom+xml">
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+<!-- Google Form for Contact Page -->
+<!-- jQuery -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+<script type="text/javascript">
+    // Avoid conflict with ender.js.
+jQuery.noConflict();
+</script>
+<!-- jQuery Form Plugin -->
+<script src="http://malsup.github.com/jquery.form.js"></script>
+<script src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.9/jquery.validate.min.js"></script> 
+<script src="/javascripts/google_form.js"></script>
+<!-- Google Form for Contact Page End here -->
+
+
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-120251-38']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">Linux Sysadmin Blog</a></h1>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:linuxsysadminblog.com" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/our-team">Our Team</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+  <li><a href="/blog/about">About</a></li>
+  <li><a href="/blog/contact">Contact</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div class="blog-index">
+  
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/2011/04/setup-ssh-key-authentication/">Setup SSH Key Authentication</a></h1>
+    
+    
+      <p class="meta">
+        
+  
+
+
+<span class="byline author vcard">Posted by <span class="fn"><a href="/blog/our-team/gerold-mercadero.html">Gerold Mercadero</a></span></span>
+
+ - 
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2011-04-17T15:46:41+08:00" pubdate data-updated="true">Apr 17<span>th</span>, 2011</time>
+        
+         | <a href="/2011/04/setup-ssh-key-authentication/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>Setup ssh key authentication for password-less login between servers.  For use by ssh/sftp users or scripts.</p>
+
+<p><strong>Source Server </strong>(or local system)</p>
+
+<p>Generate RSA key for user on this system, you can also use DSA.  This asks for key pass-phrase but you can leave it blank.</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>ssh-keygen -t rsa</span></code></pre></td></tr></table></div></figure>
+
+
+<p>This asks for location to place the generated key, by default it will be your home directory (<em>ex: /home/your_username/.ssh/</em>).  This generates two files:  <em>id_rsa</em> and <em>id_rsa.pub</em>.  Content of <em>id_rsa.pub </em>is what we need to copy to destination server.</p>
+
+<p><strong>Destination Server </strong>(or remote server)</p>
+
+<p>Check if you have the directory <em>.ssh</em> on your home (<em>ex: /home/username/.ssh/</em>), if not, create that directory.</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>ls  ~/.ssh
+</span><span class='line'>mkdir  ~/.ssh</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Check if you have existing file <em>authorized_keys </em>on your <em>.ssh</em> directory, if not create it.</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>ls  ~/.ssh/ authorized_keys
+</span><span class='line'>touch   ~/.ssh/ authorized_keys</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Copy content of <em>id_rsa.pub </em>that you created<em> </em>from your source/local server, or execute this command from your <strong>source/local server</strong>:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>scp  ~/.ssh/id_rsa.pub username@remote_host:~/.ssh/authorized_keys</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Test your password-less login from source to destination server.</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/2011/04/centos-5-6-released/">CentOS 5.6 Released</a></h1>
+    
+    
+      <p class="meta">
+        
+  
+
+
+<span class="byline author vcard">Posted by <span class="fn"><a href="/blog/our-team/marius-ducea.html">Marius Ducea</a></span></span>
+
+ - 
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2011-04-15T14:44:29+08:00" pubdate data-updated="true">Apr 15<span>th</span>, 2011</time>
+        
+         | <a href="/2011/04/centos-5-6-released/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>While people are still waiting to for Centos 6 (after many month since RHEL6 was released) we got a little teaser in the <a href="http://lists.centos.org/pipermail/centos-announce/2011-April/017282.html">release</a> of <strong>Centos 5.6</strong> last week. This is a minor security release, but it also brings in some interesting additions like <strong>ext4</strong> support and <strong>php53</strong> packages among others.</p>
+
+<p>If you are running any Centos 5.x minor version you should be able to upgrade just by running:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>yum update</span></code></pre></td></tr></table></div></figure>
+
+
+<p>We already upgraded to Centos 5.6 all our servers and you should do the same also, and hopefully soon we will see the Centos6 release that everyone is waiting for.</p>
+
+<p>For the full list of packages changed/added please see the centos5.6 release notes: <a href="http://wiki.centos.org/Manuals/ReleaseNotes/CentOS5.6">http://wiki.centos.org/Manuals/ReleaseNotes/CentOS5.6</a></p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/2011/04/setup-sftp-only-access-redhat-based-distro/">Setup SFTP-Only Access (Redhat-based Distro)</a></h1>
+    
+    
+      <p class="meta">
+        
+  
+
+
+<span class="byline author vcard">Posted by <span class="fn"><a href="/blog/our-team/gerold-mercadero.html">Gerold Mercadero</a></span></span>
+
+ - 
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2011-04-12T14:41:17+08:00" pubdate data-updated="true">Apr 12<span>th</span>, 2011</time>
+        
+         | <a href="/2011/04/setup-sftp-only-access-redhat-based-distro/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>Setup sftp-only access on default Redhat/CentOS install.  Use built-in <em>sftp-server</em> which is non-chrooted and easy to setup.</p>
+
+<p><strong>Server: </strong>Locate sftp-server binary and add to your list of valid shells on the system.</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>which sftp-server</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Note:   This will most likely give you this: <em>/usr/libexec/openssh/sftp-server</em></p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>echo /usr/libexec/openssh/sftp-server &gt;&gt; /etc/shells</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Note:  You may want to backup your /etc/shells first</p>
+
+<p><strong>User Accounts</strong>:  Add or modify accounts to use sftp-server.</p>
+
+<p><strong>New User</strong></p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>useradd -s /usr/libexec/openssh/sftp-server  sftponlyuser</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Note:  Important parameter there is the <em>“-s /usr/libexec/openssh/sftp-server&#8221;</em>, which sets the default shell for this account.   By default you will have “<em>/bin/bash</em>”.</p>
+
+<p><strong>Existing User:</strong></p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>vi /etc/passwd</span></code></pre></td></tr></table></div></figure>
+
+
+<p><strong><em> </em></strong> Find the user that you want to configure for sftp only access and edit its shell.  For exampleyou will see a line “<em>username:x:500:500::/home/username:/bin/bash” _ change &#8221;</em>/bin/bash<em>&#8221; to &#8221;</em>/usr/libexec/openssh/sftp-server_&#8221; and save.  Note: _ Y_ou may want to backup your /etc/passwd file as well.</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/2011/04/moving-drupal-site-with-civicrm/">Moving Drupal Site With CiviCRM</a></h1>
+    
+    
+      <p class="meta">
+        
+  
+
+
+<span class="byline author vcard">Posted by <span class="fn"><a href="/blog/our-team/gerold-mercadero.html">Gerold Mercadero</a></span></span>
+
+ - 
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2011-04-11T10:24:29+08:00" pubdate data-updated="true">Apr 11<span>th</span>, 2011</time>
+        
+         | <a href="/2011/04/moving-drupal-site-with-civicrm/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>The common headache for beginners who try to move their Drupal site with CiviCRM is the CiviCRM configuration on new location or domain.  I did this countless times and dealt with different problems before.  I&#8217;ve read many online tutorials and how-tos, and I finally have my notes which is working for me everytime i move Drupal and CiviCRM site.</p>
+
+<p>Let&#8217;s assume you already moved the databases (separate database for Drupal and CiviCRM as a recommended setup) and the files to new location and have set the correct file permissions as well.  Here is the part that you need for your CiviCRM to work on new location and domain:</p>
+
+<ul>
+<li>access your database and empty <code>civicrm.domain:config_backend</code>.  You see this anywhere with CiviCRM guide.</li>
+<li>update database details, site path/directory, and domain on <code>civicrm.settings.php</code></li>
+<li>emtpy <code>sites/default/files/civicrm/template_c</code> (or make this entire dir writable by web user)</li>
+<li>login to you new Drupal site and visit these urls:
+<code>http://sitename/civicrm/menu/rebuild?reset=1</code>
+<code>http://sitename/civicrm/admin/setting/updateConfigBackend?reset=1</code></li>
+</ul>
+
+
+<p><strong>Note:</strong> This will rebuild the settings for you - if not, repeat/review all the above steps.</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/2011/04/install-apachesolr-in-ubuntu-for-drupal/">Install ApacheSolr in Ubuntu for Drupal</a></h1>
+    
+    
+      <p class="meta">
+        
+  
+
+
+<span class="byline author vcard">Posted by <span class="fn"><a href="/blog/our-team/gerold-mercadero.html">Gerold Mercadero</a></span></span>
+
+ - 
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2011-04-03T14:26:25+08:00" pubdate data-updated="true">Apr 3<span>rd</span>, 2011</time>
+        
+         | <a href="/2011/04/install-apachesolr-in-ubuntu-for-drupal/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>I&#8217;ve written few Drupal ApacheSolr install guides here and this one is basically an install draft for Ubuntu.</p>
+
+<p><strong>Environment: </strong>  <a href="http://www.ubuntu.com/">Ubuntu 10.10</a>, Apache, PHP, MySQL, <a href="http://drupal.org">Drupal 6.20</a></p>
+
+<p><strong>Things to install / setup</strong>:   <a href="http://apache.rediris.es/lucene/solr/">Solr</a>, <a href="http://tomcat.apache.org/download-60.cgi">Tomcat6</a>, <a href="http://drupal.org/project/apachesolr">ApacheSolr module for Drupal</a>, and <a href="http://code.google.com/p/solr-php-client/">SolrPHPClient library</a></p>
+
+<p><strong>1.)  Install Tomcat and setup your Tomcat admin user.</strong></p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>aptitude install tomcat6 tomcat6-admin tomcat6-common tomcat6-user
+</span><span class='line'>vi /etc/tomcat6/tomcat-users.xml
+</span><span class='line'>  &lt;role rolename="admin"/&gt;
+</span><span class='line'>  &lt;role rolename="manager"/&gt;
+</span><span class='line'>  &lt;user username="tomcat" password="password" roles="admin,manager"/&gt;
+</span><span class='line'>/etc/init.d/tomcat6 restart</span></code></pre></td></tr></table></div></figure>
+
+
+<p>If all is good you will be able to access Tomcat admin at <code>http://hostname:8080</code>.  Default page will show with links to admin section, etc.</p>
+
+<p><strong>2.)  Install Solr</strong></p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>wget http://apache.rediris.es/lucene/solr/1.4.1/apache-solr-1.4.1.zip</span></code></pre></td></tr></table></div></figure>
+
+
+<p><a href="http://apache.rediris.es/lucene/solr/"><em>check for updates</em></a></p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>unzip apache-solr-1.4.1.zip
+</span><span class='line'>mkdir /usr/share/tomcat6/webapps
+</span><span class='line'>cp apache-solr-1.4.1/dist/apache-solr-1.4.1.war /usr/share/tomcat6/webapps/solr.war
+</span><span class='line'>cp -r apache-solr-1.4.1/example/solr /usr/share/tomcat6/solr
+</span><span class='line'>vi /etc/tomcat6/Catalina/localhost/solr.xml
+</span><span class='line'>  &lt;Context docBase="/usr/share/tomcat6/webapps/solr.war" debug="0" privileged="true" allowLinking="true" crossContext="true"&gt;
+</span><span class='line'>  &lt;Environment name="solr/home" type="java.lang.String" value="/usr/share/tomcat6/solr" override="true" /&gt;
+</span><span class='line'>  &lt;/Context&gt;
+</span><span class='line'>chown -r tomcat6.tomcat6 /var/lib/tomcat6
+</span><span class='line'>/etc/init.d/tomcat6 restart</span></code></pre></td></tr></table></div></figure>
+
+
+<p>You should see Solr access on your Tomcat admin/manager page (<code>http://hostname:8080/manager/html</code>).</p>
+
+<p><strong>3.)  Connect Drupal Site to Solr (multi-core setup)</strong></p>
+
+<p>I already have a Drupal site with ApacheSolr module installed and SolrPHPclient library.</p>
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/2011/04/install-apachesolr-in-ubuntu-for-drupal/">Read on &rarr;</a>
+    </footer>
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/2011/04/apc-should-be-enabled-by-default/">APC Should Be Enabled by Default</a></h1>
+    
+    
+      <p class="meta">
+        
+  
+
+
+<span class="byline author vcard">Posted by <span class="fn"><a href="/blog/our-team/marius-ducea.html">Marius Ducea</a></span></span>
+
+ - 
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2011-04-01T14:36:15+08:00" pubdate data-updated="true">Apr 1<span>st</span>, 2011</time>
+        
+         | <a href="/2011/04/apc-should-be-enabled-by-default/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p><strong>PHP is slow</strong>. This should not be a huge revelation for any of us, and this is not because PHP is a bad programing language, or because Python or Ruby are better. This is because it is an <a href="http://en.wikipedia.org/wiki/Interpreted_language"><em>interpreted language</em></a>. Every time you execute a PHP script it is going to do the exact same thing and interpret your code and then execute it over and over. This is obviously slow and doesn&#8217;t compare with any compiled language like C++ for example. But we don&#8217;t want to write in C++ for our webapps, right? and we would like to use the PHP simplicity as many other open source products and developers; what can we do then? We can very easily enable any of the opcode cache available: <a href="http://pecl.php.net/package/APC"><strong>APC</strong></a>, <a href="http://eaccelerator.net/"><strong>eaccelerator</strong></a> or <a href="http://xcache.lighttpd.net/"><strong>xcache</strong></a> (I&#8217;m not aware of something similar for python or ruby, but if it exists you should probably use it also). An <strong>opcode cache</strong> or <strong>PHP accelerator</strong>, will cache the compiled form of the php scripts speeding up dramatically their execution time. Many people have done this a long time as they needed to improve the performance of their sites, and get results up to 20x speed up from plain PHP. A very simple step-by-step intro on how you can install APC can be found on this <a href="http://linuxsysadminblog.com/2010/03/enabledisable-apc-on-virtual-host-level/">older post</a>.</p>
+
+<p>Now here is the question a good friend of mine asked me a while ago: <strong>why is APC not enabled by default?</strong> Why do people have to do an extra step to install an external module for this (that many don&#8217;t). And my answer at that time was that opcode caches are not perfect, and depending by how you write your code they might cause problems and have it no longer functioning correctly. I think I was quite happy with my answer as myself I would always install an opcode cache on any high traffic site I managed from day one (most of the time APC, but also eaccelerator) and many time even running comparisons between them to see if one of them is faster. Still even today, in most of the <strong>performance projects</strong> we completed, we found people don&#8217;t do this, and they <strong>don&#8217;t have APC installed and enabled</strong>. There are some tricks on how to tune APC and improve even better its performance but here I&#8217;m talking just to have it installed. This is why I think that APC should be enabled by default everywhere (not only by &#8216;high traffic&#8217; sites). It should give PHP scripts a boost of performance and if you really have problems with it you can disable it on a vhost or directory level very simple just by adding in .htaccess:
+<code>php_flag apc.cache_by_default On
+</code></p>
+
+<p>I&#8217;m hoping more and more people will do this so we can focus on more serious performance problems in our PHP webapps. I don&#8217;t see why not, because this is very simple and there are plenty of <a href="http://www.google.com/search?q=howto+php+apc">howto&#8217;s</a> available. Still if you need help, and you would like us to do it for you, please <a href="http://www.prometsource.com/contact">contact us</a> and let us speed up your site.</p>
+
+<p>Note: if you have done this many years ago and want somethign even faster for your PHP code you should take a look at <a href="https://github.com/facebook/hiphop-php/wiki/"><strong>HipHop</strong></a> the project from Facebook to <strong>compile your php scripts</strong> (actually transforms PHP source code into highly optimized C++ and then uses g++ to compile it to machine code) and run them as executables (but this is going to be much harder to implement, but still a very interesting project to keep an eye).</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/2011/04/gmail-shorcuts/">Gmail Shorcuts</a></h1>
+    
+    
+      <p class="meta">
+        
+  
+
+
+<span class="byline author vcard">Posted by <span class="fn"><a href="/blog/our-team/gerold-mercadero.html">Gerold Mercadero</a></span></span>
+
+ - 
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2011-04-01T13:11:45+08:00" pubdate data-updated="true">Apr 1<span>st</span>, 2011</time>
+        
+         | <a href="/2011/04/gmail-shorcuts/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>Besides Gmail, many sites are moving to GoogleApps for hosting their emails, and if you use Gmail or GoogleApps a lot then you might love the keyboard shortcuts feature.</p>
+
+<p>You can quickly see available shortcut keys by typing &#8220;?&#8221; (<em>question mark, no qoutes</em>) and it will give you this screen.</p>
+
+<p><a href="http://linuxsysadminblog.com/images/2011/04/gmail_shortcut.png"><img src="http://linuxsysadminblog.com/images/2011/04/gmail_shortcut-300x175.png" alt="gmail shortcut" /></a></p>
+
+<p>Of course you need to enable keyboard shortcuts on your settings.  :)</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/2011/03/hosting-presentation-at-drupalcon2011/">Hosting Presentation at DrupalCon2011</a></h1>
+    
+    
+      <p class="meta">
+        
+  
+
+
+<span class="byline author vcard">Posted by <span class="fn"><a href="/blog/our-team/andrew-kucharski.html">Andrew Kucharski</a></span></span>
+
+ - 
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2011-03-27T19:08:20+08:00" pubdate data-updated="true">Mar 27<span>th</span>, 2011</time>
+        
+         | <a href="/2011/03/hosting-presentation-at-drupalcon2011/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>Below is my presentation from Drupal Con 2011 where Promet Source, a <a href="http://www.prometsource.com">Drupal Development Company</a> based out of Chicago was a Gold sponsor.  Although none or our proposed talks got in, we did get a slot at the Main stage.  Below are the slides of my talk.  Basically we wanted to highlight that while we do focus on automation, performance and security, with Drupal the security updates must be integrated with human support to ensure that updates do not break the site.</p>
+
+<p><strong><a href="http://www.slideshare.net/akucharski/what-should-you-expect-from-your-drupal-web-host">What should you expect from your Drupal Web Host</a></strong></p>
+
+<p>View more <a href="http://www.slideshare.net/">presentations</a> from <a href="http://www.slideshare.net/akucharski">Promet Solutions</a></p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/2010/10/setup-subversion-svn-and-mod_dav_svn-on-cpanel-server/">Setup Subversion (SVN) and Mod_dav_svn on Cpanel Server</a></h1>
+    
+    
+      <p class="meta">
+        
+  
+
+
+<span class="byline author vcard">Posted by <span class="fn"><a href="/blog/our-team/gerold-mercadero.html">Gerold Mercadero</a></span></span>
+
+ - 
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2010-10-18T06:00:06+08:00" pubdate data-updated="true">Oct 18<span>th</span>, 2010</time>
+        
+         | <a href="/2010/10/setup-subversion-svn-and-mod_dav_svn-on-cpanel-server/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>Quick install guide for SVN with mod_dav_svn (http/https) repository access on Cpanel server running CentOs5.</p>
+
+<p><strong>Configure Cpanel for SVN</strong></p>
+
+<p>Recompile Apache/PHP (<em>WHM -> Software -> EasyApache</em>) and enable support for the following:</p>
+
+<ul>
+<li>Dav (<em>Among other things mod_dav can be used by DAV enabled Frontpage clients instead of FP extensions</em>)</li>
+<li>BerkeleyDB.  <strong>Note</strong>: BerkeleyDB support (&#8221;<em>&#8211;with-berkeley-db</em>&#8221;) is not enabled by default in EasyApache so you need to add this manually to your EasyApache config using <a href="http://docs.cpanel.net/twiki/bin/view/EasyApache3/CustomConfigureFlags">this guide</a> or <a href="http://community.eapps.com/showthread.php?271-Adding-subversion-support-to-Apache">this one</a>.</li>
+</ul>
+
+
+<p><strong>Install Subversion and mod_dav_svn</strong></p>
+
+<p>Install subversion using yum (<em>yum install subversion</em>) or install it from source.  At this time CentOS repo version is 1.4.x and the latest from source is 1.6.x.</p>
+
+<p><strong>Install and enable mod_dav_svn in Cpanel</strong></p>
+
+<ul>
+<li>Install mod_dav_svn using yum (<em>yum install mod_dav_svn</em>) - version 1.4.x same as subersion above.</li>
+<li>Load mod_dav_svn module to Apache.  Go to <em>WHM -> Service Configuration -> Apache Configuration -> Include Editor -> Pre-Main Include</em>.   Select either &#8221;<em>All Versions</em>&#8221; or your current Apache version (ex: &#8221;<em>2.2.16</em>&#8221;) from drop-down list.  Or you can edit their corresponding file directly:
+
+<ul>
+<li>All Versions:  <em>/usr/local/apache/conf/includes/pre_main_global.conf</em></li>
+<li>Apache 2.2.16: <em>/usr/local/apache/conf/includes/pre_main_2.conf</em></li>
+</ul>
+</li>
+<li>Add the codes below and click &#8221;<em>Update</em>&#8221; button to save config. This will restart Apache if no error on your configuration.</li>
+</ul>
+
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>&lt;IfModule mod_dav.c&gt;
+</span><span class='line'>LoadModule dav_svn_module /usr/lib/httpd/modules/mod_dav_svn.so
+</span><span class='line'>LoadModule authz_svn_module /usr/lib/httpd/modules/mod_authz_svn.so
+</span><span class='line'>&lt;/IfModule&gt;</span></code></pre></td></tr></table></div></figure>
+
+
+<p><strong>Create repository and add http access (ex: http://domain.com/svn)</strong></p>
+
+<ul>
+<li>Create your repository: <code>svnadmin create /path/to/svn/repos</code></li>
+<li>Add the code below to your domain&#8217;s custom include file.  You need to create this file based on <a href="http://www.cpanel.net/documentation/easyapache/customdirectives.html">this guide</a> to preserve when you recompile Apache/PHP.
+Example file (Apache2,standard/non-ssl):  <code>/usr/local/apache/conf/userdata/std/2/cpanl_user/domain.com/svn.conf</code>
+File Contents:</li>
+</ul>
+
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>&lt;Location /svn&gt;
+</span><span class='line'>#  mod dav svn support and location of svn repo files
+</span><span class='line'>DAV svn
+</span><span class='line'>SVNPath /path/to/svn/repos
+</span><span class='line'># authentication for security, create using htpasswd
+</span><span class='line'>AuthType Basic
+</span><span class='line'>AuthName "SVN Access"
+</span><span class='line'>AuthUserFile /path/to/file/containing/user.pass
+</span><span class='line'>Require valid-user
+</span><span class='line'># added for permissions/access
+</span><span class='line'>Order allow,deny
+</span><span class='line'>Allow from all
+</span><span class='line'>&lt;/Location&gt;</span></code></pre></td></tr></table></div></figure>
+
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/2010/10/install-apache-solr-and-tomcat-for-drupal/">Install Apache Solr and Tomcat for Drupal</a></h1>
+    
+    
+      <p class="meta">
+        
+  
+
+
+<span class="byline author vcard">Posted by <span class="fn"><a href="/blog/our-team/gerold-mercadero.html">Gerold Mercadero</a></span></span>
+
+ - 
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2010-10-17T05:10:55+08:00" pubdate data-updated="true">Oct 17<span>th</span>, 2010</time>
+        
+         | <a href="/2010/10/install-apache-solr-and-tomcat-for-drupal/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>Here&#8217;s my quick install guide for Solr, Tomcat, and Drupal ApacheSolr module for multiple sites.  Mostly I based the steps below from the following sites: <a href="http://wiki.apache.org/solr/SolrTomcat">wiki.apache.org</a> and <a href="http://www.drupalconnect.com/blog/steve/configuring-apache-solr-multi-core-drupal-and-tomcat-ubuntu-910">drupalconnect.com</a>.</p>
+
+<p><strong>Detailed Setup:</strong></p>
+
+<ul>
+<li>Drupal 6.19</li>
+<li>ApacheSolr module 6-1.1</li>
+<li>Apache Solr PHP Client Library: Rev.22</li>
+<li>Solr 1.4.1</li>
+<li>Tomcat 6.0.29</li>
+<li>SunJDK 6update21</li>
+<li>RHEL5.5x64</li>
+</ul>
+
+
+<p><strong>Install Process: Tomcat</strong></p>
+
+<ul>
+<li>Create <code>solr</code> user</li>
+<li>Download <a href="http://tomcat.apache.org/download-60.cgi">Tomcat6</a></li>
+<li>Extract to <code>/opt/tomcat</code>,  <em>this will be the <code>$CATALINA_HOME</code> directory, you can use any dir you want</em></li>
+<li>Edit <code>/opt/tomcat/conf/tomcat-users.xml</code> to enable Tomcat login.  See comments in this file.</li>
+</ul>
+
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>&lt;role rolename="manager"/&gt;
+</span><span class='line'>&lt;role rolename="admin"/&gt;
+</span><span class='line'>&lt;user username="tomcat" password="tomcat" roles="manager,admin"/&gt;</span></code></pre></td></tr></table></div></figure>
+
+
+<ul>
+<li>Test run your Tomcat:  <code>/opt/tomcat/bin/catalina.sh run</code>.  Chown all Tomcat files to <code>solr</code> user (<code>chown -R solr.solr /opt/tomcat</code>).  Default server setting will use port 8080, to customized edit the file <code>/opt/tomcat/conf/server.xml</code>.  If you encounter error on &#8221;<em>BASEDIR environment variable is not defined correctly&#8230;</em>&#8221;, check permissions of <code>.sh</code> files inside <code>/opt/tomcat/bin/</code> and make them executable (<code>chmod 755 /opt/tomcat/bin/*.sh</code>).</li>
+<li>Add startup (init) script.  Copy this <a href="http://wiki.apache.org/solr/SolrTomcat?action=AttachFile&amp;do=view&amp;target=tomcat6">Tomcat6 init file</a> from Apache.org to <em>/etc/init.d/tomcat6</em>.  Check and update variables like Java home, Tomcat directory, etc, if needed.  Add to startup <code>/sbin/chkconfig --add tomcat6</code> and <code>/sbin/chkconfig tomcat6 on</code>.  Dependencies: redhat-lsb (or lsb-base?)</li>
+<li>Visit your Tomcat Admin page.  ex <em>http://localhost:8080</em></li>
+</ul>
+
+
+<p><strong>Install Process: Solr</strong></p>
+
+<ul>
+<li>Download <a href="http://mirrors.igsobe.com/apache/lucene/solr/">Solr</a></li>
+<li>Extract to temporary location, ex: <code>/opt/apache-solr-1.4.1</code></li>
+<li>Copy <code>/opt/apache-solr-1.4.1/dist/apache-solr-1.4.1.war</code> to <code>/opt/tomcat/webapps/solr.war</code></li>
+<li>Copy <code>/opt/apache-solr-1.4.1/example/solr</code> directory to <code>/opt/tomcat/solr</code>  <em>this will be the <code>$SOLR_HOME</code> directory, you can use any dir you want</em></li>
+<li>Create file <code>/opt/tomcat/conf/Catalina/localhost/solr.xml</code> with the following configuration.  Make sure paths are correct.</li>
+</ul>
+
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>&lt;Context docBase="/opt/tomcat/webapps/solr.war" debug="0" privileged="true" allowLinking="true" crossContext="true"&gt;
+</span><span class='line'>&lt;Environment name="solr/home" type="java.lang.String" value="/opt/tomcat/solr" override="true" /&gt;
+</span><span class='line'>&lt;/Context&gt;</span></code></pre></td></tr></table></div></figure>
+
+
+<p><strong>Install Process: ApacheSolr Drupal module and SolrPHP client</strong></p>
+
+<ul>
+<li>Install/enable <a href="http://drupal.org/project/apachesolr">Drupal ApacheSolr</a> module. Drush, CVS, or traditional install - whatever you want.  Example: <code>/var/www/site1/sites/all/modules/apachesolr</code></li>
+<li>Download <a href="http://code.google.com/p/solr-php-client/">SolrPHP client library</a></li>
+</ul>
+
+
+<p><strong>Configure Solr for Multi-Core Setup</strong></p>
+
+<ul>
+<li>Copy <code>/var/www/site1/sites/all/modules/apachesolr/schema.xml</code> to <code>/opt/tomcat/solr/conf/schema.xml</code></li>
+<li>Copy <code>/var/www/site1/sites/all/modules/apachesolr/solrconfig.xml</code> to <code>/opt/tomcat/solr/conf/solrconfig.xml</code></li>
+<li>Copy <code>/opt/apache-solr-1.4.1/example/multicore/solr.xml</code> to <code>/opt/tomcat/solr/solr.xml</code></li>
+<li>Create directory for each site and copy <code>/opt/tomcat/solr/conf</code> directory to each of them. Example:</li>
+</ul>
+
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>mkdir /opt/tomcat/solr/site1
+</span><span class='line'>mkdir /opt/tomcat/solr/site2
+</span><span class='line'>cp -r /opt/tomcat/solr/conf /opt/tomcat/solr/site1/
+</span><span class='line'>cp -r /opt/tomcat/solr/conf /opt/tomcat/solr/site2/</span></code></pre></td></tr></table></div></figure>
+
+
+<ul>
+<li>Edit <code>/opt/tomcat/solr/solr.xml</code> with the following config:</li>
+</ul>
+
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>&lt;?xml version="1.0" encoding="UTF-8" ?&gt;
+</span><span class='line'>&lt;solr persistent="false"&gt;
+</span><span class='line'>&lt;cores adminPath="/admin/cores"&gt;
+</span><span class='line'>&lt;core name="site1" instanceDir="site1" /&gt;
+</span><span class='line'>&lt;core name="site1" instanceDir="site2" /&gt;
+</span><span class='line'>&lt;/cores&gt;
+</span><span class='line'>&lt;/solr&gt;</span></code></pre></td></tr></table></div></figure>
+
+
+<ul>
+<li>Start or Restart Tomcat: <code>/etc/init.d/tomcat6 start</code></li>
+<li>Visit <code>http://localhost:8080/</code> and go to you Solr App</li>
+</ul>
+
+
+<p><strong>Configure Drupal site:</strong></p>
+
+<ul>
+<li>Go to ApacheSolr settings <code>http://localhost/admin/settings/apachesolr</code></li>
+<li>Save your config and if all is good you&#8217;ll see message: <code>Your site has contacted the Apache Solr server.</code></li>
+</ul>
+
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>Solr host name: localhost
+</span><span class='line'>Solr port: 8080
+</span><span class='line'>Solr path (for site1): /solr/site1</span></code></pre></td></tr></table></div></figure>
+
+
+<ul>
+<li>Configure your search index.</li>
+</ul>
+
+</div>
+  
+  
+
+
+    </article>
+  
+  <div class="pagination">
+    
+      <a class="prev" href="/blog/page/3/">&larr; Older</a>
+    
+    <a href="/blog/archives">Blog Archives</a>
+    
+    <a class="next" href="/">Newer &rarr;</a>
+    
+  </div>
+</div>
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/2012/11/howto-bulk-import-dns-zones-to-softlayer-dns-using-cpanel/">HowTo: Bulk Import DNS Zones to Softlayer DNS using Cpanel</a>
+      </li>
+    
+      <li class="post">
+        <a href="/2012/08/integrate-sendgrid-with-redmine/">Integrate Sendgrid with Redmine</a>
+      </li>
+    
+      <li class="post">
+        <a href="/2012/07/rsback-task-x-is-locked-and-cannot-be-executed/">rsback: task x is locked and cannot be executed</a>
+      </li>
+    
+      <li class="post">
+        <a href="/2012/06/restore-xen-vm-from-lvm-snapshot-backups/">Restore Xen VM from LVM Snapshot Backups</a>
+      </li>
+    
+      <li class="post">
+        <a href="/2012/06/debian-6-backup-xen-with-lvm-and-rsnapshot/">Debian 6: Backup Xen with LVM and Rsnapshot</a>
+      </li>
+    
+  </ul>
+</section>
+
+<section>
+  <h1>GitHub Repos</h1>
+  <ul id="gh_repos">
+    <li class="loading">Status updating&#8230;</li>
+  </ul>
+  
+  <a href="https://github.com/promet">@promet</a> on GitHub
+  
+  <script type="text/javascript">
+    $.domReady(function(){
+        if (!window.jXHR){
+            var jxhr = document.createElement('script');
+            jxhr.type = 'text/javascript';
+            jxhr.src = '/javascripts/libs/jXHR.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(jxhr, s);
+        }
+
+        github.showRepos({
+            user: 'promet',
+            count: 0,
+            skip_forks: true,
+            target: '#gh_repos'
+        });
+    });
+  </script>
+  <script src="/javascripts/github.js" type="text/javascript"> </script>
+</section>
+
+
+<section>
+  <h1>Latest Tweets</h1>
+  <ul id="tweets">
+    <li class="loading">Status updating&#8230;</li>
+  </ul>
+  <script type="text/javascript">
+    $.domReady(function(){
+      getTwitterFeed("linuxsysadmnblg", 4, false);
+    });
+  </script>
+  <script src="/javascripts/twitter.js" type="text/javascript"> </script>
+  
+    <a href="http://twitter.com/linuxsysadmnblg" class="twitter-follow-button" data-show-count="false">Follow @linuxsysadmnblg</a>
+  
+</section>
+
+
+
+
+
+  
+</aside>
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2012 - Promet OPS Team -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'linuxsysadminblog';
+      
+        
+        var disqus_script = 'count.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'http://' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) {return;}
+  js = d.createElement(s); js.id = id;
+  js.src = "//connect.facebook.net/en_US/all.js#appId=212934732101925&xfbml=1";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = 'http://platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>

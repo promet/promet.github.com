@@ -1,0 +1,385 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Denial of Service Attack and the Defense-in-Depth Layer - Linux Sysadmin Blog</title>
+  <meta name="author" content="Promet OPS Team">
+
+  
+  <meta name="description" content="Security should be practiced in all area. This is where the DiD or Defense-in-Depth Layer comes in. Defense in Depth is a multiple defensive strategy &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://linuxsysadminblog.com/2008/11/denial-of-service-attack-and-the-defense-in-depth-layer/">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="/javascripts/ender.js"></script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <link href="/atom.xml" rel="alternate" title="Linux Sysadmin Blog" type="application/atom+xml">
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+<!-- Google Form for Contact Page -->
+<!-- jQuery -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+<script type="text/javascript">
+    // Avoid conflict with ender.js.
+jQuery.noConflict();
+</script>
+<!-- jQuery Form Plugin -->
+<script src="http://malsup.github.com/jquery.form.js"></script>
+<script src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.9/jquery.validate.min.js"></script> 
+<script src="/javascripts/google_form.js"></script>
+<!-- Google Form for Contact Page End here -->
+
+
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-120251-38']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">Linux Sysadmin Blog</a></h1>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:linuxsysadminblog.com" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/our-team">Our Team</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+  <li><a href="/blog/about">About</a></li>
+  <li><a href="/blog/contact">Contact</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      
+
+<div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">Denial of Service Attack and the Defense-in-Depth Layer</h1>
+    
+    
+      <p class="meta">
+        
+  
+
+
+<span class="byline author vcard">Posted by <span class="fn"><a href="/blog/our-team/rachel-jaro.html">Rachel Jaro</a></span></span>
+
+ - 
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2008-11-20T08:20:29+08:00" pubdate data-updated="true">Nov 20<span>th</span>, 2008</time>
+        
+         | <a href="#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>Security should be practiced in all area. This is where the DiD or Defense-in-Depth Layer comes in.</p>
+
+<p><strong>Defense in Depth</strong> is a multiple defensive strategy recommended as a secure practices by CERT and other security organizations. Security experts apply multiple defenses and countermeasures in many areas of their system or operations. There is no single generic list of the layers so it can vary on what you are trying to protect. There are 5 common layers in the DiD: Physical, Network, Host, Application and Data layer. We will discuss 4 layers in order to secure us from DoS or <a href="http://linuxsysadminblog.com/2008/11/denial-of-service-dos-attacks-becoming-more-common/">Denial of Service attack</a> and those are  Network, Host and Application and Physical.</p>
+
+<p><em>Physical</em>: The physical access to the resources (including humans)</p>
+
+<p><em>Network</em>: Layer at which data is accepted into the system from the network. The primary components that make up your network infrastructure are routers, firewalls, and switches.  A well designed and properly implemented network architecture provides highly available, secure, scalable, manageable, and reliable services.</p>
+
+<p><em>Host</em>: Hosts come in two types: clients and servers. Securing both effectively requires striking a balance between the degree of hardening and the level of usability.</p>
+
+<p><em>Application</em>: For the purpose of this article, application refers to an interactive software application that uses a web browser as the user interface to typically access a database for the content or commonly called web app.</p>
+
+<p>In <a href="http://linuxsysadminblog.com/2008/11/denial-of-service-dos-attacks-becoming-more-common/">DoS attack</a>, a vulnerability in one layer is a vulnerability in the other layers. It can attack on any level unlike other kind of attacks. Microsoft has well explained the <a href="http://msdn.microsoft.com/en-us/library/aa302418.aspx#c02618429_004">network, host and application threats and countermeasures</a>. The following are list of appropriate actions to address DoS:</p>
+
+<p><strong>Network Layer</strong></p>
+
+<ul>
+<li>Apply the latest service packs.</li>
+<li>Harden the TCP/IP stack by applying the appropriate registry settings to increase the size of the TCP connection queue, decrease the connection establishment period, and employ dynamic backlog mechanisms to ensure that the connection queue is never exhausted.</li>
+<li>Use a network Intrusion Detection System (IDS) because these can automatically detect and respond to SYN attacks.</li>
+</ul>
+
+
+<p><strong>Host Layer</strong></p>
+
+<ul>
+<li>Configure your applications, services, and operating system with denial of service in mind.</li>
+<li>Stay current with patches and security updates.</li>
+<li>Harden the TCP/IP stack against denial of service.</li>
+<li>Make sure your account lockout policies cannot be exploited to lock out well known service accounts.</li>
+<li>Make sure your application is capable of handling high volumes of traffic and that thresholds are in place to handle abnormally high loads.</li>
+<li>Review your application&#8217;s failover functionality.</li>
+<li>Use an IDS that can detect potential denial of service attacks.</li>
+</ul>
+
+
+<p><strong>Application Layer</strong></p>
+
+<ul>
+<li>Thoroughly validate all input data at the server.</li>
+<li>Use exception handling throughout your application&#8217;s code base.</li>
+<li>Apply the latest patches.</li>
+</ul>
+
+
+<p><strong>Physical Layer</strong></p>
+
+<p>The one last layer that was not given proper attention. The problem with our community is the lack of information regarding security issues. Help educate the common users on this kind of attack. An innocent employee or community can be used to execute a DDoS attack.</p>
+
+<p>Again, security must be practiced in all areas of operations. DoS attack could take any form. Having DiD, if one layer fails then another layer will likely succeed.</p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+
+<span class="byline author vcard">Posted by <span class="fn"><a href="/blog/our-team/rachel-jaro.html">Rachel Jaro</a></span></span>
+
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2008-11-20T08:20:29+08:00" pubdate data-updated="true">Nov 20<span>th</span>, 2008</time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/category/security/'>Security</a>, <a class='category' href='/category/sysadmin/'>sysadmin</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://linuxsysadminblog.com/2008/11/denial-of-service-attack-and-the-defense-in-depth-layer/" data-via="linuxsysadmnblg" data-counturl="http://linuxsysadminblog.com/2008/11/denial-of-service-attack-and-the-defense-in-depth-layer/" >Tweet</a>
+  
+  
+  
+    <div class="fb-like" data-send="true" data-width="450" data-show-faces="false"></div>
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/2008/11/server-and-backup-woes/" title="Previous Post: Server and backup woes">&laquo; Server and backup woes</a>
+      
+      
+        <a class="basic-alignment right" href="/2008/11/upgrading-to-trac-011/" title="next Post: Upgrading to Trac 0.11">Upgrading to Trac 0.11 &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
+
+  <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/2012/11/howto-bulk-import-dns-zones-to-softlayer-dns-using-cpanel/">HowTo: Bulk Import DNS Zones to Softlayer DNS using Cpanel</a>
+      </li>
+    
+      <li class="post">
+        <a href="/2012/08/integrate-sendgrid-with-redmine/">Integrate Sendgrid with Redmine</a>
+      </li>
+    
+      <li class="post">
+        <a href="/2012/07/rsback-task-x-is-locked-and-cannot-be-executed/">rsback: task x is locked and cannot be executed</a>
+      </li>
+    
+      <li class="post">
+        <a href="/2012/06/restore-xen-vm-from-lvm-snapshot-backups/">Restore Xen VM from LVM Snapshot Backups</a>
+      </li>
+    
+      <li class="post">
+        <a href="/2012/06/debian-6-backup-xen-with-lvm-and-rsnapshot/">Debian 6: Backup Xen with LVM and Rsnapshot</a>
+      </li>
+    
+  </ul>
+</section>
+
+<section>
+  <h1>GitHub Repos</h1>
+  <ul id="gh_repos">
+    <li class="loading">Status updating...</li>
+  </ul>
+  
+  <a href="https://github.com/promet">@promet</a> on GitHub
+  
+  <script type="text/javascript">
+    $.domReady(function(){
+        if (!window.jXHR){
+            var jxhr = document.createElement('script');
+            jxhr.type = 'text/javascript';
+            jxhr.src = '/javascripts/libs/jXHR.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(jxhr, s);
+        }
+
+        github.showRepos({
+            user: 'promet',
+            count: 0,
+            skip_forks: true,
+            target: '#gh_repos'
+        });
+    });
+  </script>
+  <script src="/javascripts/github.js" type="text/javascript"> </script>
+</section>
+
+
+<section>
+  <h1>Latest Tweets</h1>
+  <ul id="tweets">
+    <li class="loading">Status updating...</li>
+  </ul>
+  <script type="text/javascript">
+    $.domReady(function(){
+      getTwitterFeed("linuxsysadmnblg", 4, false);
+    });
+  </script>
+  <script src="/javascripts/twitter.js" type="text/javascript"> </script>
+  
+    <a href="http://twitter.com/linuxsysadmnblg" class="twitter-follow-button" data-show-count="false">Follow @linuxsysadmnblg</a>
+  
+</section>
+
+
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2012 - Promet OPS Team -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'linuxsysadminblog';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://linuxsysadminblog.com/2008/11/denial-of-service-attack-and-the-defense-in-depth-layer/';
+        var disqus_url = 'http://linuxsysadminblog.com/2008/11/denial-of-service-attack-and-the-defense-in-depth-layer/';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'http://' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) {return;}
+  js = d.createElement(s); js.id = id;
+  js.src = "//connect.facebook.net/en_US/all.js#appId=212934732101925&xfbml=1";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = 'http://platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>

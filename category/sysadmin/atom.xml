@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: sysadmin | Linux Sysadmin Blog]]></title>
+  <link href="http://linuxsysadminblog.com/category/sysadmin/atom.xml" rel="self"/>
+  <link href="http://linuxsysadminblog.com/"/>
+  <updated>2012-11-13T01:37:44+08:00</updated>
+  <id>http://linuxsysadminblog.com/</id>
+  <author>
+    <name><![CDATA[Promet OPS Team]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[HowTo remove a list of files]]></title>
+    <link href="http://linuxsysadminblog.com/2010/07/howto-remove-a-list-of-files/"/>
+    <updated>2010-07-09T16:33:28+08:00</updated>
+    <id>http://linuxsysadminblog.com/2010/07/howto-remove-a-list-of-files</id>
+    <content type="html"><![CDATA[<p>Here is a quick tip on how to remove a list of files. Let's say you have the list of files inside a file called <strong>files_to_remove</strong>. Usually I would do something like this:</p>
+
+<pre><code>LIST=\`cat files_to_remove\`
+</code></pre>
+
+<p>and then</p>
+
+<pre><code>ls -al $LIST
+</code></pre>
+
+<p>just to check what is in the list and if it looks good.</p>
+
+<p>And finally:</p>
+
+<pre><code>rm -vf $LIST
+</code></pre>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Google will use site performance and page load speed in SERP ranking - sysadmin SEO here we come]]></title>
+    <link href="http://linuxsysadminblog.com/2010/04/google-will-use-site-performance-and-page-load-speed-in-serp-ranking-sysadmin-seo-here-we-come/"/>
+    <updated>2010-04-13T23:48:56+08:00</updated>
+    <id>http://linuxsysadminblog.com/2010/04/google-will-use-site-performance-and-page-load-speed-in-serp-ranking-sysadmin-seo-here-we-come</id>
+    <content type="html"><![CDATA[<p>Page Load speed just became a lot more important - Google announced recently that it will use <a href="http://googlewebmastercentral.blogspot.com/2010/04/using-site-speed-in-web-search-ranking.html">page speed in its SERP</a> rankings.  Here is a quote that will make the SEO and marketing folks knock on sysadmin doors:</p>
+
+<blockquote><p>We encourage you to start looking at your site's speed (the tools above provide a great starting point) — not only to improve your ranking in search engines, but also to improve everyone's experience on the Internet.</p></blockquote>
+
+<p>The post lists a number of tools everyone should be using already, such as <a href="http://developer.yahoo.com/yslow/">YSlow</a>, google's own <a href="http://code.google.com/speed/page-speed/">PageSpeed</a>, <a href="http://www.webpagetest.org/">online speed waterfall diagram</a> tool and webmaster tools.  Webmaster tools recently added a beta feature which provides data about your sites speed relative to other sites on the internet.</p>
+
+<p>Here is a sample report:</p>
+
+<p><a href="http://linuxsysadminblog.com/images/2010/04/chart.png"><img src="http://linuxsysadminblog.com/images/2010/04/chart.png" alt="google webmaster tools page load speed chart" /></a></p>
+
+<blockquote><p>Performance overview
+On average, pages in your site take 6.3 seconds to load (updated on Apr 11, 2010). This is slower than 83% of sites. These estimates are of medium accuracy (between 100 and 1000 data points). The chart below shows how your site's average page load time has changed over the last few months. For your reference, it also shows the 20th percentile value across all sites, separating slow and fast load times.</p></blockquote>
+
+<p>Linus System admin blog will have a series on page speed improvement.  Stay tuned!</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Enable/Disable APC on virtual host level]]></title>
+    <link href="http://linuxsysadminblog.com/2010/03/enabledisable-apc-on-virtual-host-level/"/>
+    <updated>2010-03-18T16:53:29+08:00</updated>
+    <id>http://linuxsysadminblog.com/2010/03/enabledisable-apc-on-virtual-host-level</id>
+    <content type="html"><![CDATA[<p><a href="http://pecl.php.net/package/APC"><strong>APC</strong></a> (Alternative PHP Cache) is a free, open, and robust framework for caching and optimizing PHP intermediate code. <strong>APC</strong> is a great tool to speed up a php driven site and I can't even think of a big site running on a php framework without an <em>opcode cache</em> (other good choices are <strong>eaccelerator</strong> or <strong>xcache</strong>). Why would not everyone want to use this? The reason why this is not enabled by default everywhere is because in certain situations it can break things. Most peoples will not see any problems, but still, if you run a server with many clients sharing the same apache service this might be a problem (as the apc module loading it is a server-wide config). This post will show how we can use APC globally and disable it for some vhosts (that might have a problem with using APC) or the reverse to just use it one a special vhost that might need this.</p>
+
+<p>I'll assume that you have installed apc already, if this is not the case this will probably be something as simple as running
+<code>pecl install apc</code>
+or downloading the archive from pecl and running:
+<code>phpize; ./configure; make; make install</code></p>
+
+<p>The APC extension needs to be enabled either in <strong>php.ini</strong> or in one included file with a line like this:
+<code>extension=apc.so</code>
+there are many other parameters that apc can be fine tuned (see the official doc for more info), but without any other change, just with this line apc will be enabled on all the vhosts on the server.</p>
+
+<p><strong>Disabling some vhosts from using APC</strong>
+- if we want to disable APC for a particular vhost we just have to add to the vhost config or to .htaccess:
+<code>php_flag apc.cache_by_default Off</code></p>
+
+<p><strong>Enabling APC only on some vhosts</strong>
+- if we want to have APC disabled by default globally we will have in php.ini:</p>
+
+<pre><code>&lt;code&gt;extension=apc.so
+[apc]
+apc.cache_by_default=0 # disable by default
+... other apc settings...&lt;/code&gt;
+</code></pre>
+
+<p>and we will enable APC for the particular vhost config or using .htaccess using:
+<code>php_flag apc.cache_by_default On</code></p>
+
+<p>Hopefully you found this post useful and this will give you a reason to use APC with more confidence knowing that you have the granularity to disable/enable it as needed in a shared environment.</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Mail Relay Issue on Cpanel Server]]></title>
+    <link href="http://linuxsysadminblog.com/2010/02/mail-relay-issue-on-cpanel-server/"/>
+    <updated>2010-02-16T09:05:00+08:00</updated>
+    <id>http://linuxsysadminblog.com/2010/02/mail-relay-issue-on-cpanel-server</id>
+    <content type="html"><![CDATA[<p>I noticed lots of email being relayed on one of our shared hosting server, CentOS5 with Cpanel and running Exim, and the strange thing is that the email server (MX) for these accounts are pointing to Google (GoogleApps), and we have correct entries for <em>localdomains</em> and <em>remotedomains</em> for these account.  The relayers (<em>'From'</em> server/address) looks like spam anyway.  From the mail logs I noticed that the relayed messages have '<em>fixed_login</em>' and key ('<em>rsa-sha1</em>') for their authentications.</p>
+
+<p>Since the mail server for these accounts are pointing to other servers, I deleted all the email accounts, forwarders, mailinglists, etc.  After this I've seen sending error/failure messages from mail logs of the said accounts  It shows '<em>fixed_login authenticator failed for hostxx' [535 Incorrect authentication data]</em>.</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Change Squid outgoing address]]></title>
+    <link href="http://linuxsysadminblog.com/2009/10/change-squid-outgoing-address/"/>
+    <updated>2009-10-19T13:45:34+08:00</updated>
+    <id>http://linuxsysadminblog.com/2009/10/change-squid-outgoing-address</id>
+    <content type="html"><![CDATA[<p>Typically <a href="http://www.squid-cache.org">Squid</a> caching proxy server listen and outgoing IP address are the same. Sometimes, for various reasons we want to alter the <strong>outgoing IP</strong> address. The new address must first be brought up as an interface on the squid server. In squid.conf look for <code>tcp_outgoing_address</code> line, uncomment it and replace the default IP value with your new outgoing ip address and restart Squid. Your Squid server will still listen and accept connections on the current IP while all outbound traffic will originate from the new IP. This modification works with access ACL and detailed instructions can be found <a href="http://www.squid-cache.org/Versions/v3/3.0/cfgman/tcp_outgoing_address.html">here</a> for latest stable branch (3.0)</p>
+]]></content>
+  </entry>
+  
+</feed>

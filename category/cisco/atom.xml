@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: cisco | Linux Sysadmin Blog]]></title>
+  <link href="http://linuxsysadminblog.com/category/cisco/atom.xml" rel="self"/>
+  <link href="http://linuxsysadminblog.com/"/>
+  <updated>2012-11-13T01:37:44+08:00</updated>
+  <id>http://linuxsysadminblog.com/</id>
+  <author>
+    <name><![CDATA[Promet OPS Team]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[ASA allow passive ftp traffic]]></title>
+    <link href="http://linuxsysadminblog.com/2009/03/asa-allow-passive-ftp-traffic/"/>
+    <updated>2009-03-17T15:03:56+08:00</updated>
+    <id>http://linuxsysadminblog.com/2009/03/asa-allow-passive-ftp-traffic</id>
+    <content type="html"><![CDATA[<p>Many ftp client will try to establish a <strong>passive</strong> connection with a server by default. A passive connection will use a high numbered unprivileged port range greater then 1023 (<strong>PASV</strong>) instead of port 20 (<strong>PORT</strong>). Most ftp servers specify different ranges that are to be used for passive connections.</p>
+
+<p>When you are managing multiple ftp servers is it rather impractical to configure specific passive port ranges for each ftp server and open these ports in the firewall. A quick and much more practical solution is to use the stateful application inspection feature of the Adaptive Security Appliance.  To set-up inspection of the FTP protocol which will dynamically allow secondary ports to pass as well as allow NAT traversal of these ports we first must create an inspection policy for all interfaces which will inspect services on their standard ports:</p>
+
+<p><code>
+class-map global-class
+match default-inspection-traffic
+</code></p>
+
+<p>Next configure a policy map and inspection of the ftp protocol:
+<code>
+policy-map global-policy
+ class global-class
+  inspect ftp
+</code></p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Running ASDM client from your Linux desktop]]></title>
+    <link href="http://linuxsysadminblog.com/2009/03/running-asdm-client-from-your-linux-desktop/"/>
+    <updated>2009-03-10T16:13:30+08:00</updated>
+    <id>http://linuxsysadminblog.com/2009/03/running-asdm-client-from-your-linux-desktop</id>
+    <content type="html"><![CDATA[<p>For those of us who use Linux as a desktop replacement for Windows would find it nice to be able to run the ASDM client natively. If you haven't upgraded your ASA/PIX to the <strong>latest ASDM</strong> you should do so. The steps are described <a href="http://linuxsysadminblog.com/2009/01/howto-upgrade-asdm-using-cli-on-cisco-asa5500/">here</a>.</p>
+
+<p>Once you do upgrade your PIX/ASA to the latest version you may run into another issue where your bundled version of java not connect with ASDM. The remedy for this if you are using Fedora 10 can be <a href="http://linuxsysadminblog.com/2009/02/upgrade-to-java-se-6-update-12-on-fedora-10/">found here</a>.</p>
+
+<p>Now assuming that you have asdm loaded and opened access to outside over port 4443 with:
+<code>
+http server enable 4443
+http 0.0.0.0 0.0.0.0 outside
+</code></p>
+
+<p>You can connect to your PIX/ASA over port 4443 and download the asdm.jnlp file to your pc via web browser at https://external_ip_of_asa:4443</p>
+
+<p>Once you posses the asdm.jnlp file issue <code>javaws asdm.jnlp</code> in terminal. Upon successful login this will create <code>.asdm</code> folder in your home directory with files inside, as well as a desktop shortcut. After this the <code>asdm.jnlp</code> is no longer needed and can be erased.</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Cisco ASA 5505: Active/Standby Failover Configuration]]></title>
+    <link href="http://linuxsysadminblog.com/2009/02/cisco-asa-5505-activestandby-failover-configuration/"/>
+    <updated>2009-02-17T06:35:57+08:00</updated>
+    <id>http://linuxsysadminblog.com/2009/02/cisco-asa-5505-activestandby-failover-configuration</id>
+    <content type="html"><![CDATA[<p>The <strong>ASA 5505</strong> is the smallest (and cheapest) solution from the current Cisco hardware security appliances. Still, if we have the proper software license (like <em>Security Plus</em> for example) we can use the ASA5505 to setup rather complex solutions. This post will show how we can setup a pair of <strong>ASA5505 in failover configuration</strong>, solution that can be very useful in a small office where we want to achieve a high availability and we can't tolerate a failure of our frontend firewall.</p>
+
+<h3>Prerequisites</h3>
+
+<p>Before even starting, let's check that our ASA5505's are running the appropriate software license. For example the sh run command will output something like this:
+<code>sh ver
+...
+Licensed features for this platform:
+Maximum Physical Interfaces  : 8
+VLANs                        : 20, DMZ Unrestricted
+Inside Hosts                 : Unlimited
+**Failover                   : Active/Standby**
+VPN-DES                      : Enabled
+VPN-3DES-AES                 : Enabled
+VPN Peers                    : 25
+WebVPN Peers                 : 2
+Dual ISPs                    : Enabled
+VLAN Trunk Ports             : 8
+AnyConnect for Mobile        : Disabled
+AnyConnect for Linksys phone : Disabled
+Advanced Endpoint Assessment : Disabled
+UC Proxy Sessions            : 2
+This platform has an ASA 5505 Security Plus license.
+.</code>
+You should look at the Failover feature and you should have "<strong>Active/Standby</strong>". If this outputs <em>disabled</em>, you will have to order and install a software license upgrade from Cisco in order to be able to use the ASA's in failover.</p>
+
+<p>Cisco (as always) has a very complex <a href="http://www.cisco.com/en/US/docs/security/asa/asa72/configuration/guide/failover.html#wp1064158">documentation</a> on how you can achieve this. Still, it is hard to digest, as they try to cover all possible devices on the same page (even the obsolete pix500); even more the ASA5505 has some particularities compared with the rest of the ASA 5500 range of products and <strong>this is not very clearly explained</strong>. <em>Hopefully this post will be more useful and simpler to follow.</em></p>
+
+<p>First we need to understand some limitations of our devices. The ASA5505 can <strong>only perform Active/Standby</strong> failover and <strong>not Active/Active</strong>. If you need that, you will have to look at a higher range device. Also they can only perform <strong>LAN-Based Failover</strong> (as opposed to old pixes that can use cable based failover) and they <strong>don't support Stateful Failover</strong> (meaning all active connections will be lost after a failover event). Also both units must have the same hardware, software configuration, and proper license and run in same mode (single or multiple, transparent or routed).</p>
+
+<h3>Configuring the Primary Unit</h3>
+
+<p>For each of the IPs assigned to the interfaces of the ASA we will need to <strong>allocate a secondary IP</strong> from the same network range; this will be used as the IP of the standby unit, while the main IPs will always be used by the primary (active) unit and will be normally used by the clients (as default gateways for ex). The first step is to <strong>configure the active and standby IP addresses for each data interface</strong>; the cisco documentation is confusing here and it is not clear that on the <strong>ASA5505 </strong>this is done for <strong>each of the used vlans, and not real interfaces</strong>:
+<code>conf t
+(config)#interface Vlan1
+(config-if)#ip address active_addr netmask standby standby_addr</code>
+for ex:
+<code>(config-if)#ip address 192.168.0.1 255.255.255.0 standby 192.168.0.2</code></p>
+
+<p>Once we have defined all standby IPs we can move forward...
+You will also need to define <strong>one interface that will be used for failover</strong>. You can either cross-connect this between the 2 ASAs or you can use a switch with a dedicated vlan for this. The later one is preferred as it will more accurately detect if one ASA is down. Again in the documentation this is not clear how to do it on the ASA5505 and it discusses about <em>real interfaces</em>, while on the <strong>ASA5505 we have to use vlans</strong>.</p>
+
+<p><strong>The trick is to create a new vlan and don't assign any ip on the vlan inteface:</strong>
+<code>interface Vlan32
+description LAN Failover Interface
+no shutdown</code>
+the ip will be assigned by the failover commands;
+Finally <strong>enable failover</strong>:
+<code>failover
+failover lan unit primary
+failover lan interface failover Vlan32
+failover interface ip failover 192.168.255.1 255.255.255.0 standby 192.168.255.2</code>
+(where you will use one unused ip range for the failover ips).</p>
+
+<p>Save the running config: <strong>copy running-config startup-config</strong></p>
+
+<h3>Configuring the Secondary Unit</h3>
+
+<p>The configuration of the secondary, standby unit is very simple as it needs <strong>only the failover interface configuration</strong>.  The secondary unit requires these commands to initially communicate with the primary unit, and get its configuration from the active unit.</p>
+
+<p>As with the main ASA we have to define the <strong>vlan that will be used for failover</strong> first:
+<code>interface Vlan32
+description LAN Failover Interface
+no shutdown</code></p>
+
+<p>And next we just have to enable failover and set this unit as secondary:
+<code>failover
+failover lan unit secondary
+failover lan interface failover Vlan32
+failover interface ip failover 192.168.255.1 255.255.255.0 standby 192.168.255.2</code></p>
+
+<p>After this, the active unit sends the configuration in running memory to the standby unit. As the configuration synchronizes, the messages "Beginning configuration replication: Sending to mate" and "End Configuration Replication to mate" appear on the active unit console.</p>
+
+<h3>Verifying the Failover Configuration</h3>
+
+<p>The command <strong>show failover</strong> can be used to show the status of the failover operation; the output on the active device will look similar to:
+<code>sh failover
+Failover On
+Failover unit Primary
+Failover LAN Interface: failover Vlan32 (up)
+Unit Poll frequency 1 seconds, holdtime 15 seconds
+Interface Poll frequency 5 seconds, holdtime 25 seconds
+Interface Policy 1
+Monitored Interfaces 5 of 250 maximum
+Version: Ours 8.0(4), Mate 8.0(4)
+Last Failover at: 02:28:31 CST Jan 23 2009
+This host: Primary - Active
+Active time: 2166923 (sec)
+slot 0: ASA5505 hw/sw rev (1.0/8.0(4)) status (Up Sys)
+Interface inside (10.10.10.1): Normal
+Interface outside (192.168.0.1): Normal
+slot 1: empty
+Other host: Secondary - Standby Ready
+Active time: 378 (sec)
+slot 0: ASA5505 hw/sw rev (1.0/8.0(4)) status (Up Sys)
+Interface inside (10.10.10.2): Normal
+Interface outside (192.168.0.2): Normal
+slot 1: empty</code></p>
+
+<p>Finally, you will probably want to test the failover functionality and maybe tune the triggers of the failover, but maybe we will talk about this in a future post.
+<em>I hope you found this post useful and helped to explain better the steps needed to configure the Active/Standby Failover on the ASA5505.</em></p>
+]]></content>
+  </entry>
+  
+</feed>

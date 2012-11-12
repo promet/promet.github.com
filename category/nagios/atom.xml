@@ -1,0 +1,391 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: Nagios | Linux Sysadmin Blog]]></title>
+  <link href="http://linuxsysadminblog.com/category/nagios/atom.xml" rel="self"/>
+  <link href="http://linuxsysadminblog.com/"/>
+  <updated>2012-11-13T01:37:44+08:00</updated>
+  <id>http://linuxsysadminblog.com/</id>
+  <author>
+    <name><![CDATA[Promet OPS Team]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Setup Nagios User to View Specific Host and Services]]></title>
+    <link href="http://linuxsysadminblog.com/2009/05/setup-nagios-user-to-view-specific-host-and-services/"/>
+    <updated>2009-05-14T19:29:00+08:00</updated>
+    <id>http://linuxsysadminblog.com/2009/05/setup-nagios-user-to-view-specific-host-and-services</id>
+    <content type="html"><![CDATA[<p>This guide will help you setup Nagios user to have limited access to host and service checks.  It is helpful when you want to allow your customers or clients to view and receive alerts on their servers and services, like for dedicated servers.</p>
+
+<p><strong>Procedure:</strong></p>
+
+<p><strong>Contacts: </strong> Create new contact definitions for your client.
+```</p>
+
+<pre><code>define contact{
+    contact_name                    customer1
+    alias                           Customer One Admin
+    service_notification_period     24x7
+    host_notification_period        24x7
+    service_notification_options    c,r
+    host_notification_options       d,r
+    service_notification_commands   notify-service-by-email
+    host_notification_commands      notify-host-by-email
+    email                           customer1@domain.tld
+}
+</code></pre>
+
+<p>```</p>
+
+<p><strong>Groups:  </strong>Create contact groups or you can add the new contact for you existing group, depending on the checks that you want to allow.<br/>
+```</p>
+
+<pre><code>define contactgroup {
+    contactgroup_name               Dedicated-Server1-Admins
+    alias                           Admins for Server 1
+    members                         customer1,hostingadmins
+}
+</code></pre>
+
+<p>```</p>
+
+<p><strong>Hosts / Services: </strong>  Use the new Contact Group with customers email and your main admin.  Note that i used the existing Host Groups but you create new HostGroups if you want.
+```</p>
+
+<pre><code>define host {
+    use                            generic-host
+    host_name                      Server1
+    alias                          Server1
+    address                        10.0.0.2  // private or public ip
+    hostgroups                     DedicateServers
+    check_command                  check-host-alive
+    contact_groups                 Dedicated-Server1-Admins
+    check_period                   24x7
+    max_check_attempts             10
+    notification_interval          480
+    notification_period            24x7
+    notification_options           d,r
+    notifications_enabled          1
+}
+define service {
+    use                            generic-service
+    host_name                      Server1
+    service_description            HTTP
+    is_volatile                    0
+    check_period                   24x7
+    max_check_attempts             3
+    normal_check_interval          5
+    retry_check_interval           3
+    contact_groups                 Dedicated-Server1-Admins
+    notification_interval          480
+    notification_period            24x7
+    notification_options           w,u,c,r
+    check_command                  check_http
+    notifications_enabled          1
+}
+</code></pre>
+
+<p>```</p>
+
+<p>In my case, I created a new group and add our admin contacts and customers, then update the contact groups for hosts and services.  You can also create a new definitions for hosts, contacts, groups, and services with different names for the clients if you don't want to edit your existing definitions.</p>
+
+<p><strong>Htaccess: </strong> Lastly, you need to add htaccess user to your htpasswd file (htpasswd.users).  Username should match the name on your Contact.  In this sample it is customer1. <strong> [Update]</strong> If you've implemented "<a href="http://nagios.sourceforge.net/docs/3_0/cgisecurity.html">Digest Authentication</a>" you need to update your digest file instead of the htpasswd.</p>
+
+<p>Don't forget to restart you Nagios.</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Monitoring Drupal Sites With Nagios]]></title>
+    <link href="http://linuxsysadminblog.com/2009/04/monitoring-drupal-sites-with-nagios/"/>
+    <updated>2009-04-23T04:22:31+08:00</updated>
+    <id>http://linuxsysadminblog.com/2009/04/monitoring-drupal-sites-with-nagios</id>
+    <content type="html"><![CDATA[<p>There is a <a href="http://drupal.org/project/nagios"><strong>module</strong></a> released for monitoring <a href="http://drupal.org/">Drupal</a> sites with <a href="http://www.nagios.org/">Nagios</a>.  Monitoring includes the check if your site is up and running, check for new updates on Drupal core, security, and modules, database updates, write permission on "files" directory,  check if cron is running on the specified period, and other sections of your Drupal site.  It is intended and helpful to those maintain large number of Drupal sites.</p>
+
+<p>At this time of writing, this module is still on a development version and there's no guarantee that the installation guide will work out-of-the-box with your system.  And this post will mainly cover my own installation process on our Nagios monitoring server running on Debian and Nagios version 3.0, and Drupal version 6.x sites on web servers running CentOS 5.x.</p>
+
+<p><strong>Installation</strong>:
+My installation is based on the included README file and with some adjustments to my liking.</p>
+
+<p><strong>Install the Drupal Module:</strong></p>
+
+<ul>
+<li><p>Download the Nagios module from <a href="http://drupal.org/project/nagios">Drupal project page</a>.</p></li>
+<li><p>Install the module to your Drupal site just like the other modules.  Download tarball, extract to modules directory ex: <strong><em>sites/all/modules/</em></strong>, go to <strong><em>admin->build->modules</em></strong> and enable the module.</p></li>
+<li><p>Configure your Nagios module and set the site's UniqueID and Cron duration.</p></li>
+</ul>
+
+
+<p><strong>UniqueID</strong> is your site identifier to be used by the Nagios (<em>check_drupal</em>) to authorize the service check and for security purposes.  The author also suggests the use of MD5 or SHA1 string. Refer to README for more info on this parameter.</p>
+
+<p><strong>Cron Duration</strong> - you need to supply the interval of your cron job that checks for Drupal updates.  This value should match with your cron settings, ex: daily or every 3 hours..etc.</p>
+
+<p><strong>Configure Nagios checks:</strong></p>
+
+<ul>
+<li>Copy the plugin file (<strong><em>check_drupal</em></strong>) found on the <strong><em>nagios-plugin</em></strong> directory of the module, to your Nagios plugins directory where the other Nagios check commands are located - in my case it's on <strong><em>/usr/local/nagios/libexec/</em></strong> (CentOS).</li>
+</ul>
+
+
+<p>If your Nagios installation is on a different machine than your Drupal server, you need to copy the <em><strong>check_drupal</strong></em> file in there.  You can also put it on the same server with Drupal sites and use NRPE instead.</p>
+
+<p>On my CentOS machine i received an error on <strong><em>check_drupal</em></strong> regarding the location of <em><strong>basename</strong></em> file - it's on <em><strong>/bin/basename</strong></em>.  You can edit the <em><strong>check_drupal</strong></em> file directly to adjust the path to <em><strong>basename</strong></em>.
+<code>./check_drupal: line 14: /usr/bin/basename: No such file or directory.</code></p>
+
+<ul>
+<li><strong>Add command, host, hostgroup, and service definition:</strong></li>
+</ul>
+
+
+<p><strong>Command </strong>(commands.cfg):  I made small modification on the given commands from the README file to match my setup.
+<code>
+define command{
+command_name  check_drupal
+command_line  $USER1$/check_drupal -H $ARG1$ -U $ARG2$ -t $ARG3$
+}
+</code></p>
+
+<p><strong>HostGroup</strong>:  I created a new Host group because we have other service checks on our server such as SSH, HTTP, LOAD, etc and I want to separate my checks for Drupal sites.
+<code>
+define hostgroup {
+hostgroup_name  Drupal
+alias           Drupal Sites
+members         MyWebServer
+}
+</code></p>
+
+<p><strong>Host:</strong> I defined new host for Drupal sites so i can configure and group my them on the same host where they belong.
+<code>
+define host {
+host_name                      MyWebServer
+display_name                   MyWebServer
+address                        HOSTNAME/IP ADDRESS HERE
+hostgroups                     Drupal
+check_command                  check-host-alive
+contact_groups                 Admins
+check_period                   24x7
+max_check_attempts             10
+notification_interval          480
+notification_period            24x7
+notification_options           d,r
+notifications_enabled          1
+}
+</code></p>
+
+<p><strong>Service:</strong> Below is my service checks definition for checking Drupal sites, i only need to copy this and change supply parameters for domain, unique key and the timeout.
+<code>
+define service {
+service_description            DRUPAL_SITE 1
+host_name                      MyWebServer
+check_period                   24x7
+max_check_attempts             3
+normal_check_interval          5
+retry_check_interval           3
+contact_groups                 Admins
+notification_interval          480
+notification_period            24x7
+notification_options           w,u,c,r
+check_command                  check_drupal!mysite.example.com!mykeyhere!5
+notifications_enabled          1
+}
+</code></p>
+
+<p>If your installation and configuration is correct you will get the Nagios service status similar below.  It indicates number of modules, themes, users, nodes, etc.</p>
+
+<p><code>
+DRUPAL OK, ADMIN:OK, CRON:OK
+SAN=0;SAU=0;NOD=12;USR=7;MOD=23;THM=9
+</code></p>
+
+<p>On my initial tests i received Nagios status (below) different than the above info and it was caused by my Apache configuration because i have a default Nagios installation before on my server that hosts my Drupal sites.
+<code>
+HTTP returned an error code. HTTP:   HTTP/1.1 301 Moved Permanently
+</code></p>
+
+<p>So you need to check first the url of your Nagios module installation ex:  http://mysamplesite.com/nagios/, this will give you:</p>
+
+<p><code>
+Nagios status page
+nagios=UNKNOWN, DRUPAL:UNKNOWN=Unauthorized
+</code></p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Nagios:  How to check if remote process is running]]></title>
+    <link href="http://linuxsysadminblog.com/2009/02/nagios-how-to-check-if-remote-process-is-running/"/>
+    <updated>2009-02-24T04:00:33+08:00</updated>
+    <id>http://linuxsysadminblog.com/2009/02/nagios-how-to-check-if-remote-process-is-running</id>
+    <content type="html"><![CDATA[<p>We have a monitoring server running <a href="http://www.nagios.org/">Nagios</a> and we needed to add checks for Nginx process on a new server.  Basically, you only need to install NRPE to monitor services, processes, disk space, load, etc on your remote machine.  Check the <a href="http://nagios.sourceforge.net/docs/nrpe/NRPE.pdf">NRPE docummention</a> for complete reference and here's a quick <a href="http://sysbible.org/x/2008/11/10/how-to-install-nagios-nrpe-under-debian-linux/">NRPE installation guide for Debian</a>.</p>
+
+<p>For my objective i only need to check if Nginx process is running and will use the check_procs.  NRPE and Nagios Plugins were installed and i can check the Nginx process locally using the following commands:
+<code>
+/usr/local/nagios/libexec/check_procs -c 1:30 -C nginx
+</code></p>
+
+<p>wherein:
+<code>-c 1:30</code> &lt;-- refers to the Critical range for number of Nginx processes. If there process count is below 1 and above 30 this will send me a Critical notice.  If you wan to add a Warning level you can use "-w 1:25" - adjust the number of processes for you needs.
+<code>-C nginx</code> &lt;-- this will check for the command name (nginx)</p>
+
+<p><strong>NOTE:</strong> For complete reference on this check and other samples please refer to the <a href="http://nagioswiki.org/wiki/Plugin:check_procs">NagiosWiki</a> page.</p>
+
+<p>Below are my configurations:</p>
+
+<p>NRPE(remote):  <code>/etc/nagios/nrpe_local.cfg</code>
+<code>
+command[check_nginx]=/usr/local/nagios/libexec/check_procs -c 1:30 -C nginx
+</code></p>
+
+<p>Nagios(host):  <code>/usr/local/nagios/etc/objects/localhost.cfg</code>
+<code>
+define service {
+use                            generic-service         ; Name of service template to use
+host_name                      HOST/IPADDRESS
+service_description            CHECK_NGINX
+check_period                   24x7
+max_check_attempts             3
+normal_check_interval          5
+retry_check_interval           3
+contact_groups                 Admins
+notification_interval          480
+notification_period            24x7
+notification_options           w,u,c,r
+check_command                  check_nrpe!check_nginx
+notifications_enabled          1
+}
+</code></p>
+
+<p>Nagios version is 3.0.  Nagios monitoring and remote server are running Debian Etch.</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Monitoring a Java application from Nagios]]></title>
+    <link href="http://linuxsysadminblog.com/2009/01/monitoring-a-java-application-from-nagios/"/>
+    <updated>2009-01-05T16:16:47+08:00</updated>
+    <id>http://linuxsysadminblog.com/2009/01/monitoring-a-java-application-from-nagios</id>
+    <content type="html"><![CDATA[<p>This is a slight departure from our regular programming. Instead of just concentrating on the sys admin side of things I want to show how to add a Nagios check to an existing application. In this case we have a Java application for which we want to monitor whether it is running or not. Later on we can make this more detailed by monitoring error codes in the application but for the moment let's keep it simple.</p>
+
+<p><strong>Configuring Nagios</strong></p>
+
+<p>On the Nagios end of things we need to define a command to perform a check on a specific port of the server where the application is running. Add a line like this to the objects/commands.cfg file of your Nagios installation.
+<code>
+define command{
+command_name check_your_application_name
+command_line $USER1$/check_tcp -H $HOSTADDRESS$ -p $ARG1$ -e "This application is alive and well"
+}
+</code></p>
+
+<p>The -e parameter checks for a specific text that is to be returned by the application. This we can use later on to check for more detailed information. Next we need to add a service to Nagios for using this command. We do this by adding the following lines to the objects/localhost.cfg file. To keep this short I left out some lines which configure the frequency of the checks and the types of alerts.
+<code>
+define service {
+use                    generic-service
+host_name              your_server_name
+service_description    your_service_name
+check_command          check_your_application_name!2222
+}
+</code></p>
+
+<p><strong>Creating a listener port in Java</strong></p>
+
+<p>In the second part I will show you the actual code to add to your application. Because this is a blog post I left out the package definition and the includes, but other than that the class itself is usable. To add the check to the Java app we need to add a listener thread to application. We do this by creating a class that is derived from Thread. This listener will open a port which is specified by the main application and a respond to any incoming data with a preset text. We really don't care about the input on this end so any input will be  ignored:
+```</p>
+
+<pre><code>public class NagiosChecker extends Thread {
+    // Server socket
+    private ServerSocket srv;
+
+    // Flag that indicates whether the poller is running or not.
+    private boolean isRunning = true;
+
+    // Constructor.
+    public OVMChecker(ServerSocket srv) {
+        this.isRunning = true;
+        this.srv = srv;
+    }
+
+    // Method for terminating the listener
+    public void terminate() {
+        this.isRunning = false;
+    }
+
+    /**
+    * This method start the thread and performs all the operations.
+    */
+    public void run() {
+        try {
+            // Wait for connection from client.
+            while (isRunning) {
+                Socket socket = srv.accept();
+
+            // Open a reader to receive (and ignore the input)
+            BufferedReader rd = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+
+            // Write the status message to the outputstream
+            try {
+                BufferedWriter wr = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
+                wr.write("This application is alive and well");
+                wr.flush();
+            } catch (IOException e) {
+                System.out.println(e.getMessage()));
+            }
+
+            // Close the inputstream since we really don't care about it
+            rd.close();
+        } catch (Exception e) {
+            System.out.println(e.getMessage()));
+        }
+    }
+}
+</code></pre>
+
+<p>```</p>
+
+<p>In case you're still reading this you're probably interested in how to call this class. The following code should be executed in the initialization of the application. It creates the actual socket for port 2222 and starts the listener class. After this the listener class will run indefinitely until the application terminates.
+```</p>
+
+<pre><code>ServerSocket srv = null;
+try {
+    srv = new ServerSocket(2222);
+    NagiosChecker checker = new NagiosChecker(srv);
+    checker.start();
+} catch (Exception e) {
+    System.out.println(e.getMessage());
+}
+</code></pre>
+
+<p>```</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Homegrown MySQL monitoring]]></title>
+    <link href="http://linuxsysadminblog.com/2008/10/homegrown-mysql-monitoring/"/>
+    <updated>2008-10-23T07:46:49+08:00</updated>
+    <id>http://linuxsysadminblog.com/2008/10/homegrown-mysql-monitoring</id>
+    <content type="html"><![CDATA[<p>If you can't do it with a shell script it usually ain't worth doin', right? Of course the number and quality of monitoring tools available to sys admins has gone up dramatically. Thanks to Nagios and other great tools it's pretty easy to keep track of what's going on and where and get notified pretty quickly. But some times you just want to monitor a couple of things first to see if they are actually worth monitoring. In my case it started out as a temporary thing to keep track of a recurring problem. The number of MySQL connections would max out of from time to time and we needed to be alerted very quickly if this happened of course.</p>
+
+<p>So we let crontab run a shell script every minute which just executes one command:
+<code>
+mysql -e "show processlist;" &gt; job.tmp
+</code>
+This command will let you track all user connections at that moment. Of course a lot can happen in a minute and there's lots of stuff you won't catch, but problems that are growing will manifest themselves here. To distill the number of running connections:
+<code>
+CONNS=`cut ${SCRIPTS_DIR}/jobs.tmp -f5 | grep "Query" | wc -l | cut -f1 -d"/"`
+</code>
+The number of locked out queries:
+<code>
+LOCKED=`cut ${SCRIPTS_DIR}/jobs.tmp -f7 | grep "Locked" | wc -l | cut -f1 -d"/"`
+</code>
+The longest running query:
+<code>
+LONGRUN=`grep "Query" ${SCRIPTS_DIR}/jobs.tmp | cut -f6 | sort -n | tail -1`
+</code>
+In all these cases a simple if statement will mail the processlist in case a threshold is passed. No better way to get your attention then your mailbox filling up with an alert per minute. Besides, seeing the processlist at the time things started going wrong can be very useful in identifying the culprit.</p>
+]]></content>
+  </entry>
+  
+</feed>

@@ -1,0 +1,924 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Linux Sysadmin Blog</title>
+  <meta name="author" content="Promet OPS Team">
+
+  
+  <meta name="description" content="A client had asked us a very innocent question about bandwidth usage What will my average cost of video download be?. This question lead me down a &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://linuxsysadminblog.com/blog/page/19/">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="/javascripts/ender.js"></script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <link href="/atom.xml" rel="alternate" title="Linux Sysadmin Blog" type="application/atom+xml">
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+<!-- Google Form for Contact Page -->
+<!-- jQuery -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+<script type="text/javascript">
+    // Avoid conflict with ender.js.
+jQuery.noConflict();
+</script>
+<!-- jQuery Form Plugin -->
+<script src="http://malsup.github.com/jquery.form.js"></script>
+<script src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.9/jquery.validate.min.js"></script> 
+<script src="/javascripts/google_form.js"></script>
+<!-- Google Form for Contact Page End here -->
+
+
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-120251-38']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">Linux Sysadmin Blog</a></h1>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:linuxsysadminblog.com" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/our-team">Our Team</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+  <li><a href="/blog/about">About</a></li>
+  <li><a href="/blog/contact">Contact</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div class="blog-index">
+  
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/2008/10/calculating-videos-on-site-to-bandwidth-or-aggregate-transfer-to-cost-of-video-played/">Calculating Videos on Site to Bandwidth or Aggregate Transfer to Cost of Video Played</a></h1>
+    
+    
+      <p class="meta">
+        
+  
+
+
+<span class="byline author vcard">Posted by <span class="fn"><a href="/blog/our-team/andrew-kucharski.html">Andrew Kucharski</a></span></span>
+
+ - 
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2008-10-06T22:42:04+08:00" pubdate data-updated="true">Oct 6<span>th</span>, 2008</time>
+        
+         | <a href="/2008/10/calculating-videos-on-site-to-bandwidth-or-aggregate-transfer-to-cost-of-video-played/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>A client had asked us a very innocent question about bandwidth usage <em>What will my average cost of video download be?</em>.  This question lead me down a path of assumptions and translations of different bandwidth terminologies which would make sense to someone without having to learn how to convert binary and calculate video compressions.  This article is first of an outline of how to get from a technical measurement to a non technical answer.</p>
+
+<p><strong>Bitrate</strong></p>
+
+<p>The assumptions for calculating the bandwidth of the video are the following:</p>
+
+<ul>
+<li><p>Size of average video, which depends on:</p>
+
+<ul>
+<li>pixel hight</li>
+<li>pixel width</li>
+<li>frames speed</li>
+<li>compression or movement</li>
+<li>length of video (time)</li>
+</ul>
+</li>
+</ul>
+
+
+<p>We&#8217;ll assume video bitstream is understood, there are lots of resources on the web which cover this topic, most widely <a href="http://livedocs.adobe.com/flash/9.0/flvencoder/wwhelp/wwhimpl/common/html/wwhelp.htm?context=LiveDocs_NoParts&amp;file=FLV_01.html">adobe itself</a>, as well as some <a href="http://sorenson-usa.com/vbe/index.html">old school </a>sources.</p>
+
+<p>Let&#8217;s assume that our video bitrate is 440kbs and audio 128kbs, making the whole a 568kbs.</p>
+
+<p>For explanation of <a href="http://www.lyberty.com/encyc/articles/kb_kilobytes.html">KiloBytes vs. kilobits vs. Kibibyte</a>s vs. Monkeybytes see Lyberty blog or one of these <a href="http://www.valkaryn.net/bwcalc/">nifty</a> <a href="http://www.ibeast.com/content/tools/band-calc.asp">calculators </a>on the web.</p>
+
+<p><strong>Site bandwidth usage</strong></p>
+
+<p>Once we have our <em>average</em> video size, lets consider the usage of the site, as the videos are embedded in a webiste, whose pages also incorporate images, javascript, css, etc, adding to the bandiwdth requirements.  So what we need to determine next is some baseline by which we can determine the download of videos considering pageviews, visitors, etc.</p>
+
+<p>If our baseline is visitors to the site, then we need to assume the number of pages viewed and videos watched per visit.   If its going to be determined by pageviews, then we need to understand number of videos watched per page.  This is a huge assumption as we assume each video preloads.</p>
+
+<p>Our assumptions here would therefor be:</p>
+
+<ul>
+<li><p>Number of videos watched per visitor</p>
+
+<ul>
+<li>average page size outside of video</li>
+<li>average page views per visitor</li>
+<li>average videos viewed per page</li>
+</ul>
+</li>
+</ul>
+
+
+<p>The easiest number to assume here as it requires no assumptions but rather a guess, is:</p>
+
+<ul>
+<li>Number of visitors</li>
+</ul>
+
+
+<p>In our case, for simplicty of calculation, lets assume our video lenght is 3600 seconds and we&#8217;ll just add a overhead percentage penalty on pages encapsulating the video of about 45%.</p>
+
+<p><strong>Bandwidth Cost</strong></p>
+
+<p>We then must turn the calculation into something useful which can be applied to a cost formula for bandwidth.  There are generally two ways in which bandwidth is sold, either by measured transfer, typically per month, or by average badnwidth usage, generally at 95% capacity, meaning the lowest and the highest 2.5% of usage do not count.  Either transfer or metered bandwidth costs are typically tiered, basically the more you use the less it costs per unit.</p>
+
+<p>One of the better bandwidth explanations I found on the web is from Rackforce:</p>
+
+<p><a href="http://www.rackforce.com/blog/2006/11/03/understanding-bandwidth/">Understanding Bandwidth </a>by Doug Alder</p>
+
+<p>I am not taking into consideration the &#8220;unmetered&#8221; offers which are in fact throttled or in worse case oversaturated which does not provide a good user experience.</p>
+
+<p>To assume:</p>
+
+<ul>
+<li><p>Cost of Bandwidth</p>
+
+<ul>
+<li>based on tiered cost which is based on usage</li>
+<li>based on total data transfer</li>
+<li>based on connection</li>
+</ul>
+</li>
+</ul>
+
+
+<p>Once we have our assumptions, the rest is relatively easy.  To calculate total monthly bandwidth use the following formula:</p>
+
+<blockquote><p>[video encoding rate] x [average video length] x [daily uniques] x [assumed views per unique] x [30] x [overhead bandwidth addon]</p></blockquote>
+
+<p>Then backout your cost of bandwidth, either fixed or connection based:</p>
+
+<blockquote><p>[total monthly bandwidth] x [usage cost]</p></blockquote>
+
+<p>This last calculation is simplified, we shall devote another article for continuation.</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/2008/09/run-parts-not-running-all-the-scripts-in-etccrondaily/">Run-parts Not Running All the Scripts in /etc/cron.daily</a></h1>
+    
+    
+      <p class="meta">
+        
+  
+
+
+<span class="byline author vcard">Posted by <span class="fn"><a href="/blog/our-team/pim-van-der-wal.html">Pim Van der Wal</a></span></span>
+
+ - 
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2008-09-18T17:22:02+08:00" pubdate data-updated="true">Sep 18<span>th</span>, 2008</time>
+        
+         | <a href="/2008/09/run-parts-not-running-all-the-scripts-in-etccrondaily/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>Okay, I realize that this is a simple one but it caught me by surprise nonetheless. Most of our scheduled scripts are placed in the <code>/etc/cron.daily</code>, <code>/etc/cron.weekly</code> and <code>/etc/cron.monthly</code> directories. After migrating some of these scripts to another server it turned out they were not being executed. After some research it came up that run-parts (or at least some implementations of it) was just skipping the files that had . in it. Our CentOS server was executing them perfectly but the Debian server just skipped them. The man page mentions it by omission:</p>
+
+<blockquote><p>If  the  &#8211;lsbsysinit  option is not given then the names must consist entirely of upper and lower case letters, digits, under-scores, and hyphens.</p></blockquote>
+
+<p>To check what scripts will be executed call run-parts with the &#8211;test option.</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/2008/09/nagios-plugin-check_hparray-error/">Nagios Plugin: Check_hparray Error</a></h1>
+    
+    
+      <p class="meta">
+        
+  
+
+
+<span class="byline author vcard">Posted by <span class="fn"><a href="/blog/our-team/gerold-mercadero.html">Gerold Mercadero</a></span></span>
+
+ - 
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2008-09-11T18:22:37+08:00" pubdate data-updated="true">Sep 11<span>th</span>, 2008</time>
+        
+         | <a href="/2008/09/nagios-plugin-check_hparray-error/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>We have <a href="http://www.nagiosexchange.org/cgi-bin/page.cgi?g=2508.html;d=1">check_hparray plugin</a> installed on all of our HP servers, running CentOS, for monitoring hardware raid via
+<a href="ftp://ftp.hp.com/pub/softlib2/software1/pubsw-linux/p414707558/v47111/hpacucli-8.10-2.noarch.txt">HP Array Configuration Utility CLI</a> (hpacucli) tool, and we have <a href="http://nagios.sourceforge.net/docs/nrpe/NRPE.pdf">NRPE</a> installed as well for this check from our remote Nagios server.</p>
+
+<p>Yesterday we&#8217;ve setup another HP server and installed NRPE, check_hparray, and hpacucli, same process used on previous installations.  NRPE worked fine locally and from the Nagios server as the local disk space check was configured properly, but when we tried check_hparray we got &#8220;check_hparray Error&#8221;.  This error can have different causes like invalid slot value used or problems with permissions on executing hpacucli command.</p>
+
+<p>We reviewed our setup and installations and we have the same settings (based on setup with other servers).</p>
+
+<p>We run check_hparray from NRPE we got the error:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>[root@web161 nagios]# /usr/local/nagios/libexec/check_nrpe -H localhost -c check_raid
+</span><span class='line'>check_hparray Error.</span></code></pre></td></tr></table></div></figure>
+
+
+<p>and it worked fine if run <code>check_hparray</code> command directly:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>[root@web161 nagios]# /usr/local/nagios/libexec/check_hparray -s 1
+</span><span class='line'>RAID OK - (Smart Array P400 in Slot 1 array A logicaldrive 1 (546.8 GB, RAID 1+0, OK))</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Both of the commands above were tested using root and nagios users and they have the same results.  Then we enabled NRPE DEBUG option to get details on the problem:</p>
+
+<p>edit: <code>/usr/local/nagios/etc/nrpe.cfg</code></p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'># DEBUGGING OPTION
+</span><span class='line'># This option determines whether or not debugging messages are logged to the
+</span><span class='line'># syslog facility.
+</span><span class='line'># Values: 0=debugging off, 1=debugging on
+</span><span class='line'>
+</span><span class='line'>debug=1</span></code></pre></td></tr></table></div></figure>
+
+
+<p>and by looking on the system logs we saw the problem with our sudo:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>Sep  10 04:11:35 hostname sudo:   root : TTY=pts/2 ; PWD=/var/log ; USER=root ; COMMAND=/usr/sbin/hpacucli controller slot=1 ld all show
+</span><span class='line'>Sep  10 04:12:55 hostname sudo:   nagios : sorry, you must have a tty to run sudo ; TTY=unknown ; PWD=/ ; USER=root ; COMMAND=/usr/sbin/hpacucli controller slot=1 ld all show"</span></code></pre></td></tr></table></div></figure>
+
+
+<p>and the solution was to comment out in <code>/etc/sudoers</code> file the line:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>_Defaults    requiretty_</span></code></pre></td></tr></table></div></figure>
+
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/2008/09/when-mysql-starts-counting-sheep/">When MySQL Starts Counting Sheep</a></h1>
+    
+    
+      <p class="meta">
+        
+  
+
+
+<span class="byline author vcard">Posted by <span class="fn"><a href="/blog/our-team/pim-van-der-wal.html">Pim Van der Wal</a></span></span>
+
+ - 
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2008-09-04T07:41:00+08:00" pubdate data-updated="true">Sep 4<span>th</span>, 2008</time>
+        
+         | <a href="/2008/09/when-mysql-starts-counting-sheep/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>We encountered a situation recently where the number of connections to our MySQL database started creeping up slowly but steadily. Strangely enough all the connections were in sleep mode and the database was not being stressed. The number of connections first reached 30 where it normally stays below 20 and started triggering our monitoring scripts. After another hour the number of connections had reach 40 and this trend continued. All connections were coming from the same server which was visible in the show processlist output:</p>
+
+<p><code>
++---------+------------+-------------------+-------------+
+| Id      | User       | Host              | Command     |
++---------+------------+-------------------+-------------+
+|      26 | repl       | 10.0.0.23:32795   | Binlog Dump |
+| 1074631 | sfront  | 10.0.0.32:49906   | Sleep       |
+| 1085681 | sfront     | 10.0.0.32:50823   | Sleep       |
+| 1085932 | sfront     | 10.0.0.32:46255   | Sleep       |
+| 1091130 | sfront     | 10.0.0.32:39273   | Sleep       |
+| 1092442 | sfront     | 10.0.0.32:42023   | Sleep       |
+| 1106425 | sfront     | 10.0.0.222:38971  | Query       |
++---------+------------+-------------------+-------------+
+</code></p>
+
+<p>The MySQL documentation defines the sleep mode as: </p>
+
+<p><code>
+The thread is waiting for the client to send a new statement to it.
+</code></p>
+
+<p>The application running on the offending server was a Java application and luckily the only application on that server. A new module in this application was monitoring a setting in the database in a loop with 5 second breaks. The problem was caused by inefficient use use of database connections. In each loop a new connection would be opened, a new prepared statement created and a new resultset generated. None of these were explicitly closed by the application. Now, because Java has a built in garbage collecter these objects would be cleaned automatically in time, but apparently the rate of creating new connections was just slightly higher than the rate of garbage collection so the number of connections rose with about 10 per hour. Although our maximum number of connections is set rather high this would not have caused a problem for another couple of days but we would eventually have maxed out.</p>
+
+<p>The solution was to have the developer nicely close all the database components and reuse were possible. After this the application has been consistently showing just one database connection.</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/2008/08/enabling-and-using-the-slow-query-log-in-mysql/">Enabling and Using the Slow Query Log in MySQL</a></h1>
+    
+    
+      <p class="meta">
+        
+  
+
+
+<span class="byline author vcard">Posted by <span class="fn"><a href="/blog/our-team/pim-van-der-wal.html">Pim Van der Wal</a></span></span>
+
+ - 
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2008-08-26T17:39:10+08:00" pubdate data-updated="true">Aug 26<span>th</span>, 2008</time>
+        
+         | <a href="/2008/08/enabling-and-using-the-slow-query-log-in-mysql/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>By special request here is a post about the MySQL slow query log. MySQL has a wonderful feature that lets you keep track of all queries that took longer than a certain time to complete. To enable it simply add the following line to your <code>my.cnf</code> file:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>log-slow-queries = [path to the log file]</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Secondly it is very useful to specify the minimum amount of time a query should take before being considered a slow query. Again, simply add the following line to your my.cnf file:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>long_query_time = [minimum time in seconds for query]</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Unfortunately you do have to restart MySQL for this to catch on, but once you do you will have a very powerful and simple tool for optimizing your queries. After letting it run for while and using the application that is accessing it open the log file and you will see entries like this:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'># Time: 080826 15:33:48
+</span><span class='line'># User@Host: testuser[testuser] @  [10.0.0.1]
+</span><span class='line'># Query_time: 2  Lock_time: 0  Rows_sent: 0  Rows_examined: 628951
+</span><span class='line'>select * from customers where customers_email_address = 'test@test.com' and customers_sites_id = '1';</span></code></pre></td></tr></table></div></figure>
+
+
+<p>As you can see the limit has been set pretty low (1 second to be exact) because the Query_time is 2 seconds. Still, most simple queries should not last more than a fraction of a second. The complete query is shown here and the number of rows that MySQL examined to get the result. The fact that the number is pretty high (628951) means that no index was used. The next step is to take this query and run the EXPLAIN command on it to verify whether an index was used or not. If that is the problem than the simple solution is to add an index for this column if this query is used often.</p>
+
+<p>The second way to extract useful information from the slow query log is to look for repeated queries. This will mainly occur in web applications where the user can hit the refresh button to restart the query. If the first one did not complete quickly enough you can bet the second one won&#8217;t fare any better while the first one is still running. Seeing the same query appearing several times is a good sign that the query needs to be optimized.</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/2008/08/tomcat-failure-after-apache-rebuild-in-cpanel/">Tomcat Failure After Apache Rebuild in CPanel</a></h1>
+    
+    
+      <p class="meta">
+        
+  
+
+
+<span class="byline author vcard">Posted by <span class="fn"><a href="/blog/our-team/marius-ducea.html">Marius Ducea</a></span></span>
+
+ - 
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2008-08-25T03:33:08+08:00" pubdate data-updated="true">Aug 25<span>th</span>, 2008</time>
+        
+         | <a href="/2008/08/tomcat-failure-after-apache-rebuild-in-cpanel/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>After <strong>rebuilding Apache</strong> in CPanel using <strong>easyapache </strong>or <strong>WHM </strong>there are many things that can go wrong even if you use a stable branch of CPanel. For example <em>Tomcat that was installed from CPanel can fail</em> after the build and even if this might look unrelated to the apache build this can happen quite frequently.</p>
+
+<p>If you are running <strong>tomcat </strong>on a cpanel server here is what you can do to help you from losing your tomcat instance:</p>
+
+<ul>
+<li><strong>backup</strong>; newer cpanel versions backup apache, configs, etc. but they will <em>not care about tomcat</em>. This means it is your job to save the tomcat files. Here are some important folders you should save:<strong>
+/usr/local/jdk</strong> - this is a link to the real jdk used on the system (jdk1.5.0_05 or jdk1.6.0_02 for ex.)<strong>; </strong>save the real jdk also, just in case&#8230;
+<strong> /usr/local/jakarta/tomcat </strong>- this will contain all your tomcat configs, apps, logs, etc.<strong>
+/usr/sbin/starttomcat</strong> and <strong>/usr/sbin/stoptomcat</strong> - scripts used to start and stop tomcat (in case you made local changes, memory tunings, etc.)</li>
+</ul>
+
+
+<p>The files above can be lost during the rebuild, and it is important to have them on hand to restore tomcat if it fails starting after the apache build. For example last time this happened for us we had to fix the /usr/local/jdk link to point to the proper jdk (we use 1.5 and cpanel changed the link to 1.6) and also the startup scripts that contained various local customizations were obviously overwritten :( .</p>
+
+<p>Hopefully this information will be useful for other people, and hopefully you will see it before running easyapache :-) .</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/2008/08/speedcabling-system-admin-olympics/">Speedcabling - System Admin Olympics</a></h1>
+    
+    
+      <p class="meta">
+        
+  
+
+
+<span class="byline author vcard">Posted by <span class="fn"><a href="/blog/our-team/andrew-kucharski.html">Andrew Kucharski</a></span></span>
+
+ - 
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2008-08-07T14:37:23+08:00" pubdate data-updated="true">Aug 7<span>th</span>, 2008</time>
+        
+         | <a href="/2008/08/speedcabling-system-admin-olympics/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>Funny.  First appeared as <a href="http://www.itworld.com/tech-society/54088/nerdlympics-summer-2008"><em>Nerdlympics, Summer  2008</em></a> in IT world.</p>
+
+<blockquote><p>Speedcabling is a physical competition of sorts &#8230; Computer scientist and artist Steven Schkolne launched the first speedcabling contest earlier this year, and you can watch the thrilling final here</p></blockquote>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/2008/08/drupal-filebrowser-configuration-issue/">Drupal Filebrowser Configuration Issue</a></h1>
+    
+    
+      <p class="meta">
+        
+  
+
+
+<span class="byline author vcard">Posted by <span class="fn"><a href="/blog/our-team/gerold-mercadero.html">Gerold Mercadero</a></span></span>
+
+ - 
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2008-08-05T11:46:25+08:00" pubdate data-updated="true">Aug 5<span>th</span>, 2008</time>
+        
+         | <a href="/2008/08/drupal-filebrowser-configuration-issue/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>We have experienced a strange issue with our Drupal filebrowser module installation. We’re getting repeated error messages about open_basedir restriction in effect.</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'># warning: file_exists() [function.file-exists]: open_basedir restriction in effect. File(/file-folder.png) is not within the allowed path(s): (/home/username:/usr/lib/php:/usr/local/lib/php:/tmp) in /home/username/public_html/modules/filebrowser/filebrowser.module on line 338.
+</span><span class='line'># warning: file_exists() [function.file-exists]: open_basedir restriction in effect. File(/file-default.png) is not within the allowed path(s): (/home/username:/usr/lib/php:/usr/local/lib/php:/tmp) in /home/username/public_html/modules/filebrowser/filebrowser.module on line 338.</span></code></pre></td></tr></table></div></figure>
+
+
+<p>After several checks on our account setup we found the issue was caused by our configuration in filebrowser module. There are only two values to set for Filebrowser: “Root directory” and “Icons directory”. Since we forgot to set the value for “Icons directory” and left it empty, this caused the open_basedir restriction issue. Because the module couldn&#8217;t find the location of the icon directory, it tries to blame the open_basedir restriction settings.</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/2008/07/virtual-desktop-in-gnome-222-fedora-core-9/">Virtual Desktop in Gnome 2.22 / Fedora Core 9</a></h1>
+    
+    
+      <p class="meta">
+        
+  
+
+
+<span class="byline author vcard">Posted by <span class="fn"><a href="/blog/our-team/max-veprinsky.html">Max Veprinsky</a></span></span>
+
+ - 
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2008-07-29T09:11:15+08:00" pubdate data-updated="true">Jul 29<span>th</span>, 2008</time>
+        
+         | <a href="/2008/07/virtual-desktop-in-gnome-222-fedora-core-9/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>Trying to figure out how to put your second monitor and dual port graphics card to good use in FC9? How about creating a virtual desktop that will span the second monitor. Resist the urge to edit xorg.conf and think about the layout or position the second monitor will take. I like to have my 1600x1200 display right of the 1280x960 laptop display.</p>
+
+<p>Since I want the virtual desktop to span both screens horizontally I need to specify a virtual screen of 2880x1200. I derived at this number by adding the the pixel length of both displays together (1280+1600) and the pixel height of the biggest monitor (1200).</p>
+
+<p>In <code>xorg.conf</code> I added <code>"Virtual 2880 1200"</code> in the Section <code>"Screen"</code></p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>Section "Screen"
+</span><span class='line'>Identifier "Screen0"
+</span><span class='line'>Device     "Videocard0"
+</span><span class='line'>DefaultDepth     24
+</span><span class='line'>SubSection "Display"
+</span><span class='line'>Viewport   0 0
+</span><span class='line'>Depth     24
+</span><span class='line'>Virtual   2880 1200
+</span><span class='line'>EndSubSection</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Now restart Xorg by pressing <code>Ctrl-Alt-Backspace</code> and run gnome-display-properties to adjust the position of the screen (left of right) and set the proper resolution. Be sure to uncheck <code>"Mirror Screen"</code></p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/2008/07/happy-sysadmin-day/">Happy Sysadmin Day!</a></h1>
+    
+    
+      <p class="meta">
+        
+  
+
+
+<span class="byline author vcard">Posted by <span class="fn"><a href="/blog/our-team/marius-ducea.html">Marius Ducea</a></span></span>
+
+ - 
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2008-07-25T15:26:37+08:00" pubdate data-updated="true">Jul 25<span>th</span>, 2008</time>
+        
+         | <a href="/2008/07/happy-sysadmin-day/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>Happy <a href="http://www.sysadminday.com/">sysadmin day</a> to my fellow colegues! I hope we will have a &#8216;quiet&#8217; weekend to celebrate this properly, and not have to deal with any unexpected emergency&#8230;</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  <div class="pagination">
+    
+      <a class="prev" href="/blog/page/20/">&larr; Older</a>
+    
+    <a href="/blog/archives">Blog Archives</a>
+    
+    <a class="next" href="/blog/page/18/">Newer &rarr;</a>
+    
+  </div>
+</div>
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/2012/11/howto-bulk-import-dns-zones-to-softlayer-dns-using-cpanel/">HowTo: Bulk Import DNS Zones to Softlayer DNS using Cpanel</a>
+      </li>
+    
+      <li class="post">
+        <a href="/2012/08/integrate-sendgrid-with-redmine/">Integrate Sendgrid with Redmine</a>
+      </li>
+    
+      <li class="post">
+        <a href="/2012/07/rsback-task-x-is-locked-and-cannot-be-executed/">rsback: task x is locked and cannot be executed</a>
+      </li>
+    
+      <li class="post">
+        <a href="/2012/06/restore-xen-vm-from-lvm-snapshot-backups/">Restore Xen VM from LVM Snapshot Backups</a>
+      </li>
+    
+      <li class="post">
+        <a href="/2012/06/debian-6-backup-xen-with-lvm-and-rsnapshot/">Debian 6: Backup Xen with LVM and Rsnapshot</a>
+      </li>
+    
+  </ul>
+</section>
+
+<section>
+  <h1>GitHub Repos</h1>
+  <ul id="gh_repos">
+    <li class="loading">Status updating&#8230;</li>
+  </ul>
+  
+  <a href="https://github.com/promet">@promet</a> on GitHub
+  
+  <script type="text/javascript">
+    $.domReady(function(){
+        if (!window.jXHR){
+            var jxhr = document.createElement('script');
+            jxhr.type = 'text/javascript';
+            jxhr.src = '/javascripts/libs/jXHR.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(jxhr, s);
+        }
+
+        github.showRepos({
+            user: 'promet',
+            count: 0,
+            skip_forks: true,
+            target: '#gh_repos'
+        });
+    });
+  </script>
+  <script src="/javascripts/github.js" type="text/javascript"> </script>
+</section>
+
+
+<section>
+  <h1>Latest Tweets</h1>
+  <ul id="tweets">
+    <li class="loading">Status updating&#8230;</li>
+  </ul>
+  <script type="text/javascript">
+    $.domReady(function(){
+      getTwitterFeed("linuxsysadmnblg", 4, false);
+    });
+  </script>
+  <script src="/javascripts/twitter.js" type="text/javascript"> </script>
+  
+    <a href="http://twitter.com/linuxsysadmnblg" class="twitter-follow-button" data-show-count="false">Follow @linuxsysadmnblg</a>
+  
+</section>
+
+
+
+
+
+  
+</aside>
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2012 - Promet OPS Team -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'linuxsysadminblog';
+      
+        
+        var disqus_script = 'count.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'http://' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) {return;}
+  js = d.createElement(s); js.id = id;
+  js.src = "//connect.facebook.net/en_US/all.js#appId=212934732101925&xfbml=1";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = 'http://platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>

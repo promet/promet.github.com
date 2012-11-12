@@ -1,0 +1,852 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Linux Sysadmin Blog</title>
+  <meta name="author" content="Promet OPS Team">
+
+  
+  <meta name="description" content="Aside from missing coconut trees and hula girls distinguishing our data center from Hawaii was pretty tough this afternoon. It was HOT, so hot in &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://linuxsysadminblog.com/blog/page/12/">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="/javascripts/ender.js"></script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <link href="/atom.xml" rel="alternate" title="Linux Sysadmin Blog" type="application/atom+xml">
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+<!-- Google Form for Contact Page -->
+<!-- jQuery -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+<script type="text/javascript">
+    // Avoid conflict with ender.js.
+jQuery.noConflict();
+</script>
+<!-- jQuery Form Plugin -->
+<script src="http://malsup.github.com/jquery.form.js"></script>
+<script src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.9/jquery.validate.min.js"></script> 
+<script src="/javascripts/google_form.js"></script>
+<!-- Google Form for Contact Page End here -->
+
+
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-120251-38']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">Linux Sysadmin Blog</a></h1>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:linuxsysadminblog.com" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/our-team">Our Team</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+  <li><a href="/blog/about">About</a></li>
+  <li><a href="/blog/contact">Contact</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div class="blog-index">
+  
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/2009/04/hawaii-comes-to-our-datecenter/">Hawaii Comes to Our Datecenter.</a></h1>
+    
+    
+      <p class="meta">
+        
+  
+
+
+<span class="byline author vcard">Posted by <span class="fn"><a href="/blog/our-team/max-veprinsky.html">Max Veprinsky</a></span></span>
+
+ - 
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2009-04-21T21:26:41+08:00" pubdate data-updated="true">Apr 21<span>st</span>, 2009</time>
+        
+         | <a href="/2009/04/hawaii-comes-to-our-datecenter/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>Aside from missing coconut trees and hula girls distinguishing our data center from Hawaii was pretty tough this afternoon. It was HOT, so hot in fact that I was sweating while sitting in just a cotton tee-shirt. I kept drifting away into a daydream where that failed 20 ton Liebert A/C unit was running. Soon however reality set in&#8230; the a/c wasn&#8217;t running, our 42U cabinet packed with 35U worth of server, switch and router gear was overheating and a slave Mysql database server wasn&#8217;t having this all this heat! The poor thing turned itself off  and after 5 hour cool down time I still get error: 1610 Temperature violation detected</p>
+
+<p><a href="http://linuxsysadminblog.com/images/2009/04/toohot.jpg"><img src="http://linuxsysadminblog.com/images/2009/04/toohot.jpg" alt="1610 temparature violation" /></a></p>
+
+<p>While promises of having the A/C unit up and running soon were being thrown at me I wasn&#8217;t biting. Shutting down 3 non-essential servers did help things a bit.  The database servers with their 15K rpm disks were running their internal fans at nearly 100% coping with the heat. At this point I was starting to feel a little bit upbeat picturing what would happen if the servers were not servers and just consumer grade PC&#8217;s turned into servers. If you are reading this you must know what burned power supplies smell like! At some point I knew the A/C unit would be fixed and I would be able to re-power up the non-essential servers. Monitoring temperatures inside the cabinet would be nice, but we don&#8217;t have such a <a href="http://www.pcmeasure.com/sensors.php">useful device</a>. Next best thing was internal temperature sensors inside a direct attach storage array which has 6 sensors: 4 in the front and 2 in back. <a href="http://www.cacti.net/">Cacti</a> proved invaluable as I could monitor what was going on and most importantly see if the datacenter made good on their promise. Each raise in temperature indicates a period when the A/C was not working or working poorly.</p>
+
+<p><a href="http://linuxsysadminblog.com/images/2009/04/array_temps.png">!</a></p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/2009/04/mysql-query-cache-good-or-bad/">MySQL Query Cache, Good or Bad?</a></h1>
+    
+    
+      <p class="meta">
+        
+  
+
+
+<span class="byline author vcard">Posted by <span class="fn"><a href="/blog/our-team/pim-van-der-wal.html">Pim Van der Wal</a></span></span>
+
+ - 
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2009-04-21T20:55:06+08:00" pubdate data-updated="true">Apr 21<span>st</span>, 2009</time>
+        
+         | <a href="/2009/04/mysql-query-cache-good-or-bad/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>MySQL has a number of different caches. Most of those are dependent on the storage engine that is used. The key buffer for example caches the indexes for MyISAM tables while the caching of data is left to the OS. InnoDB has the buffer pool for both data and indexes and so on. The query cache however, is independent of the storage engine that is used. Unlike most caches it does not store records or pages of data but complete result sets and the queries that caused those results to be returned. This is a very disputable concept since the way that it works is that if any of the tables  used in a result set is modified, the whole cached result set is thrown out of the cache.</p>
+
+<p>The good news is that if you have data that does not change very much the query cache can give you an enormous performance boost. It even bypasses the query optimizer so that if the query is complex even more cpu time is saved. Knowing this you can optimize your application by chopping complex queries into smaller queries that only use that data that never changes.</p>
+
+<p>Of course there are some tricks to using the query cache. The first one is the size of the query cache. The default is 16MB which doesn&#8217;t do much. However, keep in mind that any memory assigned to the query cache is removed from another cache so it&#8217;s very important to strike a good balance. Of course the balance is very application dependent. The second parameter is the maximum allowed result set size. It really doesn&#8217;t do any good to allow 16MB result sets into the cache because it would take only one badly written query to flush out the entire cache. 1MB is standard but in my personal experience queries that return 1MB of results on a frequent basis usually indicate that the software needs to be optimized.</p>
+
+<p>So when is the query cache a bad thing? Well, in short, when the cache gets flushed out all the time and only adds to the overhead it&#8217;s usually better to assign the memory to storage engine dependent cache. If there are constant updates and inserts to most of your tables it will invalidate the results in the query cache pretty quickly and assigning memory to it is a waste of resources.</p>
+
+<p>Useful tools like <a href="http://wiki.mysqltuner.com/MySQLTuner">MySQL Tuner</a> will give some quick information about the efficiency of the query cache but I do think it is a bit quick in suggesting more memory for the cache.</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/2009/04/toughest-mysql-ceo-email-ever-had-to-write/">Toughest MySQL CEO Email &#8220;Ever Had to Write&#8221;.</a></h1>
+    
+    
+      <p class="meta">
+        
+  
+
+
+<span class="byline author vcard">Posted by <span class="fn"><a href="/blog/our-team/andrew-kucharski.html">Andrew Kucharski</a></span></span>
+
+ - 
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2009-04-21T19:58:29+08:00" pubdate data-updated="true">Apr 21<span>st</span>, 2009</time>
+        
+         | <a href="/2009/04/toughest-mysql-ceo-email-ever-had-to-write/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>When I saw this text in this WSJ article about the <a href="http://blogs.wsj.com/digits/2009/04/21/suns-schwartz-tries-to-reassure-his-troops-in-email/">Sun&#8217;s Jonathan Schwartz email</a>, it really sounded like I was re-living the year 2000 doc com bubble and I was reading www.fuckedcompany.com.</p>
+
+<p>We use MySQL extnsivly and for very high availability applications so naturally there was a lot of discussion about the future of MySQL.  We believe that it will be for the better.  I hope the MySQL folks who created this super popular database feel the same.</p>
+
+<p>But, how would you feel if you got this email?  Here is the copy.</p>
+
+<blockquote><p>This is one of the toughest emails I’ve ever had to write.</p>
+
+<p>It’s also one of the most hopeful about Sun’s future in the industry.</p>
+
+<p>For 27 years, Sun has stood for courage, innovation, a willingness to blaze trails, to envision and engineer the future. No matter our ups and downs, we’ve remained committed to those ideals, and to the R&amp;D that’s allowed us to differentiate. We’ve committed to decade-long pursuits, from the evolution of one of the world’s most powerful datacenter operating systems, to one of the world’s most advanced multi-core microelectronics. We’ve never walked away from the wholesale reinvention of business models, the redefinition of technology boundaries or the pursuit of new routes to market.</p>
+
+<p>Because of the unparalleled talent at Sun, we’ve also fueled entire industries with our people and technologies, and fostered extraordinary companies and market successes. Our products and services have driven the discovery of new drugs, transformed social media, and created a better understanding of the world and marketplace around us. All, while we’ve undergone a near constant transformation in the face of a rapidly changing marketplace and global economy. We’ve never walked away from a challenge - or an opportunity.</p>
+
+<p>So today we take another step forward in our journey, but along a different path - by announcing that this weekend, our board of directors and I approved the acquisition of Sun Microsystems by the Oracle Corporation for $9.50/share in cash.</p>
+
+<p>All members of the board present at the meeting to review the transaction voted for it with enthusiasm, and the transaction stands to utterly transform the marketplace - bringing together two companies with a long history of working together to create a newly unified vision of the future.</p>
+
+<p>Oracle’s interest in Sun is very clear - they aspire to help customers simplify the development, deployment and operation of high value business systems, from applications all the way to datacenters. By acquiring Sun, Oracle will be well positioned to help customers solve the most complex technology problems related to running a business.</p>
+
+<p>To me, this proposed acquisition totally redefines the industry, resetting the competitive landscape by creating a company with great reach, expertise and innovation. A combined Oracle/Sun will be capable of cultivating one of the world’s most vibrant and far reaching developer communities, accelerating the convergence of storage, networking and computing, and delivering one of the world’s most powerful and complete portfolios of business and technical software.</p>
+
+<p>I do not consider the announcement to be the end of the road, not by any stretch of the imagination. I believe this is the first step down a different path, one that takes us and our innovations to an even broader market, one that ensures the ubiquitous role we play in the world around us. The deal was announced today, and, after regulatory review and shareholder approval, will take some months to close - until that close occurs, however, we are a separate company, operating independently. No matter how long it takes, the world changed starting today.</p>
+
+<p>But it’s important to note it’s not the acquisition that’s changing the world - it’s the people that fuel both companies. Having spent a considerable amount of time talking to Oracle, let me assure you they are single minded in their focus on the one asset that doesn’t appear in our financial statements: our people. That’s their highest priority - creating an inviting and compelling environment in which our brightest minds can continue to invent and deliver the future.</p>
+
+<p>Thank you for everything you’ve done over the years, and for everything you will do in the future to carry the business forward. I’m incredibly proud of this company and what we’ve accomplished together.</p>
+
+<p>Details will be forthcoming as we work together on the integration planning process.</p>
+
+<p>Jonathan</p></blockquote>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/2009/04/mysql-alternatives/">Mysql Alternatives</a></h1>
+    
+    
+      <p class="meta">
+        
+  
+
+
+<span class="byline author vcard">Posted by <span class="fn"><a href="/blog/our-team/max-veprinsky.html">Max Veprinsky</a></span></span>
+
+ - 
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2009-04-20T12:34:49+08:00" pubdate data-updated="true">Apr 20<span>th</span>, 2009</time>
+        
+         | <a href="/2009/04/mysql-alternatives/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>While it&#8217;s no longer news that Oracle shelled out $5.6 billion for Sun Microsystems many open source lovers have to be at least wondering what will happen to the most widely used free database server. With nearly 44% of software developers choosing Mysql as database of choice many are betting on the fact that MySql will remain free. In the unlikely scenario that Oracle starts charging for Mysql there are several forks that can be used.</p>
+
+<p><a href="https://launchpad.net/drizzle">Drizzle</a> is a fork of MySQL 6.0 that is designed for massive concurrency on modern multi-cpu/core architecture</p>
+
+<p><a href="http://askmonty.org/wiki/index.php/MariaDB">MariaDB</a> &#8211; The intent of this branch is to keep up with MySQL development, maintain user compatibility, but with more features.</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/2009/04/sun-dumps-ibm-for-a-better-offer-from-oracle-what-will-happen-to-mysql/">Sun Dumps IBM for a Better Offer From Oracle - What Will Happen to MySQL?</a></h1>
+    
+    
+      <p class="meta">
+        
+  
+
+
+<span class="byline author vcard">Posted by <span class="fn"><a href="/blog/our-team/andrew-kucharski.html">Andrew Kucharski</a></span></span>
+
+ - 
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2009-04-20T11:25:19+08:00" pubdate data-updated="true">Apr 20<span>th</span>, 2009</time>
+        
+         | <a href="/2009/04/sun-dumps-ibm-for-a-better-offer-from-oracle-what-will-happen-to-mysql/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>Big news in the tech world - Sun Microsystems will be sold to Oracle.  In case this still doesnt ring any alarm bells, Sun Microsystems owns MySQL.  Oracle is the worlds leading database.  This will definetly make things exciting - hopefully keeping MySQL open and free.</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/2009/04/centos-53-released/">CentOS 5.3 Released</a></h1>
+    
+    
+      <p class="meta">
+        
+  
+
+
+<span class="byline author vcard">Posted by <span class="fn"><a href="/blog/our-team/max-veprinsky.html">Max Veprinsky</a></span></span>
+
+ - 
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2009-04-13T10:37:29+08:00" pubdate data-updated="true">Apr 13<span>th</span>, 2009</time>
+        
+         | <a href="/2009/04/centos-53-released/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>CentOS recently released distro version 5.3 During updating from 5.2 <code>rpmdb: **unable to lock mutex**: Invalid argument</code> error may be displayed. This can be resolved by updating glibc first.</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>yum clean all && yum update glibc\* && yum update</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Check out <a href="http://wiki.centos.org/Manuals/ReleaseNotes/CentOS5.3">release notes</a> for other important information regarding this release.</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/2009/04/videos-of-google-data-centers-and-presentation-video-from-the-google-efficent-data-center-summit/">Videos of Google Data Centers and Presentation Video From the Google Efficent Data Center Summit</a></h1>
+    
+    
+      <p class="meta">
+        
+  
+
+
+<span class="byline author vcard">Posted by <span class="fn"><a href="/blog/our-team/andrew-kucharski.html">Andrew Kucharski</a></span></span>
+
+ - 
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2009-04-10T09:34:54+08:00" pubdate data-updated="true">Apr 10<span>th</span>, 2009</time>
+        
+         | <a href="/2009/04/videos-of-google-data-centers-and-presentation-video-from-the-google-efficent-data-center-summit/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>On April 1st Google hosted a <a href="http://www.google.com/corporate/green/datacenters/summit.html">Efficient Data Center Summit</a> .    The videos below are of the Google container based data centers, outlining the design of cooling systems, the containers themselves hosing hundreds of thousands of servers.  It shows their water cooling systems, and video shots of inside of the containers as well as what they call &#8216;Google night life&#8217;.  Unfortunately the slide our servers are not on cork boards, but they do look to be attached to a fairly flimsy rail system.  :)</p>
+
+<p>My favorites are the server swap and a <a href="http://googleblog.blogspot.com/2009/04/designing-lean-green-energy-saving.html">Google provided Personal Transportation Device (PTD)</a>.</p>
+
+<p>These are great videos providing a glimpse into the usually locked down giant data centers housing thousands of servers.  This is how its done!</p>
+
+<p>That was the summary video overview of a google data center - container based.</p>
+
+<p>Below are a few more videos from the above mentioned Efficency Data Center Summit.  Here is part one overview the google green grid.</p>
+
+<p>Here is the google provided summary of the event, and the following part 2 and 3 videos of the event.</p>
+
+<p>On April 1st, we hosted leaders of the IT industry to discuss best practices for improving data center efficiency. The day was spent discussing how to make significant reductions in resource use while meeting service requirements. Saving electricity and water is not just good for the environment, it makes good business sense too. Being &#8220;green&#8221; reduces operating costs and can keep our industry competitive; it is the economic advantage that makes efficiency truly sustainable.</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/2009/04/hp-ilo-remote-managment-online-configuration-part-1/">HP ILO Remote Managment Online Configuration PART 1</a></h1>
+    
+    
+      <p class="meta">
+        
+  
+
+
+<span class="byline author vcard">Posted by <span class="fn"><a href="/blog/our-team/max-veprinsky.html">Max Veprinsky</a></span></span>
+
+ - 
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2009-04-07T16:54:28+08:00" pubdate data-updated="true">Apr 7<span>th</span>, 2009</time>
+        
+         | <a href="/2009/04/hp-ilo-remote-managment-online-configuration-part-1/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>Many mainstream oem server iron manufacturers (dell, supermicro, sun, ibm) offer remote management options. HP&#8217;s variant is called iLO or <strong>Integrated Lights Out </strong>and is standard on 3oo/500/Blade line of servers. Newer generation (G5 and up) servers come with iLO 2 which offers hardware video acceleration and network encryption.  Normally iLO is setup before booting the server as ip address/user assignments need to accommodated. This can be done remotely as well with minimal pain. This guide assumes the server is HP dl360 G5 running rhel5 /centos 5 64 and you have root access to the server.  This guide would apply to other HP servers that support <a href="http://h18000.www1.hp.com/products/servers/management/ilo/">iLO</a> / <a href="http://h18013.www1.hp.com/products/servers/management/iloadv2/index.html">iLO2</a>.</p>
+
+<ol>
+<li><a href="http://h20000.www2.hp.com/bizsupport/TechSupport/SoftwareDescription.jsp?lang=en&amp;cc=us&amp;prodTypeId=15351&amp;prodSeriesId=1121486&amp;prodNameId=3288144&amp;swEnvOID=4004&amp;swLang=8&amp;mode=2&amp;taskId=135&amp;swItem=MTX-4142b198b9cb475f99658a7caf">Download</a> and install latest (8.2.0-236) iLO kernel module.</li>
+</ol>
+
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>rpm -ivh hp-ilo-8.2.0-236.rhel5.x86_64.rpm
+</span><span class='line'>service hp-ilo start</span></code></pre></td></tr></table></div></figure>
+
+
+<p>check that the module loaded properly</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>[root@server ~]$ lsmod
+</span><span class='line'>Module                  Size  Used by
+</span><span class='line'>hpilo                  43280  0</span></code></pre></td></tr></table></div></figure>
+
+
+<ol>
+<li><a href="http://ftp.hp.com/pub/softlib2/software1/sc-linux-fw-ilo/p1285463034/v51280/CP010302.scexe">Download</a> and install latest (1.70 B) iLO firmware.</li>
+</ol>
+
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>[root@server ~]$ sh CP010302.scexe</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>FLASH_iLO2 v1.10 for Linux (Jan 12 2009)
+</span><span class='line'>Copyright 2009 Hewlett-Packard Development Company, L.P.
+</span><span class='line'>Firmware image: ilo2_170.bin
+</span><span class='line'>Current iLO 2 firmware version  1.29; Serial number ILOUSM1234567</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>Component XML file: CP010302.xml
+</span><span class='line'>CP010302.xml reports firmware version 1.70
+</span><span class='line'>This operation will update the firmware on the
+</span><span class='line'>iLO 2 in this server with version 1.70.
+</span><span class='line'>Continue (y/N)?y
+</span><span class='line'>Current firmware is 1.29 (Feb 28 2007 17:09:41)
+</span><span class='line'>Firmware image is 0x270000 bytes
+</span><span class='line'>Committing to flash part...
+</span><span class='line'>******** DO NOT INTERRUPT! ********
+</span><span class='line'>Flashing completed!
+</span><span class='line'>Attempting to reset device.
+</span><span class='line'>Succeeded.</span></code></pre></td></tr></table></div></figure>
+
+
+<ol>
+<li><a href="http://h20000.www2.hp.com/bizsupport/TechSupport/SoftwareDescription.jsp?lang=en&amp;cc=us&amp;prodTypeId=15351&amp;prodSeriesId=1121486&amp;prodNameId=3288144&amp;swEnvOID=4004&amp;swLang=8&amp;mode=2&amp;taskId=135&amp;swItem=MTX-5292ccda1fef4040b1f14cf85d">Download</a> and install latest (8.2.0-285) hp-OpenIPMI device driver.</li>
+</ol>
+
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>rpm -ivh 8.2.0-285.rhel5.x86_64.rpm</span></code></pre></td></tr></table></div></figure>
+
+
+<ol>
+<li><a href="http://h20000.www2.hp.com/bizsupport/TechSupport/SoftwareDescription.jsp?lang=en&amp;cc=us&amp;prodTypeId=15351&amp;prodSeriesId=1121486&amp;prodNameId=3288144&amp;swEnvOID=4004&amp;swLang=8&amp;mode=2&amp;taskId=135&amp;swItem=MTX-9994deee7e854c48934baeb2e5">Download</a> and install latest (1.9.0-3) HP Lights-Out Online Configuration utility.</li>
+</ol>
+
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>rpm -ivh hponcfg-1.9.0-3.noarch.rpm</span></code></pre></td></tr></table></div></figure>
+
+
+<ol>
+<li><strong>Optional</strong> <a href="http://h20000.www2.hp.com/bizsupport/TechSupport/SoftwareDescription.jsp?lang=en&amp;cc=us&amp;prodTypeId=15351&amp;prodSeriesId=1121486&amp;prodNameId=3288144&amp;swEnvOID=4004&amp;swLang=8&amp;mode=2&amp;taskId=135&amp;swItem=MTX-6843fb2d2e524c9690b30b6c30">Download</a> latest (2.10) SmartStart Scripting Toolkit to your pc.</li>
+</ol>
+
+
+<p>The hponcfg utility allows configuration of iLO embedded server. All configuration is passed to iLO in XML format. Refer to SmartStart Scripting Toolkit for command reference.</p>
+
+<p>In part 2 a sample configuration file will be prepared to provide access to iLO from outside even if the management port is not connected to the network.</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/2009/04/linux-devices-at-ctia/">Linux Devices at CTIA</a></h1>
+    
+    
+      <p class="meta">
+        
+  
+
+
+<span class="byline author vcard">Posted by <span class="fn"><a href="/blog/our-team/andrew-kucharski.html">Andrew Kucharski</a></span></span>
+
+ - 
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2009-04-05T22:31:26+08:00" pubdate data-updated="true">Apr 5<span>th</span>, 2009</time>
+        
+         | <a href="/2009/04/linux-devices-at-ctia/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>This interesting interview with George Smith from <a href="http://www.xandros.com/products/oem/">Xendros</a> OEM Solutions talk about Linux OS (Debian based) installed in conjunction with  <a href="http://www.qctconnect.com/products/snapdragon.html">Qualcom Snapdragon</a> platoform is making long battery small internet browsing devices powerful.  This linux combo is be a huge threat to the Microsoft Intel family in the area of mobile computing.</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/2009/04/change-hostname-of-cpanel-server/">Change Hostname of Cpanel Server</a></h1>
+    
+    
+      <p class="meta">
+        
+  
+
+
+<span class="byline author vcard">Posted by <span class="fn"><a href="/blog/our-team/gerold-mercadero.html">Gerold Mercadero</a></span></span>
+
+ - 
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2009-04-05T07:19:16+08:00" pubdate data-updated="true">Apr 5<span>th</span>, 2009</time>
+        
+         | <a href="/2009/04/change-hostname-of-cpanel-server/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>This task is very simple and can be done in two steps:
+1.)  Login as root and change your server hostname:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>hostname newhos.name.tld</span></code></pre></td></tr></table></div></figure>
+
+
+<p><strong>Note:</strong>  Don&#8217;t forget to create an A entry for your new hostname, otherwise you will get a popup message during WHM login.</p>
+
+<p>2.)  Issue <code>/usr/local/cpanel/cpkeyclt</code> to update your Cpanel License Key, otherwise you will get Invalid License when you login to WHM/Cpanel interface.</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  <div class="pagination">
+    
+      <a class="prev" href="/blog/page/13/">&larr; Older</a>
+    
+    <a href="/blog/archives">Blog Archives</a>
+    
+    <a class="next" href="/blog/page/11/">Newer &rarr;</a>
+    
+  </div>
+</div>
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/2012/11/howto-bulk-import-dns-zones-to-softlayer-dns-using-cpanel/">HowTo: Bulk Import DNS Zones to Softlayer DNS using Cpanel</a>
+      </li>
+    
+      <li class="post">
+        <a href="/2012/08/integrate-sendgrid-with-redmine/">Integrate Sendgrid with Redmine</a>
+      </li>
+    
+      <li class="post">
+        <a href="/2012/07/rsback-task-x-is-locked-and-cannot-be-executed/">rsback: task x is locked and cannot be executed</a>
+      </li>
+    
+      <li class="post">
+        <a href="/2012/06/restore-xen-vm-from-lvm-snapshot-backups/">Restore Xen VM from LVM Snapshot Backups</a>
+      </li>
+    
+      <li class="post">
+        <a href="/2012/06/debian-6-backup-xen-with-lvm-and-rsnapshot/">Debian 6: Backup Xen with LVM and Rsnapshot</a>
+      </li>
+    
+  </ul>
+</section>
+
+<section>
+  <h1>GitHub Repos</h1>
+  <ul id="gh_repos">
+    <li class="loading">Status updating&#8230;</li>
+  </ul>
+  
+  <a href="https://github.com/promet">@promet</a> on GitHub
+  
+  <script type="text/javascript">
+    $.domReady(function(){
+        if (!window.jXHR){
+            var jxhr = document.createElement('script');
+            jxhr.type = 'text/javascript';
+            jxhr.src = '/javascripts/libs/jXHR.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(jxhr, s);
+        }
+
+        github.showRepos({
+            user: 'promet',
+            count: 0,
+            skip_forks: true,
+            target: '#gh_repos'
+        });
+    });
+  </script>
+  <script src="/javascripts/github.js" type="text/javascript"> </script>
+</section>
+
+
+<section>
+  <h1>Latest Tweets</h1>
+  <ul id="tweets">
+    <li class="loading">Status updating&#8230;</li>
+  </ul>
+  <script type="text/javascript">
+    $.domReady(function(){
+      getTwitterFeed("linuxsysadmnblg", 4, false);
+    });
+  </script>
+  <script src="/javascripts/twitter.js" type="text/javascript"> </script>
+  
+    <a href="http://twitter.com/linuxsysadmnblg" class="twitter-follow-button" data-show-count="false">Follow @linuxsysadmnblg</a>
+  
+</section>
+
+
+
+
+
+  
+</aside>
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2012 - Promet OPS Team -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'linuxsysadminblog';
+      
+        
+        var disqus_script = 'count.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'http://' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) {return;}
+  js = d.createElement(s); js.id = id;
+  js.src = "//connect.facebook.net/en_US/all.js#appId=212934732101925&xfbml=1";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = 'http://platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>

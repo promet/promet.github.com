@@ -1,0 +1,222 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: Storage | Linux Sysadmin Blog]]></title>
+  <link href="http://linuxsysadminblog.com/category/storage/atom.xml" rel="self"/>
+  <link href="http://linuxsysadminblog.com/"/>
+  <updated>2012-11-13T01:37:44+08:00</updated>
+  <id>http://linuxsysadminblog.com/</id>
+  <author>
+    <name><![CDATA[Promet OPS Team]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Restore Xen VM from LVM Snapshot Backups]]></title>
+    <link href="http://linuxsysadminblog.com/2012/06/restore-xen-vm-from-lvm-snapshot-backups/"/>
+    <updated>2012-06-22T20:21:00+08:00</updated>
+    <id>http://linuxsysadminblog.com/2012/06/restore-xen-vm-from-lvm-snapshot-backups</id>
+    <content type="html"><![CDATA[<p>What's the use of backups if you can't restore from them? ;)</p>
+
+<p>In the previous post on "Backup Xen with LVM and Rsnapshot" we worked on creating backups of Xen (guest/domain) VMs with LVM, and here we'll cover the process of restoring from these backups.</p>
+
+<p>What is covered here:</p>
+
+<p>Restoring specific files or directories
+Doing "bare-metal" type of restore. We will re-create the VM from our rsnapshot backups.
+Restore Process:</p>
+
+<p>1.) Restoring specific files or directories only</p>
+
+<p>While this restore scenario is a no-brainer, still I'll just want to mention it here as well.  Basically this one is the usual copying of files (via cp, scp, ftp, rsync, etc) from your source or backup server to the destination server.</p>
+
+<p>2.) "Bare-metal" restore (creates complete vm image from backup).</p>
+
+<p>Overview of "bare-metal" restore process:</p>
+
+<p>create, format, and mount logical volumes to use on the vm that you want to restore or re-create, based on its original vm disk properties such as size, names, etc.
+copy all files from backup location to the newly mounted lvm disk</p>
+
+<!--more-->
+
+
+<p>adjust necessary xen vm configs (if any, like new ip address) and start/create the vm using the volume with restored contents or files, and you're done.
+In the restore example below I'll refer to the vm as "domain.com" and we will restore the backups to a different volume with the same config as the original.  Then we'll start the vm, domain.com, using the restored volume.</p>
+
+<p>Here's the sample VM configuration that we will use.
+orignal vm disks: /dev/vg0/domain.com-disk (10GB) and /dev/vg0/domain.com-swap (512MB)
+backup located at "/backup" of host machine
+disks configurations to use on restored vm: /dev/vg0/domain-restore.com-disk (10GB) and /dev/vg0/domain-restore.com-swap (512MB)
+To start we determine the virtual machine  to restore as well as the backup to use  for restore.</p>
+
+<p>Then we'll create logical volumes with the same values as the running volumes as defined in our /etc/xen/domain.com.cfg.  Please note that you don't have to re-create the swap disk if you want, but in this example we'll just create another one.</p>
+
+<p>```</p>
+
+<pre><code>lvcreate -L 10G -n domain-restore.com-disk vg0
+lvcreate -L 512M -n domain-restore.com-swap vg0
+</code></pre>
+
+<p>```
+Format the "-disk" and mount it somewhere on host machine (ex: /backup-restore) and copy backup files into it, and unmount it after copying.</p>
+
+<p>```</p>
+
+<pre><code>mkfs -t ext3 -v /dev/vg0/domain-restore.com-disk
+mkdir /backup-restore
+mount /dev/vg0/domain-restore.com-disk /backup-restore
+cp -rpfv /backup/domain.com-disk/* /backup-restore/
+umount /dev/vg0/domain-restore.com-disk
+rmdir /backup-restore
+</code></pre>
+
+<p>```
+We now have the volume that contains the restored files at /dev/vg0/domain-restore-disk and ready to use by our domain.com VM.</p>
+
+<p>Let's shutdown "domain.com" machine and change its disk configuration to use the new/restored volume.</p>
+
+<p><code>
+xm shutdown domain.com
+</code></p>
+
+<p>Then we'll update our vm xen config to let our "domain.com" vm use the "domain-restore-disk".  We'll modify /etc/xen/original.domain.com.cfg and change the disks to point to new volumes with restored contents.</p>
+
+<p>From:
+<code>
+'phy:/dev/vg0/domain.com-disk,xvda2,w',
+'phy:/dev/vg0/domain.com-swap,xvda1,w',
+</code></p>
+
+<p>To:
+<code>
+'phy:/dev/vg0/domain-restore.com-disk,xvda2,w',
+'phy:/dev/vg0/domain-restore.com-swap,xvda1,w',
+</code></p>
+
+<p>Start our domain.com machine on its restored contents.</p>
+
+<p><code>
+xm create /etc/xen/domain.com.cfg
+</code></p>
+
+<p>That's all - you should have your vm running from its restored state! If everything is not ok you can quickly configure your vm to use the original volumes and restart it.</p>
+
+<p>If you do not want to touch your live machine, you can just create another vm with the same config as the live one, create new volumes and restore your backups to that vm.</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[My First Amazon EC2 Setup (CentOS AMI)]]></title>
+    <link href="http://linuxsysadminblog.com/2009/06/my-first-amazon-ec2-setup-centos-ami/"/>
+    <updated>2009-06-29T07:52:12+08:00</updated>
+    <id>http://linuxsysadminblog.com/2009/06/my-first-amazon-ec2-setup-centos-ami</id>
+    <content type="html"><![CDATA[<p>Here's my first try working with Amazon Web Services. Covered tasks are the following:
+* getting familiar with AWS, specially EC2 and S3.
+* working with EC2 instance using CentOS image - search, start/stop, and do some customization of an instance
+* create AMIs (private) and start instance from it.
+*  S3 buckets - upload files.</p>
+
+<p>I based my instructions on previous post on <a href="http://linuxsysadminblog.com/2009/06/howto-get-started-with-amazon-ec2-api-tools/"><strong>Howto Get Started With Amazon EC2 API Tools</strong></a>, so I won't give details on some steps.  And this post will cover mainly the steps taken to complete my objectives above.</p>
+
+<p>To start, I signed up for an account and enabled EC2 and S3 services, and generate X509 certificate.  Next, I selected a test server running CentOS 5.3 with Cpanel and installed <em>java</em> (openjdk 1.6, using <em>yum</em>) as a requirement.</p>
+
+<p>Then, download <a href="http://developer.amazonwebservices.com/connect/entry.jspa?externalID=351&amp;categoryID=88">EC2 API Tools</a> and extract to my working directory at <em>/myhome/.ec2/</em> and upload your private key and x509 certificates. Don't forget to follow the filename format of cert-xxx.pem and pk-xx.pem.</p>
+
+<p>Export shell variables (posted on the previous post) and specify the correct private and x509 path.  Then run source /myhome/.bashrc or open new terminal to load new environment variables.</p>
+
+<p>Setup EC2 keypair. At first i used the certificate from different account but i got the error below:
+<code>
+Client.AuthFailure: AWS was not able to validate the provided access credentials
+</code>
+I searched for this error and one suggestion is to chmod your certificate and key files to 600 but it didn't help me.  My problem is on our account because one of my teammates changed our account password and probably generated new keys.  Anyway, this is where i signed up for a new account and proceeded without issues.</p>
+
+<p>Search for the AMIs to use.  Following the steps listed on the instructions, I tried several AMI's (start/stop processes).  I observed some AMI's took longer to start compare to others but i have no idea why :).  Btw, you can also search for AMI's, and start/stop them from Amazon Management Console (EC2 Dashboard).</p>
+
+<p>My next task is to create my private AMIs and here's a good video tutorial on <a href="http://s3.amazonaws.com/awsVideos/CustomizeAnExistingAMI/wmv/Customize%20an%20Existing%20AMI.wmv">Customizing an existing AMI and create your own AMI from it</a>.  From this part that I need to setup my S3 bucket or directory to store my AMI.  There's a Firefox addon called <a href="https://addons.mozilla.org/en-US/firefox/addon/3247">S3Fox</a> that my friend suggested but unfortunately i can't install it on my Firefox due to some errors.  I found and tried this <a href="http://www.bucketexplorer.com/">BucketExplorer</a> for creating my S3 Bucket.  Btw, this one is commercial and you can try it for 30 days.  I haven't checked for other apps.  :)</p>
+
+<p>Back to creating my private AMI based on the above video, I ran into issue with ec2-bundle-vol command as it is not included on the AMI that i used, so i search for other AMIs that includes the EC2 Tools and found one from RightScale (CentOS5V1_10.img.manifest.xml).</p>
+
+<p>After this i was able to complete my private AMI and start new instance from it using the above steps without any issues.</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Moving Drupal / Civicrm Sites]]></title>
+    <link href="http://linuxsysadminblog.com/2009/06/moving-drupalcivicrm-sites/"/>
+    <updated>2009-06-29T05:39:10+08:00</updated>
+    <id>http://linuxsysadminblog.com/2009/06/moving-drupalcivicrm-sites</id>
+    <content type="html"><![CDATA[<p>In this guide i will provide the steps in moving Drupal sites with CiviCRM - with Drupal and CiviCRM in one or separate databases.  I will outline the steps and sample commands but won't give much details, so feel free to ask if you need any clarifications.  Also, refer to my previous guide on "<a href="http://linuxsysadminblog.com/2009/04/drupal-howto-duplicate-copy-drupal-site/">HowTo Duplicate or Copy Drupal Site</a>" for detailed instructions, commands, and sample shell scripts.</p>
+
+<p><strong>Moving Files:</strong></p>
+
+<ul>
+<li><p>Copy Drupal file and preserve mode (ownerships, permissions, etc)
+Example: <code>cp -rp drupal_source drupal_destination</code>
+Review your directory permissions on sites/default/files, sites/default/files/civicrm, and other directories.</p></li>
+<li><p>Update references to Drupal url, path, and database details (name, user, pass, and host). Sample commands below using grep:
+<code>
+find /path/to/drupal -type f -exec perl -pi -e "s/example.com/example2.com/g" {} \;
+find /path/to/drupal -type f -exec perl -pi -e "s/public_html\/example/public_html\/example2/g" {} \;
+find /path/to/drupal -type f -exec perl -pi -e "s/db_name/db_name2/g" {} \;
+find /path/to/drupal -type f -exec perl -pi -e "s/db_user/db_user2/g" {} \;
+find /path/to/drupal -type f -exec perl -pi -e "s/db_pass/db_pass2/g" {} \;
+</code></p></li>
+</ul>
+
+
+<p><strong>Moving Database/s:</strong></p>
+
+<p><strong>Case 1:  Combined CiviCRM and Drupal Database.</strong></p>
+
+<ul>
+<li>Create sql dump of source database.<br/>
+ Example: <code>mysqldump -Q -udb_user -pdbpass db_name &gt; db_name.sql</code></li>
+<li>Import to destination database.
+ Example: <code>mysql -udb_user2 -pdbpass2 db_name2 &lt; db_name.sql</code></li>
+<li>Update references to Drupal url, path, and database details (name, user, pass, and host) of non-CiviCRM tables.  You can use PhpMyAdmin to export this tables, then do the search/replace process on your local editor, and upload back the updates sql.  You can also dump the tables from using command line (but you'll have a long list of tables) and do the grep (same as above) and re-import the updated sql file.</li>
+<li>Update CiviCRM configurations from Drupal Admin section.  You need to update the "Resource URLs" and "Directories".<br/>
+ CiviCRM Admin Settings:  <code>Administer Civicrm &gt; Global Settings &gt; Directories    (or use the direct url:  /civicrm/admin/setting/path?reset=1)</code>
+ CiviCRM Admin Settings:  <code>Administer Civicrm &gt; Global Settings &gt; Resource Urls  (or use the direct url:  /civicrm/admin/setting/url?reset=1)</code></li>
+<li>Optional:  You can empty Sessions and Cache tables if you want.</li>
+</ul>
+
+
+<p><strong>Case 2:  Separate CiviCRM and Drupal Database </strong>(recommended install for CiviCRM).</p>
+
+<p>Process for this setup is almost the same as Case 1, the difference is on the import process for databases.  I'll just provide the complete info below.</p>
+
+<ul>
+<li>Create sql dump of source databases.<br/>
+Examples:
+<code>mysqldump -Q -udb_user -pdbpass db_name_drupal &gt; db_name_drupal.sql</code>
+<code>mysqldump -Q -udb_user -pdbpass db_name_civicrm &gt; db_name_civicrm.sql</code></li>
+<li>Import directly the CiviCRM database.<br/>
+Example: <code>mysql -udb_user2 -pdbpass2 db_name2_civicrm &lt; db_name_civicrm.sql</code></li>
+<li>Update CiviCRM configurations from Drupal Admin section.  You need to update the "Resource URLs" and "Directories".<br/>
+ CiviCRM Admin Settings:  <code>Administer Civicrm &gt; Global Settings &gt; Directories    (or use the direct url:  /civicrm/admin/setting/path?reset=1)</code>
+ CiviCRM Admin Settings:  <code>Administer Civicrm &gt; Global Settings &gt; Resource Urls  (or use the direct url:  /civicrm/admin/setting/url?reset=1)</code></li>
+<li>Update references to Drupal url, path, and database details (name, user, pass, and host) of Drupal database dump.
+ <code>perl -pi -e "s/example.com/example2.com/g"  db_name_drupal.sql</code>
+ <code>perl -pi -e "s/public_html\/example/public_html\/example2/g"  db_name_drupal.sql</code></li>
+<li>Import the Drupal database.
+ Example: <code>mysql -udb_user2 -pdbpass2 db_name2_drupal &lt; db_name_drupal.sql</code></li>
+<li>Optional:  You can empty Sessions and Cache tables if you want.</li>
+</ul>
+
+
+<p>That's All!</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[LSI aquires 3ware® from AMCC]]></title>
+    <link href="http://linuxsysadminblog.com/2009/04/lsi-aquires-3warec2ae-from-amcc/"/>
+    <updated>2009-04-24T12:50:54+08:00</updated>
+    <id>http://linuxsysadminblog.com/2009/04/lsi-aquires-3warec2ae-from-amcc</id>
+    <content type="html"><![CDATA[<p>In an <a href="http://now.eloqua.com/e/es.aspx?s=793&amp;e=A3B04CDAD711452AAE30C28330C367B3&amp;elq=F3E2E27EAC1A44EAAF8765C376493879">accouncement</a>  made yesterday LSI Corporation stated that it had entered into a definitive agreement with Applied Micro Circuits Corporation (AMCC) to acquire the assets and associated intellectual property of the 3ware® RAID adapter business. It has been about 5 years since AMCC aquired 3Ware Inc for roughly 150 millions dollars in cash and yesterday they sold 3Ware for about 20 million cash.</p>
+]]></content>
+  </entry>
+  
+</feed>

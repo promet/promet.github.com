@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: hosting | Linux Sysadmin Blog]]></title>
+  <link href="http://linuxsysadminblog.com/category/hosting/atom.xml" rel="self"/>
+  <link href="http://linuxsysadminblog.com/"/>
+  <updated>2012-11-13T01:37:44+08:00</updated>
+  <id>http://linuxsysadminblog.com/</id>
+  <author>
+    <name><![CDATA[Promet OPS Team]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[APC should be enabled by default]]></title>
+    <link href="http://linuxsysadminblog.com/2011/04/apc-should-be-enabled-by-default/"/>
+    <updated>2011-04-01T14:36:15+08:00</updated>
+    <id>http://linuxsysadminblog.com/2011/04/apc-should-be-enabled-by-default</id>
+    <content type="html"><![CDATA[<p><strong>PHP is slow</strong>. This should not be a huge revelation for any of us, and this is not because PHP is a bad programing language, or because Python or Ruby are better. This is because it is an <a href="http://en.wikipedia.org/wiki/Interpreted_language"><em>interpreted language</em></a>. Every time you execute a PHP script it is going to do the exact same thing and interpret your code and then execute it over and over. This is obviously slow and doesn't compare with any compiled language like C++ for example. But we don't want to write in C++ for our webapps, right? and we would like to use the PHP simplicity as many other open source products and developers; what can we do then? We can very easily enable any of the opcode cache available: <a href="http://pecl.php.net/package/APC"><strong>APC</strong></a>, <a href="http://eaccelerator.net/"><strong>eaccelerator</strong></a> or <a href="http://xcache.lighttpd.net/"><strong>xcache</strong></a> (I'm not aware of something similar for python or ruby, but if it exists you should probably use it also). An <strong>opcode cache</strong> or <strong>PHP accelerator</strong>, will cache the compiled form of the php scripts speeding up dramatically their execution time. Many people have done this a long time as they needed to improve the performance of their sites, and get results up to 20x speed up from plain PHP. A very simple step-by-step intro on how you can install APC can be found on this <a href="http://linuxsysadminblog.com/2010/03/enabledisable-apc-on-virtual-host-level/">older post</a>.</p>
+
+<p>Now here is the question a good friend of mine asked me a while ago: <strong>why is APC not enabled by default?</strong> Why do people have to do an extra step to install an external module for this (that many don't). And my answer at that time was that opcode caches are not perfect, and depending by how you write your code they might cause problems and have it no longer functioning correctly. I think I was quite happy with my answer as myself I would always install an opcode cache on any high traffic site I managed from day one (most of the time APC, but also eaccelerator) and many time even running comparisons between them to see if one of them is faster. Still even today, in most of the <strong>performance projects</strong> we completed, we found people don't do this, and they <strong>don't have APC installed and enabled</strong>. There are some tricks on how to tune APC and improve even better its performance but here I'm talking just to have it installed. This is why I think that APC should be enabled by default everywhere (not only by 'high traffic' sites). It should give PHP scripts a boost of performance and if you really have problems with it you can disable it on a vhost or directory level very simple just by adding in .htaccess:
+<code>php_flag apc.cache_by_default On
+</code></p>
+
+<p>I'm hoping more and more people will do this so we can focus on more serious performance problems in our PHP webapps. I don't see why not, because this is very simple and there are plenty of <a href="http://www.google.com/search?q=howto+php+apc">howto's</a> available. Still if you need help, and you would like us to do it for you, please <a href="http://www.prometsource.com/contact">contact us</a> and let us speed up your site.</p>
+
+<p>Note: if you have done this many years ago and want somethign even faster for your PHP code you should take a look at <a href="https://github.com/facebook/hiphop-php/wiki/"><strong>HipHop</strong></a> the project from Facebook to <strong>compile your php scripts</strong> (actually transforms PHP source code into highly optimized C++ and then uses g++ to compile it to machine code) and run them as executables (but this is going to be much harder to implement, but still a very interesting project to keep an eye).</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Mail Relay Issue on Cpanel Server]]></title>
+    <link href="http://linuxsysadminblog.com/2010/02/mail-relay-issue-on-cpanel-server/"/>
+    <updated>2010-02-16T09:05:00+08:00</updated>
+    <id>http://linuxsysadminblog.com/2010/02/mail-relay-issue-on-cpanel-server</id>
+    <content type="html"><![CDATA[<p>I noticed lots of email being relayed on one of our shared hosting server, CentOS5 with Cpanel and running Exim, and the strange thing is that the email server (MX) for these accounts are pointing to Google (GoogleApps), and we have correct entries for <em>localdomains</em> and <em>remotedomains</em> for these account.  The relayers (<em>'From'</em> server/address) looks like spam anyway.  From the mail logs I noticed that the relayed messages have '<em>fixed_login</em>' and key ('<em>rsa-sha1</em>') for their authentications.</p>
+
+<p>Since the mail server for these accounts are pointing to other servers, I deleted all the email accounts, forwarders, mailinglists, etc.  After this I've seen sending error/failure messages from mail logs of the said accounts  It shows '<em>fixed_login authenticator failed for hostxx' [535 Incorrect authentication data]</em>.</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Apache Now Supports Multiple SSL on Single IP Address]]></title>
+    <link href="http://linuxsysadminblog.com/2009/11/apache-now-supports-multiple-ssl-on-single-ip-address/"/>
+    <updated>2009-11-24T01:08:23+08:00</updated>
+    <id>http://linuxsysadminblog.com/2009/11/apache-now-supports-multiple-ssl-on-single-ip-address</id>
+    <content type="html"><![CDATA[<p>With the release of Apache 2.2.12, we can now configure multiple SSL sites in one IP address.  It is available of you have Server Name Indication (SNI) extension for OpenSSL.  Visit TechRepublic's post on "<a href="http://blogs.techrepublic.com.com/opensource/?p=987">Configure Apache to support multiple SSL sites on a single IP address</a>" for details and vhost sample configuration.  And for complete reference please refer to this page "<a href="http://wiki.apache.org/httpd/NameBasedSSLVHostsWithSNI">SSL with Virtual Hosts Using SNI</a>" and <a href="http://httpd.apache.org/docs/2.2/mod/mod_ssl.html#sslstrictsnivhostcheck">Apache mod_ssl documentation</a>.</p>
+
+<p>We'll try this on our server and hopefully offer this to our shared hosting clients who wants SSL but not interested in paying extra for a dedicated ip address.  :)</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Managed DNS services showdown]]></title>
+    <link href="http://linuxsysadminblog.com/2009/10/managed-dns-services-showdown/"/>
+    <updated>2009-10-19T15:37:09+08:00</updated>
+    <id>http://linuxsysadminblog.com/2009/10/managed-dns-services-showdown</id>
+    <content type="html"><![CDATA[<p>A time comes when it makes more business sense to outsource DNS. While one can use a domain registrars to manage and host dns they do not always offer best performance or even offer SLA's. We will compare a couple of companies that specialize at DNS hosting only.</p>
+
+<p><a href="http://www.dyndns.com/">DynDNS</a></p>
+
+<ul>
+<li>comprehensive services offerings</li>
+<li>no downtimes since inception (2001)</li>
+<li>worldwide DNS cluster</li>
+<li>multiplatform dynamic update clients with excellent documentation</li>
+<li>29.95 per zone per year</li>
+<li>web interface</li>
+<li>SLA offerings options</li>
+<li>Bind based architecture</li>
+</ul>
+
+
+<p><a href="http://www.easydns.com/">easyDNS</a></p>
+
+<ul>
+<li>unknown reliability</li>
+<li>worldwide DNS cluster</li>
+<li>multiplatform dynamic update clients</li>
+<li>priced at $19.99 per zone per year</li>
+<li>web interface</li>
+<li>no SLA offering</li>
+<li>Bind based architecture</li>
+</ul>
+
+
+<p><a href="http://www.nettica.com/">Nettica</a></p>
+
+<ul>
+<li>unknown reliability</li>
+<li>mostly US based DNS cluster (1 location in UK)</li>
+<li>priced at $10 per zone per year</li>
+<li>100$ SLA offering</li>
+<li>no linux update client, however dynamic ip updates can be done with curl call to their website</li>
+<li>web interface</li>
+<li>windows only API's</li>
+</ul>
+
+
+<p><a href="http://zoneedit.com/">Zoneedit</a></p>
+
+<ul>
+<li>Pioneer of hosted DNS</li>
+<li>Bad recent reliability</li>
+<li>Bind based architecture</li>
+<li>mostly US based DNS cluster (1 location in Germany)</li>
+<li>multiplatform dynamic update clients</li>
+<li>wide range of dynamic update clients (java, python, perl, direct calls to their website with wget), clients hosted on sourceforge with limited documentation</li>
+<li>host 5 domains for free, limited to 200meg query limit per domain(approx 1 million queries), additional options cost "zone credits @ $10.95 each" for services like additional domains, load balancing, monitoring, additional queries.</li>
+</ul>
+
+
+<p><a href="http://www.ultradns.com">UltraDNS</a></p>
+
+<ul>
+<li>Very comprehensive list of offerings</li>
+<li>15 worldwide nodes on 5 continents</li>
+<li>Protection against DNS based DDOS</li>
+<li>cross platform XML based API</li>
+<li>web portal</li>
+<li>100% uptime SLA</li>
+<li>directory based architecture, using Oracle database replication technology. Not based on BIND</li>
+<li>$15 per month for 1 domain with 5 records and 5000 queries, overage costs are $1 per 1000 queries and 0.50 cents for per additional record.</li>
+</ul>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Iframe injection attack investigation]]></title>
+    <link href="http://linuxsysadminblog.com/2009/09/iframe-injection-attack-investigation/"/>
+    <updated>2009-09-21T15:17:56+08:00</updated>
+    <id>http://linuxsysadminblog.com/2009/09/iframe-injection-attack-investigation</id>
+    <content type="html"><![CDATA[<p>The whole hidden IFRAME vulnerability has been going on for some time, only a few of our client have been effected by this. The net is still buzzing with this issue and while some are saying that the injection are results of php insecurities, mysql injection or cross site scripting, while others point to key loggers and hijacked ftp credentials. In our case the exploit was not due to an application vulnerability but rather to hijacked ftp login information. Brute force password guessing attacks were not performed on this account nor any other accounts on the same server. In this particular type of attack, at the very end of index.php/index.html an IFRAME statement was appended overwriting page closing tags.</p>
+
+<p><code>
+iframe src="http://***.ru:8080/index.php" width=111 height=162 style="visibi
+iframe src="http://***.ru:8080/index.php" width=136 height=162 style="visibility: hidden" /iframe
+iframe src="http://***.ru:8080/index.php" width=141 height=156 style="visibility: hidden" /iframe
+</code></p>
+
+<p>Some of the index.php files had multiple IFRAME statements appended to the end. Knowing the username of affected account and affected filename I searched in /var/log/messages for any related entries and hit jackpot:</p>
+
+<p><code>
+Aug 27 01:27:59 web152 pure-ftpd: (?@94.218.69.243) [INFO] user is now logged in
+Aug 27 01:28:00 web152 pure-ftpd: (user@94.218.69.243) [NOTICE] /home/user//public_html/index.php downloaded  (2311 bytes, 1001.70KB/sec)
+Aug 27 01:28:00 web152 pure-ftpd: (user@94.218.69.243) [INFO] Logout.
+Aug 27 01:28:04 web152 pure-ftpd: (?@78.92.144.185) [INFO] user is now logged in
+Aug 27 01:28:05 web152 pure-ftpd: (user@78.92.144.185) [NOTICE] /home/user//public_html/index.php uploaded  (2353 bytes, 10.42KB/sec)
+Aug 27 01:28:05 web152 pure-ftpd: (user@78.92.144.185) [INFO] Logout.
+</code></p>
+
+<p>What's interesting to note here is that even though downloading/uploading of index.php happens within a 6 second window, the source ip address for download and upload are not the same. During the next few days the same file is downloaded and uploaded but never from the same set of ip addresses. During the few days that I was allowing this to happen as I was monitoring said activity and collecting the IP addresses to see if a pattern emerges:</p>
+
+<p><code>
+83.82.57.39 GeoIP Country Edition: NL, Netherlands
+95.52.163.74 GeoIP Country Edition: RU, Russian Federation
+189.122.164.40 GeoIP Country Edition: BR, Brazil
+69.159.47.21 GeoIP Country Edition: CA, Canada
+85.221.184.164 GeoIP Country Edition: PL, Poland
+98.243.198.220 GeoIP Country Edition: US, United States
+78.30.154.22 GeoIP Country Edition: RS, Serbia
+77.81.33.229 GeoIP Country Edition: RO, Romania
+83.6.73.91 GeoIP Country Edition: PL, Poland
+190.198.3.27 GeoIP Country Edition: VE, Venezuela
+75.208.130.92 GeoIP Country Edition: US, United States
+68.84.202.157 GeoIP Country Edition: US, United States
+75.80.81.104 GeoIP Country Edition: US, United States
+</code></p>
+
+<p>Seeing that no clear pattern is evident here and considering that the IP address was different for each connection it is my rationale that the computer's at these IP addresses were a part of a botnet. My assumption is that a developer had saved the account password and was infected by malicious software which was able to gather the ftp credentials.</p>
+
+<p>Cleanup included restoring files and changing all account/ftp/email and database passwords.</p>
+]]></content>
+  </entry>
+  
+</feed>

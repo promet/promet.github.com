@@ -1,0 +1,235 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: desktop | Linux Sysadmin Blog]]></title>
+  <link href="http://linuxsysadminblog.com/category/desktop/atom.xml" rel="self"/>
+  <link href="http://linuxsysadminblog.com/"/>
+  <updated>2012-11-13T01:37:44+08:00</updated>
+  <id>http://linuxsysadminblog.com/</id>
+  <author>
+    <name><![CDATA[Promet OPS Team]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Upgrade to Fedora 12]]></title>
+    <link href="http://linuxsysadminblog.com/2009/11/upgrade-to-fedora-12/"/>
+    <updated>2009-11-22T15:58:02+08:00</updated>
+    <id>http://linuxsysadminblog.com/2009/11/upgrade-to-fedora-12</id>
+    <content type="html"><![CDATA[<p>Fedora release 12 became available to the public November 17, 2009. <a href="http://fedoraproject.org/wiki/Releases/12/FeatureList">New features</a> are plentiful and many are centred around KVM virtualization.</p>
+
+<p>If you are like me and still running Fedora 10 or 11 and do not wish to wait till a yum based update is pushed out you can kick off your adventure into Fedora 12 land manually. Set aside at least an hour of time where you will not be able to use the PC while the update is taking place. First thing is to review <a href="http://fedoraproject.org/wiki/PreUpgrade">Preupgrade Wiki Page</a>, once you feel confident that your system is ready (enough space in /boot, created backups of your data) issue (as root):
+<code>
+yum update &amp;&amp; yum install preupgrade
+</code>
+Followed by:
+<code>
+preupgrade-cli "Fedora 12 (Constantine)"
+</code>
+After a lengthy download, reboot and update process you should be looking at Fedora 12 login prompt.</p>
+
+<p>If you used ext3 filesystem in your Fedora 10/11 system you can also migrate to ext4 filesystem by following the <a href="https://fedoraproject.org/wiki/Ext4_in_Fedora_11">Fedora ext4 Wiki guide</a>.</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Apple sold 3.1 million Macs in the last three months, 17% more than a year ago]]></title>
+    <link href="http://linuxsysadminblog.com/2009/10/apple-sold-3-1-million-macs-in-the-last-three-months-17-more-than-a-year-ago/"/>
+    <updated>2009-10-21T14:57:21+08:00</updated>
+    <id>http://linuxsysadminblog.com/2009/10/apple-sold-3-1-million-macs-in-the-last-three-months-17-more-than-a-year-ago</id>
+    <content type="html"><![CDATA[<p>I thought that at least 10% of our readers would appreciate this information - or at least be already aware of it.  For a more details and a full story - you can check out the apple.com investors section or the <a href="http://online.wsj.com/article/SB10001424052748704500604574483631612633824.html">WSJ </a>article.</p>
+
+<p>Why 10%?  According to our analytics here is our visitors operating system breakdown is as follows:</p>
+
+<p><a href="http://linuxsysadminblog.com/images/2009/10/linux-blog-analytics-operating-system-stats.png"><img src="http://linuxsysadminblog.com/images/2009/10/linux-blog-analytics-operating-system-stats.png" alt="linux system admin blog google analytics operatin system breakdown" /></a></p>
+
+<p>Our top three visitors OS:</p>
+
+<p>1) Windows 63%</p>
+
+<p>2) Linux 26</p>
+
+<p>3) Macintosh 10%</p>
+
+<p>We're drawing a different audience than the <a href="http://en.wikipedia.org/wiki/Usage_share_of_desktop_operating_systems">typical install base</a> according to wikipedia.</p>
+
+<p><img src="http://upload.wikimedia.org/wikipedia/commons/b/b5/Operating_system_usage_share.svg" alt="Wikipedia os distribution September 2009" /></p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Install TrueCrypt on Fedora 10]]></title>
+    <link href="http://linuxsysadminblog.com/2009/07/install-truecrypt-on-fedora-10/"/>
+    <updated>2009-07-06T15:25:20+08:00</updated>
+    <id>http://linuxsysadminblog.com/2009/07/install-truecrypt-on-fedora-10</id>
+    <content type="html"><![CDATA[<p><a href="http://www.truecrypt.org">TrueCrypt</a> is an open source encryption application, it has an ability to create hidden encrypted containers and file systems/volumes, it is portable and cross platform compatible. It allows to use cascading cyphers and encrypts/decrypts files on the fly. Be sure to read the <a href="http://www.truecrypt.org/faq">FAQ</a> and <a href="http://www.truecrypt.org/docs/">documentation</a> before fully committing your files to TrueCrypt.</p>
+
+<ul>
+<li><p>install via yum:
+<code>
+sudo yum install fuse fuse-devel wx_Base wx_GTK wx_GTK-devel
+</code></p></li>
+<li><p>download source code package: http://www.truecrypt.org/downloads2
+<code>
+tar -zxvf TrueCrypt\ 6.2a\ Source.tar.gz
+cd truecrypt-6.2a-source
+</code></p></li>
+<li><p>Download RSA Security Inc. PKCS #11 Cryptographic Token Interface files
+<code>
+wget ftp://ftp.rsasecurity.com/pub/pkcs/pkcs-11/v2-20/pkcs11.h
+wget ftp://ftp.rsasecurity.com/pub/pkcs/pkcs-11/v2-20/pkcs11f.h
+wget ftp://ftp.rsasecurity.com/pub/pkcs/pkcs-11/v2-20/pkcs11t.h
+</code></p></li>
+<li><p>build package
+<code>
+make
+</code></p></li>
+<li><p>copy binary to /usr/bin
+<code>
+cd Main
+sudo chown root:root truecrypt &amp;&amp; sudo cp truecrypt /usr/bin
+</code></p></li>
+<li><p>copy icon files to icon repository
+<code>
+cd ../Resources/Icons
+sudo chown root:root * &amp;&amp; sudo cp * /usr/share/icons
+</code></p></li>
+</ul>
+
+
+<p>One last order of business is to setup your sudoers file to so that TrueCrypt does not complain about requiring tty for sudo command needed to mount encrypted volumes. There are 2 ways of doing that:</p>
+
+<ol>
+<li>The less secure way -- disable requiretty globally by adding an exclamation mark in front of requretty,</li>
+</ol>
+
+
+<p>```</p>
+
+<h1>Defaults specification</h1>
+
+<p>#</p>
+
+<h1>Disable "ssh hostname sudo ", because it will show the password in clear.</h1>
+
+<h1>You have to run "ssh -t hostname sudo ".</h1>
+
+<p>#
+Defaults    !requiretty`
+```</p>
+
+<ol>
+<li>The more secure way especially for multi-user environments -- create user alias called WHEELUSERS, assign users to this user alias:</li>
+</ol>
+
+
+<p>```</p>
+
+<h2>User Aliases</h2>
+
+<h2>These aren't often necessary, as you can use regular groups</h2>
+
+<h2>(ie, from files, LDAP, NIS, etc) in this file - just use %groupname</h2>
+
+<h2>rather than USERALIAS</h2>
+
+<h1>User_Alias ADMINS = jsmith, mikem</h1>
+
+<p>User_Alias      WHEELUSERS = max`
+```</p>
+
+<p>Create a defaults entry for user alias disabling requiretty.
+```</p>
+
+<h1>Defaults specification</h1>
+
+<p>#</p>
+
+<h1>Disable "ssh hostname sudo ", because it will show the password in clear.</h1>
+
+<h1>You have to run "ssh -t hostname sudo ".</h1>
+
+<p>#
+Defaults    requiretty</p>
+
+<h1>added for truecrypt requiretty complaint</h1>
+
+<p>Defaults:WHEELUSERS     !requiretty`
+```</p>
+
+<p>Video below is a walk through of creating a TrueCrypt desktop short-cut and creation of encrypted container.</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Running ASDM client from your Linux desktop]]></title>
+    <link href="http://linuxsysadminblog.com/2009/03/running-asdm-client-from-your-linux-desktop/"/>
+    <updated>2009-03-10T16:13:30+08:00</updated>
+    <id>http://linuxsysadminblog.com/2009/03/running-asdm-client-from-your-linux-desktop</id>
+    <content type="html"><![CDATA[<p>For those of us who use Linux as a desktop replacement for Windows would find it nice to be able to run the ASDM client natively. If you haven't upgraded your ASA/PIX to the <strong>latest ASDM</strong> you should do so. The steps are described <a href="http://linuxsysadminblog.com/2009/01/howto-upgrade-asdm-using-cli-on-cisco-asa5500/">here</a>.</p>
+
+<p>Once you do upgrade your PIX/ASA to the latest version you may run into another issue where your bundled version of java not connect with ASDM. The remedy for this if you are using Fedora 10 can be <a href="http://linuxsysadminblog.com/2009/02/upgrade-to-java-se-6-update-12-on-fedora-10/">found here</a>.</p>
+
+<p>Now assuming that you have asdm loaded and opened access to outside over port 4443 with:
+<code>
+http server enable 4443
+http 0.0.0.0 0.0.0.0 outside
+</code></p>
+
+<p>You can connect to your PIX/ASA over port 4443 and download the asdm.jnlp file to your pc via web browser at https://external_ip_of_asa:4443</p>
+
+<p>Once you posses the asdm.jnlp file issue <code>javaws asdm.jnlp</code> in terminal. Upon successful login this will create <code>.asdm</code> folder in your home directory with files inside, as well as a desktop shortcut. After this the <code>asdm.jnlp</code> is no longer needed and can be erased.</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Upgrade to Java SE 6 update 12 on Fedora 10 ]]></title>
+    <link href="http://linuxsysadminblog.com/2009/02/upgrade-to-java-se-6-update-12-on-fedora-10/"/>
+    <updated>2009-02-09T17:10:53+08:00</updated>
+    <id>http://linuxsysadminblog.com/2009/02/upgrade-to-java-se-6-update-12-on-fedora-10</id>
+    <content type="html"><![CDATA[<p>After our ASA units were updated to the latest version of ASDM my <strong>Java</strong> client would no longer connect to ASDM. An upgrade to the latest version of Java was in order. Since fedora yum repository does not yet offer the latest version of Java I downloaded the latest rpm variant of <strong>JDK</strong> from http://java.sun.com/javase/downloads/index.jsp</p>
+
+<p>The install steps are:</p>
+
+<p>Grand executable permission to installer file
+<code>
+chmod +x jdk-6u12-linux-i586-rpm.bin
+</code></p>
+
+<p>Run installer file
+<code>
+./jdk-6u12-linux-i586-rpm.bin
+</code></p>
+
+<p>Rename symbolic links pointing to old java programs
+<code>
+cd /etc/alternatives
+mv java java_old
+mv javaws java_old
+mv keytool keytool_old
+</code></p>
+
+<p>Create new symbolic links
+<code>
+cd /etc/alternatives
+ln -s /usr/java/latest/bin/java java
+ln -s /usr/java/latest/bin/javaws javaws
+ln -s /usr/java/latest/bin/keytool keytool
+</code></p>
+
+<p>Verify that new java version is installed
+```
+javaws
+Java(TM) Web Start 1.6.0_12
+Usage: javaws [run-options]</p>
+
+<pre><code>javaws [control-options]
+</code></pre>
+
+<p>```</p>
+]]></content>
+  </entry>
+  
+</feed>

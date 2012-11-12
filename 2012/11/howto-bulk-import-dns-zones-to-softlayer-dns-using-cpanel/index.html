@@ -1,0 +1,383 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>HowTo: Bulk Import DNS Zones to Softlayer DNS using Cpanel - Linux Sysadmin Blog</title>
+  <meta name="author" content="Promet OPS Team">
+
+  
+  <meta name="description" content="This guide covers the process for doing bulk import of existing DNS zones from a Cpanel or BIND server to Softlayer&#8217;s DNS servers (ns1/ns2. &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://linuxsysadminblog.com/2012/11/howto-bulk-import-dns-zones-to-softlayer-dns-using-cpanel/">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="/javascripts/ender.js"></script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <link href="/atom.xml" rel="alternate" title="Linux Sysadmin Blog" type="application/atom+xml">
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+<!-- Google Form for Contact Page -->
+<!-- jQuery -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+<script type="text/javascript">
+    // Avoid conflict with ender.js.
+jQuery.noConflict();
+</script>
+<!-- jQuery Form Plugin -->
+<script src="http://malsup.github.com/jquery.form.js"></script>
+<script src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.9/jquery.validate.min.js"></script> 
+<script src="/javascripts/google_form.js"></script>
+<!-- Google Form for Contact Page End here -->
+
+
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-120251-38']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">Linux Sysadmin Blog</a></h1>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:linuxsysadminblog.com" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/our-team">Our Team</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+  <li><a href="/blog/about">About</a></li>
+  <li><a href="/blog/contact">Contact</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      
+
+<div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">HowTo: Bulk Import DNS Zones to Softlayer DNS Using Cpanel</h1>
+    
+    
+      <p class="meta">
+        
+  
+
+
+<span class="byline author vcard">Posted by <span class="fn"><a href="/blog/our-team/gerold-mercadero.html">Gerold Mercadero</a></span></span>
+
+ - 
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-11-13T01:08:00+08:00" pubdate data-updated="true">Nov 13<span>th</span>, 2012</time>
+        
+         | <a href="#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>This guide covers the process for doing bulk import of existing DNS zones from a Cpanel or BIND server to Softlayer&#8217;s DNS servers (<em>ns1/ns2.softlayer.com</em>).  This is useful if you need to add hundreds of zones, if for example you are moving your DNS hosting servers to Softlayer&#8217;s free DNS hosting.  Currently, Softlayer doesn&#8217;t have a tool to do bulk import of zones with existing records. Although you can create a default zone template and bulk add zones but this doesn&#8217;t fit for existing zones.</p>
+
+<h3>Requirements:</h3>
+
+<p>1.) DNS zones on a Cpanel server (WHM or DNSOnly).</p>
+
+<p>If you are not using a Cpanel server then you can stand up a Cpanel VPS this process and install Cpanel DNSOnly as it is free or install Cpanel WHM and automatically it will have 15-day trial license, or you can get a one month WHM VPS license for $15/month.
+DNSOnly should be fine and easier/faster to install but you cannot view the DNS zones from its UI, although you can view or edit the zone files directly (<em>ex: /var/named/domain.db</em>).
+Then import your zones to Cpanel server. There are lots of guides or discussions online in doing this. Some mentioned that you can move the named.conf and zone files as-is and adjust the formatting to match Cpanel&#8217;s.
+In our case we were running Cpanel server so we copied straight our &#8220;/var/named/*.db&#8221; files to Cpanel DNSOnly to import zones.</p>
+
+<p>2.) Softlayer API key for your account.</p>
+
+<p>  You will need this later to connect your Cpanel DNS server in a cluster setup with Softlayer&#8217;s DNS servers. Cpanel have DNS cluster functionality with SoftLayer and VPS.NET.</p>
+
+<h3>The Import Process:</h3>
+
+<p>1.) Configure your Cpanel DNS cluster to connect to Softlayer&#8217;s DNS servers.</p>
+
+<ul>
+<li>Login to Cpanel WHM or DNSOnly, then go to <em>Cluster/Remote Access</em>  ->> <em>Configure Cluster</em>.</li>
+<li>select <em>Enable DNS clustering</em></li>
+<li>On <em>Backend Type</em> dropdown, you will see <em>cPanel</em> only. Then click on <em>(Show All)</em> link next to it and the page will reload and you will see two more options: <em>Softlayer</em> and <em>VPS.NET</em>. Select <em>Softlayer</em> and click on *Configure button.
+<a href="http://linuxsysadminblog.com/images/2012/cluster-setup.png"><img src="http://linuxsysadminblog.com/images/2012/cluster-setup.png" alt="cluster-setup" /></a></li>
+<li>On <em>SoftLayer DNS Remote Configuration</em> page, enter your Softlayer API user and key. On <em>DNS role</em> choose <em>Synchronize changes</em> from dropdown list and click on <em>Submit</em>.
+<a href="http://linuxsysadminblog.com/images/2012/softlyer-dns-config.png"><img src="http://linuxsysadminblog.com/images/2012/softlyer-dns-config.png" alt="softlyer-dns-config" /></a></li>
+</ul>
+
+
+<p>2.) Synchronize DNS Records across clusters. DNS Cluster is now your Cpanel server and Softlayer servers.</p>
+
+<ul>
+<li>From Cpanel WHM or DNSOnly admin, go to * DNS Functions<em> ->> </em>Synchronize DNS Records*</li>
+<li>Select <em>Synchronize all zones to all servers</em> and check the box that says <em>Synchronize zones that are not configured on this server</em>. Then hit <em>Synchronize</em> button.
+<a href="http://linuxsysadminblog.com/images/2012/sync-dns.png"><img src="http://linuxsysadminblog.com/images/2012/sync-dns.png" alt="sync-dns" /></a></li>
+<li>The dns sync process will run and it will take some time depending on the number of zones and records that you have. Wait until it&#8217;s finish and you&#8217;re done.</li>
+<li>Once this starts you can login to your Softlayer portal and go to <em>Public Network</em> ->> <em>Domain Name System</em> and you will start seeing zones and see the progress on how many are imported.</li>
+</ul>
+
+
+<p><em>That is all. You can shutdown or remove your Cpanel DNSOnly/WHM server when if not needed.</em></p>
+
+<h3>Notes:</h3>
+
+<ul>
+<li>Cpanel have DNS cluster functionality with SoftLayer and VPS.NET so you might be able to use this guide to bulk import zones to VPS.NET.</li>
+<li>At this time of writing, we encountered a problem with Cpanel DNS cluster integration with Softlayer and we cannot modify the dns records that were imported initially.  When we update them it reverts to the original records from initial import. We disabled the DNS cluster setup from Cpanel and we update our DNS zones/records right from Softlayer portal.</li>
+<li>Above info refers to BIND server as the default DNS server on Cpanel.</li>
+</ul>
+
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+
+<span class="byline author vcard">Posted by <span class="fn"><a href="/blog/our-team/gerold-mercadero.html">Gerold Mercadero</a></span></span>
+
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-11-13T01:08:00+08:00" pubdate data-updated="true">Nov 13<span>th</span>, 2012</time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/category/howto/'>HowTo</a>, <a class='category' href='/category/cpanel/'>cpanel</a>, <a class='category' href='/category/dns/'>dns</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://linuxsysadminblog.com/2012/11/howto-bulk-import-dns-zones-to-softlayer-dns-using-cpanel/" data-via="linuxsysadmnblg" data-counturl="http://linuxsysadminblog.com/2012/11/howto-bulk-import-dns-zones-to-softlayer-dns-using-cpanel/" >Tweet</a>
+  
+  
+  
+    <div class="fb-like" data-send="true" data-width="450" data-show-faces="false"></div>
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/2012/08/integrate-sendgrid-with-redmine/" title="Previous Post: Integrate Sendgrid with Redmine">&laquo; Integrate Sendgrid with Redmine</a>
+      
+      
+    </p>
+  </footer>
+</article>
+
+  <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/2012/11/howto-bulk-import-dns-zones-to-softlayer-dns-using-cpanel/">HowTo: Bulk Import DNS Zones to Softlayer DNS using Cpanel</a>
+      </li>
+    
+      <li class="post">
+        <a href="/2012/08/integrate-sendgrid-with-redmine/">Integrate Sendgrid with Redmine</a>
+      </li>
+    
+      <li class="post">
+        <a href="/2012/07/rsback-task-x-is-locked-and-cannot-be-executed/">rsback: task x is locked and cannot be executed</a>
+      </li>
+    
+      <li class="post">
+        <a href="/2012/06/restore-xen-vm-from-lvm-snapshot-backups/">Restore Xen VM from LVM Snapshot Backups</a>
+      </li>
+    
+      <li class="post">
+        <a href="/2012/06/debian-6-backup-xen-with-lvm-and-rsnapshot/">Debian 6: Backup Xen with LVM and Rsnapshot</a>
+      </li>
+    
+  </ul>
+</section>
+
+<section>
+  <h1>GitHub Repos</h1>
+  <ul id="gh_repos">
+    <li class="loading">Status updating...</li>
+  </ul>
+  
+  <a href="https://github.com/promet">@promet</a> on GitHub
+  
+  <script type="text/javascript">
+    $.domReady(function(){
+        if (!window.jXHR){
+            var jxhr = document.createElement('script');
+            jxhr.type = 'text/javascript';
+            jxhr.src = '/javascripts/libs/jXHR.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(jxhr, s);
+        }
+
+        github.showRepos({
+            user: 'promet',
+            count: 0,
+            skip_forks: true,
+            target: '#gh_repos'
+        });
+    });
+  </script>
+  <script src="/javascripts/github.js" type="text/javascript"> </script>
+</section>
+
+
+<section>
+  <h1>Latest Tweets</h1>
+  <ul id="tweets">
+    <li class="loading">Status updating...</li>
+  </ul>
+  <script type="text/javascript">
+    $.domReady(function(){
+      getTwitterFeed("linuxsysadmnblg", 4, false);
+    });
+  </script>
+  <script src="/javascripts/twitter.js" type="text/javascript"> </script>
+  
+    <a href="http://twitter.com/linuxsysadmnblg" class="twitter-follow-button" data-show-count="false">Follow @linuxsysadmnblg</a>
+  
+</section>
+
+
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2012 - Promet OPS Team -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'linuxsysadminblog';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://linuxsysadminblog.com/2012/11/howto-bulk-import-dns-zones-to-softlayer-dns-using-cpanel/';
+        var disqus_url = 'http://linuxsysadminblog.com/2012/11/howto-bulk-import-dns-zones-to-softlayer-dns-using-cpanel/';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'http://' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) {return;}
+  js = d.createElement(s); js.id = id;
+  js.src = "//connect.facebook.net/en_US/all.js#appId=212934732101925&xfbml=1";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = 'http://platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>

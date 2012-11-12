@@ -1,0 +1,230 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: cpanel | Linux Sysadmin Blog]]></title>
+  <link href="http://linuxsysadminblog.com/category/cpanel/atom.xml" rel="self"/>
+  <link href="http://linuxsysadminblog.com/"/>
+  <updated>2012-11-13T01:37:44+08:00</updated>
+  <id>http://linuxsysadminblog.com/</id>
+  <author>
+    <name><![CDATA[Promet OPS Team]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[HowTo: Bulk Import DNS Zones to Softlayer DNS using Cpanel]]></title>
+    <link href="http://linuxsysadminblog.com/2012/11/howto-bulk-import-dns-zones-to-softlayer-dns-using-cpanel/"/>
+    <updated>2012-11-13T01:08:00+08:00</updated>
+    <id>http://linuxsysadminblog.com/2012/11/howto-bulk-import-dns-zones-to-softlayer-dns-using-cpanel</id>
+    <content type="html"><![CDATA[<p>This guide covers the process for doing bulk import of existing DNS zones from a Cpanel or BIND server to Softlayer's DNS servers (<em>ns1/ns2.softlayer.com</em>).  This is useful if you need to add hundreds of zones, if for example you are moving your DNS hosting servers to Softlayer's free DNS hosting.  Currently, Softlayer doesn't have a tool to do bulk import of zones with existing records. Although you can create a default zone template and bulk add zones but this doesn't fit for existing zones.</p>
+
+<h3>Requirements:</h3>
+
+<p>1.) DNS zones on a Cpanel server (WHM or DNSOnly).</p>
+
+<p>If you are not using a Cpanel server then you can stand up a Cpanel VPS this process and install Cpanel DNSOnly as it is free or install Cpanel WHM and automatically it will have 15-day trial license, or you can get a one month WHM VPS license for $15/month.
+DNSOnly should be fine and easier/faster to install but you cannot view the DNS zones from its UI, although you can view or edit the zone files directly (<em>ex: /var/named/domain.db</em>).
+Then import your zones to Cpanel server. There are lots of guides or discussions online in doing this. Some mentioned that you can move the named.conf and zone files as-is and adjust the formatting to match Cpanel's.
+In our case we were running Cpanel server so we copied straight our "/var/named/*.db" files to Cpanel DNSOnly to import zones.</p>
+
+<p>2.) Softlayer API key for your account.</p>
+
+<p>  You will need this later to connect your Cpanel DNS server in a cluster setup with Softlayer's DNS servers. Cpanel have DNS cluster functionality with SoftLayer and VPS.NET.</p>
+
+<h3>The Import Process:</h3>
+
+<p>1.) Configure your Cpanel DNS cluster to connect to Softlayer's DNS servers.</p>
+
+<ul>
+<li>Login to Cpanel WHM or DNSOnly, then go to <em>Cluster/Remote Access</em>  ->> <em>Configure Cluster</em>.</li>
+<li>select <em>Enable DNS clustering</em></li>
+<li>On <em>Backend Type</em> dropdown, you will see <em>cPanel</em> only. Then click on <em>(Show All)</em> link next to it and the page will reload and you will see two more options: <em>Softlayer</em> and <em>VPS.NET</em>. Select <em>Softlayer</em> and click on *Configure button.
+<a href="http://linuxsysadminblog.com/images/2012/cluster-setup.png"><img src="http://linuxsysadminblog.com/images/2012/cluster-setup.png" alt="cluster-setup" /></a></li>
+<li>On <em>SoftLayer DNS Remote Configuration</em> page, enter your Softlayer API user and key. On <em>DNS role</em> choose <em>Synchronize changes</em> from dropdown list and click on <em>Submit</em>.
+<a href="http://linuxsysadminblog.com/images/2012/softlyer-dns-config.png"><img src="http://linuxsysadminblog.com/images/2012/softlyer-dns-config.png" alt="softlyer-dns-config" /></a></li>
+</ul>
+
+
+<p>2.) Synchronize DNS Records across clusters. DNS Cluster is now your Cpanel server and Softlayer servers.</p>
+
+<ul>
+<li>From Cpanel WHM or DNSOnly admin, go to * DNS Functions<em> ->> </em>Synchronize DNS Records*</li>
+<li>Select <em>Synchronize all zones to all servers</em> and check the box that says <em>Synchronize zones that are not configured on this server</em>. Then hit <em>Synchronize</em> button.
+<a href="http://linuxsysadminblog.com/images/2012/sync-dns.png"><img src="http://linuxsysadminblog.com/images/2012/sync-dns.png" alt="sync-dns" /></a></li>
+<li>The dns sync process will run and it will take some time depending on the number of zones and records that you have. Wait until it's finish and you're done.</li>
+<li>Once this starts you can login to your Softlayer portal and go to <em>Public Network</em> ->> <em>Domain Name System</em> and you will start seeing zones and see the progress on how many are imported.</li>
+</ul>
+
+
+<p><em>That is all. You can shutdown or remove your Cpanel DNSOnly/WHM server when if not needed.</em></p>
+
+<h3>Notes:</h3>
+
+<ul>
+<li>Cpanel have DNS cluster functionality with SoftLayer and VPS.NET so you might be able to use this guide to bulk import zones to VPS.NET.</li>
+<li>At this time of writing, we encountered a problem with Cpanel DNS cluster integration with Softlayer and we cannot modify the dns records that were imported initially.  When we update them it reverts to the original records from initial import. We disabled the DNS cluster setup from Cpanel and we update our DNS zones/records right from Softlayer portal.</li>
+<li>Above info refers to BIND server as the default DNS server on Cpanel.</li>
+</ul>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[HowTo Install APC on CPanel/WHM]]></title>
+    <link href="http://linuxsysadminblog.com/2011/05/howto-install-apc-on-cpanelwhm/"/>
+    <updated>2011-05-05T21:07:16+08:00</updated>
+    <id>http://linuxsysadminblog.com/2011/05/howto-install-apc-on-cpanelwhm</id>
+    <content type="html"><![CDATA[<p><strong>CPanel</strong> includes support in their installer for <strong>eaccelerator</strong>; still, for some strange reason they don't include support for <strong><a href="http://pecl.php.net/package/APC">APC</a></strong> also. So, if you want to install APC on your CPanel powered server, you will have to go back at the command line and install it manually.</p>
+
+<p>Here are the steps needed to install the latest version of APC (3.1.8 at the time of writing this article; please check for the latest version available when you are reading this and make the changes accordingly):
+<code>
+cd /usr/local/src
+wget http://pecl.php.net/get/APC-3.1.8.tgz
+tar -zxvf APC-3.1.8.tgz
+cd APC-3.1.8
+phpize
+./configure --enable-apc --enable-apc-mmap --with-apxs --with-php-config=/usr/local/bin/php-config
+make
+make install
+</code></p>
+
+<p>Next, activate the apc module in <strong>php.ini</strong> by adding something like this:
+<code>
+extension="apc.so"
+apc.enabled=1
+apc.shm_segments=1
+apc.shm_size=128
+</code></p>
+
+<p>Finally, you will have to <em>restart apache</em> and after that the APC module should be activated and in use. Hopefully, this will help you enable APC on your CPanel server in some very simple steps in less that 5minutes.</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Setup Subversion (SVN) and mod_dav_svn on Cpanel Server]]></title>
+    <link href="http://linuxsysadminblog.com/2010/10/setup-subversion-svn-and-mod_dav_svn-on-cpanel-server/"/>
+    <updated>2010-10-18T06:00:06+08:00</updated>
+    <id>http://linuxsysadminblog.com/2010/10/setup-subversion-svn-and-mod_dav_svn-on-cpanel-server</id>
+    <content type="html"><![CDATA[<p>Quick install guide for SVN with mod_dav_svn (http/https) repository access on Cpanel server running CentOs5.</p>
+
+<p><strong>Configure Cpanel for SVN</strong></p>
+
+<p>Recompile Apache/PHP (<em>WHM -> Software -> EasyApache</em>) and enable support for the following:</p>
+
+<ul>
+<li>Dav (<em>Among other things mod_dav can be used by DAV enabled Frontpage clients instead of FP extensions</em>)</li>
+<li>BerkeleyDB.  <strong>Note</strong>: BerkeleyDB support ("<em>--with-berkeley-db</em>") is not enabled by default in EasyApache so you need to add this manually to your EasyApache config using <a href="http://docs.cpanel.net/twiki/bin/view/EasyApache3/CustomConfigureFlags">this guide</a> or <a href="http://community.eapps.com/showthread.php?271-Adding-subversion-support-to-Apache">this one</a>.</li>
+</ul>
+
+
+<p><strong>Install Subversion and mod_dav_svn</strong></p>
+
+<p>Install subversion using yum (<em>yum install subversion</em>) or install it from source.  At this time CentOS repo version is 1.4.x and the latest from source is 1.6.x.</p>
+
+<p><strong>Install and enable mod_dav_svn in Cpanel</strong></p>
+
+<ul>
+<li>Install mod_dav_svn using yum (<em>yum install mod_dav_svn</em>) - version 1.4.x same as subersion above.</li>
+<li>Load mod_dav_svn module to Apache.  Go to <em>WHM -> Service Configuration -> Apache Configuration -> Include Editor -> Pre-Main Include</em>.   Select either "<em>All Versions</em>" or your current Apache version (ex: "<em>2.2.16</em>") from drop-down list.  Or you can edit their corresponding file directly:
+
+<ul>
+<li>All Versions:  <em>/usr/local/apache/conf/includes/pre_main_global.conf</em></li>
+<li>Apache 2.2.16: <em>/usr/local/apache/conf/includes/pre_main_2.conf</em></li>
+</ul>
+</li>
+<li>Add the codes below and click "<em>Update</em>" button to save config. This will restart Apache if no error on your configuration.
+<code>
+&lt;IfModule mod_dav.c&gt;
+LoadModule dav_svn_module /usr/lib/httpd/modules/mod_dav_svn.so
+LoadModule authz_svn_module /usr/lib/httpd/modules/mod_authz_svn.so
+&lt;/IfModule&gt;
+</code></li>
+</ul>
+
+
+<p><strong>Create repository and add http access (ex: http://domain.com/svn)</strong></p>
+
+<ul>
+<li>Create your repository: <code>svnadmin create /path/to/svn/repos</code></li>
+<li>Add the code below to your domain's custom include file.  You need to create this file based on <a href="http://www.cpanel.net/documentation/easyapache/customdirectives.html">this guide</a> to preserve when you recompile Apache/PHP.
+Example file (Apache2,standard/non-ssl):  <code>/usr/local/apache/conf/userdata/std/2/cpanl_user/domain.com/svn.conf</code>
+File Contents:
+<code>
+  &lt;Location /svn&gt;
+  #  mod dav svn support and location of svn repo files
+  DAV svn
+  SVNPath /path/to/svn/repos
+  # authentication for security, create using htpasswd
+  AuthType Basic
+  AuthName "SVN Access"
+  AuthUserFile /path/to/file/containing/user.pass
+  Require valid-user
+  # added for permissions/access
+  Order allow,deny
+  Allow from all
+  &lt;/Location&gt;
+</code></li>
+</ul>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[enabling allow_url_include locally in cPanel]]></title>
+    <link href="http://linuxsysadminblog.com/2009/07/enabling-allow_url_include-locally-in-cpanel/"/>
+    <updated>2009-07-22T12:44:44+08:00</updated>
+    <id>http://linuxsysadminblog.com/2009/07/enabling-allow_url_include-locally-in-cpanel</id>
+    <content type="html"><![CDATA[<p>When using cPanel the way to enable <code>allow_url_include</code> directive locally (per user) is to create an <strong>Virtual Host include</strong>:</p>
+
+<p>First create an include file:</p>
+
+<p><code>/usr/local/apache/conf/userdata/std/2/username/domain.com/custom.conf</code></p>
+
+<p>Add directive to custom.conf:
+<code>
+php_admin_flag allow_url_include On
+</code></p>
+
+<p>Then run to enable include:</p>
+
+<p><code>/scripts/ensure_vhost_includes --user=username --verbose</code></p>
+
+<p>Alternatively, enabling allow_url_include globally (server-wide) is done by editing /usr/local/lib/php.ini and adding  "allow_url_include = On" directive to the Fopen wrapper section.
+<code>
+;;;;;;;;;;;;;;;;;;                                                                                                                                           
+; Fopen wrappers ;                                                                                                                                           
+;;;;;;;;;;;;;;;;;;
+</code></p>
+
+<p><code>
+;Whether to allow the treatment of URLs (like http:// or ftp://) as files.                                                                                  
+allow_url_fopen = On
+**allow_url_include = On**
+</code></p>
+
+<p>and restarting apache by issuing <code>service httpd restart</code> command as root.</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Install GNUPG PHP extension in Cpanel]]></title>
+    <link href="http://linuxsysadminblog.com/2009/05/install-gnupg-php-extension-in-cpanel/"/>
+    <updated>2009-05-21T04:20:35+08:00</updated>
+    <id>http://linuxsysadminblog.com/2009/05/install-gnupg-php-extension-in-cpanel</id>
+    <content type="html"><![CDATA[<p>Here's my quick howto on installing <a href="http://us2.php.net/manual/en/book.gnupg.php">GNUPG</a> PHP Pecl extension (<a href="http://pecl.php.net/package/gnupg/docs">pecl docs</a>) in Cpanel.  Please note that this covers only the installation process and no further details on setting up gpg keys or using the function with extension or sample PHP scripts.</p>
+
+<p>Installation process is very straightforward provided you met the requirements like php-pear, gnupg, libgpg-error, and gpgme.  You can install it directly from <code>WHM -&gt; Module Installers -&gt; PHP Pecl</code>, enter <code>gnupg</code> and click the Install button.  You can do the same via shell with this command <code>pecl install gnupg</code>.  Then restart your Apache.  Be sure to double check if the extension was added to you <code>php.ini</code>.</p>
+
+<p>On Cpanel servers most of the requirements are present, like <code>php-pear</code> (if you compiled your apache/php with pear), <code>gnupg, libgpg-error</code>, etc, except for <a href="http://www.gnupg.org/gpgme.html"><em>gpgme</em></a> which is the main library used by <code>gnupg</code> extension.  Our system is running CentOS 4.7 with latest STABLE branch of Cpanel (S35075 at this time of writing), PHP 5.2.9 with pear and libgpg-error (version 1.0-1 only).  Only missing requirement was <code>gpgme</code> which i installed from source as it was not available on our default yum repository.  You can also install it from other repositories like <code>centos.karan.org</code>.  At this time the latest <code>gpgme</code> version is <a href="http://www.gnupg.org/download/index.en.html#gpgme">1.1.8</a> but I installed version 1.1.2 because it's the latest version compatible with our libgpg.</p>
+
+<p>I also encountered an error library path when I check the extension,
+<code>
+error while loading shared libraries: libgpgme.so.11: cannot open shared object file: No such file or directory
+</code>
+so I had to add <code>/usr/local/lib</code> to <code>/etc/ld.so.conf</code> and run <code>ldconfig</code>, so that libraries in this directory are detected automatically.</p>
+]]></content>
+  </entry>
+  
+</feed>

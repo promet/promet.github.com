@@ -1,0 +1,1093 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Linux Sysadmin Blog</title>
+  <meta name="author" content="Promet OPS Team">
+
+  
+  <meta name="description" content="After a long development time, Centos 4.8 was finally released on the 21st August. This is a good thing that after the latest problems between the &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://linuxsysadminblog.com/blog/page/8/">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="/javascripts/ender.js"></script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <link href="/atom.xml" rel="alternate" title="Linux Sysadmin Blog" type="application/atom+xml">
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+<!-- Google Form for Contact Page -->
+<!-- jQuery -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+<script type="text/javascript">
+    // Avoid conflict with ender.js.
+jQuery.noConflict();
+</script>
+<!-- jQuery Form Plugin -->
+<script src="http://malsup.github.com/jquery.form.js"></script>
+<script src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.9/jquery.validate.min.js"></script> 
+<script src="/javascripts/google_form.js"></script>
+<!-- Google Form for Contact Page End here -->
+
+
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-120251-38']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">Linux Sysadmin Blog</a></h1>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:linuxsysadminblog.com" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/our-team">Our Team</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+  <li><a href="/blog/about">About</a></li>
+  <li><a href="/blog/contact">Contact</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div class="blog-index">
+  
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/2009/09/centos-4-8-finally-released/">CentOS 4.8 Finally Released!</a></h1>
+    
+    
+      <p class="meta">
+        
+  
+
+
+<span class="byline author vcard">Posted by <span class="fn"><a href="/blog/our-team/marius-ducea.html">Marius Ducea</a></span></span>
+
+ - 
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2009-09-01T05:03:36+08:00" pubdate data-updated="true">Sep 1<span>st</span>, 2009</time>
+        
+         | <a href="/2009/09/centos-4-8-finally-released/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>After a long development time, <strong>Centos 4.8</strong> was finally <a href="http://lists.centos.org/pipermail/centos-announce/2009-August/016106.html">released</a> on the 21st August. This is a good thing that after the latest <a href="http://www.centos.org/modules/news/article.php?storyid=381">problems</a> between the centos developers, they were able to pull this out finally and now be able to focus on the upcoming 5.4 release.</p>
+
+<p>There are no major <a href="http://www.centos.org/docs/4/4.8/release_notes/">changes</a> in this update, mostly <em>bug fixes and security fixes</em>, and it should be a quick and easy upgrade for most people still running the 4.x branch (you should really consider comments: true
+upgrading to 5.x ;) ).</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/2009/08/beyond-4gb-ram-on-32bit-linux/">Beyond 4GB Ram on 32bit Linux</a></h1>
+    
+    
+      <p class="meta">
+        
+  
+
+
+<span class="byline author vcard">Posted by <span class="fn"><a href="/blog/our-team/max-veprinsky.html">Max Veprinsky</a></span></span>
+
+ - 
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2009-08-25T17:04:08+08:00" pubdate data-updated="true">Aug 25<span>th</span>, 2009</time>
+        
+         | <a href="/2009/08/beyond-4gb-ram-on-32bit-linux/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>Thinking of upgrading your 32 bit Linux machine beyond 4GB of memory?  Consider the following:</p>
+
+<p>Does your CPU support Physical Address Extension to address beyond 4GB? Here is how to check:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>grep pae /proc/cpuinfo
+</span><span class='line'>flags     : fpu vme de pse tsc msr **pae** mce cx8 apic mtrr pge mca cmov pat pse36 clflush dts acpi mmx fxsr sse sse2 ss ht tm pbe cid xtpr</span></code></pre></td></tr></table></div></figure>
+
+
+<p>If you see &#8220;pae&#8221; flag returned install a PAE kernel and reboot. On CentOS 5.x as root:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>yum install kernel-PAE.`uname -m` && reboot</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Do you have a single process that may need to address more than 4 GB of RAM? If so, you need to use a 64bit kernel. Check to see if your cpu supports 64bit instructions.</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>grep lm /proc/cpuinfo
+</span><span class='line'>flags     : fpu vme de pse tsc msr pae mce cx8 apic mtrr pge mca cmov pat pse36 clflush dts acpi mmx fxsr sse sse2 ss ht tm pbe nx **lm** constant_tsc arch_perfmon pebs bts pni monitor ds_cpl vmx est tm2 ssse3 cx16 xtpr lahf_lm ida</span></code></pre></td></tr></table></div></figure>
+
+
+<p>if you see &#8220;lm&#8221; flag then your cpu supports 64bit instructions, it is possible to upgrade your current distro to 64bits which is normally not supported by most distro&#8217;s or reinstall the entire thing from scratch.</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/2009/08/using-wildcards-in-nginx-valid_referers/">Using Wildcards in Nginx Valid_referers</a></h1>
+    
+    
+      <p class="meta">
+        
+  
+
+
+<span class="byline author vcard">Posted by <span class="fn"><a href="/blog/our-team/marius-ducea.html">Marius Ducea</a></span></span>
+
+ - 
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2009-08-25T06:05:25+08:00" pubdate data-updated="true">Aug 25<span>th</span>, 2009</time>
+        
+         | <a href="/2009/08/using-wildcards-in-nginx-valid_referers/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>This quick post will show how we can easily allow only certain http referrers see some location using <a href="http://nginx.net/"><strong>nginx</strong></a>. This might be useful for example if you are using nginx as a static content provider and want to not allow everyone hot-linking your images and only your own sites. Doing something like this in nginx is very simple and we could start with a configuration like this (from <em>nginx.conf</em>):</p>
+
+<pre><code>&lt;code&gt;location /images {
+    valid_referers   none  blocked  server_names  mydomain.com www.mydomain.com;
+    if ($invalid_referer) {
+        return   403;
+    }
+    ... else serve the content
+}&lt;/code&gt;
+</code></pre>
+
+<p>This works fine in this simple case; but what if we need to list more sub-domains? like images.mydomain.com an static.mydomain.com, etc? It would be nice to be able to use a regexp for this, right? Fortunately nginx has support for this and this can be done using a valid_referers line like:
+<code>valid_referers   none  blocked  server_names  ~(mydomain.com)</code></p>
+
+<p>And this will match all the subdomains *.mydomain.com. Going even further you might want to allow google as a referrer for you content. Still google has so many subdomains and even different domains (like google.com, google.de, etc.) For this we could add ~(google.) and have our final configuration look like this:</p>
+
+<pre><code>&lt;code&gt;location /images {
+    valid_referers   none  blocked  server_names  ~(mydomain.com|google.);
+    if ($invalid_referer) {
+        return   403;
+    }
+    ... else serve the content
+}&lt;/code&gt;
+</code></pre>
+
+<p>This simple example shows how powerful the configuration of nginx is and how easy it is to do things that are rather impossible with other similar softwares.</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/2009/08/using-svnssh-with-a-non-standard-ssh-port/">Using Svn+ssh With a Non-standard Ssh Port</a></h1>
+    
+    
+      <p class="meta">
+        
+  
+
+
+<span class="byline author vcard">Posted by <span class="fn"><a href="/blog/our-team/marius-ducea.html">Marius Ducea</a></span></span>
+
+ - 
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2009-08-17T04:25:05+08:00" pubdate data-updated="true">Aug 17<span>th</span>, 2009</time>
+        
+         | <a href="/2009/08/using-svnssh-with-a-non-standard-ssh-port/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>Many people use <a href="http://subversion.tigris.org/"><strong>subversion</strong></a> over ssh for a simple and secure way to work on remotely hosted svn repositories. This is normally as simple as running:
+<code>svn co svn+ssh://user@server/repo .</code></p>
+
+<p>If the remote ssh server is <strong>not running on the default ssh port</strong> (tcp 22) then this needs a little tweaking to get it working. Normally I was expecting that adding a custom entry for the svn server in the <em>/etc/ssh/ssh_config</em> file with the appropriate port would make this work on the fly without changing the command line; or if not, adding the ssh port in &#8216;telnet like&#8217; way: <em>server:port</em> would make a difference. Still none of those worked and in order to get this working I had to dig into the subversion documentation on how we can define a special tunnel.</p>
+
+<p>We can define a new tunnel in the svn configuration file (<strong>.subversion/config</strong>):
+<code>[tunnels]
+sshtunnel = ssh -p &lt;port&gt;</code></p>
+
+<p>And after this we can use svn as usual but with a url like <strong>svn+sshtunnel://</strong> :
+<code>svn co svn+sshtunnel://user@server/repo .</code></p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/2009/07/july-31st-system-admin-day/">System Admin Day - July 31st</a></h1>
+    
+    
+      <p class="meta">
+        
+  
+
+
+<span class="byline author vcard">Posted by <span class="fn"><a href="/blog/our-team/andrew-kucharski.html">Andrew Kucharski</a></span></span>
+
+ - 
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2009-07-30T13:41:14+08:00" pubdate data-updated="true">Jul 30<span>th</span>, 2009</time>
+        
+         | <a href="/2009/07/july-31st-system-admin-day/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>We will celebrate the Linux System Administrator Appriciation day tomorrow.  Yes, there is such a thing, if its in wikipedia (<a href="http://en.wikipedia.org/wiki/System_Administrator_Appreciation_Day">wiki system administrator appreciation Day</a>), than it must be true!</p>
+
+<p>See what its all about here:</p>
+
+<blockquote><p><strong>System Administrator Appreciation Day</strong>, also known as <strong>Sysadmin Day</strong>, <strong>SysAdminDay</strong> or <strong>SAAD</strong>, was created by <a href="http://en.wikipedia.org/wiki/System_administrator">system administrator</a> Ted Kekatos. Kekatos was inspired to create the special day by a <a href="http://en.wikipedia.org/wiki/Hewlett-Packard">Hewlett-Packard</a> magazine advertisement in which a system administrator is presented with flowers and fruit-baskets by grateful co-workers as thanks for installing new printers.</p></blockquote>
+
+<p>Here is one of our own getting some appreciation from our colleagues.</p>
+
+<p><img src="http://linuxsysadminblog.com/images/2009/07/LinuxSystemAdmin-gets-love-from-ladies-300x225.jpg" alt="Max, our gets nominated as a favorite linux system administrator by some of his office fans" /></p>
+
+<p>So don&#8217;t forget to buy your system administrator a coffee, beer, donut, or whatever he prefers, and dont ask any stupid questions tomorrow.</p>
+
+<p><strong>The system administrator song</strong></p>
+
+<p>And here is a link to another System administrator song from the UK</p>
+
+<p>http://www.ukuug.org/sysadminday/</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/2009/07/task-on-amazon-ebs-on-centos-ami/">Task on Amazon EBS on CentOS AMI</a></h1>
+    
+    
+      <p class="meta">
+        
+  
+
+
+<span class="byline author vcard">Posted by <span class="fn"><a href="/blog/our-team/gerold-mercadero.html">Gerold Mercadero</a></span></span>
+
+ - 
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2009-07-29T03:43:51+08:00" pubdate data-updated="true">Jul 29<span>th</span>, 2009</time>
+        
+         | <a href="/2009/07/task-on-amazon-ebs-on-centos-ami/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>This is my second activity on using AWS - this time the use of <a href="http://aws.amazon.com/ebs/">EBS</a>.</p>
+
+<p><strong>Objectives:</strong></p>
+
+<ol>
+<li>Format a new EBS (10GB) and mount it on a running instance of private AMI (created on first activity - add link/ref to old post)</li>
+<li>Setup a MySQL server with the datastore on EBS partition</li>
+<li>Setup the partition(EBS) to start at boot time of AMI</li>
+</ol>
+
+
+<p>Here, I will elaborate the steps (mostly commands) and some issues that I encountered along the way.  I also included the script (below) that i used for attaching the EBS to AMI at boot time. Reference <a href="http://developer.amazonwebservices.com/connect/entry.jspa?externalID=1663">here</a>.  I will add an indicator on where i am running my commands, either on controling machine or on instance.  On variables or values i assumed that you already know how to get them, the ec2-describe-instances/volume..etc.  If the ec2 commands is not available on your system make sure you have the <a href="http://developer.amazonwebservices.com/connect/entry.jspa?externalID=351&amp;categoryID=88">ec2 api tools</a> or have your environment variables configured.</p>
+
+<p><strong>Objective #1: Format EBS and mount on a running instance</strong></p>
+
+<ul>
+<li><p>Run instance of private ami and take note of the zone (default is us-east-1a - not sure :))
+<code>controlling machine$:  ec2-run-instances -z us-east-1a --key YOURKEYPAIR ami-xxxxx</code></p></li>
+<li><p>Create ebs volume with 10GB size.  Note the use of same zone so the volume can be attached to the instance above.  Check the EBS docs for more details on Zones.
+<code>controlling machine$:  ec2-create-volume -z us-east-1a -s 10</code></p></li>
+<li><p>Attach the zone to your instance, ex: as /dev/sdh
+<code>controlling machine$:  ec2-attach-volume -d /dev/sdh -i i-IIII1111 vol-VVVV1111</code></p></li>
+<li><p>Login to your instance and format your ebs drive on /dev/sdh. It&#8217;s your choice on what filesystem to use.  For my activity, i used xfs as i was advised that it is easier/faster to increase/shrink xfs filesystem compared to ext3 - and on the above reference xfs as used.
+controlling machine$:  <code>ssh -i ssh_key root@ec2.xxxxx.amazonaws.com</code>
+(host may not be on this format, just refer to the details on your instance)
+<code>instance$: yum install xfsprogs
+instance$: modprobe xfs
+instance$: mkfs.xfs /dev/sdh</code></p></li>
+<li><p>Mount the ebs volume.
+<code>instance$: mount -t xfs /dev/sdh /ebs</code></p></li>
+</ul>
+
+
+<p><strong>Objective #2: Setup a MySQL server with the datastore on EBS partition</strong></p>
+
+<ul>
+<li><p>Install mysql on your running instance, edit /etc/my.cnf and set the value for datadir to /ebs (my example), and start your MySQL.
+<code>instance$: yum install mysql-server
+instance$: vi /etc/my.cnf
+instance$: /etc/init.d/mysqld start</code></p></li>
+<li><p>Create a sample database to test
+<code>instance$: mysql
+mysql&gt; create database ebstest;
+mysql&gt; quit
+instance$:  ls /ebs/</code></p></li>
+</ul>
+
+
+<p><strong>Objective #3: Setup the partition(EBS) to start at boot time of AMI</strong></p>
+
+<ul>
+<li><p>I was advised here to create an init script that will attach the ebs volume to my running instance and i was given a sample script (for debian) that i modified to my need (for CentOS) and added some stuff.  I encountered several issues here as my init script failed to start correctly, like my environment variable is not available or incorrect paths etc.  And was able to bundle four or five times. :)  In short the script (below) does the automation, i only need to add this on my start up - so for the process, please check or continue reading the notes/comments on the script below.  Btw, I just added the section to start MySQL inside the init script, but of course you can separate them.</p></li>
+<li><p>After creating a init script with the correct variables/filenames, bundle or create new AMI.  Commands below are summary from a video tutorial - i forgot the link :)  Run help for each command to get details on the options used, ex: &#8216;ec2-bundle-vol -h&#8217;.
+<code>instance$: cd /mnt
+instance$: mkdir ami
+instance$: ec2-bundle-vol -d /mnt/ami -k /root/.ec2/pk.xxx.pem -c /root/.ec2/cert.xxx.pem -u xxxx-xxxx-xxxx
+instance$: ec2-upload-bundle -b bucket1 -m /mnt/ami/image.manifest.xml -a XXXXXX -s xxxXXXXx
+controlling machine$: ec2-register bucket1/image.manifest.xml</code></p></li>
+<li><p>Test your new AMI - run new instance and check if your ebs volume is attached - goodluck!</p></li>
+</ul>
+
+
+<p><strong>Init Script Here: <a href="http://linuxsysadminblog.com/images/2009/07/mountebs"> mountebs</a></strong></p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/2009/07/enabling-allow_url_include-locally-in-cpanel/">Enabling Allow_url_include Locally in cPanel</a></h1>
+    
+    
+      <p class="meta">
+        
+  
+
+
+<span class="byline author vcard">Posted by <span class="fn"><a href="/blog/our-team/max-veprinsky.html">Max Veprinsky</a></span></span>
+
+ - 
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2009-07-22T12:44:44+08:00" pubdate data-updated="true">Jul 22<span>nd</span>, 2009</time>
+        
+         | <a href="/2009/07/enabling-allow_url_include-locally-in-cpanel/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>When using cPanel the way to enable <code>allow_url_include</code> directive locally (per user) is to create an <strong>Virtual Host include</strong>:</p>
+
+<p>First create an include file:</p>
+
+<p><code>/usr/local/apache/conf/userdata/std/2/username/domain.com/custom.conf</code></p>
+
+<p>Add directive to custom.conf:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>php_admin_flag allow_url_include On</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Then run to enable include:</p>
+
+<p><code>/scripts/ensure_vhost_includes --user=username --verbose</code></p>
+
+<p>Alternatively, enabling allow_url_include globally (server-wide) is done by editing /usr/local/lib/php.ini and adding  &#8220;allow_url_include = On&#8221; directive to the Fopen wrapper section.</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>;;;;;;;;;;;;;;;;;;                                                                                                                                           
+</span><span class='line'>; Fopen wrappers ;                                                                                                                                           
+</span><span class='line'>;;;;;;;;;;;;;;;;;;</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>;Whether to allow the treatment of URLs (like http:// or ftp://) as files.                                                                                  
+</span><span class='line'>allow_url_fopen = On
+</span><span class='line'>**allow_url_include = On**</span></code></pre></td></tr></table></div></figure>
+
+
+<p>and restarting apache by issuing <code>service httpd restart</code> command as root.</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/2009/07/waiting-for-ssh-login-prompt/">Waiting for SSH Login Prompt</a></h1>
+    
+    
+      <p class="meta">
+        
+  
+
+
+<span class="byline author vcard">Posted by <span class="fn"><a href="/blog/our-team/max-veprinsky.html">Max Veprinsky</a></span></span>
+
+ - 
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2009-07-20T17:45:55+08:00" pubdate data-updated="true">Jul 20<span>th</span>, 2009</time>
+        
+         | <a href="/2009/07/waiting-for-ssh-login-prompt/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>Are you often waiting over 1 minute to get a ssh prompt? This can be caused by several things however more often then not is a missing PTR record for server address and enabled GSSAPIAuthentication in ssh_config. GSSAPIAuthentiction is Kerberos 5 centralized authentication/authorization mechanism that relies on resolving a hostname for proper operation, when it cannot do so it tries 3 times before falling back on the next authentication mechanism.</p>
+
+<p>First you need to see where the login process gets hung up:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>ssh -vvv server_address
+</span><span class='line'>debug1: Authentications that can continue: publickey,gssapi-with-mic,password
+</span><span class='line'>debug3: start over, passed a different list publickey,gssapi-with-mic,password
+</span><span class='line'>debug3: preferred gssapi-with-mic,publickey,keyboard-interactive,password
+</span><span class='line'>debug3: authmethod_lookup gssapi-with-mic
+</span><span class='line'>debug3: remaining preferred: publickey,keyboard-interactive,password
+</span><span class='line'>debug3: authmethod_is_enabled gssapi-with-mic
+</span><span class='line'>debug1: Next authentication method: gssapi-with-mic
+</span><span class='line'>debug3: Trying to reverse map address server_address.
+</span><span class='line'>debug1: Unspecified GSS failure.  Minor code may provide more information
+</span><span class='line'>No credentials cache found
+</span><span class='line'>debug1: Unspecified GSS failure.  Minor code may provide more information
+</span><span class='line'>No credentials cache found
+</span><span class='line'>debug1: Unspecified GSS failure.  Minor code may provide more information
+</span><span class='line'>debug2: we did not send a packet, disable method</span></code></pre></td></tr></table></div></figure>
+
+
+<p>and check if a PTR record exists:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>[max@linux ~]$ dig -x server_address
+</span><span class='line'>; &lt;&lt;&gt;&gt; DiG 9.5.1-P2-RedHat-9.5.1-2.P2.fc10 &lt;&lt;&gt;&gt; -x server_address
+</span><span class='line'>;; global options:  printcmd
+</span><span class='line'>;; Got answer:
+</span><span class='line'>;; -&gt;&gt;HEADER&lt;&lt;- opcode: QUERY, status: SERVFAIL, id: 20960
+</span><span class='line'>;; flags: qr rd ra; QUERY: 1, ANSWER: 0, AUTHORITY: 0, ADDITIONAL: 0</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>;; QUESTION SECTION:
+</span><span class='line'>;sserdda_revres.in-addr.arpa. IN  PTR</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>;; Query time: 87 msec</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Here we see that in fact we are being hung on the gssapi-with-mic method  and there is no PTR record for the host. The quickest and simples way to resolve this is to disable gssapi-with-mic authmethod globally on the client.
+In RedHat/Fedora Linux edit /etc/ssh/ssh_config and make sure you have an uncommented &#8220;GSSAPIAuthentication no&#8221; line for Host *</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'># Host *
+</span><span class='line'>#   ForwardAgent no
+</span><span class='line'>#   ForwardX11 no
+</span><span class='line'>#   RhostsRSAAuthentication no
+</span><span class='line'>#   RSAAuthentication yes
+</span><span class='line'>#   PasswordAuthentication yes
+</span><span class='line'>#   HostbasedAuthentication no
+</span><span class='line'>     GSSAPIAuthentication no
+</span><span class='line'>#   GSSAPIDelegateCredentials no</span></code></pre></td></tr></table></div></figure>
+
+
+<p>If you are using host-based configuration be sure to put this at the top of the file so it takes priority over the defaults below it.</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>Host server_name
+</span><span class='line'>HostName server_address
+</span><span class='line'>Port 22
+</span><span class='line'>User max
+</span><span class='line'>GSSAPIAuthentication no</span></code></pre></td></tr></table></div></figure>
+
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/2009/07/syntax-error-on-mysql-replication-slave-error-1064/">Syntax Error on MySQL Replication Slave (Error 1064)</a></h1>
+    
+    
+      <p class="meta">
+        
+  
+
+
+<span class="byline author vcard">Posted by <span class="fn"><a href="/blog/our-team/pim-van-der-wal.html">Pim Van der Wal</a></span></span>
+
+ - 
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2009-07-14T20:52:38+08:00" pubdate data-updated="true">Jul 14<span>th</span>, 2009</time>
+        
+         | <a href="/2009/07/syntax-error-on-mysql-replication-slave-error-1064/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>Here&#8217;s an interesting one, what if you have a MySQL replication setup and the slave stops replicating with a syntax error? The slave should be executing the exact same commands as the master, right? Well, as it turns out, yes and no. There is a bug in MySQL that has been fixed in 5.0.56 according to the <a href="http://bugs.mysql.com/bug.php?id=26489">bug report</a>. It&#8217;s a long story and it&#8217;s worth the read but what happens is that a timeout in the network connection between the master and the slave can cause the master to resend part of packet that it sent before. The slave handled the previous packet correctly so it&#8217;s not expecting a resend and as a result it starts writing some garbage to the relay log (which is where it stored the statements it will execute). The SQL command gets mangled in the process and when the slave tries to execute it, voila, a syntax error.</p>
+
+<p>To fix this you can use the CHANGE MASTER command to set the slave to the master bin log file and position that shows up in the SHOW SLAVE STATUS output. Make sure you use the Relay_Master_Log_File and Exec_Master_Log_Pos fields since they indicate what position in the master binlog the slave actually thought it was executing. Keep in mind that corruption and its effects are hard to predict. It will definitely be useful to compare the master and slave afterward using the <a href="http://www.maatkit.org/">MaatKit </a>tools.</p>
+
+<p>As some more background, the server log will be probably show and error like this to indicate there was a network error:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>Error reading packet from server: Lost connection to MySQL server during query (server_errno=2013)</span></code></pre></td></tr></table></div></figure>
+
+
+<p>And finally, if you do read the entire bug thread you will notice that the original developer of MySQL also has an opinion on this.</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/2009/07/install-truecrypt-on-fedora-10/">Install TrueCrypt on Fedora 10</a></h1>
+    
+    
+      <p class="meta">
+        
+  
+
+
+<span class="byline author vcard">Posted by <span class="fn"><a href="/blog/our-team/max-veprinsky.html">Max Veprinsky</a></span></span>
+
+ - 
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2009-07-06T15:25:20+08:00" pubdate data-updated="true">Jul 6<span>th</span>, 2009</time>
+        
+         | <a href="/2009/07/install-truecrypt-on-fedora-10/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p><a href="http://www.truecrypt.org">TrueCrypt</a> is an open source encryption application, it has an ability to create hidden encrypted containers and file systems/volumes, it is portable and cross platform compatible. It allows to use cascading cyphers and encrypts/decrypts files on the fly. Be sure to read the <a href="http://www.truecrypt.org/faq">FAQ</a> and <a href="http://www.truecrypt.org/docs/">documentation</a> before fully committing your files to TrueCrypt.</p>
+
+<ul>
+<li>install via yum:</li>
+</ul>
+
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>sudo yum install fuse fuse-devel wx_Base wx_GTK wx_GTK-devel</span></code></pre></td></tr></table></div></figure>
+
+
+<ul>
+<li>download source code package: http://www.truecrypt.org/downloads2</li>
+</ul>
+
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>tar -zxvf TrueCrypt\ 6.2a\ Source.tar.gz
+</span><span class='line'>cd truecrypt-6.2a-source</span></code></pre></td></tr></table></div></figure>
+
+
+<ul>
+<li>Download RSA Security Inc. PKCS #11 Cryptographic Token Interface files</li>
+</ul>
+
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>wget ftp://ftp.rsasecurity.com/pub/pkcs/pkcs-11/v2-20/pkcs11.h
+</span><span class='line'>wget ftp://ftp.rsasecurity.com/pub/pkcs/pkcs-11/v2-20/pkcs11f.h
+</span><span class='line'>wget ftp://ftp.rsasecurity.com/pub/pkcs/pkcs-11/v2-20/pkcs11t.h</span></code></pre></td></tr></table></div></figure>
+
+
+<ul>
+<li>build package</li>
+</ul>
+
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>make</span></code></pre></td></tr></table></div></figure>
+
+
+<ul>
+<li>copy binary to /usr/bin</li>
+</ul>
+
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>cd Main
+</span><span class='line'>sudo chown root:root truecrypt && sudo cp truecrypt /usr/bin</span></code></pre></td></tr></table></div></figure>
+
+
+<ul>
+<li>copy icon files to icon repository</li>
+</ul>
+
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>cd ../Resources/Icons
+</span><span class='line'>sudo chown root:root * && sudo cp * /usr/share/icons</span></code></pre></td></tr></table></div></figure>
+
+
+<p>One last order of business is to setup your sudoers file to so that TrueCrypt does not complain about requiring tty for sudo command needed to mount encrypted volumes. There are 2 ways of doing that:</p>
+
+<ol>
+<li>The less secure way &#8211; disable requiretty globally by adding an exclamation mark in front of requretty,</li>
+</ol>
+
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'># Defaults specification
+</span><span class='line'>#
+</span><span class='line'># Disable "ssh hostname sudo ", because it will show the password in clear.
+</span><span class='line'>#         You have to run "ssh -t hostname sudo ".
+</span><span class='line'>#
+</span><span class='line'>Defaults    !requiretty`</span></code></pre></td></tr></table></div></figure>
+
+
+<ol>
+<li>The more secure way especially for multi-user environments &#8211; create user alias called WHEELUSERS, assign users to this user alias:</li>
+</ol>
+
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>## User Aliases
+</span><span class='line'>## These aren't often necessary, as you can use regular groups
+</span><span class='line'>## (ie, from files, LDAP, NIS, etc) in this file - just use %groupname
+</span><span class='line'>## rather than USERALIAS
+</span><span class='line'># User_Alias ADMINS = jsmith, mikem
+</span><span class='line'>User_Alias      WHEELUSERS = max`</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Create a defaults entry for user alias disabling requiretty.</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'># Defaults specification
+</span><span class='line'>#
+</span><span class='line'># Disable "ssh hostname sudo ", because it will show the password in clear.
+</span><span class='line'>#         You have to run "ssh -t hostname sudo ".
+</span><span class='line'>#
+</span><span class='line'>Defaults    requiretty
+</span><span class='line'># added for truecrypt requiretty complaint
+</span><span class='line'>Defaults:WHEELUSERS     !requiretty`</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Video below is a walk through of creating a TrueCrypt desktop short-cut and creation of encrypted container.</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  <div class="pagination">
+    
+      <a class="prev" href="/blog/page/9/">&larr; Older</a>
+    
+    <a href="/blog/archives">Blog Archives</a>
+    
+    <a class="next" href="/blog/page/7/">Newer &rarr;</a>
+    
+  </div>
+</div>
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/2012/11/howto-bulk-import-dns-zones-to-softlayer-dns-using-cpanel/">HowTo: Bulk Import DNS Zones to Softlayer DNS using Cpanel</a>
+      </li>
+    
+      <li class="post">
+        <a href="/2012/08/integrate-sendgrid-with-redmine/">Integrate Sendgrid with Redmine</a>
+      </li>
+    
+      <li class="post">
+        <a href="/2012/07/rsback-task-x-is-locked-and-cannot-be-executed/">rsback: task x is locked and cannot be executed</a>
+      </li>
+    
+      <li class="post">
+        <a href="/2012/06/restore-xen-vm-from-lvm-snapshot-backups/">Restore Xen VM from LVM Snapshot Backups</a>
+      </li>
+    
+      <li class="post">
+        <a href="/2012/06/debian-6-backup-xen-with-lvm-and-rsnapshot/">Debian 6: Backup Xen with LVM and Rsnapshot</a>
+      </li>
+    
+  </ul>
+</section>
+
+<section>
+  <h1>GitHub Repos</h1>
+  <ul id="gh_repos">
+    <li class="loading">Status updating&#8230;</li>
+  </ul>
+  
+  <a href="https://github.com/promet">@promet</a> on GitHub
+  
+  <script type="text/javascript">
+    $.domReady(function(){
+        if (!window.jXHR){
+            var jxhr = document.createElement('script');
+            jxhr.type = 'text/javascript';
+            jxhr.src = '/javascripts/libs/jXHR.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(jxhr, s);
+        }
+
+        github.showRepos({
+            user: 'promet',
+            count: 0,
+            skip_forks: true,
+            target: '#gh_repos'
+        });
+    });
+  </script>
+  <script src="/javascripts/github.js" type="text/javascript"> </script>
+</section>
+
+
+<section>
+  <h1>Latest Tweets</h1>
+  <ul id="tweets">
+    <li class="loading">Status updating&#8230;</li>
+  </ul>
+  <script type="text/javascript">
+    $.domReady(function(){
+      getTwitterFeed("linuxsysadmnblg", 4, false);
+    });
+  </script>
+  <script src="/javascripts/twitter.js" type="text/javascript"> </script>
+  
+    <a href="http://twitter.com/linuxsysadmnblg" class="twitter-follow-button" data-show-count="false">Follow @linuxsysadmnblg</a>
+  
+</section>
+
+
+
+
+
+  
+</aside>
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2012 - Promet OPS Team -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'linuxsysadminblog';
+      
+        
+        var disqus_script = 'count.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'http://' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) {return;}
+  js = d.createElement(s); js.id = id;
+  js.src = "//connect.facebook.net/en_US/all.js#appId=212934732101925&xfbml=1";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = 'http://platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>

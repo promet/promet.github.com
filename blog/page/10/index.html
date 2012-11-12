@@ -1,0 +1,977 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Linux Sysadmin Blog</title>
+  <meta name="author" content="Promet OPS Team">
+
+  
+  <meta name="description" content="RieserFS is a journalling filesystem that is excellent when dealing with small files under 4K in size. When used with tail-packing it is 10-15x &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://linuxsysadminblog.com/blog/page/10/">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="/javascripts/ender.js"></script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <link href="/atom.xml" rel="alternate" title="Linux Sysadmin Blog" type="application/atom+xml">
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+<!-- Google Form for Contact Page -->
+<!-- jQuery -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+<script type="text/javascript">
+    // Avoid conflict with ender.js.
+jQuery.noConflict();
+</script>
+<!-- jQuery Form Plugin -->
+<script src="http://malsup.github.com/jquery.form.js"></script>
+<script src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.9/jquery.validate.min.js"></script> 
+<script src="/javascripts/google_form.js"></script>
+<!-- Google Form for Contact Page End here -->
+
+
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-120251-38']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">Linux Sysadmin Blog</a></h1>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:linuxsysadminblog.com" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/our-team">Our Team</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+  <li><a href="/blog/about">About</a></li>
+  <li><a href="/blog/contact">Contact</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div class="blog-index">
+  
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/2009/05/when-open-source-kills/">When Open Source Kills</a></h1>
+    
+    
+      <p class="meta">
+        
+  
+
+
+<span class="byline author vcard">Posted by <span class="fn"><a href="/blog/our-team/max-veprinsky.html">Max Veprinsky</a></span></span>
+
+ - 
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2009-05-27T11:39:25+08:00" pubdate data-updated="true">May 27<span>th</span>, 2009</time>
+        
+         | <a href="/2009/05/when-open-source-kills/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p><a href="http://en.wikipedia.org/wiki/ReiserFS">RieserFS</a> is a journalling filesystem that is excellent when dealing with small files under 4K in size. When used with <a href="http://en.wikipedia.org/wiki/Tail_packing">tail-packing</a> it is 10-15x faster then ext2/ext3. ReiserFS was first included in Linux kernel 2.4.1 and even used  as default filesystem in SUSE Enterprise Linux and others. What many may not know is that <a href="http://en.wikipedia.org/wiki/Hans_Reiser">Reiser killed</a>, LITERALLY. The man behind this filesystem has been convicted of second degree murder for killing his wife. While this isn&#8217;t exactly breaking new it just goes to show you that extroverted geeks have it in them.</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/2009/05/red-hat-enterprise-linux-48-released/">Red Hat Enterprise Linux 4.8 Released</a></h1>
+    
+    
+      <p class="meta">
+        
+  
+
+
+<span class="byline author vcard">Posted by <span class="fn"><a href="/blog/our-team/marius-ducea.html">Marius Ducea</a></span></span>
+
+ - 
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2009-05-26T03:04:20+08:00" pubdate data-updated="true">May 26<span>th</span>, 2009</time>
+        
+         | <a href="/2009/05/red-hat-enterprise-linux-48-released/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>With the <strong>8th update</strong> of their venerable <strong>Red Hat Enterprise Linux 4</strong> version (_first released in February 200_5), RedHat switches to &#8221;<a href="http://press.redhat.com/2008/07/23/support-for-red-hat-enterprise-linux-improved-through-enhanced-product-life-cycle/">production 2 lifecycle phase</a>&#8221;, where it helps customers transition to <strong>RHEL5</strong>. Ideally everyone will upgrade to rhel5 by the <strong>end of the year - Q4 200</strong>9 (in case not done already, this is a good time to plan for this).</p>
+
+<p><a href="http://www.redhat.com/security/updates/errata/"><img src="http://linuxsysadminblog.com/images/2009/05/7years_4.png" alt="7years_4" /></a></p>
+
+<p>General Availability:     February 14, 2005
+End of Production 1 phase:     March 31, 2009
+End of Production 2 phase:     No earlier than Q4 of 2009
+End of Production 3 phase:     February 29, 2012</p>
+
+<p>Key features in <strong>Red Hat Enterprise Linux 4.8</strong> include:</p>
+
+<ul>
+<li><p>Improved virtualization performance and scale</p></li>
+<li><p>Improved Windows interoperability and file system support</p></li>
+<li><p>General performance improvements</p></li>
+<li><p>Storage and filesystem enhancements</p></li>
+<li><p>Enhanced developer support</p></li>
+</ul>
+
+
+<p>For full details check out the <a href="http://press.redhat.com/2009/05/18/red-hat-enterprise-linux-4-8-now-available/">press release</a>.</p>
+
+<p><em>Note: as usual, people using Centos4 will have to wait for a couple of weeks to have cento4.8 available for upgrade.</em></p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/2009/05/hidden-wordpress-spam/">Hidden Wordpress Spam:</a></h1>
+    
+    
+      <p class="meta">
+        
+  
+
+
+<span class="byline author vcard">Posted by <span class="fn"><a href="/blog/our-team/gerold-mercadero.html">Gerold Mercadero</a></span></span>
+
+ - 
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2009-05-22T00:38:39+08:00" pubdate data-updated="true">May 22<span>nd</span>, 2009</time>
+        
+         | <a href="/2009/05/hidden-wordpress-spam/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>A month ago one of our customers complained on lots of spam comments appearing on his <a href="http://wordpress.org">Wordpress</a> site.  There&#8217;s no development changes, including updates, to that site since it was launched and it runs on WP version 2.3.3.  We managed the issue by activating the <a href="http://codex.wordpress.org/Akismet">Akismet</a> plugin and upgrading the Wordpress to latest version (2.7.1 at this time).</p>
+
+<p><img src="http://linuxsysadminblog.com/images/2009/05/mh-300x185.jpg" alt="reference" /></p>
+
+<p>Yesterday, the same customer reported back the spam results appearing on Google search from his site.  So i checked all the approved comments and pages on the site but i found nothing.   At first I thought it was on Google cache but i don&#8217;t think it&#8217;s the case since it&#8217;s been a month since we implemented the spam filter and wp upgrade.  Then I checked on the database contents and found several spam messages inserted on blog posts, most of them were inserted at the end of posts.</p>
+
+<p>Spam messages looks like this:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>&lt;!-- manager-start --&gt;
+</span><span class='line'>  &lt;style&gt;div.ONqjGUvTIf {height: 0pt;width: 3pt;position: absolute;overflow: auto}&lt;/style&gt;&lt;div class="ONqjGUvTIf"&gt;viagra anxiety  &lt;a href="http://insiteblog.mit.edu/?item=201&desc;=generic-brands-of-viagra-online"&gt; generic brands of viagra online&lt;/a&gt; taking viagra woman\ncheap gerneric viagra &lt;a href="http://insiteblog.mit.edu/?item=33&desc;=viagra-dosage"&gt;viagra dosage&lt;/a&gt; "generic  &lt;/div&gt;
+</span><span class='line'>&lt;!-- manager-end --&gt;</span></code></pre></td></tr></table></div></figure>
+
+
+<p>If you check on the blog pages you can&#8217;t see these text so you can&#8217;t easily tell that the posts/pages were attacked, but if you try to view the html source generated by the browser you can see them - that is why it is included when Google index/crawl your site contents or pages.  These spam appeared to have been inserted before our WP upgrade to it must be an exploit on our old WP version (2.3.3).</p>
+
+<p>To remove you can edit the post from your WP Admin section or you can edit directly from database (ex: phpmyadmin).</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/2009/05/install-gnupg-php-extension-in-cpanel/">Install GNUPG PHP Extension in Cpanel</a></h1>
+    
+    
+      <p class="meta">
+        
+  
+
+
+<span class="byline author vcard">Posted by <span class="fn"><a href="/blog/our-team/gerold-mercadero.html">Gerold Mercadero</a></span></span>
+
+ - 
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2009-05-21T04:20:35+08:00" pubdate data-updated="true">May 21<span>st</span>, 2009</time>
+        
+         | <a href="/2009/05/install-gnupg-php-extension-in-cpanel/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>Here&#8217;s my quick howto on installing <a href="http://us2.php.net/manual/en/book.gnupg.php">GNUPG</a> PHP Pecl extension (<a href="http://pecl.php.net/package/gnupg/docs">pecl docs</a>) in Cpanel.  Please note that this covers only the installation process and no further details on setting up gpg keys or using the function with extension or sample PHP scripts.</p>
+
+<p>Installation process is very straightforward provided you met the requirements like php-pear, gnupg, libgpg-error, and gpgme.  You can install it directly from <code>WHM -&gt; Module Installers -&gt; PHP Pecl</code>, enter <code>gnupg</code> and click the Install button.  You can do the same via shell with this command <code>pecl install gnupg</code>.  Then restart your Apache.  Be sure to double check if the extension was added to you <code>php.ini</code>.</p>
+
+<p>On Cpanel servers most of the requirements are present, like <code>php-pear</code> (if you compiled your apache/php with pear), <code>gnupg, libgpg-error</code>, etc, except for <a href="http://www.gnupg.org/gpgme.html"><em>gpgme</em></a> which is the main library used by <code>gnupg</code> extension.  Our system is running CentOS 4.7 with latest STABLE branch of Cpanel (S35075 at this time of writing), PHP 5.2.9 with pear and libgpg-error (version 1.0-1 only).  Only missing requirement was <code>gpgme</code> which i installed from source as it was not available on our default yum repository.  You can also install it from other repositories like <code>centos.karan.org</code>.  At this time the latest <code>gpgme</code> version is <a href="http://www.gnupg.org/download/index.en.html#gpgme">1.1.8</a> but I installed version 1.1.2 because it&#8217;s the latest version compatible with our libgpg.</p>
+
+<p>I also encountered an error library path when I check the extension,</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>error while loading shared libraries: libgpgme.so.11: cannot open shared object file: No such file or directory</span></code></pre></td></tr></table></div></figure>
+
+
+<p>so I had to add <code>/usr/local/lib</code> to <code>/etc/ld.so.conf</code> and run <code>ldconfig</code>, so that libraries in this directory are detected automatically.</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/2009/05/googles-cheeseburgers/">Google&#8217;s Cheeseburgers</a></h1>
+    
+    
+      <p class="meta">
+        
+  
+
+
+<span class="byline author vcard">Posted by <span class="fn"><a href="/blog/our-team/max-veprinsky.html">Max Veprinsky</a></span></span>
+
+ - 
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2009-05-19T06:59:43+08:00" pubdate data-updated="true">May 19<span>th</span>, 2009</time>
+        
+         | <a href="/2009/05/googles-cheeseburgers/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>From the <a href="http://www.theregister.co.uk/2009/05/12/google_climate/">register</a>:</p>
+
+<p>Google has declared newspapers, orange juice and cheeseburgers that much more harmful to the planet than running a vast network of datacentres.</p>
+
+<p>Urs Hölzle, senior vice president operations at Happyland Central, took to the Google blog today to put its claims that the average Google search &#8220;uses about 1 kJ of energy and emits about 0.2 grams of carbon dioxide&#8221; in context.</p>
+
+<p>This is dramatically less than Harvard prof Alex Wissner-Gross claimed back in January. He calculated that a Google search was equivalent to around 7.5g of CO2.</p>
+
+<p>Still, for the sake of argument, we&#8217;ll take Hölzle&#8217;s figure as a starting point. Hölzle then declares that an average daily newspaper accounts for the equivalent of 850 Google searches, while a glass of orange juice stacks up to 1050 searches. So, that&#8217;s pages of algorithm sorted links before you&#8217;ve even gotten as far as your morning coffee and muffin.</p>
+
+<p>It inevitably gets worse. A five mile trip in an automobile equates to 10,000 searches, according to Hölzle, while a cheeseburger (remember, you only had OJ for breakfast) is a whopping 15,000 searches.</p>
+
+<p>At this point it&#8217;s no surprise that an average US household burns enough energy per month to serve up 3.1 million Google searches - or 207 cheeseburgers. Which for a family of four is about 1.7 cheeseburgers each a day. We suppose it&#8217;s just possible the Google search equivalent in newspapers would be even more nutritious.</p>
+
+<p>Anyway, Hölzle reassures his readers that Google is working hard to reduce its energy usage, and has in fact cut it by 50 per cent; though he neglects to say compared to what, over what period, whether this is a per server or per search or overall figure, and how many cheeseburgers or newspapers this equates to.</p>
+
+<p>But he does point out that, &#8220;This efficiency means that in the time it takes to do a Google search, your own personal computer will likely use more energy than we will use to answer your query.&#8221;</p>
+
+<p>So there you have it, if you want to enjoy a cheeseburger or newspaper - or even a newspaper&#8217;s own website - without feeling climate guilt, just steer clear of Google.</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/2009/05/rhelcentos-x86_64-and-i386-packages-mess/">Rhel/centos X86_64 and I386 Packages Mess&#8230;</a></h1>
+    
+    
+      <p class="meta">
+        
+  
+
+
+<span class="byline author vcard">Posted by <span class="fn"><a href="/blog/our-team/marius-ducea.html">Marius Ducea</a></span></span>
+
+ - 
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2009-05-19T04:30:51+08:00" pubdate data-updated="true">May 19<span>th</span>, 2009</time>
+        
+         | <a href="/2009/05/rhelcentos-x86_64-and-i386-packages-mess/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>Anyone running <strong>centos/rhel</strong> <strong>x86_64</strong> systems has probably noticed that redhat has a strange way to install a mix of i386 and x86_64 rpms on such a systems. This is how <strong>redhat </strong>is using the 64bit architecture in a mixed way to be able to support also i386 applications. This is completely different from how for example <strong>debian </strong>does this where you will not see by default any i386 libraries or duplicate applications installed (you can install and use ia32 libraries for compatibility reasons but the user is in full control on this process). The way how this works in rhel is <strong>confusing</strong>; let&#8217;s take a simple example (the commands are taken from a clean centos5.3 install with the base packages selected): let&#8217;s see what version of ncurses we have on the system:
+<code>rpm -qa | grep ncurses
+ncurses-5.5-24.20060715
+ncurses-5.5-24.20060715</code>
+what? why is this listed twice? hmm&#8230; Running: <em>rpm -qi ncurses-5.5-24.20060715</em> will also list the package twice (but doesn&#8217;t show the difference). We can assume one is <strong>i386 </strong>and one is <strong>x86_64</strong> right? but we can&#8217;t see this.</p>
+
+<p>To overcome this issue, and at least have <strong>rpm report the proper versions</strong> we have to add in our <strong>rpmmacros </strong>file a new line like: <em>&#8221;%</em>query_all_fmt %%{name}-%%{version}-%%{release}.%%{arch}&#8221;_ that will add to the rpm output the architecture and allow us to see the this:</p>
+
+<pre><code>&lt;code lang="bash"&gt;cat &gt;&gt; ~/.rpmmacros
+%_query_all_fmt %%{name}-%%{version}-%%{release}.%%{arch}&lt;/code&gt;
+</code></pre>
+
+<p>and now running the same command will return a more intuitive and meaningful:
+<code>rpm -qa | grep ncurses        
+ncurses-5.5-24.20060715.x86_64
+ncurses-5.5-24.20060715.i386</code></p>
+
+<p>This doesn&#8217;t fix anything in how yum will install duplicate programs or libraries, but at least it will allow us to see the full name of the packages in rpm commands. Theoretically people should be able to add into <strong>yum.conf </strong>(this is the default anyway, so you might have it already):
+<code>exactarch=1</code>
+and <strong>yum </strong>will install by default the packages of the arch it is running on (x86_64 in our case). Still, this will not prevent i386 dependencies to show up and be installed. In case you want to completely ignore other arch packages add in the <strong>[main] </strong>section of <strong>/etc/yum.conf </strong>to exclude all 32bit packages,:
+<code>exclude=*.i386 *.i586 *.i686</code>
+and this will completely exclude them completely from yum operations. Please use this with care, and only if you have a full understanding of the implications to exclude those packages.</p>
+
+<p>Even if you don&#8217;t exclude the 32bit packages as shown above, it is a good idea to add the <strong>arch </strong>to all yum operations (like install, remove, etc.), like:
+<code>yum install ncurses.x86_64</code></p>
+
+<p>Hopefully you found this post useful, and have now a better understanding on how rhel/centos use the i368 and x86_64 packages and libraries with rpm and yum on a 64bit installation.</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/2009/05/setup-nagios-user-to-view-specific-host-and-services/">Setup Nagios User to View Specific Host and Services</a></h1>
+    
+    
+      <p class="meta">
+        
+  
+
+
+<span class="byline author vcard">Posted by <span class="fn"><a href="/blog/our-team/gerold-mercadero.html">Gerold Mercadero</a></span></span>
+
+ - 
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2009-05-14T19:29:00+08:00" pubdate data-updated="true">May 14<span>th</span>, 2009</time>
+        
+         | <a href="/2009/05/setup-nagios-user-to-view-specific-host-and-services/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>This guide will help you setup Nagios user to have limited access to host and service checks.  It is helpful when you want to allow your customers or clients to view and receive alerts on their servers and services, like for dedicated servers.</p>
+
+<p><strong>Procedure:</strong></p>
+
+<p><strong>Contacts: </strong> Create new contact definitions for your client.</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>define contact{
+</span><span class='line'>    contact_name                    customer1
+</span><span class='line'>    alias                           Customer One Admin
+</span><span class='line'>    service_notification_period     24x7
+</span><span class='line'>    host_notification_period        24x7
+</span><span class='line'>    service_notification_options    c,r
+</span><span class='line'>    host_notification_options       d,r
+</span><span class='line'>    service_notification_commands   notify-service-by-email
+</span><span class='line'>    host_notification_commands      notify-host-by-email
+</span><span class='line'>    email                           customer1@domain.tld
+</span><span class='line'>}</span></code></pre></td></tr></table></div></figure>
+
+
+<p><strong>Groups:  </strong>Create contact groups or you can add the new contact for you existing group, depending on the checks that you want to allow.</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>define contactgroup {
+</span><span class='line'>    contactgroup_name               Dedicated-Server1-Admins
+</span><span class='line'>    alias                           Admins for Server 1
+</span><span class='line'>    members                         customer1,hostingadmins
+</span><span class='line'>}</span></code></pre></td></tr></table></div></figure>
+
+
+<p><strong>Hosts / Services: </strong>  Use the new Contact Group with customers email and your main admin.  Note that i used the existing Host Groups but you create new HostGroups if you want.</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>define host {
+</span><span class='line'>    use                            generic-host
+</span><span class='line'>    host_name                      Server1
+</span><span class='line'>    alias                          Server1
+</span><span class='line'>    address                        10.0.0.2  // private or public ip
+</span><span class='line'>    hostgroups                     DedicateServers
+</span><span class='line'>    check_command                  check-host-alive
+</span><span class='line'>    contact_groups                 Dedicated-Server1-Admins
+</span><span class='line'>    check_period                   24x7
+</span><span class='line'>    max_check_attempts             10
+</span><span class='line'>    notification_interval          480
+</span><span class='line'>    notification_period            24x7
+</span><span class='line'>    notification_options           d,r
+</span><span class='line'>    notifications_enabled          1
+</span><span class='line'>}
+</span><span class='line'>define service {
+</span><span class='line'>    use                            generic-service
+</span><span class='line'>    host_name                      Server1
+</span><span class='line'>    service_description            HTTP
+</span><span class='line'>    is_volatile                    0
+</span><span class='line'>    check_period                   24x7
+</span><span class='line'>    max_check_attempts             3
+</span><span class='line'>    normal_check_interval          5
+</span><span class='line'>    retry_check_interval           3
+</span><span class='line'>    contact_groups                 Dedicated-Server1-Admins
+</span><span class='line'>    notification_interval          480
+</span><span class='line'>    notification_period            24x7
+</span><span class='line'>    notification_options           w,u,c,r
+</span><span class='line'>    check_command                  check_http
+</span><span class='line'>    notifications_enabled          1
+</span><span class='line'>}</span></code></pre></td></tr></table></div></figure>
+
+
+<p>In my case, I created a new group and add our admin contacts and customers, then update the contact groups for hosts and services.  You can also create a new definitions for hosts, contacts, groups, and services with different names for the clients if you don&#8217;t want to edit your existing definitions.</p>
+
+<p><strong>Htaccess: </strong> Lastly, you need to add htaccess user to your htpasswd file (htpasswd.users).  Username should match the name on your Contact.  In this sample it is customer1. <strong> [Update]</strong> If you&#8217;ve implemented &#8221;<a href="http://nagios.sourceforge.net/docs/3_0/cgisecurity.html">Digest Authentication</a>&#8221; you need to update your digest file instead of the htpasswd.</p>
+
+<p>Don&#8217;t forget to restart you Nagios.</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/2009/05/umask-ing-apache-under-cpanel/">Umask &#8216;Ing Apache Under cPanel</a></h1>
+    
+    
+      <p class="meta">
+        
+  
+
+
+<span class="byline author vcard">Posted by <span class="fn"><a href="/blog/our-team/max-veprinsky.html">Max Veprinsky</a></span></span>
+
+ - 
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2009-05-14T18:17:02+08:00" pubdate data-updated="true">May 14<span>th</span>, 2009</time>
+        
+         | <a href="/2009/05/umask-ing-apache-under-cpanel/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>Ran into an issue today where a php created file was unreadable by other users or services that run under a different user.  Since this is a software originated issue the sysadmin would love for the developer to change the code to include the <a href="http://us2.php.net/chmod">chmod() php function</a>  to set permission to 644 after file creation.  On the flip side when a developer sees &#8220;permission&#8221; they automatically assume it&#8217;s OS related and want the sysadmin to resolve the issue.</p>
+
+<p>This time I let the developer slide and implemented a fix on system end by appending <code>umask 022</code> into <code>/usr/local/apache/bin/envvars</code> file and restarting apache. This will apply a umask of 022 to the default perrmission of 666 for newly created files. The result is that anytime apache creates a file be it via php or another way it will always have 644 permissions and will be world readable.
+But wait the fun doesn&#8217;t end there as we are running cPanel on this particular server and this env change will be lost next time Apache is rebuilt via <a href="http://www.cpanel.net/documentation/easyapache/ea3custom_modvar.html">EasyApache</a>. To make this change persistent create a file called umask with the digits 022 as contents in <code>/var/cpanel/easy/apache/rawenv/</code></p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/2009/05/us-to-invade-asia-over-google-traffic-snafoo/">Us-to-invade-asia-over-google-traffic-snafoo</a></h1>
+    
+    
+      <p class="meta">
+        
+  
+
+
+<span class="byline author vcard">Posted by <span class="fn"><a href="/blog/our-team/andrew-kucharski.html">Andrew Kucharski</a></span></span>
+
+ - 
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2009-05-14T16:15:35+08:00" pubdate data-updated="true">May 14<span>th</span>, 2009</time>
+        
+         | <a href="/2009/05/us-to-invade-asia-over-google-traffic-snafoo/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p><strong>Google slowdown causes blogger hysteria </strong></p>
+
+<p><a href="http://googleblog.blogspot.com/2009/05/this-is-your-pilot-speaking-now-about.html">Official Google Blog: This is your pilot speaking. Now, about that holding pattern&#8230;</a></p>
+
+<p>Ok, so I checked out my RSS feeds and went over to google blog to see what the hoopla was about today after slowdown.  Yes, I had pings from folks asking me if google was down for them or just me, but I really find the backlinks interesting&#8230; from funny to pathetic.</p>
+
+<p>I think uptime still matters.</p>
+
+<p>See for yoursleves (my emphasis):</p>
+
+<p>Google Outage Caused by Asian “Traffic Jam” | John Paczkowski &#8230;</p>
+
+<blockquote><p> If the <strong>Web has does have a single point of failure, you&#8217;d think it was Google</strong> given all the outcry over the the outages suffered by some of the company&#8217;s services Thursday. Something went wrong at the company this morning and whatever &#8230;</p>
+
+<pre><code>Posted by John Paczkowski at 12:23 
+</code></pre></blockquote>
+
+<p>Google Slow (or Down) for Some</p>
+
+<blockquote><p> Thursday, May 14, 2009. Google Slow (or Down) for Some. Some of us are having problems accessing google.com, YouTube, Gmail and others. [This post may update if there&#8217;s further info.] Update: And it seems to be back up now (18:15 CET). &#8230;</p>
+
+<pre><code>Posted by Philipp Lenssen at 10:08 
+</code></pre></blockquote>
+
+<p>Google Slow, <strong>Twitterati Hysterical</strong></p>
+
+<blockquote><p> UPDATED: Google appears to be having problems across its Gmail, search and even its Blogger platforms, judging by complaints on &#8230;</p>
+
+<pre><code>Posted by Stacey Higginbotham at 09:48 
+</code></pre></blockquote>
+
+<p>It&#8217;s Down! <strong>The Day Google Stood Still</strong> (Updated) - ReadWriteWeb</p>
+
+<blockquote><p> We have seen our fair share of failures from web based products, but this morning, for a large number of users (at least in the US), it looks &#8230;</p>
+
+<pre><code>Posted by Frederic Lardinois at 09:32 
+</code></pre></blockquote>
+
+<p>Major Google Outages Today: #GoogleFail Or #AT&T; Fail?</p>
+
+<blockquote><p> A bunch of GoogleGoogle reviews services have been failing this morning, and we&#8217;ve been trying to figure out why. The hashtag #googlefail on TwitterTwitter.</p>
+
+<pre><code>Posted by Adam Ostrow at 09:25 
+</code></pre></blockquote>
+
+<p>Google Services Go Down For Many</p>
+
+<blockquote><p> Currently, many people who use Google&#8217;s services, including web search, Gmail, Google Reader and other products are either down or incredibly slow for some.</p>
+
+<pre><code>Posted by Barry Schwartz at 09:15 
+</code></pre></blockquote>
+
+<p>La panne de Google: une erreur d&#8217;aiguillage - Media &amp; Pub - E24.fr</p>
+
+<blockquote><p> Le moteur de recherche a connu de sérieux problèmes techniques entre 17h et 18h ce jeudi. Des milliers d&#8217;internautes ont témoigné sur Twitter des difficultés rencontrées sur Google.</p>
+
+<pre><code>Posted by at 09:08 
+</code></pre></blockquote>
+
+<p><strong>Google Stumbles, Internet Breaks A Leg</strong></p>
+
+<blockquote><p> Recent Posts. Google Stumbles, Internet Breaks A Leg · Beer Monday: Redhook&#8217;s Slim Chance · Friday Gallimaufry: Migratory Birds · Moms On The Net · Beer Monday: New Glarus Brewing · The Pale Blue Dot · Devo Was Right About Everything &#8230;</p>
+
+<pre><code>Posted by forbes blogger at 08:35 
+</code></pre></blockquote>
+
+<p>Ajax Girl » Blog Archive » <strong>Google&#8217;s Outage Was Asia&#8217;s Fault</strong></p>
+
+<blockquote><p> Written by on May 14th, 2009 in Uncategorized. You can follow any responses to this entry through the RSS 2.0 feed. Responses are currently closed, but you can trackback from your own site. Google finally has an explanation for its &#8230;</p>
+
+<pre><code>Posted by at 07:34 
+</code></pre></blockquote>
+
+<p>Tech Science | SearchBeat.com Shout-Out Blog</p>
+
+<blockquote><p> Top Technology, Computer, Internet and Science News Latest Science News from Around the Web Scientific.</p>
+
+<pre><code>Posted by keithco at 23:12 
+</code></pre></blockquote>
+
+<p>Tech Central - Times Online - WBLG: Problems with Google today &#8230;</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/2009/05/howto-delete-all-emails-from-the-postfix-queue/">HowTo Delete All Emails From the Postfix Queue</a></h1>
+    
+    
+      <p class="meta">
+        
+  
+
+
+<span class="byline author vcard">Posted by <span class="fn"><a href="/blog/our-team/marius-ducea.html">Marius Ducea</a></span></span>
+
+ - 
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2009-05-13T15:57:22+08:00" pubdate data-updated="true">May 13<span>th</span>, 2009</time>
+        
+         | <a href="/2009/05/howto-delete-all-emails-from-the-postfix-queue/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>I must admit that <strong>postfix </strong>queue management is definitely not the simplest one. I often get asked how you can <strong>remove all the emails</strong> that are in the <em>mail queue on a postfix server</em> (probably to delete a spamming abuse or some error, or whatever). This should be something very simple to do right? And actually it is very simple. All you have to do is to run as root:
+<code>postsuper -d ALL</code>
+or using sudo:
+<code>sudo postsuper -d ALL</code>
+this will delete instantly all the emails in the queue <strong>without any warning</strong> (be sure you know what you are doing when running this) and will just output the result (<em>xxx messages deleted</em>).</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  <div class="pagination">
+    
+      <a class="prev" href="/blog/page/11/">&larr; Older</a>
+    
+    <a href="/blog/archives">Blog Archives</a>
+    
+    <a class="next" href="/blog/page/9/">Newer &rarr;</a>
+    
+  </div>
+</div>
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/2012/11/howto-bulk-import-dns-zones-to-softlayer-dns-using-cpanel/">HowTo: Bulk Import DNS Zones to Softlayer DNS using Cpanel</a>
+      </li>
+    
+      <li class="post">
+        <a href="/2012/08/integrate-sendgrid-with-redmine/">Integrate Sendgrid with Redmine</a>
+      </li>
+    
+      <li class="post">
+        <a href="/2012/07/rsback-task-x-is-locked-and-cannot-be-executed/">rsback: task x is locked and cannot be executed</a>
+      </li>
+    
+      <li class="post">
+        <a href="/2012/06/restore-xen-vm-from-lvm-snapshot-backups/">Restore Xen VM from LVM Snapshot Backups</a>
+      </li>
+    
+      <li class="post">
+        <a href="/2012/06/debian-6-backup-xen-with-lvm-and-rsnapshot/">Debian 6: Backup Xen with LVM and Rsnapshot</a>
+      </li>
+    
+  </ul>
+</section>
+
+<section>
+  <h1>GitHub Repos</h1>
+  <ul id="gh_repos">
+    <li class="loading">Status updating&#8230;</li>
+  </ul>
+  
+  <a href="https://github.com/promet">@promet</a> on GitHub
+  
+  <script type="text/javascript">
+    $.domReady(function(){
+        if (!window.jXHR){
+            var jxhr = document.createElement('script');
+            jxhr.type = 'text/javascript';
+            jxhr.src = '/javascripts/libs/jXHR.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(jxhr, s);
+        }
+
+        github.showRepos({
+            user: 'promet',
+            count: 0,
+            skip_forks: true,
+            target: '#gh_repos'
+        });
+    });
+  </script>
+  <script src="/javascripts/github.js" type="text/javascript"> </script>
+</section>
+
+
+<section>
+  <h1>Latest Tweets</h1>
+  <ul id="tweets">
+    <li class="loading">Status updating&#8230;</li>
+  </ul>
+  <script type="text/javascript">
+    $.domReady(function(){
+      getTwitterFeed("linuxsysadmnblg", 4, false);
+    });
+  </script>
+  <script src="/javascripts/twitter.js" type="text/javascript"> </script>
+  
+    <a href="http://twitter.com/linuxsysadmnblg" class="twitter-follow-button" data-show-count="false">Follow @linuxsysadmnblg</a>
+  
+</section>
+
+
+
+
+
+  
+</aside>
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2012 - Promet OPS Team -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'linuxsysadminblog';
+      
+        
+        var disqus_script = 'count.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'http://' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) {return;}
+  js = d.createElement(s); js.id = id;
+  js.src = "//connect.facebook.net/en_US/all.js#appId=212934732101925&xfbml=1";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = 'http://platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>

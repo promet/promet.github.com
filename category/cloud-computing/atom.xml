@@ -1,0 +1,221 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: cloud computing | Linux Sysadmin Blog]]></title>
+  <link href="http://linuxsysadminblog.com/category/cloud-computing/atom.xml" rel="self"/>
+  <link href="http://linuxsysadminblog.com/"/>
+  <updated>2012-11-13T01:37:44+08:00</updated>
+  <id>http://linuxsysadminblog.com/</id>
+  <author>
+    <name><![CDATA[Promet OPS Team]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Amazon AWS worse failure]]></title>
+    <link href="http://linuxsysadminblog.com/2011/04/amazon-aws-worse-failure/"/>
+    <updated>2011-04-22T15:59:01+08:00</updated>
+    <id>http://linuxsysadminblog.com/2011/04/amazon-aws-worse-failure</id>
+    <content type="html"><![CDATA[<p>I'm sure almost everyone is aware at this point on the <strong>failure</strong> that caused Amazon cloud computing solution AWS to be down yesterday (and still is at some smaller extend happening at this time as we can see on their <a href="http://status.aws.amazon.com/">status</a> page) for most of the day. This has affected a few big (Reddit, Foursquare, Quora, Heroku, Engine Yard, for ex.) and many small sites hosted in the <strong>us-east-1</strong> AWS region. This happened regardless on the availability zone you were in the region US-EAST (this is the oldest one and still the default for many client tools) and questioned the <a href="http://aws.amazon.com/ec2/faqs/#How_isolated_are_Availability_Zones_from_one_another">independence and isolation</a> of the availability zones in the AWS infrastructure design.</p>
+
+<p>The failure was specifically related to the <strong>EBS</strong> drives that made customer instances non responding, but also prevented them to start or stop new instances with the same EBS volumes (that probably 99% have tried immediately as they got paged). There are some sites that had failover mechanisms, but if they were in the same availability zone it was useless (something that looked like a good solution and fast and cost effective). Others, many startups, found out that they had no such mechanism at all, and that they depended way too much on the Amazon reliability. Until this issue, Amazon had a great uptime record; there were many issues but with individual instances, but not such a global issue. You would expect people running their application in the cloud to expect failures and be prepared and I'm sure most of them are compared with applications deployed in the regular datacenter, but apparently there is still much work to be done.</p>
+
+<p>Overall I believe this showed (if we needed a reminder), that failures can happen and anyone can suffer from such a problem (Google had problems, Facebook the same, and Twitter is most of the time down, and now was just Amazon's turn). We need to be prepared and build and architect our applications with this in mind and be ready to failover. A great example of this is the twilio application design: <a href="http://www.twilio.com/engineering/2011/04/22/why-twilio-wasnt-affected-by-todays-aws-issues/">http://www.twilio.com/engineering/2011/04/22/why-twilio-wasnt-affected-by-todays-aws-issues/</a></p>
+
+<!--more-->
+
+
+<p>Also I think Amazon will learn many things from this event, and hopefully one of them will be to <em>better communicate with their clients</em>. They can definitely improve on this, and not leave people to go to twitter or ec2 forums for the best updates on such problems instead from the source.</p>
+
+<p>I've also seen different providers (I will not give names but they are everywhere on twitter) come out and offer their services to people hit by this. I don't believe this is the best approach to sell your very performant cloud solution or barebone datacenter servers or whatever, and probably it does worse for their reputation making them look like coyotes on a fallen prey. I'm sure like me, most people felt disgusted on their offers at this time, and it will definitely not make me look at their offering again.</p>
+
+<p>Now its time to get back to work on failover and redundancy design for our clients that need help with this. If you've been affected by this and want to share your story and what are your takeaways feel free to comment bellow on the post. If you need specialized help to design or implement a fully fault tolerant infrastructure feel free to <a href="http://www.prometsource.com/contact">contact us</a> anytime. We are here to help.</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Google to offer free DNS service]]></title>
+    <link href="http://linuxsysadminblog.com/2009/12/google-to-offer-free-dns-service/"/>
+    <updated>2009-12-03T21:55:05+08:00</updated>
+    <id>http://linuxsysadminblog.com/2009/12/google-to-offer-free-dns-service</id>
+    <content type="html"><![CDATA[
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Task on Amazon EBS on CentOS AMI]]></title>
+    <link href="http://linuxsysadminblog.com/2009/07/task-on-amazon-ebs-on-centos-ami/"/>
+    <updated>2009-07-29T03:43:51+08:00</updated>
+    <id>http://linuxsysadminblog.com/2009/07/task-on-amazon-ebs-on-centos-ami</id>
+    <content type="html"><![CDATA[<p>This is my second activity on using AWS - this time the use of <a href="http://aws.amazon.com/ebs/">EBS</a>.</p>
+
+<p><strong>Objectives:</strong></p>
+
+<ol>
+<li>Format a new EBS (10GB) and mount it on a running instance of private AMI (created on first activity - add link/ref to old post)</li>
+<li>Setup a MySQL server with the datastore on EBS partition</li>
+<li>Setup the partition(EBS) to start at boot time of AMI</li>
+</ol>
+
+
+<p>Here, I will elaborate the steps (mostly commands) and some issues that I encountered along the way.  I also included the script (below) that i used for attaching the EBS to AMI at boot time. Reference <a href="http://developer.amazonwebservices.com/connect/entry.jspa?externalID=1663">here</a>.  I will add an indicator on where i am running my commands, either on controling machine or on instance.  On variables or values i assumed that you already know how to get them, the ec2-describe-instances/volume..etc.  If the ec2 commands is not available on your system make sure you have the <a href="http://developer.amazonwebservices.com/connect/entry.jspa?externalID=351&amp;categoryID=88">ec2 api tools</a> or have your environment variables configured.</p>
+
+<p><strong>Objective #1: Format EBS and mount on a running instance</strong></p>
+
+<ul>
+<li><p>Run instance of private ami and take note of the zone (default is us-east-1a - not sure :))
+<code>controlling machine$:  ec2-run-instances -z us-east-1a --key YOURKEYPAIR ami-xxxxx</code></p></li>
+<li><p>Create ebs volume with 10GB size.  Note the use of same zone so the volume can be attached to the instance above.  Check the EBS docs for more details on Zones.
+<code>controlling machine$:  ec2-create-volume -z us-east-1a -s 10</code></p></li>
+<li><p>Attach the zone to your instance, ex: as /dev/sdh
+<code>controlling machine$:  ec2-attach-volume -d /dev/sdh -i i-IIII1111 vol-VVVV1111</code></p></li>
+<li><p>Login to your instance and format your ebs drive on /dev/sdh. It's your choice on what filesystem to use.  For my activity, i used xfs as i was advised that it is easier/faster to increase/shrink xfs filesystem compared to ext3 - and on the above reference xfs as used.
+controlling machine$:  <code>ssh -i ssh_key root@ec2.xxxxx.amazonaws.com</code>
+(host may not be on this format, just refer to the details on your instance)
+<code>instance$: yum install xfsprogs
+instance$: modprobe xfs
+instance$: mkfs.xfs /dev/sdh</code></p></li>
+<li><p>Mount the ebs volume.
+<code>instance$: mount -t xfs /dev/sdh /ebs</code></p></li>
+</ul>
+
+
+<p><strong>Objective #2: Setup a MySQL server with the datastore on EBS partition</strong></p>
+
+<ul>
+<li><p>Install mysql on your running instance, edit /etc/my.cnf and set the value for datadir to /ebs (my example), and start your MySQL.
+<code>instance$: yum install mysql-server
+instance$: vi /etc/my.cnf
+instance$: /etc/init.d/mysqld start</code></p></li>
+<li><p>Create a sample database to test
+<code>instance$: mysql
+mysql&gt; create database ebstest;
+mysql&gt; quit
+instance$:  ls /ebs/</code></p></li>
+</ul>
+
+
+<p><strong>Objective #3: Setup the partition(EBS) to start at boot time of AMI</strong></p>
+
+<ul>
+<li><p>I was advised here to create an init script that will attach the ebs volume to my running instance and i was given a sample script (for debian) that i modified to my need (for CentOS) and added some stuff.  I encountered several issues here as my init script failed to start correctly, like my environment variable is not available or incorrect paths etc.  And was able to bundle four or five times. :)  In short the script (below) does the automation, i only need to add this on my start up - so for the process, please check or continue reading the notes/comments on the script below.  Btw, I just added the section to start MySQL inside the init script, but of course you can separate them.</p></li>
+<li><p>After creating a init script with the correct variables/filenames, bundle or create new AMI.  Commands below are summary from a video tutorial - i forgot the link :)  Run help for each command to get details on the options used, ex: 'ec2-bundle-vol -h'.
+<code>instance$: cd /mnt
+instance$: mkdir ami
+instance$: ec2-bundle-vol -d /mnt/ami -k /root/.ec2/pk.xxx.pem -c /root/.ec2/cert.xxx.pem -u xxxx-xxxx-xxxx
+instance$: ec2-upload-bundle -b bucket1 -m /mnt/ami/image.manifest.xml -a XXXXXX -s xxxXXXXx
+controlling machine$: ec2-register bucket1/image.manifest.xml</code></p></li>
+<li><p>Test your new AMI - run new instance and check if your ebs volume is attached - goodluck!</p></li>
+</ul>
+
+
+<p><strong>Init Script Here: <a href="http://linuxsysadminblog.com/images/2009/07/mountebs"> mountebs</a></strong></p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[My First Amazon EC2 Setup (CentOS AMI)]]></title>
+    <link href="http://linuxsysadminblog.com/2009/06/my-first-amazon-ec2-setup-centos-ami/"/>
+    <updated>2009-06-29T07:52:12+08:00</updated>
+    <id>http://linuxsysadminblog.com/2009/06/my-first-amazon-ec2-setup-centos-ami</id>
+    <content type="html"><![CDATA[<p>Here's my first try working with Amazon Web Services. Covered tasks are the following:
+* getting familiar with AWS, specially EC2 and S3.
+* working with EC2 instance using CentOS image - search, start/stop, and do some customization of an instance
+* create AMIs (private) and start instance from it.
+*  S3 buckets - upload files.</p>
+
+<p>I based my instructions on previous post on <a href="http://linuxsysadminblog.com/2009/06/howto-get-started-with-amazon-ec2-api-tools/"><strong>Howto Get Started With Amazon EC2 API Tools</strong></a>, so I won't give details on some steps.  And this post will cover mainly the steps taken to complete my objectives above.</p>
+
+<p>To start, I signed up for an account and enabled EC2 and S3 services, and generate X509 certificate.  Next, I selected a test server running CentOS 5.3 with Cpanel and installed <em>java</em> (openjdk 1.6, using <em>yum</em>) as a requirement.</p>
+
+<p>Then, download <a href="http://developer.amazonwebservices.com/connect/entry.jspa?externalID=351&amp;categoryID=88">EC2 API Tools</a> and extract to my working directory at <em>/myhome/.ec2/</em> and upload your private key and x509 certificates. Don't forget to follow the filename format of cert-xxx.pem and pk-xx.pem.</p>
+
+<p>Export shell variables (posted on the previous post) and specify the correct private and x509 path.  Then run source /myhome/.bashrc or open new terminal to load new environment variables.</p>
+
+<p>Setup EC2 keypair. At first i used the certificate from different account but i got the error below:
+<code>
+Client.AuthFailure: AWS was not able to validate the provided access credentials
+</code>
+I searched for this error and one suggestion is to chmod your certificate and key files to 600 but it didn't help me.  My problem is on our account because one of my teammates changed our account password and probably generated new keys.  Anyway, this is where i signed up for a new account and proceeded without issues.</p>
+
+<p>Search for the AMIs to use.  Following the steps listed on the instructions, I tried several AMI's (start/stop processes).  I observed some AMI's took longer to start compare to others but i have no idea why :).  Btw, you can also search for AMI's, and start/stop them from Amazon Management Console (EC2 Dashboard).</p>
+
+<p>My next task is to create my private AMIs and here's a good video tutorial on <a href="http://s3.amazonaws.com/awsVideos/CustomizeAnExistingAMI/wmv/Customize%20an%20Existing%20AMI.wmv">Customizing an existing AMI and create your own AMI from it</a>.  From this part that I need to setup my S3 bucket or directory to store my AMI.  There's a Firefox addon called <a href="https://addons.mozilla.org/en-US/firefox/addon/3247">S3Fox</a> that my friend suggested but unfortunately i can't install it on my Firefox due to some errors.  I found and tried this <a href="http://www.bucketexplorer.com/">BucketExplorer</a> for creating my S3 Bucket.  Btw, this one is commercial and you can try it for 30 days.  I haven't checked for other apps.  :)</p>
+
+<p>Back to creating my private AMI based on the above video, I ran into issue with ec2-bundle-vol command as it is not included on the AMI that i used, so i search for other AMIs that includes the EC2 Tools and found one from RightScale (CentOS5V1_10.img.manifest.xml).</p>
+
+<p>After this i was able to complete my private AMI and start new instance from it using the above steps without any issues.</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Moving Drupal / Civicrm Sites]]></title>
+    <link href="http://linuxsysadminblog.com/2009/06/moving-drupalcivicrm-sites/"/>
+    <updated>2009-06-29T05:39:10+08:00</updated>
+    <id>http://linuxsysadminblog.com/2009/06/moving-drupalcivicrm-sites</id>
+    <content type="html"><![CDATA[<p>In this guide i will provide the steps in moving Drupal sites with CiviCRM - with Drupal and CiviCRM in one or separate databases.  I will outline the steps and sample commands but won't give much details, so feel free to ask if you need any clarifications.  Also, refer to my previous guide on "<a href="http://linuxsysadminblog.com/2009/04/drupal-howto-duplicate-copy-drupal-site/">HowTo Duplicate or Copy Drupal Site</a>" for detailed instructions, commands, and sample shell scripts.</p>
+
+<p><strong>Moving Files:</strong></p>
+
+<ul>
+<li><p>Copy Drupal file and preserve mode (ownerships, permissions, etc)
+Example: <code>cp -rp drupal_source drupal_destination</code>
+Review your directory permissions on sites/default/files, sites/default/files/civicrm, and other directories.</p></li>
+<li><p>Update references to Drupal url, path, and database details (name, user, pass, and host). Sample commands below using grep:
+<code>
+find /path/to/drupal -type f -exec perl -pi -e "s/example.com/example2.com/g" {} \;
+find /path/to/drupal -type f -exec perl -pi -e "s/public_html\/example/public_html\/example2/g" {} \;
+find /path/to/drupal -type f -exec perl -pi -e "s/db_name/db_name2/g" {} \;
+find /path/to/drupal -type f -exec perl -pi -e "s/db_user/db_user2/g" {} \;
+find /path/to/drupal -type f -exec perl -pi -e "s/db_pass/db_pass2/g" {} \;
+</code></p></li>
+</ul>
+
+
+<p><strong>Moving Database/s:</strong></p>
+
+<p><strong>Case 1:  Combined CiviCRM and Drupal Database.</strong></p>
+
+<ul>
+<li>Create sql dump of source database.<br/>
+ Example: <code>mysqldump -Q -udb_user -pdbpass db_name &gt; db_name.sql</code></li>
+<li>Import to destination database.
+ Example: <code>mysql -udb_user2 -pdbpass2 db_name2 &lt; db_name.sql</code></li>
+<li>Update references to Drupal url, path, and database details (name, user, pass, and host) of non-CiviCRM tables.  You can use PhpMyAdmin to export this tables, then do the search/replace process on your local editor, and upload back the updates sql.  You can also dump the tables from using command line (but you'll have a long list of tables) and do the grep (same as above) and re-import the updated sql file.</li>
+<li>Update CiviCRM configurations from Drupal Admin section.  You need to update the "Resource URLs" and "Directories".<br/>
+ CiviCRM Admin Settings:  <code>Administer Civicrm &gt; Global Settings &gt; Directories    (or use the direct url:  /civicrm/admin/setting/path?reset=1)</code>
+ CiviCRM Admin Settings:  <code>Administer Civicrm &gt; Global Settings &gt; Resource Urls  (or use the direct url:  /civicrm/admin/setting/url?reset=1)</code></li>
+<li>Optional:  You can empty Sessions and Cache tables if you want.</li>
+</ul>
+
+
+<p><strong>Case 2:  Separate CiviCRM and Drupal Database </strong>(recommended install for CiviCRM).</p>
+
+<p>Process for this setup is almost the same as Case 1, the difference is on the import process for databases.  I'll just provide the complete info below.</p>
+
+<ul>
+<li>Create sql dump of source databases.<br/>
+Examples:
+<code>mysqldump -Q -udb_user -pdbpass db_name_drupal &gt; db_name_drupal.sql</code>
+<code>mysqldump -Q -udb_user -pdbpass db_name_civicrm &gt; db_name_civicrm.sql</code></li>
+<li>Import directly the CiviCRM database.<br/>
+Example: <code>mysql -udb_user2 -pdbpass2 db_name2_civicrm &lt; db_name_civicrm.sql</code></li>
+<li>Update CiviCRM configurations from Drupal Admin section.  You need to update the "Resource URLs" and "Directories".<br/>
+ CiviCRM Admin Settings:  <code>Administer Civicrm &gt; Global Settings &gt; Directories    (or use the direct url:  /civicrm/admin/setting/path?reset=1)</code>
+ CiviCRM Admin Settings:  <code>Administer Civicrm &gt; Global Settings &gt; Resource Urls  (or use the direct url:  /civicrm/admin/setting/url?reset=1)</code></li>
+<li>Update references to Drupal url, path, and database details (name, user, pass, and host) of Drupal database dump.
+ <code>perl -pi -e "s/example.com/example2.com/g"  db_name_drupal.sql</code>
+ <code>perl -pi -e "s/public_html\/example/public_html\/example2/g"  db_name_drupal.sql</code></li>
+<li>Import the Drupal database.
+ Example: <code>mysql -udb_user2 -pdbpass2 db_name2_drupal &lt; db_name_drupal.sql</code></li>
+<li>Optional:  You can empty Sessions and Cache tables if you want.</li>
+</ul>
+
+
+<p>That's All!</p>
+]]></content>
+  </entry>
+  
+</feed>

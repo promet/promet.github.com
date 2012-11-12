@@ -1,0 +1,908 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Linux Sysadmin Blog</title>
+  <meta name="author" content="Promet OPS Team">
+
+  
+  <meta name="description" content="In some cases you would want to have your site use SSL (https://) at all times you can do this by using: 1.) Using Htaccess/mod_rewrite. You only &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://linuxsysadminblog.com/blog/page/14/">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="/javascripts/ender.js"></script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <link href="/atom.xml" rel="alternate" title="Linux Sysadmin Blog" type="application/atom+xml">
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+<!-- Google Form for Contact Page -->
+<!-- jQuery -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+<script type="text/javascript">
+    // Avoid conflict with ender.js.
+jQuery.noConflict();
+</script>
+<!-- jQuery Form Plugin -->
+<script src="http://malsup.github.com/jquery.form.js"></script>
+<script src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.9/jquery.validate.min.js"></script> 
+<script src="/javascripts/google_form.js"></script>
+<!-- Google Form for Contact Page End here -->
+
+
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-120251-38']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">Linux Sysadmin Blog</a></h1>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:linuxsysadminblog.com" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/our-team">Our Team</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+  <li><a href="/blog/about">About</a></li>
+  <li><a href="/blog/contact">Contact</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div class="blog-index">
+  
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/2009/03/htaccessmod_rewrite-force-url-to-use-sslhttps/">Force Url to Use SSL/https</a></h1>
+    
+    
+      <p class="meta">
+        
+  
+
+
+<span class="byline author vcard">Posted by <span class="fn"><a href="/blog/our-team/gerold-mercadero.html">Gerold Mercadero</a></span></span>
+
+ - 
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2009-03-09T23:55:43+08:00" pubdate data-updated="true">Mar 9<span>th</span>, 2009</time>
+        
+         | <a href="/2009/03/htaccessmod_rewrite-force-url-to-use-sslhttps/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>In some cases you would want to have your site use SSL (https://) at all times you can do this by using:</p>
+
+<p><strong>1.)  Using Htaccess/mod_rewrite. </strong>You only need to create a <em>.htaccess</em> file on your home directory and add the codes below:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>&lt;IfModule mod_rewrite.c&gt;
+</span><span class='line'>RewriteEngine On
+</span><span class='line'>RewriteCond %{HTTPS} !=on
+</span><span class='line'>RewriteRule ^/(.*) https://%{SERVER_NAME}/$1 [R,L]
+</span><span class='line'>&lt;/IfModule&gt;</span></code></pre></td></tr></table></div></figure>
+
+
+<p>The above codes may not work on other Apache/php setup but i&#8217;m not sure what&#8217;s the exact configuration variable for that.</p>
+
+<p>Anyway, here are my alternatives.  Either of them is fine if you&#8217;re running http and https on standard ports (http=80, https=443), otherwise change the value to your custom http or https port.  Change <em>domain.com</em> to your domain.</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>&lt;IfModule mod_rewrite.c&gt;
+</span><span class='line'>RewriteEngine On
+</span><span class='line'>RewriteCond %{SERVER_PORT} ^**80**$
+</span><span class='line'>RewriteRule ^(.*)$ https://**domain.tld**/$1 [R,L]
+</span><span class='line'>&lt;/IfModule&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;IfModule mod_rewrite.c&gt;
+</span><span class='line'>RewriteEngine On
+</span><span class='line'>RewriteCond %{SERVER_PORT} !^443$
+</span><span class='line'>RewriteRule ^(.*)$ https://**domain.tld**/$1 [L,R]
+</span><span class='line'>&lt;/IfModule&gt;</span></code></pre></td></tr></table></div></figure>
+
+
+<p><strong>2.) PHP function. </strong>If your site use PHP you can redirect the url to SSL/https using this function:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>&lt;?php
+</span><span class='line'>function ForceHTTPS(){
+</span><span class='line'>if( $_SERVER['HTTPS'] != ``"on")   {
+</span><span class='line'>//if( $_SERVER['SERVER_PORT'] == 80 )   {  _**&lt;&lt;-- use this line if the above will not work.**_``
+</span><span class='line'>$new_url = "https://" . $_SERVER['SERVER_NAME'] . $_SERVER['REQUEST_URI'];
+</span><span class='line'>header(``"``Location: $new_url``"``);
+</span><span class='line'>exit; }
+</span><span class='line'>}
+</span><span class='line'>?&gt;</span></code></pre></td></tr></table></div></figure>
+
+
+<p>If you are using an application/script wherein you can enter the settings for site url (either from database or config file), it is better to use that settings.</p>
+
+<p>Let me know if you run into issues, maybe i can help.  :)</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/2009/03/drupal-performance-tips-from-drupalcon/">Drupal Performance Tips From DrupalCon</a></h1>
+    
+    
+      <p class="meta">
+        
+  
+
+
+<span class="byline author vcard">Posted by <span class="fn"><a href="/blog/our-team/andrew-kucharski.html">Andrew Kucharski</a></span></span>
+
+ - 
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2009-03-05T12:27:21+08:00" pubdate data-updated="true">Mar 5<span>th</span>, 2009</time>
+        
+         | <a href="/2009/03/drupal-performance-tips-from-drupalcon/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>Still reporting from DrupalCon. So far there have been a number of sessions I have attended. Here are some highlights from those sessions on how to increase performance on your drupal site.</p>
+
+<ul>
+<li>Look at the number of requests a page makes to the server</li>
+<li>Use yslow to measure page rendering (often a page performance is perceived, not just based on the server response time)</li>
+<li>Remove search, use alternate solutions such as Apache Solr or Google Search API</li>
+<li>Use CDN as much as possible</li>
+<li>Use Reverse Proxy Cache and memcache</li>
+<li>Obviously use drupal cache</li>
+</ul>
+
+
+<p>Some other notes that are somewhat related to drupal performance and site performance management in a clustered hosting environment.</p>
+
+<p><strong>Manual updates and rollback</strong></p>
+
+<p>OLD WAY: <code>tar, move/copy untar restart services</code>
+OLD WAY: <code>rsync</code>
+BETTER WAY: <a href="http://www.capify.org/">Capistrano </a></p>
+
+<p><strong>Managing systems:</strong></p>
+
+<p>BETTER WAY: <a href="http://trac.mcs.anl.gov/projects/bcfg2">bcfg2</a></p>
+
+<p><strong>Monitoring Tools</strong></p>
+
+<ul>
+<li>Capacity Load: analyzing trends, predicting load, checking results of configuration and software changes (<a href="http://www.cacti.net/">cacti</a>, <a href="http://munin.projects.linpro.no/">munin</a>)</li>
+<li>Failure: analyzing downtime, notification (<a href="http://www.nagios.org/">nagios</a> - using <strong>nrpe</strong> agents to monitor diverse services (do we use it this way?) , hyperin)</li>
+</ul>
+
+
+<p>Use monitoring tools to closely observe cluster replication and cashing as the failures in this area are the most difficult to solve.</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/2009/03/apache-solr-drupal-integration/">Apache Solr Drupal Integration</a></h1>
+    
+    
+      <p class="meta">
+        
+  
+
+
+<span class="byline author vcard">Posted by <span class="fn"><a href="/blog/our-team/andrew-kucharski.html">Andrew Kucharski</a></span></span>
+
+ - 
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2009-03-04T12:25:15+08:00" pubdate data-updated="true">Mar 4<span>th</span>, 2009</time>
+        
+         | <a href="/2009/03/apache-solr-drupal-integration/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>I am at Drupal Conference attending the Acquia Apache Solr presentation. This integration has a lot of promise in my opinion.  The drupal search is not that useful, we&#8217;ve actually replaced drupal search on our implementations with google custom search.</p>
+
+<p><a href="http://lucene.apache.org/solr/">Apache Solr</a> is an open source project:</p>
+
+<blockquote><p>Solr is an open source enterprise search server based on the         <a href="http://lucene.apache.org/java/">Lucene Java</a> search library, with XML/HTTP and JSON APIs,         hit highlighting, faceted search, caching, replication, a web administration interface and many more features.         It runs in a Java servlet container such as <a href="http://tomcat.apache.org/">Tomcat</a>.</p></blockquote>
+
+<p>Apache Solr has a lot of promise improving the search results which, considering the down sides of drupal search, would greatly improve the user experience.</p>
+
+<p>Acquia has the Apache Solr search service in beta right now and it will be offered as a hosted offering.</p>
+
+<p>We saw a preview of the www.drupal.org site redesign and it definitely looks like they will be using the Apache Solr.   The demo of the search results page looked very promising, with features such as search suggest, filter and more features to come.</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/2009/03/free-trial-of-cloud-computing/">Free Trial of Cloud Computing</a></h1>
+    
+    
+      <p class="meta">
+        
+  
+
+
+<span class="byline author vcard">Posted by <span class="fn"><a href="/blog/our-team/pim-van-der-wal.html">Pim Van der Wal</a></span></span>
+
+ - 
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2009-03-03T08:55:17+08:00" pubdate data-updated="true">Mar 3<span>rd</span>, 2009</time>
+        
+         | <a href="/2009/03/free-trial-of-cloud-computing/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>For those of you who have heard all the hype about cloud computing but haven&#8217;t dug your hands into it yet there is a company offering free trials of cloud servers: <a href="http://www.rightscale.com/products/free_edition.php">http://www.rightscale.com/products/free_edition.php</a>. They offer 10 hours of playing around with cloud servers on Amazon EC2 which amounts to a whopping $1 value but the good news is that you only have to put in an e-mail address to register. The images they offer are quite extensive and using them it will give you a good insight into what the limitations of using cloud servers are. I found it very useful to see that are pending times before a server actually gets started and something similar when terminating a server. These times are usually several minutes and should definitely be taken into account when the server needs to get started in a hurry.</p>
+
+<p>Additionally I have to say that the scripting abilities offered by RightScale seem quite extensive and very useful.The scripting allows for some very powerful ways of setting up servers. The prices associated with those services however seem a bit steep compared to the bare bones services offered by Amazon.</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/2009/02/even-the-clouds-come-down-to-earth-cloud-services-crash-just-like-everyone-else-sometimes/">Even the Clouds Come Down to Earth - Cloud Services Crash Just Like Everyone Else Sometimes</a></h1>
+    
+    
+      <p class="meta">
+        
+  
+
+
+<span class="byline author vcard">Posted by <span class="fn"><a href="/blog/our-team/andrew-kucharski.html">Andrew Kucharski</a></span></span>
+
+ - 
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2009-02-24T12:39:50+08:00" pubdate data-updated="true">Feb 24<span>th</span>, 2009</time>
+        
+         | <a href="/2009/02/even-the-clouds-come-down-to-earth-cloud-services-crash-just-like-everyone-else-sometimes/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>During our weekly sysadmin call this morning several of our experienced sysadmins quickly pointed out that clients seeking very high up time should not necessarily look for it on the cloud.  I couldn&#8217;t believe it, but almost as an omen, this story came on my RSS feed from Webware:  <a href="http://news.cnet.com/8301-17939_109-10170636-2.html?part=rss&amp;tag=feed&amp;subj=Webware">Google apologizes for email outage</a></p>
+
+<blockquote><p><a href="http://news.cnet.com/8301-1023_3-9989019-93.html">Outages pose problems for Google</a> as it tries to persuade companies to buy into its cloud-computing vision, in which applications are hosted on the Internet rather than on corporate computers. But Google argues its service availability is competitive with most organizations&#8217; abilities to run their own e-mail servers.</p></blockquote>
+
+<p>Clearly the google cloud isn&#8217;t going to be the only one having an outage from time to time.  It seems to me that while still in the infancy, these services are vulnerable to unexpected problems, kind of like the famous first internet worm - <a href="http://en.wikipedia.org/wiki/Morris_worm">the Morris worm</a> -  that brought the internet to its knees back in the 1980s.</p>
+
+<p>While cloud services offer a lot of promise, and overall should offer a better level of redundancy and up time, this shows that the cloud is also not immune to some down time.</p>
+
+<p>Here is the link to the original <a href="http://googleblog.blogspot.com/2009/02/current-gmail-outage.html">Google cloud problem</a> blog post.</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/2009/02/ubuntu-910-e2809ckarmic-koalae2809d-will-use-eucalyptus-for-your-own-cloud-computing-solution/">Ubuntu 9.10 “Karmic Koala” Will Use Eucalyptus for Your Own Cloud Computing Solution</a></h1>
+    
+    
+      <p class="meta">
+        
+  
+
+
+<span class="byline author vcard">Posted by <span class="fn"><a href="/blog/our-team/marius-ducea.html">Marius Ducea</a></span></span>
+
+ - 
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2009-02-24T07:36:08+08:00" pubdate data-updated="true">Feb 24<span>th</span>, 2009</time>
+        
+         | <a href="/2009/02/ubuntu-910-e2809ckarmic-koalae2809d-will-use-eucalyptus-for-your-own-cloud-computing-solution/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p><strong>Mark Shuttleworth</strong> <a href="https://lists.ubuntu.com/archives/ubuntu-devel-announce/2009-February/000536.html">announced</a> last Friday that <strong>Ubuntu 9.10</strong> will be named <strong>Karmic Koala</strong>, and also presented what we should expect from the future version of Ubuntu:</p>
+
+<ul>
+<li><p>the <em>desktop </em>version will have a <em>new look</em> (more beautiful)</p></li>
+<li><p>on the <em>server</em> side as everybody these days Ubuntu&#8217;s future will be targeting the “cloud”. They will have official supported <strong>Ubuntu Amazon EC2 AMIs</strong>, as ready-to-run appliances.  Also they will support the open source project <strong><a href="http://eucalyptus.cs.ucsb.edu/">Eucalyptus</a> </strong>that enables you to create an <em>EC2-style cloud using your own hardware</em>. Eucalyptus, will be included in ubuntu repos allowing users to build and manage private clouds more easily.</p></li>
+</ul>
+
+
+<p>For full details: <a href="https://lists.ubuntu.com/archives/ubuntu-devel-announce/2009-February/000536.html">https://lists.ubuntu.com/archives/ubuntu-devel-announce/2009-February/000536.html</a></p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/2009/02/nagios-how-to-check-if-remote-process-is-running/">Nagios: How to Check if Remote Process Is Running</a></h1>
+    
+    
+      <p class="meta">
+        
+  
+
+
+<span class="byline author vcard">Posted by <span class="fn"><a href="/blog/our-team/gerold-mercadero.html">Gerold Mercadero</a></span></span>
+
+ - 
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2009-02-24T04:00:33+08:00" pubdate data-updated="true">Feb 24<span>th</span>, 2009</time>
+        
+         | <a href="/2009/02/nagios-how-to-check-if-remote-process-is-running/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>We have a monitoring server running <a href="http://www.nagios.org/">Nagios</a> and we needed to add checks for Nginx process on a new server.  Basically, you only need to install NRPE to monitor services, processes, disk space, load, etc on your remote machine.  Check the <a href="http://nagios.sourceforge.net/docs/nrpe/NRPE.pdf">NRPE docummention</a> for complete reference and here&#8217;s a quick <a href="http://sysbible.org/x/2008/11/10/how-to-install-nagios-nrpe-under-debian-linux/">NRPE installation guide for Debian</a>.</p>
+
+<p>For my objective i only need to check if Nginx process is running and will use the check_procs.  NRPE and Nagios Plugins were installed and i can check the Nginx process locally using the following commands:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>/usr/local/nagios/libexec/check_procs -c 1:30 -C nginx</span></code></pre></td></tr></table></div></figure>
+
+
+<p>wherein:
+<code>-c 1:30</code> &lt;&#8211; refers to the Critical range for number of Nginx processes. If there process count is below 1 and above 30 this will send me a Critical notice.  If you wan to add a Warning level you can use &#8220;-w 1:25&#8221; - adjust the number of processes for you needs.
+<code>-C nginx</code> &lt;&#8211; this will check for the command name (nginx)</p>
+
+<p><strong>NOTE:</strong> For complete reference on this check and other samples please refer to the <a href="http://nagioswiki.org/wiki/Plugin:check_procs">NagiosWiki</a> page.</p>
+
+<p>Below are my configurations:</p>
+
+<p>NRPE(remote):  <code>/etc/nagios/nrpe_local.cfg</code></p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>command[check_nginx]=/usr/local/nagios/libexec/check_procs -c 1:30 -C nginx</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Nagios(host):  <code>/usr/local/nagios/etc/objects/localhost.cfg</code></p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>define service {
+</span><span class='line'>use                            generic-service         ; Name of service template to use
+</span><span class='line'>host_name                      HOST/IPADDRESS
+</span><span class='line'>service_description            CHECK_NGINX
+</span><span class='line'>check_period                   24x7
+</span><span class='line'>max_check_attempts             3
+</span><span class='line'>normal_check_interval          5
+</span><span class='line'>retry_check_interval           3
+</span><span class='line'>contact_groups                 Admins
+</span><span class='line'>notification_interval          480
+</span><span class='line'>notification_period            24x7
+</span><span class='line'>notification_options           w,u,c,r
+</span><span class='line'>check_command                  check_nrpe!check_nginx
+</span><span class='line'>notifications_enabled          1
+</span><span class='line'>}</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Nagios version is 3.0.  Nagios monitoring and remote server are running Debian Etch.</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/2009/02/best-definition-of-cloud-computing-to-date/">Best Definition of Cloud Computing - to Date</a></h1>
+    
+    
+      <p class="meta">
+        
+  
+
+
+<span class="byline author vcard">Posted by <span class="fn"><a href="/blog/our-team/andrew-kucharski.html">Andrew Kucharski</a></span></span>
+
+ - 
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2009-02-23T00:23:24+08:00" pubdate data-updated="true">Feb 23<span>rd</span>, 2009</time>
+        
+         | <a href="/2009/02/best-definition-of-cloud-computing-to-date/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>The definition of cloud computing has been rather elusive.  Some CEO&#8217;s like, Larry Elison are frustrated because they claim that their sofrware already runs on the cloud.  Others, like the the slash dot rhino herd has made this <a href="http://tech.slashdot.org/article.pl?sid=08/07/17/2117221&amp;from=rss">cloud computing definition</a> post one of the most popular of last year:</p>
+
+<blockquote><p>&#8220;Even though IBM&#8217;s Irving Wladawsky Berger reports a leading analyst as having said recently that &#8216;There is a clear consensus that there is no real consensus on what cloud computing is,&#8217; here are no fewer than twenty attempts at a definition of the infrastructural paradigm shift that is sweeping across the Enterprise IT world — some of them really quite good. From the article: &#8216;Cloud computing is&#8230;the user-friendly version of grid computing.&#8217; (Trevor Doerksen) and &#8216;Cloud computing really is accessing resources and services needed to perform functions with dynamically changing needs. An application or service developer requests access from the cloud rather than a specific endpoint or named resource.&#8217; (Kevin Hartig)&#8221;</p></blockquote>
+
+<p>But this month, the <a href="http://www.eecs.berkeley.edu/">Electrical Engineering and Computer Sciences University of California at Berkeley</a> has put a highly acclaimed paper together on the cloud: <a href="http://www.eecs.berkeley.edu/Pubs/TechRpts/2009/EECS-2009-28.pdf">Above the Clouds: A Berkeley View of Cloud Computing</a>.</p>
+
+<p>We uploaded it here also: Above the Clouds: A Berkeley View of Cloud Computing - a 25 page pdf document.</p>
+
+<p>Here is how Berkely sees it: </p>
+
+<blockquote><p>Cloud Computing refers to both the applications delivered as services over the Internet and the hardware and systems software in the datacenters that provide those services.</p></blockquote>
+
+<p>The services themselves have long been referred to as Software as a Service (SaaS).</p>
+
+<p>The datacenter hardware and software is what we will call a Cloud. When a Cloud is made available in a pay-as-you-go manner to the general public, we call it a Public Cloud; the service being sold is Utility Computing.</p>
+
+<p>We use the term Private Cloud to refer to internal datacenters of a business or other organization, not made available to the general public.</p>
+
+<p>Thus, Cloud Computing is the sum of SaaS and Utility Computing, but does not include Private Clouds.</p>
+
+<p>The paper is great - it is interesting to read, has some great quotes and it lists opportunities and the current top 10 obstacles to cloud computing.  Highly recommended.</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/2009/02/cloud-computing-chart/">Cloud Computing Chart</a></h1>
+    
+    
+      <p class="meta">
+        
+  
+
+
+<span class="byline author vcard">Posted by <span class="fn"><a href="/blog/our-team/marius-ducea.html">Marius Ducea</a></span></span>
+
+ - 
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2009-02-19T07:00:28+08:00" pubdate data-updated="true">Feb 19<span>th</span>, 2009</time>
+        
+         | <a href="/2009/02/cloud-computing-chart/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>Here is a great chart from <em>James Maguire</em> article <a href="http://itmanagement.earthweb.com/entdev/article.php/11070_3798591_6/Five-Companies-Shaping-Cloud-Computing-Who-Wins.htm">&#8220;Five Companies Shaping Cloud Computing: Who Wins?&#8221;</a>, that provides an overall comparative look at the current vendors in cloud computing:</p>
+
+<p><img src="http://linuxsysadminblog.com/images/2009/02/cloud-computing-chart.jpg" alt="cloud-computing-chart" /></p>
+
+<p>While you are here you go ahead and read his <a href="http://itmanagement.earthweb.com/entdev/article.php/11070_3798591_1/Five-Companies-Shaping-Cloud-Computing-Who-Wins.htm">article</a> also as it has some good information on the future of the “big five” in cloud computing.</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/2009/02/cloud-computing-scenarios-for-database-servers/">Cloud Computing Scenario&#8217;s for Database Servers</a></h1>
+    
+    
+      <p class="meta">
+        
+  
+
+
+<span class="byline author vcard">Posted by <span class="fn"><a href="/blog/our-team/pim-van-der-wal.html">Pim Van der Wal</a></span></span>
+
+ - 
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2009-02-17T10:09:35+08:00" pubdate data-updated="true">Feb 17<span>th</span>, 2009</time>
+        
+         | <a href="/2009/02/cloud-computing-scenarios-for-database-servers/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>We&#8217;ve been investigating the possibilities of using cloud computing for our clients. Especially Amazon EC2 has the potential to be be really effective in offering flexible, pay-as-you-go computing. From my own perspective I have been looking at how to use cloud computing in combination with MySQL and I must say that I&#8217;m a bit sceptical about the effectiveness of cloud computing in replacing the primary database server. First off there does not seem to be that much in the way of performance data for this type of installation. Can a cloud server really offer the I/O performance necessary to replace a dedicated database server? And even if the performance is equal, what is the main advantage? Scaling web sites is done by adding more servers in most cases but the same approach only works for database servers when clusters are used. So in what other scenario&#8217;s does cloud computing give us an edge?</p>
+
+<p><strong>Temporary reporting servers</strong></p>
+
+<p>Create a one time copy of an existing production database server to run specific heavy reports. This is ideal for monthly reports since the server only needs to be up and running for several hours per month.</p>
+
+<p><strong>Backup database server</strong></p>
+
+<p>This is a backup solution where the server is only allocated once there is a problem with the primary server which makes a lot of sense because the client only pays for the server once it is used. One downside to this scenario is that the server has to created and loaded with the latest backup which will result in a decent amount of downtime but at least all of this can be automated. A bigger problem is the loss of data since the latest backup.For our high availability sites we have a standby database server replicating all changes from the master so we can switch over at a moment&#8217;s notice without losing any data.</p>
+
+<p><strong>Migrations</strong></p>
+
+<p>Performing a migration or a system upgrade usually brings some downtime. Promoting a standby system to primary creates a single point of failure so it makes sense to create a remporary standby of the standby.</p>
+
+<p><strong>Development branches and testing environments</strong></p>
+
+<p>For development branches we usually only need an extra database for a short amount of time although truth be told, those database are not very large in general so we tend to put them on the same development database server anyway. The same is true for testing and QA. These activities usually occur in cycles which means that they are very attractive targets for cloud based servers.</p>
+
+<p><strong>Alternative data center</strong></p>
+
+<p>Yes, it happened to us once that our datacenter went off line due to a very heavy attack. Instead of finding another data center for these eventualities it could be useful to have cloud based backup servers defined. However, this requires the extra effort of keeping these instances up to date for this eventuality. Additionally, DNS caching will stop the switch from being instantaneous. A geographical load balancing solution would be the answer to that but at that point the cost for preparing for this eventuality will have to be compared to the loss due to down time.</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  <div class="pagination">
+    
+      <a class="prev" href="/blog/page/15/">&larr; Older</a>
+    
+    <a href="/blog/archives">Blog Archives</a>
+    
+    <a class="next" href="/blog/page/13/">Newer &rarr;</a>
+    
+  </div>
+</div>
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/2012/11/howto-bulk-import-dns-zones-to-softlayer-dns-using-cpanel/">HowTo: Bulk Import DNS Zones to Softlayer DNS using Cpanel</a>
+      </li>
+    
+      <li class="post">
+        <a href="/2012/08/integrate-sendgrid-with-redmine/">Integrate Sendgrid with Redmine</a>
+      </li>
+    
+      <li class="post">
+        <a href="/2012/07/rsback-task-x-is-locked-and-cannot-be-executed/">rsback: task x is locked and cannot be executed</a>
+      </li>
+    
+      <li class="post">
+        <a href="/2012/06/restore-xen-vm-from-lvm-snapshot-backups/">Restore Xen VM from LVM Snapshot Backups</a>
+      </li>
+    
+      <li class="post">
+        <a href="/2012/06/debian-6-backup-xen-with-lvm-and-rsnapshot/">Debian 6: Backup Xen with LVM and Rsnapshot</a>
+      </li>
+    
+  </ul>
+</section>
+
+<section>
+  <h1>GitHub Repos</h1>
+  <ul id="gh_repos">
+    <li class="loading">Status updating&#8230;</li>
+  </ul>
+  
+  <a href="https://github.com/promet">@promet</a> on GitHub
+  
+  <script type="text/javascript">
+    $.domReady(function(){
+        if (!window.jXHR){
+            var jxhr = document.createElement('script');
+            jxhr.type = 'text/javascript';
+            jxhr.src = '/javascripts/libs/jXHR.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(jxhr, s);
+        }
+
+        github.showRepos({
+            user: 'promet',
+            count: 0,
+            skip_forks: true,
+            target: '#gh_repos'
+        });
+    });
+  </script>
+  <script src="/javascripts/github.js" type="text/javascript"> </script>
+</section>
+
+
+<section>
+  <h1>Latest Tweets</h1>
+  <ul id="tweets">
+    <li class="loading">Status updating&#8230;</li>
+  </ul>
+  <script type="text/javascript">
+    $.domReady(function(){
+      getTwitterFeed("linuxsysadmnblg", 4, false);
+    });
+  </script>
+  <script src="/javascripts/twitter.js" type="text/javascript"> </script>
+  
+    <a href="http://twitter.com/linuxsysadmnblg" class="twitter-follow-button" data-show-count="false">Follow @linuxsysadmnblg</a>
+  
+</section>
+
+
+
+
+
+  
+</aside>
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2012 - Promet OPS Team -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'linuxsysadminblog';
+      
+        
+        var disqus_script = 'count.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'http://' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) {return;}
+  js = d.createElement(s); js.id = id;
+  js.src = "//connect.facebook.net/en_US/all.js#appId=212934732101925&xfbml=1";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = 'http://platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>

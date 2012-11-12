@@ -1,0 +1,490 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>A Day in the Life of Facebook Operations - Linux Sysadmin Blog</title>
+  <meta name="author" content="Promet OPS Team">
+
+  
+  <meta name="description" content="Notes from the &#8220;A Day in the Life of Facebook Operations&#8221; presentation by Tom Cook, Systems Engineer, Facebook at Surge2010 conference. &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://linuxsysadminblog.com/2010/09/a-day-in-the-life-of-facebook-operations/">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="/javascripts/ender.js"></script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <link href="/atom.xml" rel="alternate" title="Linux Sysadmin Blog" type="application/atom+xml">
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+<!-- Google Form for Contact Page -->
+<!-- jQuery -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+<script type="text/javascript">
+    // Avoid conflict with ender.js.
+jQuery.noConflict();
+</script>
+<!-- jQuery Form Plugin -->
+<script src="http://malsup.github.com/jquery.form.js"></script>
+<script src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.9/jquery.validate.min.js"></script> 
+<script src="/javascripts/google_form.js"></script>
+<!-- Google Form for Contact Page End here -->
+
+
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-120251-38']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">Linux Sysadmin Blog</a></h1>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:linuxsysadminblog.com" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/our-team">Our Team</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+  <li><a href="/blog/about">About</a></li>
+  <li><a href="/blog/contact">Contact</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      
+
+<div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">A Day in the Life of Facebook Operations</h1>
+    
+    
+      <p class="meta">
+        
+  
+
+
+<span class="byline author vcard">Posted by <span class="fn"><a href="/blog/our-team/andrew-kucharski.html">Andrew Kucharski</a></span></span>
+
+ - 
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2010-09-30T14:23:51+08:00" pubdate data-updated="true">Sep 30<span>th</span>, 2010</time>
+        
+         | <a href="#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>Notes from the &#8220;A Day in the Life of Facebook Operations&#8221; presentation by Tom Cook, Systems Engineer, Facebook at <a href="http://omniti.com/surge/2010">Surge2010</a> conference.</p>
+
+<p>So far this is the most attended session.  Standing room only available only before it start.</p>
+
+<p>What does facebook sysadmins have to support?</p>
+
+<ul>
+<li><p>Monthly 700 million minutes of time spent on fb</p></li>
+<li><p>6billion pieces of content updated</p></li>
+<li><p>3 billion photos</p></li>
+<li><p>1 million connect implementations</p></li>
+<li><p>1/2 billion active users</p></li>
+</ul>
+
+
+<p>Infrastructure Growth</p>
+
+<ul>
+<li><p>fb reached a limit on leasing datacenter space</p></li>
+<li><p>fb is building their own http://www.facebook.com/prinevilledatacenter</p></li>
+<li><p>currently serving out of california and Virginia</p></li>
+</ul>
+
+
+<p>Initially a LAMP stack.  LB -> Web Servers -> Services/Memcached/Databases</p>
+
+<p>Originally facebook was a simple Apache PHP site.  When fb started hitting a limit on this, they started compiling PHP into C++ (<a href="http://developers.facebook.com/blog/post/358">HipHop</a> for PHP).</p>
+
+<p>FB claims to be the biggest memcache deployment in the world.  They server 300 Terbytes of memcached data out of memory.</p>
+
+<p><a href="http://www.facebook.com/MySQLatFacebook">MySQL improvement</a>s contributed back is flashcache.</p>
+
+<p>Services supported</p>
+
+<ul>
+<li><p>News Feed</p></li>
+<li><p>Search</p></li>
+<li><p>Cache</p></li>
+</ul>
+
+
+<p>Service implementation languages</p>
+
+<ul>
+<li><p>C++</p></li>
+<li><p>PHP - front end</p></li>
+<li><p>python</p></li>
+<li><p>Ruby</p></li>
+<li><p>Java</p></li>
+<li><p>erlang (chat room)</p></li>
+</ul>
+
+
+<p>How do they talk between these?  Json?  SOAP?  No, fb implemented Thrift - ligtwaith software framework for cross language development, a common glue behind all facebook systems.</p>
+
+<p>For Systems, what does fb have to worry about on a daily basis?</p>
+
+<ul>
+<li><p>deployment</p></li>
+<li><p>monitoring</p></li>
+<li><p>data manaement</p></li>
+<li><p>Core operating updates</p></li>
+</ul>
+
+
+<p>Facebook OS is&#8230;. CentOS!</p>
+
+<p>Systems Management</p>
+
+<ul>
+<li><p>Configuration Management</p></li>
+<li><p>CFengine for system management</p></li>
+<li><p>On Demand</p></li>
+</ul>
+
+
+<p>Deployments</p>
+
+<ul>
+<li><p>Web Push - new code gets deployed to fb at least once a day.  Its a coordinated push, everyone is aware, notification happens to dev team.  Everyone sites on IRC during the push.  It is undestood by engineers and the rest of the company</p>
+
+<ul>
+<li><p>push software built over on-demand control tools</p></li>
+<li><p>code distributed via internal BitTorrent swarm</p></li>
+<li><p>php gets compiled, the few hundred MB binary gets rapidly pushed bia bit torrent.</p></li>
+<li><p>it takes one minute to push across the entire network</p></li>
+</ul>
+</li>
+<li><p>Backend Deployments - only Engineering and Operations.  Engineers write, test and display</p>
+
+<ul>
+<li><p>Quickly make performance decisions</p></li>
+<li><p>Expose changes to subset of real traffic</p></li>
+<li><p>No &#8216;commit and quit&#8217;</p></li>
+<li><p>Deeply involved in moving services to production</p></li>
+<li><p>Ops &#8216;embeded&#8217; into engineering teams</p></li>
+</ul>
+</li>
+<li><p>Heavy Change logging - pin pointing code to every push and change</p></li>
+</ul>
+
+
+<p>Monitoring and Metrics of servers and performance at facebook</p>
+
+<ul>
+<li><p><a href="http://ganglia.sourceforge.net/">Ganglia</a> - aggregated metrics</p>
+
+<ul>
+<li><p>fast</p></li>
+<li><p>straightforward</p></li>
+<li><p>nested grids &amp; pools</p></li>
+<li><p>over 5 million monitored metrics</p></li>
+</ul>
+</li>
+<li><p>facebook inhouse monitoring system</p></li>
+</ul>
+
+
+<p>Monitoring - facebook still uses <a href="http://www.nagios.org/">Nagios</a>!</p>
+
+<p>To manage complexity and the number of alarms and systems monitoring the fb team uses aggregation.  Initially alarms were managed by email.</p>
+
+<p>Scribe - high performance logging application.  Initially used syslog.  Also used Hadoop and Hive.</p>
+
+<p>How does it work and gets done?</p>
+
+<ul>
+<li><p>clear delineation of dependencies and responsibilities</p></li>
+<li><p>Constant Failure</p></li>
+<li><p>Servers were the first line of defense, then started focusing on racks</p></li>
+<li><p>Now is focused on clusters.  Logical delineation based on function (web, db, feed, etc)</p></li>
+<li><p>Next stage is datacenters - what to do if a natural disaster strikes?</p></li>
+<li><p>Constant Communication - information is shared constantly.</p>
+
+<ul>
+<li><p>IRC</p></li>
+<li><p>lots of automated bots, get and set data</p></li>
+<li><p>internal news updates</p></li>
+<li><p>&#8220;Headers&#8221; on internal tools</p></li>
+<li><p>Change log/feeds</p></li>
+</ul>
+</li>
+<li><p>Small teams</p></li>
+</ul>
+
+
+<p>Interesting fact - each fb server gets an update on average every eight minutes.</p>
+
+<p>Busiest day for FB is day after halloween :)</p>
+
+<p>URLS to check out:</p>
+
+<p><a href="http://www.facebook.com/Engineering">facebook.com/engineering</a></p>
+
+<p><a href="http://developers.facebook.com/opensource/">facebook.com/opensource</a></p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+
+<span class="byline author vcard">Posted by <span class="fn"><a href="/blog/our-team/andrew-kucharski.html">Andrew Kucharski</a></span></span>
+
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2010-09-30T14:23:51+08:00" pubdate data-updated="true">Sep 30<span>th</span>, 2010</time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/category/performance/'>Performance</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://linuxsysadminblog.com/2010/09/a-day-in-the-life-of-facebook-operations/" data-via="linuxsysadmnblg" data-counturl="http://linuxsysadminblog.com/2010/09/a-day-in-the-life-of-facebook-operations/" >Tweet</a>
+  
+  
+  
+    <div class="fb-like" data-send="true" data-width="450" data-show-faces="false"></div>
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/2010/09/keynote-summary-of-surge-conference/" title="Previous Post: Keynote summary of Surge conference">&laquo; Keynote summary of Surge conference</a>
+      
+      
+        <a class="basic-alignment right" href="/2010/10/surge2010-after-party-three-martini-chug/" title="next Post: Surge2010 after party - three martini chug">Surge2010 after party - three martini chug &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
+
+  <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/2012/11/howto-bulk-import-dns-zones-to-softlayer-dns-using-cpanel/">HowTo: Bulk Import DNS Zones to Softlayer DNS using Cpanel</a>
+      </li>
+    
+      <li class="post">
+        <a href="/2012/08/integrate-sendgrid-with-redmine/">Integrate Sendgrid with Redmine</a>
+      </li>
+    
+      <li class="post">
+        <a href="/2012/07/rsback-task-x-is-locked-and-cannot-be-executed/">rsback: task x is locked and cannot be executed</a>
+      </li>
+    
+      <li class="post">
+        <a href="/2012/06/restore-xen-vm-from-lvm-snapshot-backups/">Restore Xen VM from LVM Snapshot Backups</a>
+      </li>
+    
+      <li class="post">
+        <a href="/2012/06/debian-6-backup-xen-with-lvm-and-rsnapshot/">Debian 6: Backup Xen with LVM and Rsnapshot</a>
+      </li>
+    
+  </ul>
+</section>
+
+<section>
+  <h1>GitHub Repos</h1>
+  <ul id="gh_repos">
+    <li class="loading">Status updating...</li>
+  </ul>
+  
+  <a href="https://github.com/promet">@promet</a> on GitHub
+  
+  <script type="text/javascript">
+    $.domReady(function(){
+        if (!window.jXHR){
+            var jxhr = document.createElement('script');
+            jxhr.type = 'text/javascript';
+            jxhr.src = '/javascripts/libs/jXHR.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(jxhr, s);
+        }
+
+        github.showRepos({
+            user: 'promet',
+            count: 0,
+            skip_forks: true,
+            target: '#gh_repos'
+        });
+    });
+  </script>
+  <script src="/javascripts/github.js" type="text/javascript"> </script>
+</section>
+
+
+<section>
+  <h1>Latest Tweets</h1>
+  <ul id="tweets">
+    <li class="loading">Status updating...</li>
+  </ul>
+  <script type="text/javascript">
+    $.domReady(function(){
+      getTwitterFeed("linuxsysadmnblg", 4, false);
+    });
+  </script>
+  <script src="/javascripts/twitter.js" type="text/javascript"> </script>
+  
+    <a href="http://twitter.com/linuxsysadmnblg" class="twitter-follow-button" data-show-count="false">Follow @linuxsysadmnblg</a>
+  
+</section>
+
+
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2012 - Promet OPS Team -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'linuxsysadminblog';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://linuxsysadminblog.com/2010/09/a-day-in-the-life-of-facebook-operations/';
+        var disqus_url = 'http://linuxsysadminblog.com/2010/09/a-day-in-the-life-of-facebook-operations/';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'http://' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) {return;}
+  js = d.createElement(s); js.id = id;
+  js.src = "//connect.facebook.net/en_US/all.js#appId=212934732101925&xfbml=1";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = 'http://platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>

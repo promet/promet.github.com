@@ -1,0 +1,195 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: CLI | Linux Sysadmin Blog]]></title>
+  <link href="http://linuxsysadminblog.com/category/cli/atom.xml" rel="self"/>
+  <link href="http://linuxsysadminblog.com/"/>
+  <updated>2012-11-13T01:37:44+08:00</updated>
+  <id>http://linuxsysadminblog.com/</id>
+  <author>
+    <name><![CDATA[Promet OPS Team]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[HowTo remove a list of files]]></title>
+    <link href="http://linuxsysadminblog.com/2010/07/howto-remove-a-list-of-files/"/>
+    <updated>2010-07-09T16:33:28+08:00</updated>
+    <id>http://linuxsysadminblog.com/2010/07/howto-remove-a-list-of-files</id>
+    <content type="html"><![CDATA[<p>Here is a quick tip on how to remove a list of files. Let's say you have the list of files inside a file called <strong>files_to_remove</strong>. Usually I would do something like this:</p>
+
+<pre><code>LIST=\`cat files_to_remove\`
+</code></pre>
+
+<p>and then</p>
+
+<pre><code>ls -al $LIST
+</code></pre>
+
+<p>just to check what is in the list and if it looks good.</p>
+
+<p>And finally:</p>
+
+<pre><code>rm -vf $LIST
+</code></pre>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[HowTo display PHP errors when you don't have access to php.ini]]></title>
+    <link href="http://linuxsysadminblog.com/2009/09/howto-display-php-errors-when-you-dont-have-access-to-php-ini/"/>
+    <updated>2009-09-15T07:10:34+08:00</updated>
+    <id>http://linuxsysadminblog.com/2009/09/howto-display-php-errors-when-you-dont-have-access-to-php-ini</id>
+    <content type="html"><![CDATA[<p>If you are using a shared server, or just have a limited account on your company servers, you might <strong>not have access</strong> to your php configuration file <strong>php.ini</strong> (this is usually found under <em>/etc/php.ini</em> in rhel/centos and <em>/etc/php5/apache2/php.ini</em> in debian/ubuntu). Still, in many situations it might be needed to <strong>enable php errors</strong> in the browser so you can see what is the actual problem instead of an empty page (if the server has error reporting disabled as most production systems should have).</p>
+
+<p>In order to enable error reporting for your php script or application include inside your code the following lines:
+<code>error_reporting(E_ALL);
+ini_set("display_errors", 1);</code>
+and this will result in displaying in the browser any errors your application might have.</p>
+
+<p>ps: once you are done with this and fixed the issue, don't forget to remove the error reporting lines, as we don't want our users/clients to see errors in the browser in case something went wrong.</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Using svn+ssh with a non-standard ssh port]]></title>
+    <link href="http://linuxsysadminblog.com/2009/08/using-svnssh-with-a-non-standard-ssh-port/"/>
+    <updated>2009-08-17T04:25:05+08:00</updated>
+    <id>http://linuxsysadminblog.com/2009/08/using-svnssh-with-a-non-standard-ssh-port</id>
+    <content type="html"><![CDATA[<p>Many people use <a href="http://subversion.tigris.org/"><strong>subversion</strong></a> over ssh for a simple and secure way to work on remotely hosted svn repositories. This is normally as simple as running:
+<code>svn co svn+ssh://user@server/repo .</code></p>
+
+<p>If the remote ssh server is <strong>not running on the default ssh port</strong> (tcp 22) then this needs a little tweaking to get it working. Normally I was expecting that adding a custom entry for the svn server in the <em>/etc/ssh/ssh_config</em> file with the appropriate port would make this work on the fly without changing the command line; or if not, adding the ssh port in 'telnet like' way: <em>server:port</em> would make a difference. Still none of those worked and in order to get this working I had to dig into the subversion documentation on how we can define a special tunnel.</p>
+
+<p>We can define a new tunnel in the svn configuration file (<strong>.subversion/config</strong>):
+<code>[tunnels]
+sshtunnel = ssh -p &lt;port&gt;</code></p>
+
+<p>And after this we can use svn as usual but with a url like <strong>svn+sshtunnel://</strong> :
+<code>svn co svn+sshtunnel://user@server/repo .</code></p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[HowTo: Get started with Amazon EC2 api tools]]></title>
+    <link href="http://linuxsysadminblog.com/2009/06/howto-get-started-with-amazon-ec2-api-tools/"/>
+    <updated>2009-06-02T09:57:46+08:00</updated>
+    <id>http://linuxsysadminblog.com/2009/06/howto-get-started-with-amazon-ec2-api-tools</id>
+    <content type="html"><![CDATA[<p>This article is meant to be a quick quide that will introduce the things needed to <strong>get you started with Amazon EC2</strong>. All this information can be found in the EC2 api docs, and this is not meant to be a replacement of the documentation, just trying to show the things needed in a clear and short form.</p>
+
+<h3>Getting Started</h3>
+
+<p>First of all you will need one <a href="http://aws.amazon.com/"><strong>Amazon AWS</strong></a> <strong>account </strong>and enable the <strong>EC2 service</strong>; in case you don't have this already now is the time to <a href="http://www.amazon.com/gp/aws/registration/registration-form.html">create</a> your account. Once you do that you can safely return to this doc ;-)</p>
+
+<p>Once you have your account working, while still on the aws site, go and create a new <strong>X.509 certificate</strong> (under the AWS Access Identifiers page, in the X.509 certificate section near the bottom, click Create New). Once this is done, you will want to <em>download locally the private key file and X.509 certificate</em>.</p>
+
+<h3>EC2 API tools</h3>
+
+<p>Next you will have to <a href="http://developer.amazonwebservices.com/connect/entry.jspa?externalID=351&amp;categoryID=88">download</a> and install the Amazon EC2 api tools on one system (controlling machine) that will be used to start your EC2 army of servers, and control their usage. You will want to use the latest version (2009-05-15 at this time) as it will support all the features Amazon is offering for the EC2 service.</p>
+
+<p>The only real dependency of the EC2 API tools is <strong>java </strong>(at least version 1.5) so we will want to install that first. If you are running debian you can easily do this just by running (for lenny):
+<code>aptitude install sun-java6-jre</code>
+while for etch you will have to use: <em>aptitude install sun-java5-jre</em>
+For other distributions you can either use their internal packaging mechanism (in case they provide sun-java packages) or just download the binary from sun and install it manually.</p>
+
+<p><strong>Extract </strong>the EC2 APi tools (it is a zip archive called <strong>ec2-api-tools.zip</strong>) and move it under a folder of your preferece. I like to use <strong>~/.ec2</strong> for this, but you can use any folder you prefer. Also copy the <strong>private key</strong> and <strong>X.509 certificate</strong> in the same directory. Those files will look like <em>cert-xxx.pem</em> and <em>pk-xxx.pem</em>.</p>
+
+<p>Next we will have to <strong>export some shell variables</strong>. A good place to put this is in ~/.bashrc:
+```
+export EC2_HOME=~/.ec2
+export PATH=$PATH:$EC2_HOME/bin
+export EC2_PRIVATE_KEY=$EC2_HOME/pk-xxx.pem
+export EC2_CERT=$EC2_HOME/cert-xxx.pem</p>
+
+<h1>Java home for debian default install path:</h1>
+
+<p>export JAVA_HOME=/usr</p>
+
+<h1>add ec2 tools to default path</h1>
+
+<p>export PATH=~/.ec2/bin:$PATH
+```</p>
+
+<p>Finally source the file to have the changes active in your current shell session:
+<code>source ~/.bashrc</code>
+or just open a new shell before starting to use the API tools.</p>
+
+<h3>EC2 Keypair</h3>
+
+<p>We will need to create one <strong>keypair </strong>that will be used to connect using <strong>ssh</strong> to the EC2 instances we will be using. We will use the <strong>ec2-add-keypair</strong> utility to create the key and register it with amazon:
+<code>ec2-add-keypair my-keypair</code>
+This will print out the private key that we will have to save in a file:
+`cat > ~/.ec2/id_rsa-my-keypair</p>
+
+<h1>paste the private key content</h1>
+
+<p>sudo chmod 600 <code>`~/.ec2/id_rsa-my-keypair</code></p>
+
+<h3>Running your first EC2 instance</h3>
+
+<p>Amazon EC2 uses the concept of <strong>AMIs </strong>= Amazon Machine Images. Any EC2 instance is started from one AMI. You can either use standard, public AMIs or create and customize your own private images. Creating or modifying existing AMIs is beyond the scope of this article, but just as a general information this is done using special AMI tools. Also before building your AMI you will want to ensure if you want to use a 'small' type of image (i386 os) or a 'large' type of instance (64bit os). These are described under<a href="http://aws.amazon.com/ec2/instance-types/"> http://aws.amazon.com/ec2/instance-types/</a></p>
+
+<p>For the scope of our article we will find a standard public image and start one instance of it to see that all is working properly with the EC2 api tools. You can see all the public images using:
+<code>ec2-describe-images -a</code>
+(over 2,300 images ;) ). You should probably grep the result to get any useful information. There are many good public images to use, like for example the <a href="http://alestic.com/">alestic</a> ones (for debian and ubuntu)
+Having the AMI id of the image we want to use we are ready to start our fist EC2 instance:
+<code>ec2-run-instances ami-e348af8a -k my-keypair</code>
+that will start a small instance with a 32bit debian lenny server instance from alestic.com.</p>
+
+<p><code>ec2-describe-instances</code>
+- this will describe the status of all the running instances, with their hostname, instance id, etc.</p>
+
+<p><code>ec2-authorize default -p 22</code>
+- in order to connect to your instance you will need to customize the 'default' firewall rules for your account. The above rule will allow ssh on port 22 from anywhere. If you want to open http traffic you will have to add a rule like this:
+<code>ec2-authorize default -p 80</code></p>
+
+<p>Finally we can ssh to the ec2 instance using:
+<code>ssh -i ~/.ec2/id_rsa-my-keypair root@ec2-XXX-XXX-XXX-XXX.z-2.compute-1.amazonaws.com</code>
+where ec2-XXX-XXX-XXX-XXX.z-2.compute-1.amazonaws.com is the actual hostname of the instance as obtained from ec2-describe-instances.</p>
+
+<p><em>Note</em>: don't forget to <strong>stop your instance</strong> when you no longer need it. EC2 is a service paid as you use, hence if you forget your instance running you will be billed for it ;-). You can do this by running <strong>shutdown </strong>inside the instance or by using:
+<code>ec2-terminate-instances i-yourinstance</code>
+and verify with <strong>ec2-describe-instances</strong> that the instance is indeed stopped.</p>
+
+<p>Next step is to create/customize your own EC2 AMI images based on your needs. This will be covered in a future article. Hopefully you found this article useful, and it will get you on track quickly with Amazon EC2 api tools.</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[rhel/centos x86_64 and i386 packages mess...]]></title>
+    <link href="http://linuxsysadminblog.com/2009/05/rhelcentos-x86_64-and-i386-packages-mess/"/>
+    <updated>2009-05-19T04:30:51+08:00</updated>
+    <id>http://linuxsysadminblog.com/2009/05/rhelcentos-x86_64-and-i386-packages-mess</id>
+    <content type="html"><![CDATA[<p>Anyone running <strong>centos/rhel</strong> <strong>x86_64</strong> systems has probably noticed that redhat has a strange way to install a mix of i386 and x86_64 rpms on such a systems. This is how <strong>redhat </strong>is using the 64bit architecture in a mixed way to be able to support also i386 applications. This is completely different from how for example <strong>debian </strong>does this where you will not see by default any i386 libraries or duplicate applications installed (you can install and use ia32 libraries for compatibility reasons but the user is in full control on this process). The way how this works in rhel is <strong>confusing</strong>; let's take a simple example (the commands are taken from a clean centos5.3 install with the base packages selected): let's see what version of ncurses we have on the system:
+<code>rpm -qa | grep ncurses
+ncurses-5.5-24.20060715
+ncurses-5.5-24.20060715</code>
+what? why is this listed twice? hmm... Running: <em>rpm -qi ncurses-5.5-24.20060715</em> will also list the package twice (but doesn't show the difference). We can assume one is <strong>i386 </strong>and one is <strong>x86_64</strong> right? but we can't see this.</p>
+
+<p>To overcome this issue, and at least have <strong>rpm report the proper versions</strong> we have to add in our <strong>rpmmacros </strong>file a new line like: <em>"%</em>query_all_fmt %%{name}-%%{version}-%%{release}.%%{arch}"_ that will add to the rpm output the architecture and allow us to see the this:</p>
+
+<pre><code>&lt;code lang="bash"&gt;cat &gt;&gt; ~/.rpmmacros
+%_query_all_fmt %%{name}-%%{version}-%%{release}.%%{arch}&lt;/code&gt;
+</code></pre>
+
+<p>and now running the same command will return a more intuitive and meaningful:
+<code>rpm -qa | grep ncurses        
+ncurses-5.5-24.20060715.x86_64
+ncurses-5.5-24.20060715.i386</code></p>
+
+<p>This doesn't fix anything in how yum will install duplicate programs or libraries, but at least it will allow us to see the full name of the packages in rpm commands. Theoretically people should be able to add into <strong>yum.conf </strong>(this is the default anyway, so you might have it already):
+<code>exactarch=1</code>
+and <strong>yum </strong>will install by default the packages of the arch it is running on (x86_64 in our case). Still, this will not prevent i386 dependencies to show up and be installed. In case you want to completely ignore other arch packages add in the <strong>[main] </strong>section of <strong>/etc/yum.conf </strong>to exclude all 32bit packages,:
+<code>exclude=*.i386 *.i586 *.i686</code>
+and this will completely exclude them completely from yum operations. Please use this with care, and only if you have a full understanding of the implications to exclude those packages.</p>
+
+<p>Even if you don't exclude the 32bit packages as shown above, it is a good idea to add the <strong>arch </strong>to all yum operations (like install, remove, etc.), like:
+<code>yum install ncurses.x86_64</code></p>
+
+<p>Hopefully you found this post useful, and have now a better understanding on how rhel/centos use the i368 and x86_64 packages and libraries with rpm and yum on a 64bit installation.</p>
+]]></content>
+  </entry>
+  
+</feed>

@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: ffmpeg | Linux Sysadmin Blog]]></title>
+  <link href="http://linuxsysadminblog.com/category/ffmpeg/atom.xml" rel="self"/>
+  <link href="http://linuxsysadminblog.com/"/>
+  <updated>2012-11-13T01:37:44+08:00</updated>
+  <id>http://linuxsysadminblog.com/</id>
+  <author>
+    <name><![CDATA[Promet OPS Team]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Ffmpeg Scratchy Sound]]></title>
+    <link href="http://linuxsysadminblog.com/2009/07/ffmpeg-scratchy-sound/"/>
+    <updated>2009-07-03T06:39:57+08:00</updated>
+    <id>http://linuxsysadminblog.com/2009/07/ffmpeg-scratchy-sound</id>
+    <content type="html"><![CDATA[<p>It was an issue reported by our developer as she's having trouble getting the correct parameters for video conversion using ffmpeg.  The problem is the scratchy sound when the conversion is done on our server (CentOS).  So she tried it on local (Windows) using <a href="http://www.pazera-software.com/products/flv-to-avi-converter/">Pazera Converter</a> and loaded the same parameters used on the server and got the desired result.</p>
+
+<p>We checked the Ffmpeg versions, and on local we have SVN-r15451 while the server have SVN-r14991.  So we upgraded our Ffmpeg on the server to the latest (at this time SVN-r19313) and this solved our problem.  I'm not sure what version of ffmpeg have this fix but atleast it should be SVN-r15451 and up. :)</p>
+
+<p>You can tell the difference from the sample videos (first 5 seconds) below - both were encoded using the same parameters.</p>
+
+<p>Using <a href="http://staging.powerlearning21.com/carol/gee/2b.flv">Ffmpeg SVN-r14991</a></p>
+
+<p>Using <a href="http://staging.powerlearning21.com/carol/gee/48b.flv">Ffmpeg SVN-r15451 and SVN-r19313</a></p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[ffmpeg new major release]]></title>
+    <link href="http://linuxsysadminblog.com/2009/03/ffmpeg-new-major-release/"/>
+    <updated>2009-03-10T17:20:11+08:00</updated>
+    <id>http://linuxsysadminblog.com/2009/03/ffmpeg-new-major-release</id>
+    <content type="html"><![CDATA[<p>FFMPEG announces a new release today.  It releases version 0.5</p>
+
+<p>The slashodot peculated this<a href="http://tech.slashdot.org/article.pl?sid=09/03/10/144222&amp;from=rss"> ffmpeg related post</a> to the top of its news today:</p>
+
+<blockquote><p><em>After many years of release-free development, FFmpeg, the most widely used audio and video codec library, has finally returned to a regular release schedule with the long-awaited version 0.5</em></p></blockquote>
+
+<p>Here is a very abbreviated list of some of the improvements to the converter from the <a href="http://ffmpeg.org/">official ffmpeg</a> site:</p>
+
+<blockquote><p>Significant work to support at least decoding of all widespread mainstream proprietary codecs, such as:</p>
+
+<ul>
+<li>decoders and encoders
+
+<ul>
+<li>ALAC</li>
+<li>Flash Screen Video</li>
+<li>WMAv2 decoder fixed, WMAv1/v2 encoder</li>
+</ul>
+</li>
+<li>decoders</li>
+<li>Atrac3</li>
+<li>MLP/TrueHD</li>
+<li>On2 VP3 improvements and VP5/VP6 support</li>
+<li>RealAudio Cooker and fixes for 14.4 and 28.8</li>
+<li>RealVideo RV30/40</li>
+<li>WMV3/WMV9/VC-1 and IntraX8 frame support for WMV2/VC-1</li>
+</ul>
+</blockquote>
+
+<p>We sysadmins at promet have used ffmpeg in several of our projects and find it a great tool.  Our recent implementations include a <a href="http://powerlearning21.com">video distance learning</a> tool and its also used in some of our work for sites of <a href="http://baird.house.gov.hillclips.tv/">members of the house of representatives</a> using this <a href="http://isupport.tv">video platform</a>.</p>
+]]></content>
+  </entry>
+  
+</feed>

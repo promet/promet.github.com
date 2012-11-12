@@ -1,0 +1,215 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: Down Time | Linux Sysadmin Blog]]></title>
+  <link href="http://linuxsysadminblog.com/category/down-time/atom.xml" rel="self"/>
+  <link href="http://linuxsysadminblog.com/"/>
+  <updated>2012-11-13T01:37:44+08:00</updated>
+  <id>http://linuxsysadminblog.com/</id>
+  <author>
+    <name><![CDATA[Promet OPS Team]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[When Open Source kills]]></title>
+    <link href="http://linuxsysadminblog.com/2009/05/when-open-source-kills/"/>
+    <updated>2009-05-27T11:39:25+08:00</updated>
+    <id>http://linuxsysadminblog.com/2009/05/when-open-source-kills</id>
+    <content type="html"><![CDATA[<p><a href="http://en.wikipedia.org/wiki/ReiserFS">RieserFS</a> is a journalling filesystem that is excellent when dealing with small files under 4K in size. When used with <a href="http://en.wikipedia.org/wiki/Tail_packing">tail-packing</a> it is 10-15x faster then ext2/ext3. ReiserFS was first included in Linux kernel 2.4.1 and even used  as default filesystem in SUSE Enterprise Linux and others. What many may not know is that <a href="http://en.wikipedia.org/wiki/Hans_Reiser">Reiser killed</a>, LITERALLY. The man behind this filesystem has been convicted of second degree murder for killing his wife. While this isn't exactly breaking new it just goes to show you that extroverted geeks have it in them.</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[us-to-invade-asia-over-google-traffic-snafoo]]></title>
+    <link href="http://linuxsysadminblog.com/2009/05/us-to-invade-asia-over-google-traffic-snafoo/"/>
+    <updated>2009-05-14T16:15:35+08:00</updated>
+    <id>http://linuxsysadminblog.com/2009/05/us-to-invade-asia-over-google-traffic-snafoo</id>
+    <content type="html"><![CDATA[<p><strong>Google slowdown causes blogger hysteria </strong></p>
+
+<p><a href="http://googleblog.blogspot.com/2009/05/this-is-your-pilot-speaking-now-about.html">Official Google Blog: This is your pilot speaking. Now, about that holding pattern...</a></p>
+
+<p>Ok, so I checked out my RSS feeds and went over to google blog to see what the hoopla was about today after slowdown.  Yes, I had pings from folks asking me if google was down for them or just me, but I really find the backlinks interesting... from funny to pathetic.</p>
+
+<p>I think uptime still matters.</p>
+
+<p>See for yoursleves (my emphasis):</p>
+
+<p>Google Outage Caused by Asian “Traffic Jam” | John Paczkowski ...</p>
+
+<blockquote><p> If the <strong>Web has does have a single point of failure, you'd think it was Google</strong> given all the outcry over the the outages suffered by some of the company's services Thursday. Something went wrong at the company this morning and whatever ...</p>
+
+<pre><code>Posted by John Paczkowski at 12:23 
+</code></pre></blockquote>
+
+<p>Google Slow (or Down) for Some</p>
+
+<blockquote><p> Thursday, May 14, 2009. Google Slow (or Down) for Some. Some of us are having problems accessing google.com, YouTube, Gmail and others. [This post may update if there's further info.] Update: And it seems to be back up now (18:15 CET). ...</p>
+
+<pre><code>Posted by Philipp Lenssen at 10:08 
+</code></pre></blockquote>
+
+<p>Google Slow, <strong>Twitterati Hysterical</strong></p>
+
+<blockquote><p> UPDATED: Google appears to be having problems across its Gmail, search and even its Blogger platforms, judging by complaints on ...</p>
+
+<pre><code>Posted by Stacey Higginbotham at 09:48 
+</code></pre></blockquote>
+
+<p>It's Down! <strong>The Day Google Stood Still</strong> (Updated) - ReadWriteWeb</p>
+
+<blockquote><p> We have seen our fair share of failures from web based products, but this morning, for a large number of users (at least in the US), it looks ...</p>
+
+<pre><code>Posted by Frederic Lardinois at 09:32 
+</code></pre></blockquote>
+
+<p>Major Google Outages Today: #GoogleFail Or #AT&T; Fail?</p>
+
+<blockquote><p> A bunch of GoogleGoogle reviews services have been failing this morning, and we've been trying to figure out why. The hashtag #googlefail on TwitterTwitter.</p>
+
+<pre><code>Posted by Adam Ostrow at 09:25 
+</code></pre></blockquote>
+
+<p>Google Services Go Down For Many</p>
+
+<blockquote><p> Currently, many people who use Google's services, including web search, Gmail, Google Reader and other products are either down or incredibly slow for some.</p>
+
+<pre><code>Posted by Barry Schwartz at 09:15 
+</code></pre></blockquote>
+
+<p>La panne de Google: une erreur d'aiguillage - Media &amp; Pub - E24.fr</p>
+
+<blockquote><p> Le moteur de recherche a connu de sérieux problèmes techniques entre 17h et 18h ce jeudi. Des milliers d'internautes ont témoigné sur Twitter des difficultés rencontrées sur Google.</p>
+
+<pre><code>Posted by at 09:08 
+</code></pre></blockquote>
+
+<p><strong>Google Stumbles, Internet Breaks A Leg</strong></p>
+
+<blockquote><p> Recent Posts. Google Stumbles, Internet Breaks A Leg · Beer Monday: Redhook's Slim Chance · Friday Gallimaufry: Migratory Birds · Moms On The Net · Beer Monday: New Glarus Brewing · The Pale Blue Dot · Devo Was Right About Everything ...</p>
+
+<pre><code>Posted by forbes blogger at 08:35 
+</code></pre></blockquote>
+
+<p>Ajax Girl » Blog Archive » <strong>Google's Outage Was Asia's Fault</strong></p>
+
+<blockquote><p> Written by on May 14th, 2009 in Uncategorized. You can follow any responses to this entry through the RSS 2.0 feed. Responses are currently closed, but you can trackback from your own site. Google finally has an explanation for its ...</p>
+
+<pre><code>Posted by at 07:34 
+</code></pre></blockquote>
+
+<p>Tech Science | SearchBeat.com Shout-Out Blog</p>
+
+<blockquote><p> Top Technology, Computer, Internet and Science News Latest Science News from Around the Web Scientific.</p>
+
+<pre><code>Posted by keithco at 23:12 
+</code></pre></blockquote>
+
+<p>Tech Central - Times Online - WBLG: Problems with Google today ...</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[dv camera + computer + vlan + dvgrab = cheap video surveillance]]></title>
+    <link href="http://linuxsysadminblog.com/2009/05/dv-camera-computer-vlan-dvgrab-cheap-video-surveillance/"/>
+    <updated>2009-05-06T13:21:04+08:00</updated>
+    <id>http://linuxsysadminblog.com/2009/05/dv-camera-computer-vlan-dvgrab-cheap-video-surveillance</id>
+    <content type="html"><![CDATA[<p>In the day and age of high definition many are upgrading their video recording gear to the latest harddrive or flash based hi def video cameras. Unlike auto dealerships consumer electronics retailers don't offer trade in options for your old stuff.  In the green / renewable mindset we can put these no longer used video cameras to good use as video surveillance devices perfect for keeping an eye on your own or others property.</p>
+
+<p>On the hardware side you need a <a href="http://linuxsysadminblog.com/?attachment_id=596">DV camera</a> with firewire port (IEEE 1394), firewire port equipped Pentium 4 or equivalent pc or laptop with loaded with Fedora 9 or 10 and a  firewire cable to connect camera to the computer. For software we will only need <a href="http://freshmeat.net/projects/dvgrab/">dvgrab</a> and <a href="http://www.videolan.org">VLC</a></p>
+
+<p>Install dvgrab from Fedora update repo:<br/>
+<code>
+yum install dvgrab
+</code></p>
+
+<p>Install vlc from rpmfusion repo:<br/>
+<code>
+sudo rpm -ivh http://download1.rpmfusion.org/free/fedora/rpmfusion-free-release-stable.noarch.rpm
+sudo yum install vlc
+</code></p>
+
+<p>Set DV camera audio to 16bit (default is 12 bit) to avoid garbled audio.</p>
+
+<p><a href="http://linuxsysadminblog.com/2009/05/dv-camera-computer-vlan-dvgrab-cheap-video-surveillance/audio16bit/"><img src="http://linuxsysadminblog.com/images/2009/05/audio16bit.jpg" alt="audio16bit" /></a></p>
+
+<p>Turn on and connect video camera to computer and you should see something like this in /var/log/dmesg:<br/>
+<code>
+firewire_core: created device fw1: GUID 0800460102721e20, S100
+</code></p>
+
+<p>To test that we are able to grab video/audio from camera and display in VLC player pipe output of dvgrab into vlc.
+<code>
+sudo dvgrab - -noavc -nostop | vlc - --no-sub-autodetect-file :demux=rawdv
+</code></p>
+
+<p>After issuing this command you should see a 720x480 video feed with 16bit 48000Hz audio stream in vlc on your desktop</p>
+
+<p><a href="http://linuxsysadminblog.com/2009/05/dv-camera-computer-vlan-dvgrab-cheap-video-surveillance/vlcwindow1/"><img src="http://linuxsysadminblog.com/images/2009/05/vlcwindow1.png" alt="vlcwindow1" /></a></p>
+
+<p>Now we setup vlc as a streaming server so that we can view the video/audio when away. Streaming a 720x480 video stream is a bit overkill as the video quality on the DV camera is pretty good when vlc streams video at lower resolutions like 320x240, I also reduce the audio quality to save on bandwidth. Here I used "cvlc" or command vlc to avoid opening a vlc window and "&amp;" to put process into background.
+<code>
+sudo dvgrab - -noavc -nostop | cvlc - --no-sub-autodetect-file :demux=rawdv --sout '#transcode{vcodec=mp4v,vb=600,acodec=mp3,ab=56,scale=1,width=320,height=240,channels=2}:duplicate{dst=std{access=http,mux=ts,dst=192.168.1.102:3323}}' &amp;
+</code></p>
+
+<p>To view the feed locally via vlc open a http network location on ip and port you specified in the <code>dst=</code> section of the command above.</p>
+
+<p><a href="http://linuxsysadminblog.com/2009/05/dv-camera-computer-vlan-dvgrab-cheap-video-surveillance/vlcopen/"><img src="http://linuxsysadminblog.com/images/2009/05/vlcopen.png" alt="vlcopen" /></a></p>
+
+<p>To view your feed from the Internet you will need to either configure vlc to stream on an outside interface or configure port forwarding.</p>
+
+<p><a href="http://linuxsysadminblog.com/2009/05/dv-camera-computer-vlan-dvgrab-cheap-video-surveillance/ddwrt/"><img src="http://linuxsysadminblog.com/images/2009/05/ddwrt.png" alt="ddwrt" /></a></p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Cloud computing scenario's for database servers]]></title>
+    <link href="http://linuxsysadminblog.com/2009/02/cloud-computing-scenarios-for-database-servers/"/>
+    <updated>2009-02-17T10:09:35+08:00</updated>
+    <id>http://linuxsysadminblog.com/2009/02/cloud-computing-scenarios-for-database-servers</id>
+    <content type="html"><![CDATA[<p>We've been investigating the possibilities of using cloud computing for our clients. Especially Amazon EC2 has the potential to be be really effective in offering flexible, pay-as-you-go computing. From my own perspective I have been looking at how to use cloud computing in combination with MySQL and I must say that I'm a bit sceptical about the effectiveness of cloud computing in replacing the primary database server. First off there does not seem to be that much in the way of performance data for this type of installation. Can a cloud server really offer the I/O performance necessary to replace a dedicated database server? And even if the performance is equal, what is the main advantage? Scaling web sites is done by adding more servers in most cases but the same approach only works for database servers when clusters are used. So in what other scenario's does cloud computing give us an edge?</p>
+
+<p><strong>Temporary reporting servers</strong></p>
+
+<p>Create a one time copy of an existing production database server to run specific heavy reports. This is ideal for monthly reports since the server only needs to be up and running for several hours per month.</p>
+
+<p><strong>Backup database server</strong></p>
+
+<p>This is a backup solution where the server is only allocated once there is a problem with the primary server which makes a lot of sense because the client only pays for the server once it is used. One downside to this scenario is that the server has to created and loaded with the latest backup which will result in a decent amount of downtime but at least all of this can be automated. A bigger problem is the loss of data since the latest backup.For our high availability sites we have a standby database server replicating all changes from the master so we can switch over at a moment's notice without losing any data.</p>
+
+<p><strong>Migrations</strong></p>
+
+<p>Performing a migration or a system upgrade usually brings some downtime. Promoting a standby system to primary creates a single point of failure so it makes sense to create a remporary standby of the standby.</p>
+
+<p><strong>Development branches and testing environments</strong></p>
+
+<p>For development branches we usually only need an extra database for a short amount of time although truth be told, those database are not very large in general so we tend to put them on the same development database server anyway. The same is true for testing and QA. These activities usually occur in cycles which means that they are very attractive targets for cloud based servers.</p>
+
+<p><strong>Alternative data center</strong></p>
+
+<p>Yes, it happened to us once that our datacenter went off line due to a very heavy attack. Instead of finding another data center for these eventualities it could be useful to have cloud based backup servers defined. However, this requires the extra effort of keeping these instances up to date for this eventuality. Additionally, DNS caching will stop the switch from being instantaneous. A geographical load balancing solution would be the answer to that but at that point the cost for preparing for this eventuality will have to be compared to the loss due to down time.</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Why is there a system change freeze - especially on black monday and black friday?]]></title>
+    <link href="http://linuxsysadminblog.com/2008/12/why-is-there-a-system-change-freeze-especially-on-black-monday-and-black-friday/"/>
+    <updated>2008-12-03T18:53:34+08:00</updated>
+    <id>http://linuxsysadminblog.com/2008/12/why-is-there-a-system-change-freeze-especially-on-black-monday-and-black-friday</id>
+    <content type="html"><![CDATA[<p>When I started working in systems, one of my first client was a major bank.  Yes, this was back in the mainframe batch processing days.  They never did any system updates when they ran the month end, quarter end and especially year end.</p>
+
+<p>I always thought that they just weren't confident in their system folks and scoffed at this policy as it always made our deadlines shorter.</p>
+
+<p>I think this story convinced me that doing production work these days on the bussiest web days is not a good idea.  Maybe microsoft should have borrowed a page from the mainframe policy manual - don't do system updates on black monday or black friday as it may cause system outage.</p>
+
+<p>This story: <a href="http://www.efluxmedia.com/news_Microsoft_Says_Sorry_For_Black_Friday_Cashback_Outage_30408.html">Microsoft Says Sorry For Black Friday Cashback Outage</a></p>
+
+<blockquote><p>For Internet users, <a href="http://www.efluxmedia.com/news_Microsoft_Says_Sorry_For_Black_Friday_Cashback_Outage_30408.html#">Black Friday</a> was supposed to be about buying and cashing back, but <a href="http://www.efluxmedia.com/news_Microsoft_Says_Sorry_For_Black_Friday_Cashback_Outage_30408.html#">Microsoft’s</a> Live Search cashback machine apparently broke down just as customers “barged in” to make some early morning purchases.</p></blockquote>
+
+<p>According to a blog posting, the unexpected outage occurred due to a significant spike in traffic, which caused the system to .html">Buy Propecia  go down for several hours. It took quite a while for it to come back to life, but apparently that was related to investigating the issue and rebuilding and deploying the <a href="http://www.efluxmedia.com/news_Microsoft_Says_Sorry_For_Black_Friday_Cashback_Outage_30408.html#">databases</a> and indexes that support Microsoft Live Search Cashback.</p>
+]]></content>
+  </entry>
+  
+</feed>

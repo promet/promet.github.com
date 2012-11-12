@@ -1,0 +1,947 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Linux Sysadmin Blog</title>
+  <meta name="author" content="Promet OPS Team">
+
+  
+  <meta name="description" content="You&#8217;ll get this error when Wordpress automatic update process, via svn or admin, fail or is incomplete. It leaves the file named &#8221;. &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://linuxsysadminblog.com/blog/page/3/">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="/javascripts/ender.js"></script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <link href="/atom.xml" rel="alternate" title="Linux Sysadmin Blog" type="application/atom+xml">
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+<!-- Google Form for Contact Page -->
+<!-- jQuery -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+<script type="text/javascript">
+    // Avoid conflict with ender.js.
+jQuery.noConflict();
+</script>
+<!-- jQuery Form Plugin -->
+<script src="http://malsup.github.com/jquery.form.js"></script>
+<script src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.9/jquery.validate.min.js"></script> 
+<script src="/javascripts/google_form.js"></script>
+<!-- Google Form for Contact Page End here -->
+
+
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-120251-38']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">Linux Sysadmin Blog</a></h1>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:linuxsysadminblog.com" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/our-team">Our Team</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+  <li><a href="/blog/about">About</a></li>
+  <li><a href="/blog/contact">Contact</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div class="blog-index">
+  
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/2010/10/wordpress-3-error-briefly-unavailable-for-scheduled-maintenance/">WordPress 3 Error: Briefly Unavailable for Scheduled Maintenance. Check Back in a Minute.</a></h1>
+    
+    
+      <p class="meta">
+        
+  
+
+
+<span class="byline author vcard">Posted by <span class="fn"><a href="/blog/our-team/gerold-mercadero.html">Gerold Mercadero</a></span></span>
+
+ - 
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2010-10-16T18:51:31+08:00" pubdate data-updated="true">Oct 16<span>th</span>, 2010</time>
+        
+         | <a href="/2010/10/wordpress-3-error-briefly-unavailable-for-scheduled-maintenance/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>You&#8217;ll get this error when Wordpress automatic update process, via svn or admin, fail or is incomplete.  It leaves the file named &#8221;<em>.maintenance</em>&#8221; on your home or root directory, with info on maintenance.</p>
+
+<p>Sample content of .maintenance file: <code>&lt;?php $upgrading = 1282258195; ?&gt;</code></p>
+
+<p>Just delete or rename that file and resume your update process, or you may want to restore your backup first and re-start the update process.  Of course, check what cause the failed or incomplete update. :)</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/2010/10/upload-or-download-multiple-files-resursive-using-command-line-ftp/">Upload or Download Multiple Files (Recursive) Using Command-line FTP</a></h1>
+    
+    
+      <p class="meta">
+        
+  
+
+
+<span class="byline author vcard">Posted by <span class="fn"><a href="/blog/our-team/gerold-mercadero.html">Gerold Mercadero</a></span></span>
+
+ - 
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2010-10-15T06:30:30+08:00" pubdate data-updated="true">Oct 15<span>th</span>, 2010</time>
+        
+         | <a href="/2010/10/upload-or-download-multiple-files-resursive-using-command-line-ftp/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>Problem is I can&#8217;t upload directory including sub-directories and files using command-line ftp.   I searched for similar problem and looks like you can&#8217;t do this using command line ftp, unless you create a script.   One solution I found is the use of &#8221;<a href="http://lftp.yar.ru/">lftp</a>&#8221;.</p>
+
+<pre><code># lftp ftp_host
+&gt; user ftp_user ftp_pass
+&gt; mirror source target      (download entire directory tree)
+&gt; mirror -R source target  (reverse mirror; upload entire directory tree)
+</code></pre>
+
+<p>Usefull when transferring files between servers where you only have ftp access.</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/2010/10/delete-duplicate-packages-in-centos/">Remove Duplicate Packages in CentOS</a></h1>
+    
+    
+      <p class="meta">
+        
+  
+
+
+<span class="byline author vcard">Posted by <span class="fn"><a href="/blog/our-team/gerold-mercadero.html">Gerold Mercadero</a></span></span>
+
+ - 
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2010-10-14T06:15:25+08:00" pubdate data-updated="true">Oct 14<span>th</span>, 2010</time>
+        
+         | <a href="/2010/10/delete-duplicate-packages-in-centos/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>I got a package dependency issue when updating our 64-bit CentOS server, which was caused by two perl packages installed (i386 and x86_64).</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>perl i386     4:5.8.8-32.el5_5.1     installed     28 M
+</span><span class='line'>perl     x86_64   4:5.8.8-32.el5_5.1     installed     34 M</span></code></pre></td></tr></table></div></figure>
+
+
+<p>I tried to remove it using rpm command but didn&#8217;t work (maybe i just don&#8217;t know the correct params with rpm).  My solution to remove package was using yum &#8221;<em>remove package_name.architecture</em>&#8221;.   Ex:  <code>yum remove perl.i386</code></p>
+
+<p>Any other shortcuts in deleting duplicate packages?</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/2010/10/firefox-ssl-warning-on-valid-ssl-certificate/">Firefox SSL Warning on Valid SSL Certificate</a></h1>
+    
+    
+      <p class="meta">
+        
+  
+
+
+<span class="byline author vcard">Posted by <span class="fn"><a href="/blog/our-team/gerold-mercadero.html">Gerold Mercadero</a></span></span>
+
+ - 
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2010-10-13T17:26:29+08:00" pubdate data-updated="true">Oct 13<span>th</span>, 2010</time>
+        
+         | <a href="/2010/10/firefox-ssl-warning-on-valid-ssl-certificate/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>Normally, you will receive this warning when you are using a self-signed ssl certificate.  But I encountered this issue on a domain with valid ssl from Verisign.  Warning message indicates that Verisign not recognized.</p>
+
+<p><strong>Update:</strong>
+Need to install <a href="https://knowledge.geotrust.com/support/knowledge-base/index?page=content&amp;id=AR1422"><strong>GeoTrust&#8217;s intermidiate CA</strong></a>.</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/2010/10/surge2010-after-party-three-martini-chug/">Surge2010 After Party - Three Martini Chug</a></h1>
+    
+    
+      <p class="meta">
+        
+  
+
+
+<span class="byline author vcard">Posted by <span class="fn"><a href="/blog/our-team/andrew-kucharski.html">Andrew Kucharski</a></span></span>
+
+ - 
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2010-10-01T08:35:41+08:00" pubdate data-updated="true">Oct 1<span>st</span>, 2010</time>
+        
+         | <a href="/2010/10/surge2010-after-party-three-martini-chug/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>I don&#8217;t know the name of this gentelman but he was THE hit at the after hour part.  I believe this was the second or third time he did the trick at the insistance of the other sysadmins in the audience.  It should be noted that there were no more than three women in the crowd.</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/2010/09/a-day-in-the-life-of-facebook-operations/">A Day in the Life of Facebook Operations</a></h1>
+    
+    
+      <p class="meta">
+        
+  
+
+
+<span class="byline author vcard">Posted by <span class="fn"><a href="/blog/our-team/andrew-kucharski.html">Andrew Kucharski</a></span></span>
+
+ - 
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2010-09-30T14:23:51+08:00" pubdate data-updated="true">Sep 30<span>th</span>, 2010</time>
+        
+         | <a href="/2010/09/a-day-in-the-life-of-facebook-operations/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>Notes from the &#8220;A Day in the Life of Facebook Operations&#8221; presentation by Tom Cook, Systems Engineer, Facebook at <a href="http://omniti.com/surge/2010">Surge2010</a> conference.</p>
+
+<p>So far this is the most attended session.  Standing room only available only before it start.</p>
+
+<p>What does facebook sysadmins have to support?</p>
+
+<ul>
+<li><p>Monthly 700 million minutes of time spent on fb</p></li>
+<li><p>6billion pieces of content updated</p></li>
+<li><p>3 billion photos</p></li>
+<li><p>1 million connect implementations</p></li>
+<li><p>1/2 billion active users</p></li>
+</ul>
+
+
+<p>Infrastructure Growth</p>
+
+<ul>
+<li><p>fb reached a limit on leasing datacenter space</p></li>
+<li><p>fb is building their own http://www.facebook.com/prinevilledatacenter</p></li>
+<li><p>currently serving out of california and Virginia</p></li>
+</ul>
+
+
+<p>Initially a LAMP stack.  LB -> Web Servers -> Services/Memcached/Databases</p>
+
+<p>Originally facebook was a simple Apache PHP site.  When fb started hitting a limit on this, they started compiling PHP into C++ (<a href="http://developers.facebook.com/blog/post/358">HipHop</a> for PHP).</p>
+
+<p>FB claims to be the biggest memcache deployment in the world.  They server 300 Terbytes of memcached data out of memory.</p>
+
+<p><a href="http://www.facebook.com/MySQLatFacebook">MySQL improvement</a>s contributed back is flashcache.</p>
+
+<p>Services supported</p>
+
+<ul>
+<li><p>News Feed</p></li>
+<li><p>Search</p></li>
+<li><p>Cache</p></li>
+</ul>
+
+
+<p>Service implementation languages</p>
+
+<ul>
+<li><p>C++</p></li>
+<li><p>PHP - front end</p></li>
+<li><p>python</p></li>
+<li><p>Ruby</p></li>
+<li><p>Java</p></li>
+<li><p>erlang (chat room)</p></li>
+</ul>
+
+
+<p>How do they talk between these?  Json?  SOAP?  No, fb implemented Thrift - ligtwaith software framework for cross language development, a common glue behind all facebook systems.</p>
+
+<p>For Systems, what does fb have to worry about on a daily basis?</p>
+
+<ul>
+<li><p>deployment</p></li>
+<li><p>monitoring</p></li>
+<li><p>data manaement</p></li>
+<li><p>Core operating updates</p></li>
+</ul>
+
+
+<p>Facebook OS is&#8230;. CentOS!</p>
+
+<p>Systems Management</p>
+
+<ul>
+<li><p>Configuration Management</p></li>
+<li><p>CFengine for system management</p></li>
+<li><p>On Demand</p></li>
+</ul>
+
+
+<p>Deployments</p>
+
+<ul>
+<li><p>Web Push - new code gets deployed to fb at least once a day.  Its a coordinated push, everyone is aware, notification happens to dev team.  Everyone sites on IRC during the push.  It is undestood by engineers and the rest of the company</p>
+
+<ul>
+<li><p>push software built over on-demand control tools</p></li>
+<li><p>code distributed via internal BitTorrent swarm</p></li>
+<li><p>php gets compiled, the few hundred MB binary gets rapidly pushed bia bit torrent.</p></li>
+<li><p>it takes one minute to push across the entire network</p></li>
+</ul>
+</li>
+<li><p>Backend Deployments - only Engineering and Operations.  Engineers write, test and display</p>
+
+<ul>
+<li><p>Quickly make performance decisions</p></li>
+<li><p>Expose changes to subset of real traffic</p></li>
+<li><p>No &#8216;commit and quit&#8217;</p></li>
+<li><p>Deeply involved in moving services to production</p></li>
+<li><p>Ops &#8216;embeded&#8217; into engineering teams</p></li>
+</ul>
+</li>
+<li><p>Heavy Change logging - pin pointing code to every push and change</p></li>
+</ul>
+
+
+<p>Monitoring and Metrics of servers and performance at facebook</p>
+
+<ul>
+<li><p><a href="http://ganglia.sourceforge.net/">Ganglia</a> - aggregated metrics</p>
+
+<ul>
+<li><p>fast</p></li>
+<li><p>straightforward</p></li>
+<li><p>nested grids &amp; pools</p></li>
+<li><p>over 5 million monitored metrics</p></li>
+</ul>
+</li>
+<li><p>facebook inhouse monitoring system</p></li>
+</ul>
+
+
+<p>Monitoring - facebook still uses <a href="http://www.nagios.org/">Nagios</a>!</p>
+
+<p>To manage complexity and the number of alarms and systems monitoring the fb team uses aggregation.  Initially alarms were managed by email.</p>
+
+<p>Scribe - high performance logging application.  Initially used syslog.  Also used Hadoop and Hive.</p>
+
+<p>How does it work and gets done?</p>
+
+<ul>
+<li><p>clear delineation of dependencies and responsibilities</p></li>
+<li><p>Constant Failure</p></li>
+<li><p>Servers were the first line of defense, then started focusing on racks</p></li>
+<li><p>Now is focused on clusters.  Logical delineation based on function (web, db, feed, etc)</p></li>
+<li><p>Next stage is datacenters - what to do if a natural disaster strikes?</p></li>
+<li><p>Constant Communication - information is shared constantly.</p>
+
+<ul>
+<li><p>IRC</p></li>
+<li><p>lots of automated bots, get and set data</p></li>
+<li><p>internal news updates</p></li>
+<li><p>&#8220;Headers&#8221; on internal tools</p></li>
+<li><p>Change log/feeds</p></li>
+</ul>
+</li>
+<li><p>Small teams</p></li>
+</ul>
+
+
+<p>Interesting fact - each fb server gets an update on average every eight minutes.</p>
+
+<p>Busiest day for FB is day after halloween :)</p>
+
+<p>URLS to check out:</p>
+
+<p><a href="http://www.facebook.com/Engineering">facebook.com/engineering</a></p>
+
+<p><a href="http://developers.facebook.com/opensource/">facebook.com/opensource</a></p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/2010/09/keynote-summary-of-surge-conference/">Keynote Summary of Surge Conference</a></h1>
+    
+    
+      <p class="meta">
+        
+  
+
+
+<span class="byline author vcard">Posted by <span class="fn"><a href="/blog/our-team/andrew-kucharski.html">Andrew Kucharski</a></span></span>
+
+ - 
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2010-09-30T08:29:56+08:00" pubdate data-updated="true">Sep 30<span>th</span>, 2010</time>
+        
+         | <a href="/2010/09/keynote-summary-of-surge-conference/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>Where can the very young industry of Web Ops learn from?  Keynote - John Allspaw from <a href="http://omniti.com/surge/2010/sessions">Surge Conference</a>.</p>
+
+<ul>
+<li><p><a href="http://en.wikipedia.org/wiki/Systems_engineering">System Engineering</a> - <strong>Systems engineering</strong> is an <a href="http://en.wikipedia.org/wiki/Interdisciplinary">interdisciplinary</a> field of <a href="http://en.wikipedia.org/wiki/Engineering">engineering</a> that focuses on how complex engineering projects should be designed and managed</p></li>
+<li><p><a href="http://en.wikipedia.org/wiki/Fault_tolerance">Fault Tolerance</a> - looking at massive</p></li>
+<li><p>Control Systems Engineering</p></li>
+<li><p>Max users on apache or max connections to your db - Sheer Pin -</p></li>
+</ul>
+
+
+<p>Interesting  which arent  about the web but relate to Systems Enge</p>
+
+<ul>
+<li><p>Complex Systems Fail in Funny Ways - Accidents, Living with High-Risk Technologies</p></li>
+<li><p>An Engineers view of Human Error - Human Error comes in different flavors</p></li>
+<li><p>RAD Lab</p></li>
+</ul>
+
+
+<p>Why do systems engineers have it easy?</p>
+
+<ul>
+<li><p>No one dies when the site goes down</p></li>
+<li><p>If we make a mistake we can recover quickly</p></li>
+<li><p>Future is bright</p></li>
+</ul>
+
+
+<p>John concludes in these calls to actions:</p>
+
+<ul>
+<li><p>Look around!  NASA, go to non web conferences that relate, for example, systems safety</p></li>
+<li><p>Engage Academia</p></li>
+<li><p>It&#8217;s time for our field to get more sophisticated</p></li>
+</ul>
+
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/2010/08/the-planet-and-softlayer-to-merge/">The Planet and Softlayer to Merge</a></h1>
+    
+    
+      <p class="meta">
+        
+  
+
+
+<span class="byline author vcard">Posted by <span class="fn"><a href="/blog/our-team/andrew-kucharski.html">Andrew Kucharski</a></span></span>
+
+ - 
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2010-08-05T10:18:02+08:00" pubdate data-updated="true">Aug 5<span>th</span>, 2010</time>
+        
+         | <a href="/2010/08/the-planet-and-softlayer-to-merge/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>Looks like consolidation in the hosting space continues as Softlayer is going to be under the same ownership as &#8220;The Planet&#8221;.</p>
+
+<blockquote><p>For those who are not aware, GI also owns a large stake in The Planet, and I now have the pleasure of telling you that we are in discussions to merge The Planet with SoftLayer. The goal is for the transaction to be complete in the fourth quarter of this year.</p></blockquote>
+
+<p>I know you have a lot of questions. To be perfectly honest, we are at the beginning of this and don&#8217;t have all the answers. Teams at both companies have just begun discussing how to integrate our organizations, and their work will yield the details we don&#8217;t yet know.</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/2010/07/drupal-performance-talk-video-from-drupal-con-2010/">Drupal Performance Talk Video From Drupal Con 2010</a></h1>
+    
+    
+      <p class="meta">
+        
+  
+
+
+<span class="byline author vcard">Posted by <span class="fn"><a href="/blog/our-team/andrew-kucharski.html">Andrew Kucharski</a></span></span>
+
+ - 
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2010-07-29T23:01:17+08:00" pubdate data-updated="true">Jul 29<span>th</span>, 2010</time>
+        
+         | <a href="/2010/07/drupal-performance-talk-video-from-drupal-con-2010/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>I have already mentioned that <a href="http://linuxsysadminblog.com/2010/04/google-will-use-site-performance-and-page-load-speed-in-serp-ranking-sysadmin-seo-here-we-come/">google will start penalizing your site</a> in search if it is not fast enough.  I have recently given a presentation at Drupal Con about Drupal performance and page speed.  Below is a video of our session - its currently the fifth most watched session from the conference according to <a href="http://www.archive.org/search.php?query=DrupalCon%20SF%202010&amp;sort=-downloads">archive.org</a>.  Alternatively, there are several different formats <a href="http://www.archive.org/details/MakeDrupalRunFast-IncreasePageLoadSpeed">there as well</a>.</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/2010/07/debian-ftp-archive-for-etch-archive-debian-org/">Debian FTP Archive for Etch - archive.debian.org</a></h1>
+    
+    
+      <p class="meta">
+        
+  
+
+
+<span class="byline author vcard">Posted by <span class="fn"><a href="/blog/our-team/marius-ducea.html">Marius Ducea</a></span></span>
+
+ - 
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2010-07-09T19:49:17+08:00" pubdate data-updated="true">Jul 9<span>th</span>, 2010</time>
+        
+         | <a href="/2010/07/debian-ftp-archive-for-etch-archive-debian-org/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p><strong>Debian Etch</strong> has been discontinued for a while now, and in an ideal world everyone has upgraded to <strong>lenny</strong> a long time ago. Still, this is not always possible and there are some systems out there that are still running etch, some for a good reason, some just because their admins are lazy ;) . Recently we worked on a project with such a system that was still running etch, and the devs on the team told us  that all is working perfect but they are no longer able to install new packages using apt tools. Hmm&#8230; let&#8217;s see.</p>
+
+<p>And indeed running apt update was giving a  <strong>404 error</strong>, as the etch files are no longer in the main ftp archive (on ftp.debian.org):</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>apt-get update
+</span><span class='line'>Ign http://ftp.debian.org etch Release.gpg
+</span><span class='line'>Ign http://ftp.debian.org etch Release
+</span><span class='line'>Ign http://ftp.debian.org etch/main Packages
+</span><span class='line'>Ign http://ftp.debian.org etch/non-free Packages
+</span><span class='line'>Ign http://ftp.debian.org etch/contrib Packages
+</span><span class='line'>Err http://ftp.debian.org etch/main Packages
+</span><span class='line'>404 Not Found [IP: 130.89.149.226 80]
+</span><span class='line'>Err http://ftp.debian.org etch/non-free Packages
+</span><span class='line'>404 Not Found [IP: 130.89.149.226 80]
+</span><span class='line'>Err http://ftp.debian.org etch/contrib Packages
+</span><span class='line'>404 Not Found [IP: 130.89.149.226 80]
+</span><span class='line'>Fetched 4B in 1s (3B/s)
+</span><span class='line'>Reading package lists... Done
+</span><span class='line'>W: Couldn't stat source package list http://ftp.debian.org etch/main Packages (/var/lib/apt/lists/ftp.debian.org_debian_dists_etch_main_binary-i386_Packages) - stat (2 No such file or directory)
+</span><span class='line'>W: Couldn't stat source package list http://ftp.debian.org etch/non-free Packages (/var/lib/apt/lists/ftp.debian.org_debian_dists_etch_non-free_binary-i386_Packages) - stat (2 No such file or directory)
+</span><span class='line'>W: Couldn't stat source package list http://ftp.debian.org etch/contrib Packages (/var/lib/apt/lists/ftp.debian.org_debian_dists_etch_contrib_binary-i386_Packages) - stat (2 No such file or directory)
+</span><span class='line'>W: You may want to run apt-get update to correct these problems</span></code></pre></td></tr></table></div></figure>
+
+
+<p>and the apt sources line causing this error was (from <strong>/etc/apt/sources.list</strong>):
+<code>deb http://ftp.debian.org/debian/ etch main non-free contrib</code></p>
+
+<p>We could not upgrade the machine because of internal constrains, and this was not even the scope of our project, but we needed to install some new debian packages we had to point the apt sources to a new place and this is to the <strong>archive.debian.org</strong> that continues (and will continue) to have the etch files. Basically our new apt sources became:
+<code>deb http://archive.debian.org/debian/ etch main non-free contrib</code>
+and this made it possible to complete our project and install the needed libraries. A few weeks after we finished the project we were hired for a new project to perform the upgrade to lenny, but this is a different storry.</p>
+
+<p>I hope you found this post useful, in case for some reason you are <em>still running etch and need to find a proper etch mirror to install new softwares as needed</em>. Of course I would urge you to upgrade to lenny, or even to squeeze if possible, as etch is no longer supported, you have no longer security patches, etc.</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  <div class="pagination">
+    
+      <a class="prev" href="/blog/page/4/">&larr; Older</a>
+    
+    <a href="/blog/archives">Blog Archives</a>
+    
+    <a class="next" href="/blog/page/2/">Newer &rarr;</a>
+    
+  </div>
+</div>
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/2012/11/howto-bulk-import-dns-zones-to-softlayer-dns-using-cpanel/">HowTo: Bulk Import DNS Zones to Softlayer DNS using Cpanel</a>
+      </li>
+    
+      <li class="post">
+        <a href="/2012/08/integrate-sendgrid-with-redmine/">Integrate Sendgrid with Redmine</a>
+      </li>
+    
+      <li class="post">
+        <a href="/2012/07/rsback-task-x-is-locked-and-cannot-be-executed/">rsback: task x is locked and cannot be executed</a>
+      </li>
+    
+      <li class="post">
+        <a href="/2012/06/restore-xen-vm-from-lvm-snapshot-backups/">Restore Xen VM from LVM Snapshot Backups</a>
+      </li>
+    
+      <li class="post">
+        <a href="/2012/06/debian-6-backup-xen-with-lvm-and-rsnapshot/">Debian 6: Backup Xen with LVM and Rsnapshot</a>
+      </li>
+    
+  </ul>
+</section>
+
+<section>
+  <h1>GitHub Repos</h1>
+  <ul id="gh_repos">
+    <li class="loading">Status updating&#8230;</li>
+  </ul>
+  
+  <a href="https://github.com/promet">@promet</a> on GitHub
+  
+  <script type="text/javascript">
+    $.domReady(function(){
+        if (!window.jXHR){
+            var jxhr = document.createElement('script');
+            jxhr.type = 'text/javascript';
+            jxhr.src = '/javascripts/libs/jXHR.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(jxhr, s);
+        }
+
+        github.showRepos({
+            user: 'promet',
+            count: 0,
+            skip_forks: true,
+            target: '#gh_repos'
+        });
+    });
+  </script>
+  <script src="/javascripts/github.js" type="text/javascript"> </script>
+</section>
+
+
+<section>
+  <h1>Latest Tweets</h1>
+  <ul id="tweets">
+    <li class="loading">Status updating&#8230;</li>
+  </ul>
+  <script type="text/javascript">
+    $.domReady(function(){
+      getTwitterFeed("linuxsysadmnblg", 4, false);
+    });
+  </script>
+  <script src="/javascripts/twitter.js" type="text/javascript"> </script>
+  
+    <a href="http://twitter.com/linuxsysadmnblg" class="twitter-follow-button" data-show-count="false">Follow @linuxsysadmnblg</a>
+  
+</section>
+
+
+
+
+
+  
+</aside>
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2012 - Promet OPS Team -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'linuxsysadminblog';
+      
+        
+        var disqus_script = 'count.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'http://' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) {return;}
+  js = d.createElement(s); js.id = id;
+  js.src = "//connect.facebook.net/en_US/all.js#appId=212934732101925&xfbml=1";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = 'http://platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>

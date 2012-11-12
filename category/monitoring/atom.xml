@@ -1,0 +1,298 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: monitoring | Linux Sysadmin Blog]]></title>
+  <link href="http://linuxsysadminblog.com/category/monitoring/atom.xml" rel="self"/>
+  <link href="http://linuxsysadminblog.com/"/>
+  <updated>2012-11-13T01:37:44+08:00</updated>
+  <id>http://linuxsysadminblog.com/</id>
+  <author>
+    <name><![CDATA[Promet OPS Team]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Cacti and MySQL counters problem]]></title>
+    <link href="http://linuxsysadminblog.com/2009/06/cacti-and-mysql-counters-problem/"/>
+    <updated>2009-06-16T20:46:15+08:00</updated>
+    <id>http://linuxsysadminblog.com/2009/06/cacti-and-mysql-counters-problem</id>
+    <content type="html"><![CDATA[<p>We recently came across a problem with Cacti and the MySQL counters. For those of you who don't know how to integrate MySQL statistics into Cacti have a look at this: <a href="http://code.google.com/p/mysql-cacti-templates/">http://code.google.com/p/mysql-cacti-templates/</a>. These templates are a great way to gain some insight into how your MySQL database servers perform. The templates are actually PHP pages that query the databases through a variety of commands like SHOW STATUS and SHOW ENGINE INNODB STATUS.</p>
+
+<p>The issue that we encountered was that some statistics like the InnoDB buffer pool activity were not displaying anything for one server. Other servers were displaying it just fine and other statistics for that server were also fine.</p>
+
+<p>Among other things the SHOW ENGINE INNODB STATUS command shows deadlock information pertaining to the last deadlock that the InnoDB engine encountered. In some cases this information will be quite extensive and this causes a problem. The output of this command is one giant text field with a limit of 64KB. If the deadlock information is very large other information will get cut off which means certain statistics are lost. The easy fix for this is to restart the database server but in case this is not an option you can always use the innotop utility to wipe the deadlock information by causing a small deadlock.</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Setup Nagios User to View Specific Host and Services]]></title>
+    <link href="http://linuxsysadminblog.com/2009/05/setup-nagios-user-to-view-specific-host-and-services/"/>
+    <updated>2009-05-14T19:29:00+08:00</updated>
+    <id>http://linuxsysadminblog.com/2009/05/setup-nagios-user-to-view-specific-host-and-services</id>
+    <content type="html"><![CDATA[<p>This guide will help you setup Nagios user to have limited access to host and service checks.  It is helpful when you want to allow your customers or clients to view and receive alerts on their servers and services, like for dedicated servers.</p>
+
+<p><strong>Procedure:</strong></p>
+
+<p><strong>Contacts: </strong> Create new contact definitions for your client.
+```</p>
+
+<pre><code>define contact{
+    contact_name                    customer1
+    alias                           Customer One Admin
+    service_notification_period     24x7
+    host_notification_period        24x7
+    service_notification_options    c,r
+    host_notification_options       d,r
+    service_notification_commands   notify-service-by-email
+    host_notification_commands      notify-host-by-email
+    email                           customer1@domain.tld
+}
+</code></pre>
+
+<p>```</p>
+
+<p><strong>Groups:  </strong>Create contact groups or you can add the new contact for you existing group, depending on the checks that you want to allow.<br/>
+```</p>
+
+<pre><code>define contactgroup {
+    contactgroup_name               Dedicated-Server1-Admins
+    alias                           Admins for Server 1
+    members                         customer1,hostingadmins
+}
+</code></pre>
+
+<p>```</p>
+
+<p><strong>Hosts / Services: </strong>  Use the new Contact Group with customers email and your main admin.  Note that i used the existing Host Groups but you create new HostGroups if you want.
+```</p>
+
+<pre><code>define host {
+    use                            generic-host
+    host_name                      Server1
+    alias                          Server1
+    address                        10.0.0.2  // private or public ip
+    hostgroups                     DedicateServers
+    check_command                  check-host-alive
+    contact_groups                 Dedicated-Server1-Admins
+    check_period                   24x7
+    max_check_attempts             10
+    notification_interval          480
+    notification_period            24x7
+    notification_options           d,r
+    notifications_enabled          1
+}
+define service {
+    use                            generic-service
+    host_name                      Server1
+    service_description            HTTP
+    is_volatile                    0
+    check_period                   24x7
+    max_check_attempts             3
+    normal_check_interval          5
+    retry_check_interval           3
+    contact_groups                 Dedicated-Server1-Admins
+    notification_interval          480
+    notification_period            24x7
+    notification_options           w,u,c,r
+    check_command                  check_http
+    notifications_enabled          1
+}
+</code></pre>
+
+<p>```</p>
+
+<p>In my case, I created a new group and add our admin contacts and customers, then update the contact groups for hosts and services.  You can also create a new definitions for hosts, contacts, groups, and services with different names for the clients if you don't want to edit your existing definitions.</p>
+
+<p><strong>Htaccess: </strong> Lastly, you need to add htaccess user to your htpasswd file (htpasswd.users).  Username should match the name on your Contact.  In this sample it is customer1. <strong> [Update]</strong> If you've implemented "<a href="http://nagios.sourceforge.net/docs/3_0/cgisecurity.html">Digest Authentication</a>" you need to update your digest file instead of the htpasswd.</p>
+
+<p>Don't forget to restart you Nagios.</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[dv camera + computer + vlan + dvgrab = cheap video surveillance]]></title>
+    <link href="http://linuxsysadminblog.com/2009/05/dv-camera-computer-vlan-dvgrab-cheap-video-surveillance/"/>
+    <updated>2009-05-06T13:21:04+08:00</updated>
+    <id>http://linuxsysadminblog.com/2009/05/dv-camera-computer-vlan-dvgrab-cheap-video-surveillance</id>
+    <content type="html"><![CDATA[<p>In the day and age of high definition many are upgrading their video recording gear to the latest harddrive or flash based hi def video cameras. Unlike auto dealerships consumer electronics retailers don't offer trade in options for your old stuff.  In the green / renewable mindset we can put these no longer used video cameras to good use as video surveillance devices perfect for keeping an eye on your own or others property.</p>
+
+<p>On the hardware side you need a <a href="http://linuxsysadminblog.com/?attachment_id=596">DV camera</a> with firewire port (IEEE 1394), firewire port equipped Pentium 4 or equivalent pc or laptop with loaded with Fedora 9 or 10 and a  firewire cable to connect camera to the computer. For software we will only need <a href="http://freshmeat.net/projects/dvgrab/">dvgrab</a> and <a href="http://www.videolan.org">VLC</a></p>
+
+<p>Install dvgrab from Fedora update repo:<br/>
+<code>
+yum install dvgrab
+</code></p>
+
+<p>Install vlc from rpmfusion repo:<br/>
+<code>
+sudo rpm -ivh http://download1.rpmfusion.org/free/fedora/rpmfusion-free-release-stable.noarch.rpm
+sudo yum install vlc
+</code></p>
+
+<p>Set DV camera audio to 16bit (default is 12 bit) to avoid garbled audio.</p>
+
+<p><a href="http://linuxsysadminblog.com/2009/05/dv-camera-computer-vlan-dvgrab-cheap-video-surveillance/audio16bit/"><img src="http://linuxsysadminblog.com/images/2009/05/audio16bit.jpg" alt="audio16bit" /></a></p>
+
+<p>Turn on and connect video camera to computer and you should see something like this in /var/log/dmesg:<br/>
+<code>
+firewire_core: created device fw1: GUID 0800460102721e20, S100
+</code></p>
+
+<p>To test that we are able to grab video/audio from camera and display in VLC player pipe output of dvgrab into vlc.
+<code>
+sudo dvgrab - -noavc -nostop | vlc - --no-sub-autodetect-file :demux=rawdv
+</code></p>
+
+<p>After issuing this command you should see a 720x480 video feed with 16bit 48000Hz audio stream in vlc on your desktop</p>
+
+<p><a href="http://linuxsysadminblog.com/2009/05/dv-camera-computer-vlan-dvgrab-cheap-video-surveillance/vlcwindow1/"><img src="http://linuxsysadminblog.com/images/2009/05/vlcwindow1.png" alt="vlcwindow1" /></a></p>
+
+<p>Now we setup vlc as a streaming server so that we can view the video/audio when away. Streaming a 720x480 video stream is a bit overkill as the video quality on the DV camera is pretty good when vlc streams video at lower resolutions like 320x240, I also reduce the audio quality to save on bandwidth. Here I used "cvlc" or command vlc to avoid opening a vlc window and "&amp;" to put process into background.
+<code>
+sudo dvgrab - -noavc -nostop | cvlc - --no-sub-autodetect-file :demux=rawdv --sout '#transcode{vcodec=mp4v,vb=600,acodec=mp3,ab=56,scale=1,width=320,height=240,channels=2}:duplicate{dst=std{access=http,mux=ts,dst=192.168.1.102:3323}}' &amp;
+</code></p>
+
+<p>To view the feed locally via vlc open a http network location on ip and port you specified in the <code>dst=</code> section of the command above.</p>
+
+<p><a href="http://linuxsysadminblog.com/2009/05/dv-camera-computer-vlan-dvgrab-cheap-video-surveillance/vlcopen/"><img src="http://linuxsysadminblog.com/images/2009/05/vlcopen.png" alt="vlcopen" /></a></p>
+
+<p>To view your feed from the Internet you will need to either configure vlc to stream on an outside interface or configure port forwarding.</p>
+
+<p><a href="http://linuxsysadminblog.com/2009/05/dv-camera-computer-vlan-dvgrab-cheap-video-surveillance/ddwrt/"><img src="http://linuxsysadminblog.com/images/2009/05/ddwrt.png" alt="ddwrt" /></a></p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Monitoring Drupal Sites With Nagios]]></title>
+    <link href="http://linuxsysadminblog.com/2009/04/monitoring-drupal-sites-with-nagios/"/>
+    <updated>2009-04-23T04:22:31+08:00</updated>
+    <id>http://linuxsysadminblog.com/2009/04/monitoring-drupal-sites-with-nagios</id>
+    <content type="html"><![CDATA[<p>There is a <a href="http://drupal.org/project/nagios"><strong>module</strong></a> released for monitoring <a href="http://drupal.org/">Drupal</a> sites with <a href="http://www.nagios.org/">Nagios</a>.  Monitoring includes the check if your site is up and running, check for new updates on Drupal core, security, and modules, database updates, write permission on "files" directory,  check if cron is running on the specified period, and other sections of your Drupal site.  It is intended and helpful to those maintain large number of Drupal sites.</p>
+
+<p>At this time of writing, this module is still on a development version and there's no guarantee that the installation guide will work out-of-the-box with your system.  And this post will mainly cover my own installation process on our Nagios monitoring server running on Debian and Nagios version 3.0, and Drupal version 6.x sites on web servers running CentOS 5.x.</p>
+
+<p><strong>Installation</strong>:
+My installation is based on the included README file and with some adjustments to my liking.</p>
+
+<p><strong>Install the Drupal Module:</strong></p>
+
+<ul>
+<li><p>Download the Nagios module from <a href="http://drupal.org/project/nagios">Drupal project page</a>.</p></li>
+<li><p>Install the module to your Drupal site just like the other modules.  Download tarball, extract to modules directory ex: <strong><em>sites/all/modules/</em></strong>, go to <strong><em>admin->build->modules</em></strong> and enable the module.</p></li>
+<li><p>Configure your Nagios module and set the site's UniqueID and Cron duration.</p></li>
+</ul>
+
+
+<p><strong>UniqueID</strong> is your site identifier to be used by the Nagios (<em>check_drupal</em>) to authorize the service check and for security purposes.  The author also suggests the use of MD5 or SHA1 string. Refer to README for more info on this parameter.</p>
+
+<p><strong>Cron Duration</strong> - you need to supply the interval of your cron job that checks for Drupal updates.  This value should match with your cron settings, ex: daily or every 3 hours..etc.</p>
+
+<p><strong>Configure Nagios checks:</strong></p>
+
+<ul>
+<li>Copy the plugin file (<strong><em>check_drupal</em></strong>) found on the <strong><em>nagios-plugin</em></strong> directory of the module, to your Nagios plugins directory where the other Nagios check commands are located - in my case it's on <strong><em>/usr/local/nagios/libexec/</em></strong> (CentOS).</li>
+</ul>
+
+
+<p>If your Nagios installation is on a different machine than your Drupal server, you need to copy the <em><strong>check_drupal</strong></em> file in there.  You can also put it on the same server with Drupal sites and use NRPE instead.</p>
+
+<p>On my CentOS machine i received an error on <strong><em>check_drupal</em></strong> regarding the location of <em><strong>basename</strong></em> file - it's on <em><strong>/bin/basename</strong></em>.  You can edit the <em><strong>check_drupal</strong></em> file directly to adjust the path to <em><strong>basename</strong></em>.
+<code>./check_drupal: line 14: /usr/bin/basename: No such file or directory.</code></p>
+
+<ul>
+<li><strong>Add command, host, hostgroup, and service definition:</strong></li>
+</ul>
+
+
+<p><strong>Command </strong>(commands.cfg):  I made small modification on the given commands from the README file to match my setup.
+<code>
+define command{
+command_name  check_drupal
+command_line  $USER1$/check_drupal -H $ARG1$ -U $ARG2$ -t $ARG3$
+}
+</code></p>
+
+<p><strong>HostGroup</strong>:  I created a new Host group because we have other service checks on our server such as SSH, HTTP, LOAD, etc and I want to separate my checks for Drupal sites.
+<code>
+define hostgroup {
+hostgroup_name  Drupal
+alias           Drupal Sites
+members         MyWebServer
+}
+</code></p>
+
+<p><strong>Host:</strong> I defined new host for Drupal sites so i can configure and group my them on the same host where they belong.
+<code>
+define host {
+host_name                      MyWebServer
+display_name                   MyWebServer
+address                        HOSTNAME/IP ADDRESS HERE
+hostgroups                     Drupal
+check_command                  check-host-alive
+contact_groups                 Admins
+check_period                   24x7
+max_check_attempts             10
+notification_interval          480
+notification_period            24x7
+notification_options           d,r
+notifications_enabled          1
+}
+</code></p>
+
+<p><strong>Service:</strong> Below is my service checks definition for checking Drupal sites, i only need to copy this and change supply parameters for domain, unique key and the timeout.
+<code>
+define service {
+service_description            DRUPAL_SITE 1
+host_name                      MyWebServer
+check_period                   24x7
+max_check_attempts             3
+normal_check_interval          5
+retry_check_interval           3
+contact_groups                 Admins
+notification_interval          480
+notification_period            24x7
+notification_options           w,u,c,r
+check_command                  check_drupal!mysite.example.com!mykeyhere!5
+notifications_enabled          1
+}
+</code></p>
+
+<p>If your installation and configuration is correct you will get the Nagios service status similar below.  It indicates number of modules, themes, users, nodes, etc.</p>
+
+<p><code>
+DRUPAL OK, ADMIN:OK, CRON:OK
+SAN=0;SAU=0;NOD=12;USR=7;MOD=23;THM=9
+</code></p>
+
+<p>On my initial tests i received Nagios status (below) different than the above info and it was caused by my Apache configuration because i have a default Nagios installation before on my server that hosts my Drupal sites.
+<code>
+HTTP returned an error code. HTTP:   HTTP/1.1 301 Moved Permanently
+</code></p>
+
+<p>So you need to check first the url of your Nagios module installation ex:  http://mysamplesite.com/nagios/, this will give you:</p>
+
+<p><code>
+Nagios status page
+nagios=UNKNOWN, DRUPAL:UNKNOWN=Unauthorized
+</code></p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Hawaii comes to our datecenter.]]></title>
+    <link href="http://linuxsysadminblog.com/2009/04/hawaii-comes-to-our-datecenter/"/>
+    <updated>2009-04-21T21:26:41+08:00</updated>
+    <id>http://linuxsysadminblog.com/2009/04/hawaii-comes-to-our-datecenter</id>
+    <content type="html"><![CDATA[<p>Aside from missing coconut trees and hula girls distinguishing our data center from Hawaii was pretty tough this afternoon. It was HOT, so hot in fact that I was sweating while sitting in just a cotton tee-shirt. I kept drifting away into a daydream where that failed 20 ton Liebert A/C unit was running. Soon however reality set in... the a/c wasn't running, our 42U cabinet packed with 35U worth of server, switch and router gear was overheating and a slave Mysql database server wasn't having this all this heat! The poor thing turned itself off  and after 5 hour cool down time I still get error: 1610 Temperature violation detected</p>
+
+<p><a href="http://linuxsysadminblog.com/images/2009/04/toohot.jpg"><img src="http://linuxsysadminblog.com/images/2009/04/toohot.jpg" alt="1610 temparature violation" /></a></p>
+
+<p>While promises of having the A/C unit up and running soon were being thrown at me I wasn't biting. Shutting down 3 non-essential servers did help things a bit.  The database servers with their 15K rpm disks were running their internal fans at nearly 100% coping with the heat. At this point I was starting to feel a little bit upbeat picturing what would happen if the servers were not servers and just consumer grade PC's turned into servers. If you are reading this you must know what burned power supplies smell like! At some point I knew the A/C unit would be fixed and I would be able to re-power up the non-essential servers. Monitoring temperatures inside the cabinet would be nice, but we don't have such a <a href="http://www.pcmeasure.com/sensors.php">useful device</a>. Next best thing was internal temperature sensors inside a direct attach storage array which has 6 sensors: 4 in the front and 2 in back. <a href="http://www.cacti.net/">Cacti</a> proved invaluable as I could monitor what was going on and most importantly see if the datacenter made good on their promise. Each raise in temperature indicates a period when the A/C was not working or working poorly.</p>
+
+<p><a href="http://linuxsysadminblog.com/images/2009/04/array_temps.png">!</a></p>
+]]></content>
+  </entry>
+  
+</feed>

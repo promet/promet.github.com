@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: Drupal performance | Linux Sysadmin Blog]]></title>
+  <link href="http://linuxsysadminblog.com/category/drupal-performance/atom.xml" rel="self"/>
+  <link href="http://linuxsysadminblog.com/"/>
+  <updated>2012-11-13T01:37:44+08:00</updated>
+  <id>http://linuxsysadminblog.com/</id>
+  <author>
+    <name><![CDATA[Promet OPS Team]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[APC should be enabled by default]]></title>
+    <link href="http://linuxsysadminblog.com/2011/04/apc-should-be-enabled-by-default/"/>
+    <updated>2011-04-01T14:36:15+08:00</updated>
+    <id>http://linuxsysadminblog.com/2011/04/apc-should-be-enabled-by-default</id>
+    <content type="html"><![CDATA[<p><strong>PHP is slow</strong>. This should not be a huge revelation for any of us, and this is not because PHP is a bad programing language, or because Python or Ruby are better. This is because it is an <a href="http://en.wikipedia.org/wiki/Interpreted_language"><em>interpreted language</em></a>. Every time you execute a PHP script it is going to do the exact same thing and interpret your code and then execute it over and over. This is obviously slow and doesn't compare with any compiled language like C++ for example. But we don't want to write in C++ for our webapps, right? and we would like to use the PHP simplicity as many other open source products and developers; what can we do then? We can very easily enable any of the opcode cache available: <a href="http://pecl.php.net/package/APC"><strong>APC</strong></a>, <a href="http://eaccelerator.net/"><strong>eaccelerator</strong></a> or <a href="http://xcache.lighttpd.net/"><strong>xcache</strong></a> (I'm not aware of something similar for python or ruby, but if it exists you should probably use it also). An <strong>opcode cache</strong> or <strong>PHP accelerator</strong>, will cache the compiled form of the php scripts speeding up dramatically their execution time. Many people have done this a long time as they needed to improve the performance of their sites, and get results up to 20x speed up from plain PHP. A very simple step-by-step intro on how you can install APC can be found on this <a href="http://linuxsysadminblog.com/2010/03/enabledisable-apc-on-virtual-host-level/">older post</a>.</p>
+
+<p>Now here is the question a good friend of mine asked me a while ago: <strong>why is APC not enabled by default?</strong> Why do people have to do an extra step to install an external module for this (that many don't). And my answer at that time was that opcode caches are not perfect, and depending by how you write your code they might cause problems and have it no longer functioning correctly. I think I was quite happy with my answer as myself I would always install an opcode cache on any high traffic site I managed from day one (most of the time APC, but also eaccelerator) and many time even running comparisons between them to see if one of them is faster. Still even today, in most of the <strong>performance projects</strong> we completed, we found people don't do this, and they <strong>don't have APC installed and enabled</strong>. There are some tricks on how to tune APC and improve even better its performance but here I'm talking just to have it installed. This is why I think that APC should be enabled by default everywhere (not only by 'high traffic' sites). It should give PHP scripts a boost of performance and if you really have problems with it you can disable it on a vhost or directory level very simple just by adding in .htaccess:
+<code>php_flag apc.cache_by_default On
+</code></p>
+
+<p>I'm hoping more and more people will do this so we can focus on more serious performance problems in our PHP webapps. I don't see why not, because this is very simple and there are plenty of <a href="http://www.google.com/search?q=howto+php+apc">howto's</a> available. Still if you need help, and you would like us to do it for you, please <a href="http://www.prometsource.com/contact">contact us</a> and let us speed up your site.</p>
+
+<p>Note: if you have done this many years ago and want somethign even faster for your PHP code you should take a look at <a href="https://github.com/facebook/hiphop-php/wiki/"><strong>HipHop</strong></a> the project from Facebook to <strong>compile your php scripts</strong> (actually transforms PHP source code into highly optimized C++ and then uses g++ to compile it to machine code) and run them as executables (but this is going to be much harder to implement, but still a very interesting project to keep an eye).</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Install Apache Solr and Tomcat for Drupal]]></title>
+    <link href="http://linuxsysadminblog.com/2010/10/install-apache-solr-and-tomcat-for-drupal/"/>
+    <updated>2010-10-17T05:10:55+08:00</updated>
+    <id>http://linuxsysadminblog.com/2010/10/install-apache-solr-and-tomcat-for-drupal</id>
+    <content type="html"><![CDATA[<p>Here's my quick install guide for Solr, Tomcat, and Drupal ApacheSolr module for multiple sites.  Mostly I based the steps below from the following sites: <a href="http://wiki.apache.org/solr/SolrTomcat">wiki.apache.org</a> and <a href="http://www.drupalconnect.com/blog/steve/configuring-apache-solr-multi-core-drupal-and-tomcat-ubuntu-910">drupalconnect.com</a>.</p>
+
+<p><strong>Detailed Setup:</strong></p>
+
+<ul>
+<li>Drupal 6.19</li>
+<li>ApacheSolr module 6-1.1</li>
+<li>Apache Solr PHP Client Library: Rev.22</li>
+<li>Solr 1.4.1</li>
+<li>Tomcat 6.0.29</li>
+<li>SunJDK 6update21</li>
+<li>RHEL5.5x64</li>
+</ul>
+
+
+<p><strong>Install Process: Tomcat</strong></p>
+
+<ul>
+<li>Create <code>solr</code> user</li>
+<li>Download <a href="http://tomcat.apache.org/download-60.cgi">Tomcat6</a></li>
+<li>Extract to <code>/opt/tomcat</code>,  <em>this will be the <code>$CATALINA_HOME</code> directory, you can use any dir you want</em></li>
+<li>Edit <code>/opt/tomcat/conf/tomcat-users.xml</code> to enable Tomcat login.  See comments in this file.
+<code>
+&lt;role rolename="manager"/&gt;
+&lt;role rolename="admin"/&gt;
+&lt;user username="tomcat" password="tomcat" roles="manager,admin"/&gt;
+</code></li>
+<li>Test run your Tomcat:  <code>/opt/tomcat/bin/catalina.sh run</code>.  Chown all Tomcat files to <code>solr</code> user (<code>chown -R solr.solr /opt/tomcat</code>).  Default server setting will use port 8080, to customized edit the file <code>/opt/tomcat/conf/server.xml</code>.  If you encounter error on "<em>BASEDIR environment variable is not defined correctly...</em>", check permissions of <code>.sh</code> files inside <code>/opt/tomcat/bin/</code> and make them executable (<code>chmod 755 /opt/tomcat/bin/*.sh</code>).</li>
+<li>Add startup (init) script.  Copy this <a href="http://wiki.apache.org/solr/SolrTomcat?action=AttachFile&amp;do=view&amp;target=tomcat6">Tomcat6 init file</a> from Apache.org to <em>/etc/init.d/tomcat6</em>.  Check and update variables like Java home, Tomcat directory, etc, if needed.  Add to startup <code>/sbin/chkconfig --add tomcat6</code> and <code>/sbin/chkconfig tomcat6 on</code>.  Dependencies: redhat-lsb (or lsb-base?)</li>
+<li>Visit your Tomcat Admin page.  ex <em>http://localhost:8080</em></li>
+</ul>
+
+
+<p><strong>Install Process: Solr</strong></p>
+
+<ul>
+<li>Download <a href="http://mirrors.igsobe.com/apache/lucene/solr/">Solr</a></li>
+<li>Extract to temporary location, ex: <code>/opt/apache-solr-1.4.1</code></li>
+<li>Copy <code>/opt/apache-solr-1.4.1/dist/apache-solr-1.4.1.war</code> to <code>/opt/tomcat/webapps/solr.war</code></li>
+<li>Copy <code>/opt/apache-solr-1.4.1/example/solr</code> directory to <code>/opt/tomcat/solr</code>  <em>this will be the <code>$SOLR_HOME</code> directory, you can use any dir you want</em></li>
+<li>Create file <code>/opt/tomcat/conf/Catalina/localhost/solr.xml</code> with the following configuration.  Make sure paths are correct.
+<code>
+&lt;Context docBase="/opt/tomcat/webapps/solr.war" debug="0" privileged="true" allowLinking="true" crossContext="true"&gt;
+&lt;Environment name="solr/home" type="java.lang.String" value="/opt/tomcat/solr" override="true" /&gt;
+&lt;/Context&gt;
+</code></li>
+</ul>
+
+
+<p><strong>Install Process: ApacheSolr Drupal module and SolrPHP client</strong></p>
+
+<ul>
+<li>Install/enable <a href="http://drupal.org/project/apachesolr">Drupal ApacheSolr</a> module. Drush, CVS, or traditional install - whatever you want.  Example: <code>/var/www/site1/sites/all/modules/apachesolr</code></li>
+<li>Download <a href="http://code.google.com/p/solr-php-client/">SolrPHP client library</a></li>
+</ul>
+
+
+<p><strong>Configure Solr for Multi-Core Setup</strong></p>
+
+<ul>
+<li>Copy <code>/var/www/site1/sites/all/modules/apachesolr/schema.xml</code> to <code>/opt/tomcat/solr/conf/schema.xml</code></li>
+<li>Copy <code>/var/www/site1/sites/all/modules/apachesolr/solrconfig.xml</code> to <code>/opt/tomcat/solr/conf/solrconfig.xml</code></li>
+<li>Copy <code>/opt/apache-solr-1.4.1/example/multicore/solr.xml</code> to <code>/opt/tomcat/solr/solr.xml</code></li>
+<li>Create directory for each site and copy <code>/opt/tomcat/solr/conf</code> directory to each of them. Example:
+<code>
+mkdir /opt/tomcat/solr/site1
+mkdir /opt/tomcat/solr/site2
+cp -r /opt/tomcat/solr/conf /opt/tomcat/solr/site1/
+cp -r /opt/tomcat/solr/conf /opt/tomcat/solr/site2/
+</code></li>
+<li>Edit <code>/opt/tomcat/solr/solr.xml</code> with the following config:
+<code>
+&lt;?xml version="1.0" encoding="UTF-8" ?&gt;
+&lt;solr persistent="false"&gt;
+&lt;cores adminPath="/admin/cores"&gt;
+&lt;core name="site1" instanceDir="site1" /&gt;
+&lt;core name="site1" instanceDir="site2" /&gt;
+&lt;/cores&gt;
+&lt;/solr&gt;
+</code></li>
+<li>Start or Restart Tomcat: <code>/etc/init.d/tomcat6 start</code></li>
+<li>Visit <code>http://localhost:8080/</code> and go to you Solr App</li>
+</ul>
+
+
+<p><strong>Configure Drupal site:</strong></p>
+
+<ul>
+<li>Go to ApacheSolr settings <code>http://localhost/admin/settings/apachesolr</code></li>
+<li>Save your config and if all is good you'll see message: <code>Your site has contacted the Apache Solr server.</code>
+<code>
+Solr host name: localhost
+Solr port: 8080
+Solr path (for site1): /solr/site1
+</code></li>
+<li>Configure your search index.</li>
+</ul>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Drupal Performance improvement for the drupal admins presentation]]></title>
+    <link href="http://linuxsysadminblog.com/2010/02/drupal-performance-improvement-for-the-layment-presentation/"/>
+    <updated>2010-02-02T17:24:57+08:00</updated>
+    <id>http://linuxsysadminblog.com/2010/02/drupal-performance-improvement-for-the-layment-presentation</id>
+    <content type="html"><![CDATA[<p>Last December I gave a talk at the Chicago Drupal Meet Up on increasing your Drupal site's performance.  I thought I would share the slides from that presentation with everyone - so here it is.  I tried to cover a fairly wide array of topics at a high level.  We started with page load performance definition, identifying the differences between the high availability and scalability concepts and then we jumped into page load performance.  The talk was very drupal specific in terms of load page improvement recommendations, and we covered a few MySQL drupal performance tweaks, some apache modules and tools, such as YSLOW, Google page speed and JMeter.</p>
+
+<p><a href="http://linuxsysadminblog.com/images/2010/02/Drupal.org-MakingDrupalFaster.v4.pdf">Drupal.org-MakingDrupalFaster.v4</a></p>
+]]></content>
+  </entry>
+  
+</feed>

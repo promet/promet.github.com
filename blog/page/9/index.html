@@ -1,0 +1,1175 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Linux Sysadmin Blog</title>
+  <meta name="author" content="Promet OPS Team">
+
+  
+  <meta name="description" content="It was an issue reported by our developer as she&#8217;s having trouble getting the correct parameters for video conversion using ffmpeg. The problem &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://linuxsysadminblog.com/blog/page/9/">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="/javascripts/ender.js"></script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <link href="/atom.xml" rel="alternate" title="Linux Sysadmin Blog" type="application/atom+xml">
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+<!-- Google Form for Contact Page -->
+<!-- jQuery -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+<script type="text/javascript">
+    // Avoid conflict with ender.js.
+jQuery.noConflict();
+</script>
+<!-- jQuery Form Plugin -->
+<script src="http://malsup.github.com/jquery.form.js"></script>
+<script src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.9/jquery.validate.min.js"></script> 
+<script src="/javascripts/google_form.js"></script>
+<!-- Google Form for Contact Page End here -->
+
+
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-120251-38']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">Linux Sysadmin Blog</a></h1>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:linuxsysadminblog.com" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/our-team">Our Team</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+  <li><a href="/blog/about">About</a></li>
+  <li><a href="/blog/contact">Contact</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div class="blog-index">
+  
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/2009/07/ffmpeg-scratchy-sound/">Ffmpeg Scratchy Sound</a></h1>
+    
+    
+      <p class="meta">
+        
+  
+
+
+<span class="byline author vcard">Posted by <span class="fn"><a href="/blog/our-team/gerold-mercadero.html">Gerold Mercadero</a></span></span>
+
+ - 
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2009-07-03T06:39:57+08:00" pubdate data-updated="true">Jul 3<span>rd</span>, 2009</time>
+        
+         | <a href="/2009/07/ffmpeg-scratchy-sound/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>It was an issue reported by our developer as she&#8217;s having trouble getting the correct parameters for video conversion using ffmpeg.  The problem is the scratchy sound when the conversion is done on our server (CentOS).  So she tried it on local (Windows) using <a href="http://www.pazera-software.com/products/flv-to-avi-converter/">Pazera Converter</a> and loaded the same parameters used on the server and got the desired result.</p>
+
+<p>We checked the Ffmpeg versions, and on local we have SVN-r15451 while the server have SVN-r14991.  So we upgraded our Ffmpeg on the server to the latest (at this time SVN-r19313) and this solved our problem.  I&#8217;m not sure what version of ffmpeg have this fix but atleast it should be SVN-r15451 and up. :)</p>
+
+<p>You can tell the difference from the sample videos (first 5 seconds) below - both were encoded using the same parameters.</p>
+
+<p>Using <a href="http://staging.powerlearning21.com/carol/gee/2b.flv">Ffmpeg SVN-r14991</a></p>
+
+<p>Using <a href="http://staging.powerlearning21.com/carol/gee/48b.flv">Ffmpeg SVN-r15451 and SVN-r19313</a></p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/2009/07/install-apache-solr-multicore-for-drupal/">Install Apache Solr Multicore for Drupal</a></h1>
+    
+    
+      <p class="meta">
+        
+  
+
+
+<span class="byline author vcard">Posted by <span class="fn"><a href="/blog/our-team/gerold-mercadero.html">Gerold Mercadero</a></span></span>
+
+ - 
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2009-07-01T10:14:11+08:00" pubdate data-updated="true">Jul 1<span>st</span>, 2009</time>
+        
+         | <a href="/2009/07/install-apache-solr-multicore-for-drupal/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>Yesterday I received new installation request from developers to install ApacheSolr module for Drupal.  Check this <strong><a href="http://drupal.org/project/apachesolr">link</a></strong> for more details on Apache Solr Search Integration.  Since this is new to me I spent some time on searching and doing test installations.  To make it short below is my setup on our shared hosting server running CentOS with Cpanel.</p>
+
+<p>Type: Multi-core  (for possible use on other Drupal sites)
+Java Servlet Container: Jetty (built-in on Solr)
+Drupal version: 6
+Java: 1.6</p>
+
+<p>I based this guide plainly from this <a href="http://drupal.org/node/484800">Drupal  page</a>, and I made this summary for my own future reference.</p>
+
+<p><strong>Process:</strong></p>
+
+<p><strong>You need to have the Java installed first.</strong></p>
+
+<p><strong>1)  ApacheSolr Drupal Module</strong></p>
+
+<p><strong>1.1)</strong> <a href="http://drupal.org/project/apachesolr"><strong>Download</strong></a> and install ApacheSolr module to your site/s. Traditional download, extract, and enable method.</p>
+
+<p><strong>1.2)</strong> <a href="http://code.google.com/p/solr-php-client/"><strong>Download</strong></a> SolrPHPClient (PHP library) and extract the the files inside of your ApacheSolr Drupal module.
+Example:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>sites/all/modules/apachesolr/SolrPhpClient</span></code></pre></td></tr></table></div></figure>
+
+
+<p><strong>2) Solr:</strong></p>
+
+<p><strong>2.1)</strong> Select a directory where you want to put your Solr files as long as it is not accessible to the web.
+Example:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>/home/solr</span></code></pre></td></tr></table></div></figure>
+
+
+<p><strong>2.2)</strong> <a href="http://people.apache.org/builds/lucene/solr/nightly/"><strong>Download</strong></a> nightly build of Solr and extract to your selected directory.
+Example:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>/home/solr/apache-solr-nightly</span></code></pre></td></tr></table></div></figure>
+
+
+<p><strong>2.3)</strong> Copy <em>example</em> directory to another directory like <em>drupal</em>.
+Example:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>cp -r /home/solr/apache-solr-nightly/example /home/solr/apache-solr-nightly/drupal</span></code></pre></td></tr></table></div></figure>
+
+
+<p><strong>2.4)</strong> Copy <em>schema.xml</em> and <em>solrconfig.xml</em> files from your ApacheSolr Drupal module.</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>cp /path_to_site/sites/all/modules/apachesolr/schema.xml /home/solr/apache-solr-nightly/drupal/schema.xml
+</span><span class='line'>cp /path_to_site/sites/all/modules/apachesolr/solrconfig.xml /home/solr/apache-solr-nightly/drupal/solrconfig.xml</span></code></pre></td></tr></table></div></figure>
+
+
+<p><strong>2.5)</strong> Copy &#8221;<code>/home/solr/apache-solr-nightly/drupal/multicore/solr.xml</code>&#8221; to &#8221;<code>/home/solr/apache-solr-nightly/drupal/solr/solr.xml</code>&#8221;</p>
+
+<p><strong>2.6)</strong> Create directory for each site that will use the ApacheSolr inside &#8221;<code>/home/solr/apache-solr-nightly/drupal/solr</code>&#8221; and copy
+<code>/home/solr/apache-solr-nightly/drupal/conf</code> to each of them.
+Example:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>mkdir /home/solr/apache-solr-nightly/drupal/solr/site_drupalsite1
+</span><span class='line'>cp -r /home/solr/apache-solr-nightly/drupal/conf /home/solr/apache-solr-nightly/drupal/solr/site_drupalsite1/
+</span><span class='line'>mkdir /home/solr/apache-solr-nightly/drupal/solr/site_drupalsite2
+</span><span class='line'>cp -r /home/solr/apache-solr-nightly/drupal/conf /home/solr/apache-solr-nightly/drupal/solr/site_drupalsite2/</span></code></pre></td></tr></table></div></figure>
+
+
+<p><strong>2.7)</strong> Edit <code>/home/solr/apache-solr-nightly/drupal/solr.xml</code> and add the details/path of your site/s.
+Example:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>&lt;cores adminPath="/admin/cores"&gt;
+</span><span class='line'>&lt;core name="drupalsite1" instanceDir="site_drupalsite1" /&gt;
+</span><span class='line'>&lt;core name="drupalsite2" instanceDir="site_drupalsite2" /&gt;
+</span><span class='line'>&lt;/cores&gt;</span></code></pre></td></tr></table></div></figure>
+
+
+<p><strong>2.8)</strong> Start the Jetty servlet container.</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>cd /home/solr/apache-solr-nightly/drupal/
+</span><span class='line'>java -jar start.jar</span></code></pre></td></tr></table></div></figure>
+
+
+<p><strong>2.9) </strong>Finally, visit <em>Drupal Admin</em> settings for ApacheSolr module to set the correct Solr path.<br/>
+Example:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>Drupal Site1:  /solr/drupalsite1
+</span><span class='line'>Drupal Site2:  /solr/drupalsite2</span></code></pre></td></tr></table></div></figure>
+
+
+<p>That&#8217;s it - we now have our complete ApacheSolr search integration.  Check the ApacheSolr documentation for more details on using this module.</p>
+
+<p>Solr server is started manually and to make it running on start up or if you want to be able to start/stop/restart the server, please refer to this <strong><a href="http://19thstreetdesign.com/blog/2009.02.04/installing-apache-solr-drupal-6">blog post</a></strong>.</p>
+
+<p>To add new sites (new sites with ApacheSolr module) just repeat steps 1 and 2.6 - 2.9, and restart the Solr server.</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/2009/06/my-first-amazon-ec2-setup-centos-ami/">My First Amazon EC2 Setup (CentOS AMI)</a></h1>
+    
+    
+      <p class="meta">
+        
+  
+
+
+<span class="byline author vcard">Posted by <span class="fn"><a href="/blog/our-team/gerold-mercadero.html">Gerold Mercadero</a></span></span>
+
+ - 
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2009-06-29T07:52:12+08:00" pubdate data-updated="true">Jun 29<span>th</span>, 2009</time>
+        
+         | <a href="/2009/06/my-first-amazon-ec2-setup-centos-ami/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>Here&#8217;s my first try working with Amazon Web Services. Covered tasks are the following:
+* getting familiar with AWS, specially EC2 and S3.
+* working with EC2 instance using CentOS image - search, start/stop, and do some customization of an instance
+* create AMIs (private) and start instance from it.
+*  S3 buckets - upload files.</p>
+
+<p>I based my instructions on previous post on <a href="http://linuxsysadminblog.com/2009/06/howto-get-started-with-amazon-ec2-api-tools/"><strong>Howto Get Started With Amazon EC2 API Tools</strong></a>, so I won&#8217;t give details on some steps.  And this post will cover mainly the steps taken to complete my objectives above.</p>
+
+<p>To start, I signed up for an account and enabled EC2 and S3 services, and generate X509 certificate.  Next, I selected a test server running CentOS 5.3 with Cpanel and installed <em>java</em> (openjdk 1.6, using <em>yum</em>) as a requirement.</p>
+
+<p>Then, download <a href="http://developer.amazonwebservices.com/connect/entry.jspa?externalID=351&amp;categoryID=88">EC2 API Tools</a> and extract to my working directory at <em>/myhome/.ec2/</em> and upload your private key and x509 certificates. Don&#8217;t forget to follow the filename format of cert-xxx.pem and pk-xx.pem.</p>
+
+<p>Export shell variables (posted on the previous post) and specify the correct private and x509 path.  Then run source /myhome/.bashrc or open new terminal to load new environment variables.</p>
+
+<p>Setup EC2 keypair. At first i used the certificate from different account but i got the error below:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>Client.AuthFailure: AWS was not able to validate the provided access credentials</span></code></pre></td></tr></table></div></figure>
+
+
+<p>I searched for this error and one suggestion is to chmod your certificate and key files to 600 but it didn&#8217;t help me.  My problem is on our account because one of my teammates changed our account password and probably generated new keys.  Anyway, this is where i signed up for a new account and proceeded without issues.</p>
+
+<p>Search for the AMIs to use.  Following the steps listed on the instructions, I tried several AMI&#8217;s (start/stop processes).  I observed some AMI&#8217;s took longer to start compare to others but i have no idea why :).  Btw, you can also search for AMI&#8217;s, and start/stop them from Amazon Management Console (EC2 Dashboard).</p>
+
+<p>My next task is to create my private AMIs and here&#8217;s a good video tutorial on <a href="http://s3.amazonaws.com/awsVideos/CustomizeAnExistingAMI/wmv/Customize%20an%20Existing%20AMI.wmv">Customizing an existing AMI and create your own AMI from it</a>.  From this part that I need to setup my S3 bucket or directory to store my AMI.  There&#8217;s a Firefox addon called <a href="https://addons.mozilla.org/en-US/firefox/addon/3247">S3Fox</a> that my friend suggested but unfortunately i can&#8217;t install it on my Firefox due to some errors.  I found and tried this <a href="http://www.bucketexplorer.com/">BucketExplorer</a> for creating my S3 Bucket.  Btw, this one is commercial and you can try it for 30 days.  I haven&#8217;t checked for other apps.  :)</p>
+
+<p>Back to creating my private AMI based on the above video, I ran into issue with ec2-bundle-vol command as it is not included on the AMI that i used, so i search for other AMIs that includes the EC2 Tools and found one from RightScale (CentOS5V1_10.img.manifest.xml).</p>
+
+<p>After this i was able to complete my private AMI and start new instance from it using the above steps without any issues.</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/2009/06/moving-drupalcivicrm-sites/">Moving Drupal / Civicrm Sites</a></h1>
+    
+    
+      <p class="meta">
+        
+  
+
+
+<span class="byline author vcard">Posted by <span class="fn"><a href="/blog/our-team/gerold-mercadero.html">Gerold Mercadero</a></span></span>
+
+ - 
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2009-06-29T05:39:10+08:00" pubdate data-updated="true">Jun 29<span>th</span>, 2009</time>
+        
+         | <a href="/2009/06/moving-drupalcivicrm-sites/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>In this guide i will provide the steps in moving Drupal sites with CiviCRM - with Drupal and CiviCRM in one or separate databases.  I will outline the steps and sample commands but won&#8217;t give much details, so feel free to ask if you need any clarifications.  Also, refer to my previous guide on &#8221;<a href="http://linuxsysadminblog.com/2009/04/drupal-howto-duplicate-copy-drupal-site/">HowTo Duplicate or Copy Drupal Site</a>&#8221; for detailed instructions, commands, and sample shell scripts.</p>
+
+<p><strong>Moving Files:</strong></p>
+
+<ul>
+<li><p>Copy Drupal file and preserve mode (ownerships, permissions, etc)
+Example: <code>cp -rp drupal_source drupal_destination</code>
+Review your directory permissions on sites/default/files, sites/default/files/civicrm, and other directories.</p></li>
+<li><p>Update references to Drupal url, path, and database details (name, user, pass, and host). Sample commands below using grep:</p></li>
+</ul>
+
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>find /path/to/drupal -type f -exec perl -pi -e "s/example.com/example2.com/g" {} \;
+</span><span class='line'>find /path/to/drupal -type f -exec perl -pi -e "s/public_html\/example/public_html\/example2/g" {} \;
+</span><span class='line'>find /path/to/drupal -type f -exec perl -pi -e "s/db_name/db_name2/g" {} \;
+</span><span class='line'>find /path/to/drupal -type f -exec perl -pi -e "s/db_user/db_user2/g" {} \;
+</span><span class='line'>find /path/to/drupal -type f -exec perl -pi -e "s/db_pass/db_pass2/g" {} \;</span></code></pre></td></tr></table></div></figure>
+
+
+<p><strong>Moving Database/s:</strong></p>
+
+<p><strong>Case 1:  Combined CiviCRM and Drupal Database.</strong></p>
+
+<ul>
+<li>Create sql dump of source database.<br/>
+ Example: <code>mysqldump -Q -udb_user -pdbpass db_name &gt; db_name.sql</code></li>
+<li>Import to destination database.
+ Example: <code>mysql -udb_user2 -pdbpass2 db_name2 &lt; db_name.sql</code></li>
+<li>Update references to Drupal url, path, and database details (name, user, pass, and host) of non-CiviCRM tables.  You can use PhpMyAdmin to export this tables, then do the search/replace process on your local editor, and upload back the updates sql.  You can also dump the tables from using command line (but you&#8217;ll have a long list of tables) and do the grep (same as above) and re-import the updated sql file.</li>
+<li>Update CiviCRM configurations from Drupal Admin section.  You need to update the &#8220;Resource URLs&#8221; and &#8220;Directories&#8221;.<br/>
+ CiviCRM Admin Settings:  <code>Administer Civicrm &gt; Global Settings &gt; Directories    (or use the direct url:  /civicrm/admin/setting/path?reset=1)</code>
+ CiviCRM Admin Settings:  <code>Administer Civicrm &gt; Global Settings &gt; Resource Urls  (or use the direct url:  /civicrm/admin/setting/url?reset=1)</code></li>
+<li>Optional:  You can empty Sessions and Cache tables if you want.</li>
+</ul>
+
+
+<p><strong>Case 2:  Separate CiviCRM and Drupal Database </strong>(recommended install for CiviCRM).</p>
+
+<p>Process for this setup is almost the same as Case 1, the difference is on the import process for databases.  I&#8217;ll just provide the complete info below.</p>
+
+<ul>
+<li>Create sql dump of source databases.<br/>
+Examples:
+<code>mysqldump -Q -udb_user -pdbpass db_name_drupal &gt; db_name_drupal.sql</code>
+<code>mysqldump -Q -udb_user -pdbpass db_name_civicrm &gt; db_name_civicrm.sql</code></li>
+<li>Import directly the CiviCRM database.<br/>
+Example: <code>mysql -udb_user2 -pdbpass2 db_name2_civicrm &lt; db_name_civicrm.sql</code></li>
+<li>Update CiviCRM configurations from Drupal Admin section.  You need to update the &#8220;Resource URLs&#8221; and &#8220;Directories&#8221;.<br/>
+ CiviCRM Admin Settings:  <code>Administer Civicrm &gt; Global Settings &gt; Directories    (or use the direct url:  /civicrm/admin/setting/path?reset=1)</code>
+ CiviCRM Admin Settings:  <code>Administer Civicrm &gt; Global Settings &gt; Resource Urls  (or use the direct url:  /civicrm/admin/setting/url?reset=1)</code></li>
+<li>Update references to Drupal url, path, and database details (name, user, pass, and host) of Drupal database dump.
+ <code>perl -pi -e "s/example.com/example2.com/g"  db_name_drupal.sql</code>
+ <code>perl -pi -e "s/public_html\/example/public_html\/example2/g"  db_name_drupal.sql</code></li>
+<li>Import the Drupal database.
+ Example: <code>mysql -udb_user2 -pdbpass2 db_name2_drupal &lt; db_name_drupal.sql</code></li>
+<li>Optional:  You can empty Sessions and Cache tables if you want.</li>
+</ul>
+
+
+<p>That&#8217;s All!</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/2009/06/cacti-and-mysql-counters-problem/">Cacti and MySQL Counters Problem</a></h1>
+    
+    
+      <p class="meta">
+        
+  
+
+
+<span class="byline author vcard">Posted by <span class="fn"><a href="/blog/our-team/pim-van-der-wal.html">Pim Van der Wal</a></span></span>
+
+ - 
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2009-06-16T20:46:15+08:00" pubdate data-updated="true">Jun 16<span>th</span>, 2009</time>
+        
+         | <a href="/2009/06/cacti-and-mysql-counters-problem/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>We recently came across a problem with Cacti and the MySQL counters. For those of you who don&#8217;t know how to integrate MySQL statistics into Cacti have a look at this: <a href="http://code.google.com/p/mysql-cacti-templates/">http://code.google.com/p/mysql-cacti-templates/</a>. These templates are a great way to gain some insight into how your MySQL database servers perform. The templates are actually PHP pages that query the databases through a variety of commands like SHOW STATUS and SHOW ENGINE INNODB STATUS.</p>
+
+<p>The issue that we encountered was that some statistics like the InnoDB buffer pool activity were not displaying anything for one server. Other servers were displaying it just fine and other statistics for that server were also fine.</p>
+
+<p>Among other things the SHOW ENGINE INNODB STATUS command shows deadlock information pertaining to the last deadlock that the InnoDB engine encountered. In some cases this information will be quite extensive and this causes a problem. The output of this command is one giant text field with a limit of 64KB. If the deadlock information is very large other information will get cut off which means certain statistics are lost. The easy fix for this is to restart the database server but in case this is not an option you can always use the innotop utility to wipe the deadlock information by causing a small deadlock.</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/2009/06/tracing-memory-leaks-with-pidstat/">Tracing Memory Leaks With Pidstat</a></h1>
+    
+    
+      <p class="meta">
+        
+  
+
+
+<span class="byline author vcard">Posted by <span class="fn"><a href="/blog/our-team/max-veprinsky.html">Max Veprinsky</a></span></span>
+
+ - 
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2009-06-16T14:53:10+08:00" pubdate data-updated="true">Jun 16<span>th</span>, 2009</time>
+        
+         | <a href="/2009/06/tracing-memory-leaks-with-pidstat/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>Finding application memory leaks is important part of keeping systems stable and often very hard to track down. Monitoring application memory consumption can be performed in a few different ways, the easiest is a simple capture of ps and append to log file triggered via cron at desired interval. In this example we will track sshd memory usage via shell script.</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>#!/bin/bash
+</span><span class='line'>
+</span><span class='line'>PID=`cat /var/run/sshd.pid`
+</span><span class='line'>ps -p $PID -o pid -o rss -o %mem -o cmd &gt;&gt; logname
+</span><span class='line'>exit</span></code></pre></td></tr></table></div></figure>
+
+
+<p>The output of log file will looks like this:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>PID RSS %MEM CMD
+</span><span class='line'>2607  1036  0.0 /usr/sbin/sshd</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Note the RSS column, it the values keep increasing with usage of application that would indicate a memory leak.</p>
+
+<p>Another way to do the same thing is with <a href="http://pagesperso-orange.fr/sebastien.godard/man_pidstat.html">pidstat</a> which is a part of the <a href="http://pagesperso-orange.fr/sebastien.godard/">sysstat</a> package. The package can be installed via yum or aptitude but may not come with pidstat, if so download and install or build the latest version from <a href="http://pagesperso-orange.fr/sebastien.godard/download.html">here</a>.</p>
+
+<p>Pidstat is better way to track resources of an application because it has built in polling as well as combining process&#8217;s children statistics into the total. See pidstat man page options. In the script below we will use pidstat to  track memory usage for sshd by polling 12 times every 5 minutes and e-mailing a report and writing to a log file. This script can also be run via cron.</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>#!/bin/bash
+</span><span class='line'># track memory usage of sshd using pidstat and send report
+</span><span class='line'># http://www.linuxsysadminblog.com - MaxV
+</span><span class='line'>
+</span><span class='line'>export PID=/var/run/sshduse.pid
+</span><span class='line'>export TIMESTAMP=`date +%Y%m%d_%H%M%S`
+</span><span class='line'>export LOGDIR=/var/log/
+</span><span class='line'>export SSHD_LOG="${LOGDIR}sshd_memUsage_${TIMESTAMP}"
+</span><span class='line'>export SSHD_PID=`cat /var/run/sshd.pid`
+</span><span class='line'>export MAILTO=user@domain.com
+</span><span class='line'>
+</span><span class='line'>if [ ! -e ${PID} ]; then
+</span><span class='line'>
+</span><span class='line'>#create pid file
+</span><span class='line'>echo $$ &gt; ${PID}
+</span><span class='line'>
+</span><span class='line'>#log begin of script to /var/log/messages
+</span><span class='line'>/usr/bin/logger "Starting SSHD Memory Usage Tracker"
+</span><span class='line'>
+</span><span class='line'># pidstat portion, poll 12 times with 5 minutes apart
+</span><span class='line'>/usr/bin/pidstat -r -p ${SSHD_PID} 300 12 &gt;&gt; ${SSHD_LOG}
+</span><span class='line'>
+</span><span class='line'>#e-mail report
+</span><span class='line'>mail -s "SSHD memory usage ${TIMESTAMP}" ${MAILTO} &lt; ${SSHD_LOG}
+</span><span class='line'>
+</span><span class='line'>#clean up pid file
+</span><span class='line'>if [ -f ${PID} ]; then
+</span><span class='line'>rm -rf ${PID}
+</span><span class='line'>
+</span><span class='line'>#log end of script to /var/log/messages
+</span><span class='line'>/usr/bin/logger "Ending SSHD Memory Usage Tracker"
+</span><span class='line'>fi
+</span><span class='line'>exit 0
+</span><span class='line'>else
+</span><span class='line'>
+</span><span class='line'>exit 0
+</span><span class='line'>fi</span></code></pre></td></tr></table></div></figure>
+
+
+<p>The output of this script:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>Linux 2.6.18-6-686 (hostname)       06/16/09        _i686_  (2 CPU)
+</span><span class='line'>
+</span><span class='line'>14:21:26          PID  minflt/s  majflt/s     VSZ    RSS   %MEM  Command
+</span><span class='line'>14:21:56         2564      0.00      0.00    4932   1108   0.05  sshd
+</span><span class='line'>14:22:26         2564      0.00      0.00    4932   1108   0.05  sshd
+</span><span class='line'>14:22:56         2564      0.00      0.00    4932   1108   0.05  sshd
+</span><span class='line'>14:23:26         2564      0.00      0.00    4932   1108   0.05  sshd
+</span><span class='line'>14:23:56         2564      0.00      0.00    4932   1108   0.05  sshd
+</span><span class='line'>14:24:26         2564      0.00      0.00    4932   1108   0.05  sshd
+</span><span class='line'>14:24:56         2564      0.00      0.00    4932   1108   0.05  sshd
+</span><span class='line'>14:25:26         2564      0.00      0.00    4932   1108   0.05  sshd
+</span><span class='line'>14:25:56         2564      0.00      0.00    4932   1108   0.05  sshd
+</span><span class='line'>14:26:26         2564      0.00      0.00    4932   1108   0.05  sshd
+</span><span class='line'>14:26:56         2564      0.47      0.00    4932   1108   0.05  sshd
+</span><span class='line'>14:27:26         2564      0.00      0.00    4932   1108   0.05  sshd
+</span><span class='line'>Average:         2564      0.04      0.00    4932   1108   0.05  sshd</span></code></pre></td></tr></table></div></figure>
+
+
+<p>From the output we can see that &#8220;RSS&#8221; values are not increasing as time progresses which means that it&#8217;s a solid piece of coding.</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/2009/06/new-debian-apt-keys/">New Debian Apt Keys</a></h1>
+    
+    
+      <p class="meta">
+        
+  
+
+
+<span class="byline author vcard">Posted by <span class="fn"><a href="/blog/our-team/max-veprinsky.html">Max Veprinsky</a></span></span>
+
+ - 
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2009-06-11T12:37:05+08:00" pubdate data-updated="true">Jun 11<span>th</span>, 2009</time>
+        
+         | <a href="/2009/06/new-debian-apt-keys/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content">
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/2009/06/howto-get-started-with-amazon-ec2-api-tools/">HowTo: Get Started With Amazon EC2 Api Tools</a></h1>
+    
+    
+      <p class="meta">
+        
+  
+
+
+<span class="byline author vcard">Posted by <span class="fn"><a href="/blog/our-team/marius-ducea.html">Marius Ducea</a></span></span>
+
+ - 
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2009-06-02T09:57:46+08:00" pubdate data-updated="true">Jun 2<span>nd</span>, 2009</time>
+        
+         | <a href="/2009/06/howto-get-started-with-amazon-ec2-api-tools/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>This article is meant to be a quick quide that will introduce the things needed to <strong>get you started with Amazon EC2</strong>. All this information can be found in the EC2 api docs, and this is not meant to be a replacement of the documentation, just trying to show the things needed in a clear and short form.</p>
+
+<h3>Getting Started</h3>
+
+<p>First of all you will need one <a href="http://aws.amazon.com/"><strong>Amazon AWS</strong></a> <strong>account </strong>and enable the <strong>EC2 service</strong>; in case you don&#8217;t have this already now is the time to <a href="http://www.amazon.com/gp/aws/registration/registration-form.html">create</a> your account. Once you do that you can safely return to this doc ;-)</p>
+
+<p>Once you have your account working, while still on the aws site, go and create a new <strong>X.509 certificate</strong> (under the AWS Access Identifiers page, in the X.509 certificate section near the bottom, click Create New). Once this is done, you will want to <em>download locally the private key file and X.509 certificate</em>.</p>
+
+<h3>EC2 API tools</h3>
+
+<p>Next you will have to <a href="http://developer.amazonwebservices.com/connect/entry.jspa?externalID=351&amp;categoryID=88">download</a> and install the Amazon EC2 api tools on one system (controlling machine) that will be used to start your EC2 army of servers, and control their usage. You will want to use the latest version (2009-05-15 at this time) as it will support all the features Amazon is offering for the EC2 service.</p>
+
+<p>The only real dependency of the EC2 API tools is <strong>java </strong>(at least version 1.5) so we will want to install that first. If you are running debian you can easily do this just by running (for lenny):
+<code>aptitude install sun-java6-jre</code>
+while for etch you will have to use: <em>aptitude install sun-java5-jre</em>
+For other distributions you can either use their internal packaging mechanism (in case they provide sun-java packages) or just download the binary from sun and install it manually.</p>
+
+<p><strong>Extract </strong>the EC2 APi tools (it is a zip archive called <strong>ec2-api-tools.zip</strong>) and move it under a folder of your preferece. I like to use <strong>~/.ec2</strong> for this, but you can use any folder you prefer. Also copy the <strong>private key</strong> and <strong>X.509 certificate</strong> in the same directory. Those files will look like <em>cert-xxx.pem</em> and <em>pk-xxx.pem</em>.</p>
+
+<p>Next we will have to <strong>export some shell variables</strong>. A good place to put this is in ~/.bashrc:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>export EC2_HOME=~/.ec2
+</span><span class='line'>export PATH=$PATH:$EC2_HOME/bin
+</span><span class='line'>export EC2_PRIVATE_KEY=$EC2_HOME/pk-xxx.pem
+</span><span class='line'>export EC2_CERT=$EC2_HOME/cert-xxx.pem
+</span><span class='line'>#Java home for debian default install path:
+</span><span class='line'>export JAVA_HOME=/usr
+</span><span class='line'>#add ec2 tools to default path
+</span><span class='line'>export PATH=~/.ec2/bin:$PATH</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Finally source the file to have the changes active in your current shell session:
+<code>source ~/.bashrc</code>
+or just open a new shell before starting to use the API tools.</p>
+
+<h3>EC2 Keypair</h3>
+
+<p>We will need to create one <strong>keypair </strong>that will be used to connect using <strong>ssh</strong> to the EC2 instances we will be using. We will use the <strong>ec2-add-keypair</strong> utility to create the key and register it with amazon:
+<code>ec2-add-keypair my-keypair</code>
+This will print out the private key that we will have to save in a file:
+`cat > ~/.ec2/id_rsa-my-keypair</p>
+
+<h1>paste the private key content</h1>
+
+<p>sudo chmod 600 <code>`~/.ec2/id_rsa-my-keypair</code></p>
+
+<h3>Running your first EC2 instance</h3>
+
+<p>Amazon EC2 uses the concept of <strong>AMIs </strong>= Amazon Machine Images. Any EC2 instance is started from one AMI. You can either use standard, public AMIs or create and customize your own private images. Creating or modifying existing AMIs is beyond the scope of this article, but just as a general information this is done using special AMI tools. Also before building your AMI you will want to ensure if you want to use a &#8216;small&#8217; type of image (i386 os) or a &#8216;large&#8217; type of instance (64bit os). These are described under<a href="http://aws.amazon.com/ec2/instance-types/"> http://aws.amazon.com/ec2/instance-types/</a></p>
+
+<p>For the scope of our article we will find a standard public image and start one instance of it to see that all is working properly with the EC2 api tools. You can see all the public images using:
+<code>ec2-describe-images -a</code>
+(over 2,300 images ;) ). You should probably grep the result to get any useful information. There are many good public images to use, like for example the <a href="http://alestic.com/">alestic</a> ones (for debian and ubuntu)
+Having the AMI id of the image we want to use we are ready to start our fist EC2 instance:
+<code>ec2-run-instances ami-e348af8a -k my-keypair</code>
+that will start a small instance with a 32bit debian lenny server instance from alestic.com.</p>
+
+<p><code>ec2-describe-instances</code>
+- this will describe the status of all the running instances, with their hostname, instance id, etc.</p>
+
+<p><code>ec2-authorize default -p 22</code>
+- in order to connect to your instance you will need to customize the &#8216;default&#8217; firewall rules for your account. The above rule will allow ssh on port 22 from anywhere. If you want to open http traffic you will have to add a rule like this:
+<code>ec2-authorize default -p 80</code></p>
+
+<p>Finally we can ssh to the ec2 instance using:
+<code>ssh -i ~/.ec2/id_rsa-my-keypair root@ec2-XXX-XXX-XXX-XXX.z-2.compute-1.amazonaws.com</code>
+where ec2-XXX-XXX-XXX-XXX.z-2.compute-1.amazonaws.com is the actual hostname of the instance as obtained from ec2-describe-instances.</p>
+
+<p><em>Note</em>: don&#8217;t forget to <strong>stop your instance</strong> when you no longer need it. EC2 is a service paid as you use, hence if you forget your instance running you will be billed for it ;-). You can do this by running <strong>shutdown </strong>inside the instance or by using:
+<code>ec2-terminate-instances i-yourinstance</code>
+and verify with <strong>ec2-describe-instances</strong> that the instance is indeed stopped.</p>
+
+<p>Next step is to create/customize your own EC2 AMI images based on your needs. This will be covered in a future article. Hopefully you found this article useful, and it will get you on track quickly with Amazon EC2 api tools.</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/2009/05/moving-magento-sites/">Moving Magento Sites</a></h1>
+    
+    
+      <p class="meta">
+        
+  
+
+
+<span class="byline author vcard">Posted by <span class="fn"><a href="/blog/our-team/gerold-mercadero.html">Gerold Mercadero</a></span></span>
+
+ - 
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2009-05-29T07:23:23+08:00" pubdate data-updated="true">May 29<span>th</span>, 2009</time>
+        
+         | <a href="/2009/05/moving-magento-sites/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>This is my first guide in moving <a href="http://www.magentocommerce.com/">Magento</a> site to another site or server.  I&#8217;ve completed few Magento site transfers as we recently develop and host Magento sites.  I also encountered several issues in transferring sites, and searched for different
+approaches from other blog/forum sites, such as installing a new Magento instance on destination server.  I checked the official <a href="http://www.magentocommerce.com/wiki/how_to/moving_magento_to_another_server">Magento guide in moving site</a> but I haven&#8217;t tried it yet since my current process works fine.  This is similar to my procedures when moving other sites such as Oscommerce, Drupal, Wordpress, etc.  I assume you have ssh access to your server.</p>
+
+<p><strong>Database:</strong></p>
+
+<p>Export/dump source database. You can do it via Phpmyadmin or using mysqldump from command line.</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>mysqldump -udbuser -pdbpass dbname &gt; filename.sql</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Update your database dump file before importing to destination database.  You need to change the referrences to source url/domain, path/home directory, database details such as database name in case you have tables that referrence to other tables (foriegn keys etc).  You can edit your sql file or dump file with your editor and do the search and replace.  For me i do this directly using perl/sed.</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>perl -pi -e "s/source.url/destination.url/g" filename.sql
+</span><span class='line'>perl -pi -e "s/path\/to\/source\/install/path\/to\/destination\/install/g" filename.sql</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Import your modified database dump to destination database using phpmyadmin or via command line.</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>mysql -udbuser -pdbpass dbname &lt; filename.sql</span></code></pre></td></tr></table></div></figure>
+
+
+<p><strong>Files:</strong></p>
+
+<p>Copy all of Magento files to your destination site or server and preserve attributes</p>
+
+<p>Empty contents of <code>var/cache</code> and <code>var/session</code> directories</p>
+
+<p>Same process with database, update references to url, path, database details, and other variables that</p>
+
+<p>   differs from your source and destination server (ex: db host).
+   Ex:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>   find /path/to/destination/site -type f -exec perl -pi -e "s/source.url/destination.url/g" {} \;
+</span><span class='line'>   find /path/to/destination/site -type f -exec perl -pi -e "s/path\/to\/source\/install/path\/to\/destination\/install/g" {} \;
+</span><span class='line'>   find /path/to/destination/site -type f -exec perl -pi -e "s/source_dbname/destination_dbname/g" {} \;
+</span><span class='line'>   find /path/to/destination/site -type f -exec perl -pi -e "s/source_dbuser/destination_dbuser/g" {} \;
+</span><span class='line'>   find /path/to/destination/site -type f -exec perl -pi -e "s/source_dbpass/destination_dbpass/g" {} \;</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Check if <code>var/</code> and <code>media/</code> directories are world-writable (777)</p>
+
+<p>That&#8217;s all check your new site and watch out if there are links coming from your old url.</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/2009/05/nginx-rewrite-to-index/">Nginx Rewrite to Index</a></h1>
+    
+    
+      <p class="meta">
+        
+  
+
+
+<span class="byline author vcard">Posted by <span class="fn"><a href="/blog/our-team/max-veprinsky.html">Max Veprinsky</a></span></span>
+
+ - 
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2009-05-27T19:25:06+08:00" pubdate data-updated="true">May 27<span>th</span>, 2009</time>
+        
+         | <a href="/2009/05/nginx-rewrite-to-index/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>Looking to rewrite all file requests to index?</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>location / {
+</span><span class='line'>root /var/www/nginx-default;
+</span><span class='line'>index index.html;
+</span><span class='line'>if (!-e $request_filename) {
+</span><span class='line'>rewrite . /index.html last;
+</span><span class='line'>}
+</span><span class='line'>}</span></code></pre></td></tr></table></div></figure>
+
+</div>
+  
+  
+
+
+    </article>
+  
+  <div class="pagination">
+    
+      <a class="prev" href="/blog/page/10/">&larr; Older</a>
+    
+    <a href="/blog/archives">Blog Archives</a>
+    
+    <a class="next" href="/blog/page/8/">Newer &rarr;</a>
+    
+  </div>
+</div>
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/2012/11/howto-bulk-import-dns-zones-to-softlayer-dns-using-cpanel/">HowTo: Bulk Import DNS Zones to Softlayer DNS using Cpanel</a>
+      </li>
+    
+      <li class="post">
+        <a href="/2012/08/integrate-sendgrid-with-redmine/">Integrate Sendgrid with Redmine</a>
+      </li>
+    
+      <li class="post">
+        <a href="/2012/07/rsback-task-x-is-locked-and-cannot-be-executed/">rsback: task x is locked and cannot be executed</a>
+      </li>
+    
+      <li class="post">
+        <a href="/2012/06/restore-xen-vm-from-lvm-snapshot-backups/">Restore Xen VM from LVM Snapshot Backups</a>
+      </li>
+    
+      <li class="post">
+        <a href="/2012/06/debian-6-backup-xen-with-lvm-and-rsnapshot/">Debian 6: Backup Xen with LVM and Rsnapshot</a>
+      </li>
+    
+  </ul>
+</section>
+
+<section>
+  <h1>GitHub Repos</h1>
+  <ul id="gh_repos">
+    <li class="loading">Status updating&#8230;</li>
+  </ul>
+  
+  <a href="https://github.com/promet">@promet</a> on GitHub
+  
+  <script type="text/javascript">
+    $.domReady(function(){
+        if (!window.jXHR){
+            var jxhr = document.createElement('script');
+            jxhr.type = 'text/javascript';
+            jxhr.src = '/javascripts/libs/jXHR.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(jxhr, s);
+        }
+
+        github.showRepos({
+            user: 'promet',
+            count: 0,
+            skip_forks: true,
+            target: '#gh_repos'
+        });
+    });
+  </script>
+  <script src="/javascripts/github.js" type="text/javascript"> </script>
+</section>
+
+
+<section>
+  <h1>Latest Tweets</h1>
+  <ul id="tweets">
+    <li class="loading">Status updating&#8230;</li>
+  </ul>
+  <script type="text/javascript">
+    $.domReady(function(){
+      getTwitterFeed("linuxsysadmnblg", 4, false);
+    });
+  </script>
+  <script src="/javascripts/twitter.js" type="text/javascript"> </script>
+  
+    <a href="http://twitter.com/linuxsysadmnblg" class="twitter-follow-button" data-show-count="false">Follow @linuxsysadmnblg</a>
+  
+</section>
+
+
+
+
+
+  
+</aside>
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2012 - Promet OPS Team -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'linuxsysadminblog';
+      
+        
+        var disqus_script = 'count.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'http://' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) {return;}
+  js = d.createElement(s); js.id = id;
+  js.src = "//connect.facebook.net/en_US/all.js#appId=212934732101925&xfbml=1";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = 'http://platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>

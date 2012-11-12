@@ -1,0 +1,423 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Calculating Videos on site to Bandwidth or Aggregate Transfer to cost of video played - Linux Sysadmin Blog</title>
+  <meta name="author" content="Promet OPS Team">
+
+  
+  <meta name="description" content="A client had asked us a very innocent question about bandwidth usage What will my average cost of video download be?. This question lead me down a &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://linuxsysadminblog.com/2008/10/calculating-videos-on-site-to-bandwidth-or-aggregate-transfer-to-cost-of-video-played/">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="/javascripts/ender.js"></script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <link href="/atom.xml" rel="alternate" title="Linux Sysadmin Blog" type="application/atom+xml">
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+<!-- Google Form for Contact Page -->
+<!-- jQuery -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+<script type="text/javascript">
+    // Avoid conflict with ender.js.
+jQuery.noConflict();
+</script>
+<!-- jQuery Form Plugin -->
+<script src="http://malsup.github.com/jquery.form.js"></script>
+<script src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.9/jquery.validate.min.js"></script> 
+<script src="/javascripts/google_form.js"></script>
+<!-- Google Form for Contact Page End here -->
+
+
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-120251-38']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">Linux Sysadmin Blog</a></h1>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:linuxsysadminblog.com" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/our-team">Our Team</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+  <li><a href="/blog/about">About</a></li>
+  <li><a href="/blog/contact">Contact</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      
+
+<div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">Calculating Videos on Site to Bandwidth or Aggregate Transfer to Cost of Video Played</h1>
+    
+    
+      <p class="meta">
+        
+  
+
+
+<span class="byline author vcard">Posted by <span class="fn"><a href="/blog/our-team/andrew-kucharski.html">Andrew Kucharski</a></span></span>
+
+ - 
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2008-10-06T22:42:04+08:00" pubdate data-updated="true">Oct 6<span>th</span>, 2008</time>
+        
+         | <a href="#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>A client had asked us a very innocent question about bandwidth usage <em>What will my average cost of video download be?</em>.  This question lead me down a path of assumptions and translations of different bandwidth terminologies which would make sense to someone without having to learn how to convert binary and calculate video compressions.  This article is first of an outline of how to get from a technical measurement to a non technical answer.</p>
+
+<p><strong>Bitrate</strong></p>
+
+<p>The assumptions for calculating the bandwidth of the video are the following:</p>
+
+<ul>
+<li><p>Size of average video, which depends on:</p>
+
+<ul>
+<li>pixel hight</li>
+<li>pixel width</li>
+<li>frames speed</li>
+<li>compression or movement</li>
+<li>length of video (time)</li>
+</ul>
+</li>
+</ul>
+
+
+<p>We&#8217;ll assume video bitstream is understood, there are lots of resources on the web which cover this topic, most widely <a href="http://livedocs.adobe.com/flash/9.0/flvencoder/wwhelp/wwhimpl/common/html/wwhelp.htm?context=LiveDocs_NoParts&amp;file=FLV_01.html">adobe itself</a>, as well as some <a href="http://sorenson-usa.com/vbe/index.html">old school </a>sources.</p>
+
+<p>Let&#8217;s assume that our video bitrate is 440kbs and audio 128kbs, making the whole a 568kbs.</p>
+
+<p>For explanation of <a href="http://www.lyberty.com/encyc/articles/kb_kilobytes.html">KiloBytes vs. kilobits vs. Kibibyte</a>s vs. Monkeybytes see Lyberty blog or one of these <a href="http://www.valkaryn.net/bwcalc/">nifty</a> <a href="http://www.ibeast.com/content/tools/band-calc.asp">calculators </a>on the web.</p>
+
+<p><strong>Site bandwidth usage</strong></p>
+
+<p>Once we have our <em>average</em> video size, lets consider the usage of the site, as the videos are embedded in a webiste, whose pages also incorporate images, javascript, css, etc, adding to the bandiwdth requirements.  So what we need to determine next is some baseline by which we can determine the download of videos considering pageviews, visitors, etc.</p>
+
+<p>If our baseline is visitors to the site, then we need to assume the number of pages viewed and videos watched per visit.   If its going to be determined by pageviews, then we need to understand number of videos watched per page.  This is a huge assumption as we assume each video preloads.</p>
+
+<p>Our assumptions here would therefor be:</p>
+
+<ul>
+<li><p>Number of videos watched per visitor</p>
+
+<ul>
+<li>average page size outside of video</li>
+<li>average page views per visitor</li>
+<li>average videos viewed per page</li>
+</ul>
+</li>
+</ul>
+
+
+<p>The easiest number to assume here as it requires no assumptions but rather a guess, is:</p>
+
+<ul>
+<li>Number of visitors</li>
+</ul>
+
+
+<p>In our case, for simplicty of calculation, lets assume our video lenght is 3600 seconds and we&#8217;ll just add a overhead percentage penalty on pages encapsulating the video of about 45%.</p>
+
+<p><strong>Bandwidth Cost</strong></p>
+
+<p>We then must turn the calculation into something useful which can be applied to a cost formula for bandwidth.  There are generally two ways in which bandwidth is sold, either by measured transfer, typically per month, or by average badnwidth usage, generally at 95% capacity, meaning the lowest and the highest 2.5% of usage do not count.  Either transfer or metered bandwidth costs are typically tiered, basically the more you use the less it costs per unit.</p>
+
+<p>One of the better bandwidth explanations I found on the web is from Rackforce:</p>
+
+<p><a href="http://www.rackforce.com/blog/2006/11/03/understanding-bandwidth/">Understanding Bandwidth </a>by Doug Alder</p>
+
+<p>I am not taking into consideration the &#8220;unmetered&#8221; offers which are in fact throttled or in worse case oversaturated which does not provide a good user experience.</p>
+
+<p>To assume:</p>
+
+<ul>
+<li><p>Cost of Bandwidth</p>
+
+<ul>
+<li>based on tiered cost which is based on usage</li>
+<li>based on total data transfer</li>
+<li>based on connection</li>
+</ul>
+</li>
+</ul>
+
+
+<p>Once we have our assumptions, the rest is relatively easy.  To calculate total monthly bandwidth use the following formula:</p>
+
+<blockquote><p>[video encoding rate] x [average video length] x [daily uniques] x [assumed views per unique] x [30] x [overhead bandwidth addon]</p></blockquote>
+
+<p>Then backout your cost of bandwidth, either fixed or connection based:</p>
+
+<blockquote><p>[total monthly bandwidth] x [usage cost]</p></blockquote>
+
+<p>This last calculation is simplified, we shall devote another article for continuation.</p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+
+<span class="byline author vcard">Posted by <span class="fn"><a href="/blog/our-team/andrew-kucharski.html">Andrew Kucharski</a></span></span>
+
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2008-10-06T22:42:04+08:00" pubdate data-updated="true">Oct 6<span>th</span>, 2008</time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/category/hosting/'>hosting</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://linuxsysadminblog.com/2008/10/calculating-videos-on-site-to-bandwidth-or-aggregate-transfer-to-cost-of-video-played/" data-via="linuxsysadmnblg" data-counturl="http://linuxsysadminblog.com/2008/10/calculating-videos-on-site-to-bandwidth-or-aggregate-transfer-to-cost-of-video-played/" >Tweet</a>
+  
+  
+  
+    <div class="fb-like" data-send="true" data-width="450" data-show-faces="false"></div>
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/2008/09/run-parts-not-running-all-the-scripts-in-etccrondaily/" title="Previous Post: run-parts not running all the scripts in /etc/cron.daily">&laquo; run-parts not running all the scripts in /etc/cron.daily</a>
+      
+      
+        <a class="basic-alignment right" href="/2008/10/rebuilding-the-mysql-replication-slave/" title="next Post: MySQL replication problems">MySQL replication problems &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
+
+  <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/2012/11/howto-bulk-import-dns-zones-to-softlayer-dns-using-cpanel/">HowTo: Bulk Import DNS Zones to Softlayer DNS using Cpanel</a>
+      </li>
+    
+      <li class="post">
+        <a href="/2012/08/integrate-sendgrid-with-redmine/">Integrate Sendgrid with Redmine</a>
+      </li>
+    
+      <li class="post">
+        <a href="/2012/07/rsback-task-x-is-locked-and-cannot-be-executed/">rsback: task x is locked and cannot be executed</a>
+      </li>
+    
+      <li class="post">
+        <a href="/2012/06/restore-xen-vm-from-lvm-snapshot-backups/">Restore Xen VM from LVM Snapshot Backups</a>
+      </li>
+    
+      <li class="post">
+        <a href="/2012/06/debian-6-backup-xen-with-lvm-and-rsnapshot/">Debian 6: Backup Xen with LVM and Rsnapshot</a>
+      </li>
+    
+  </ul>
+</section>
+
+<section>
+  <h1>GitHub Repos</h1>
+  <ul id="gh_repos">
+    <li class="loading">Status updating...</li>
+  </ul>
+  
+  <a href="https://github.com/promet">@promet</a> on GitHub
+  
+  <script type="text/javascript">
+    $.domReady(function(){
+        if (!window.jXHR){
+            var jxhr = document.createElement('script');
+            jxhr.type = 'text/javascript';
+            jxhr.src = '/javascripts/libs/jXHR.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(jxhr, s);
+        }
+
+        github.showRepos({
+            user: 'promet',
+            count: 0,
+            skip_forks: true,
+            target: '#gh_repos'
+        });
+    });
+  </script>
+  <script src="/javascripts/github.js" type="text/javascript"> </script>
+</section>
+
+
+<section>
+  <h1>Latest Tweets</h1>
+  <ul id="tweets">
+    <li class="loading">Status updating...</li>
+  </ul>
+  <script type="text/javascript">
+    $.domReady(function(){
+      getTwitterFeed("linuxsysadmnblg", 4, false);
+    });
+  </script>
+  <script src="/javascripts/twitter.js" type="text/javascript"> </script>
+  
+    <a href="http://twitter.com/linuxsysadmnblg" class="twitter-follow-button" data-show-count="false">Follow @linuxsysadmnblg</a>
+  
+</section>
+
+
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2012 - Promet OPS Team -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'linuxsysadminblog';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://linuxsysadminblog.com/2008/10/calculating-videos-on-site-to-bandwidth-or-aggregate-transfer-to-cost-of-video-played/';
+        var disqus_url = 'http://linuxsysadminblog.com/2008/10/calculating-videos-on-site-to-bandwidth-or-aggregate-transfer-to-cost-of-video-played/';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'http://' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) {return;}
+  js = d.createElement(s); js.id = id;
+  js.src = "//connect.facebook.net/en_US/all.js#appId=212934732101925&xfbml=1";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = 'http://platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: firewall | Linux Sysadmin Blog]]></title>
+  <link href="http://linuxsysadminblog.com/category/firewall/atom.xml" rel="self"/>
+  <link href="http://linuxsysadminblog.com/"/>
+  <updated>2012-11-13T01:37:44+08:00</updated>
+  <id>http://linuxsysadminblog.com/</id>
+  <author>
+    <name><![CDATA[Promet OPS Team]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[CSF Not Detecting POP3 Login Failures]]></title>
+    <link href="http://linuxsysadminblog.com/2009/05/csf-not-detecting-pop3-login-failures/"/>
+    <updated>2009-05-07T04:22:56+08:00</updated>
+    <id>http://linuxsysadminblog.com/2009/05/csf-not-detecting-pop3-login-failures</id>
+    <content type="html"><![CDATA[<p>This is the second time that <a href="http://configserver.com/cp/csf.html">CSF</a> on our Cpanel server is not detecting POP3 login failures from a dictionary attack.  The IP address was added on the ip deny list but still it was able to attempt to login on POP3.  We have our LF_POP3D set to 20 and LF_POP3D_PERM to 1 to block the ip permanently after 20 tries.  I can't remember the CSF version when this first happened, but this time we're running CSF version 4.65 and the latest is 4.67.  Of course, the usual way for me to fix the issue is to upgrade to the latest version.</p>
+]]></content>
+  </entry>
+  
+</feed>

@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: svn | Linux Sysadmin Blog]]></title>
+  <link href="http://linuxsysadminblog.com/category/svn/atom.xml" rel="self"/>
+  <link href="http://linuxsysadminblog.com/"/>
+  <updated>2012-11-13T01:37:44+08:00</updated>
+  <id>http://linuxsysadminblog.com/</id>
+  <author>
+    <name><![CDATA[Promet OPS Team]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Setup Subversion (SVN) and mod_dav_svn on Cpanel Server]]></title>
+    <link href="http://linuxsysadminblog.com/2010/10/setup-subversion-svn-and-mod_dav_svn-on-cpanel-server/"/>
+    <updated>2010-10-18T06:00:06+08:00</updated>
+    <id>http://linuxsysadminblog.com/2010/10/setup-subversion-svn-and-mod_dav_svn-on-cpanel-server</id>
+    <content type="html"><![CDATA[<p>Quick install guide for SVN with mod_dav_svn (http/https) repository access on Cpanel server running CentOs5.</p>
+
+<p><strong>Configure Cpanel for SVN</strong></p>
+
+<p>Recompile Apache/PHP (<em>WHM -> Software -> EasyApache</em>) and enable support for the following:</p>
+
+<ul>
+<li>Dav (<em>Among other things mod_dav can be used by DAV enabled Frontpage clients instead of FP extensions</em>)</li>
+<li>BerkeleyDB.  <strong>Note</strong>: BerkeleyDB support ("<em>--with-berkeley-db</em>") is not enabled by default in EasyApache so you need to add this manually to your EasyApache config using <a href="http://docs.cpanel.net/twiki/bin/view/EasyApache3/CustomConfigureFlags">this guide</a> or <a href="http://community.eapps.com/showthread.php?271-Adding-subversion-support-to-Apache">this one</a>.</li>
+</ul>
+
+
+<p><strong>Install Subversion and mod_dav_svn</strong></p>
+
+<p>Install subversion using yum (<em>yum install subversion</em>) or install it from source.  At this time CentOS repo version is 1.4.x and the latest from source is 1.6.x.</p>
+
+<p><strong>Install and enable mod_dav_svn in Cpanel</strong></p>
+
+<ul>
+<li>Install mod_dav_svn using yum (<em>yum install mod_dav_svn</em>) - version 1.4.x same as subersion above.</li>
+<li>Load mod_dav_svn module to Apache.  Go to <em>WHM -> Service Configuration -> Apache Configuration -> Include Editor -> Pre-Main Include</em>.   Select either "<em>All Versions</em>" or your current Apache version (ex: "<em>2.2.16</em>") from drop-down list.  Or you can edit their corresponding file directly:
+
+<ul>
+<li>All Versions:  <em>/usr/local/apache/conf/includes/pre_main_global.conf</em></li>
+<li>Apache 2.2.16: <em>/usr/local/apache/conf/includes/pre_main_2.conf</em></li>
+</ul>
+</li>
+<li>Add the codes below and click "<em>Update</em>" button to save config. This will restart Apache if no error on your configuration.
+<code>
+&lt;IfModule mod_dav.c&gt;
+LoadModule dav_svn_module /usr/lib/httpd/modules/mod_dav_svn.so
+LoadModule authz_svn_module /usr/lib/httpd/modules/mod_authz_svn.so
+&lt;/IfModule&gt;
+</code></li>
+</ul>
+
+
+<p><strong>Create repository and add http access (ex: http://domain.com/svn)</strong></p>
+
+<ul>
+<li>Create your repository: <code>svnadmin create /path/to/svn/repos</code></li>
+<li>Add the code below to your domain's custom include file.  You need to create this file based on <a href="http://www.cpanel.net/documentation/easyapache/customdirectives.html">this guide</a> to preserve when you recompile Apache/PHP.
+Example file (Apache2,standard/non-ssl):  <code>/usr/local/apache/conf/userdata/std/2/cpanl_user/domain.com/svn.conf</code>
+File Contents:
+<code>
+  &lt;Location /svn&gt;
+  #  mod dav svn support and location of svn repo files
+  DAV svn
+  SVNPath /path/to/svn/repos
+  # authentication for security, create using htpasswd
+  AuthType Basic
+  AuthName "SVN Access"
+  AuthUserFile /path/to/file/containing/user.pass
+  Require valid-user
+  # added for permissions/access
+  Order allow,deny
+  Allow from all
+  &lt;/Location&gt;
+</code></li>
+</ul>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[svnadmin: can't open file 'svn/db/fsfs.conf': No such file or directory]]></title>
+    <link href="http://linuxsysadminblog.com/2010/06/svnadmin-cant-open-file-svndbfsfs-conf-no-such-file-or-directory/"/>
+    <updated>2010-06-13T00:37:48+08:00</updated>
+    <id>http://linuxsysadminblog.com/2010/06/svnadmin-cant-open-file-svndbfsfs-conf-no-such-file-or-directory</id>
+    <content type="html"><![CDATA[<p>While working on setting up a <em>backup script for a subversion repository</em> I encountred an interesting problem. I've done this before many times, on different repos, and haven't seen any issues, but in this case the backup command that is using the built-in <strong>svnadmin hotcopy</strong> command was failing with this error:
+<code>
+svnadmin hotcopy --clean-logs /svn/repo/ /backup/repo/
+svnadmin: Can't open file '/svn/repo/db/fsfs.conf': No such file or directory
+</code></p>
+
+<p>Hmm... looking at the respective path I can see that the command is not lying and that file <strong>fsfs.conf</strong> is indeed not present. I could find a file <strong>fs-type</strong> but not fsfs.conf. So my only assumption was that this is an <em>older</em> repository created with an <em>older svn version</em> than the one we were running currently. Checking the existing svn version I got:
+<code>
+svn --version
+svn, version 1.6.11 (r934486)
+compiled Apr 20 2010, 00:24:22
+</code>
+and the fact that this repo was very old (~2009) made my assumption sound correct. Ok, now what? Well in this situation my first thought was to use the <strong>svnadmin upgrade</strong> command; from the manual it looked like this is what I needed to fix this issue:</p>
+
+<p><em>"svnadmin help upgrade
+upgrade: usage: svnadmin upgrade REPOS_PATH</em></p>
+
+<p><em>Upgrade the repository located at REPOS_PATH to the latest supported
+schema version.</em></p>
+
+<p><em>This functionality is provided as a convenience for repository
+administrators who wish to make use of new Subversion functionality
+without having to undertake a potentially costly full repository dump
+and load operation.  As such, the upgrade performs only the minimum
+amount of work needed to accomplish this while still maintaining the
+integrity of the repository.  It does not guarantee the most optimized
+repository state as a dump and subsequent load would."</em></p>
+
+<p>After I've made a manual backup archive of the repo (a simple tar.gz of the repo folder) I ran the upgrade command sure this is going to fix my issue:
+<code>
+svnadmin upgrade /svn/repo/
+</code>
+and after it completed, I verified that svn was still working as expected and checked for the fsfs.conf file. But that was <strong>not created</strong>... Hmm... Let's try the hotcopy command anyway:
+<code>
+svnadmin hotcopy --clean-logs /svn/repo/ /tmp/repo/
+svnadmin: Can't open file '/svn/repo/db/fsfs.conf': No such file or directory
+</code>
+the exact same error.</p>
+
+<p>Trying to understand what the fsfs.conf file contains I just created a new repository to see if it gets created. Indeed my v1.6.11 of svn created the file for a new repo, and after copying it to the location of my existing repository (as it was basically just an empty file) my issue was fixed and the hotcopy command started working. Here is the content of the file as created by my svn version, that I copied in the older repo to fix this problem:</p>
+
+<pre><code>&lt;code&gt;cat fsfs.conf
+### This file controls the configuration of the FSFS filesystem.
+
+[memcached-servers]
+### These options name memcached servers used to cache internal FSFS
+### data.  See http://www.danga.com/memcached/ for more information on
+### memcached.  To use memcached with FSFS, run one or more memcached
+### servers, and specify each of them as an option like so:
+# first-server = 127.0.0.1:11211
+# remote-memcached = mymemcached.corp.example.com:11212
+### The option name is ignored; the value is of the form HOST:PORT.
+### memcached servers can be shared between multiple repositories;
+### however, if you do this, you *must* ensure that repositories have
+### distinct UUIDs and paths, or else cached data from one repository
+### might be used by another accidentally.  Note also that memcached has
+### no authentication for reads or writes, so you must ensure that your
+### memcached servers are only accessible by trusted users.
+
+[caches]
+### When a cache-related error occurs, normally Subversion ignores it
+### and continues, logging an error if the server is appropriately
+### configured (and ignoring it with file:// access).  To make
+### Subversion never ignore cache errors, uncomment this line.
+# fail-stop = true
+
+[rep-sharing]
+### To conserve space, the filesystem can optionally avoid storing
+### duplicate representations.  This comes at a slight cost in performace,
+### as maintaining a database of shared representations can increase
+### commit times.  The space savings are dependent upon the size of the
+### repository, the number of objects it contains and the amount of
+### duplication between them, usually a function of the branching and
+### merging process.
+###
+### The following parameter enables rep-sharing in the repository.  It can
+### be switched on and off at will, but for best space-saving results
+### should be enabled consistently over the life of the repository.
+# enable-rep-sharing = false&lt;/code&gt;
+</code></pre>
+
+<p>Hopefully this will help others seeing the same issue I was experiencing.</p>
+]]></content>
+  </entry>
+  
+</feed>

@@ -1,0 +1,1056 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Linux Sysadmin Blog</title>
+  <meta name="author" content="Promet OPS Team">
+
+  
+  <meta name="description" content="Here&#8217;s a little post on how to change the master database host that the replication slave in a MySQL replication setup uses. This can happen if &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://linuxsysadminblog.com/blog/page/20/">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="/javascripts/ender.js"></script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <link href="/atom.xml" rel="alternate" title="Linux Sysadmin Blog" type="application/atom+xml">
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+<!-- Google Form for Contact Page -->
+<!-- jQuery -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+<script type="text/javascript">
+    // Avoid conflict with ender.js.
+jQuery.noConflict();
+</script>
+<!-- jQuery Form Plugin -->
+<script src="http://malsup.github.com/jquery.form.js"></script>
+<script src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.9/jquery.validate.min.js"></script> 
+<script src="/javascripts/google_form.js"></script>
+<!-- Google Form for Contact Page End here -->
+
+
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-120251-38']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">Linux Sysadmin Blog</a></h1>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:linuxsysadminblog.com" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/our-team">Our Team</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+  <li><a href="/blog/about">About</a></li>
+  <li><a href="/blog/contact">Contact</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div class="blog-index">
+  
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/2008/07/changing-the-mysql-replication-master-host/">Changing the MySQL Replication Master Host</a></h1>
+    
+    
+      <p class="meta">
+        
+  
+
+
+<span class="byline author vcard">Posted by <span class="fn"><a href="/blog/our-team/pim-van-der-wal.html">Pim Van der Wal</a></span></span>
+
+ - 
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2008-07-24T10:09:22+08:00" pubdate data-updated="true">Jul 24<span>th</span>, 2008</time>
+        
+         | <a href="/2008/07/changing-the-mysql-replication-master-host/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>Here&#8217;s a little post on how to change the master database host that the replication slave in a MySQL replication setup uses. This can happen if there is a change in network addresses or when you want to switch over to using different internal network. The main thing to keep in mind is that when you change the replication user host on the slave MySQL will think that you are now replicating from a different database. Therefore we need to force MySQL to continue replicating the changes where it left off before the change.</p>
+
+<p>First we need to create a new user on the master database server with the new IP address like this:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>GRANT REPLICATION SLAVE ON *.* TO 'repl'@'10.0.0.1' IDENTIFIED BY 'password';</span></code></pre></td></tr></table></div></figure>
+
+
+<p>The rest of the operations are on the replication slave. We need to stop the replication and figure out where to restart the replication after changing the user:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>STOP SLAVE;
+</span><span class='line'>SHOW SLAVE STATUS</span></code></pre></td></tr></table></div></figure>
+
+
+<p>From the slave status pick out the 2 settings for Master_Log_File and Read_Master_Log_Pos. Those items will look something like this:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>Master_Log_File: mysql-bin.000101
+</span><span class='line'>Read_Master_Log_Pos: 591523680</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Those settings need to be used in the following statement:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>CHANGE MASTER TO MASTER_HOST='10.0.0.1', MASTER_LOG_FILE='mysql-bin.000101', MASTER_LOG_POS=591523680;
+</span><span class='line'>START SLAVE;</span></code></pre></td></tr></table></div></figure>
+
+
+<p>The <code>start slave</code> command starts the replication again. Make sure you do a <code>show slave status</code> afterwards to make sure that replication is running again without errors.</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/2008/07/apache-wont-start-with-error-965/">Apache Won&#8217;t Start Due to Error #965</a></h1>
+    
+    
+      <p class="meta">
+        
+  
+
+
+<span class="byline author vcard">Posted by <span class="fn"><a href="/blog/our-team/max-veprinsky.html">Max Veprinsky</a></span></span>
+
+ - 
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2008-07-07T07:04:42+08:00" pubdate data-updated="true">Jul 7<span>th</span>, 2008</time>
+        
+         | <a href="/2008/07/apache-wont-start-with-error-965/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p><strong>Issue: Apache does not start, gives the following error</strong></p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>965 File size limit exceeded$HTTPD -DSSL</span></code></pre></td></tr></table></div></figure>
+
+
+<p><em>Cause</em>: Apache Log or Domain Log file exceeded 2GB</p>
+
+<p><em>Solution</em>: Rotate offending log file by tar/gzip&#8217;ing</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/2008/07/account-do-not-show-up-in-whm/">Account List Missing From WHM</a></h1>
+    
+    
+      <p class="meta">
+        
+  
+
+
+<span class="byline author vcard">Posted by <span class="fn"><a href="/blog/our-team/max-veprinsky.html">Max Veprinsky</a></span></span>
+
+ - 
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2008-07-07T06:58:48+08:00" pubdate data-updated="true">Jul 7<span>th</span>, 2008</time>
+        
+         | <a href="/2008/07/account-do-not-show-up-in-whm/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p><strong>Issue: Hosting account do not show up in WHM</strong></p>
+
+<p><em>Cause</em>: <code>/etc/trueuserdomains</code> file which holds a list of account on the server is empty</p>
+
+<p><em>Solution</em>: restore contents of <code>/etc/trueuserdomains</code> and update cpanel with <code>/scripts/upcp</code></p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/2008/07/the-website-is-down/">The Website Is Down</a></h1>
+    
+    
+      <p class="meta">
+        
+  
+
+
+<span class="byline author vcard">Posted by <span class="fn"><a href="/blog/our-team/marius-ducea.html">Marius Ducea</a></span></span>
+
+ - 
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2008-07-04T10:02:43+08:00" pubdate data-updated="true">Jul 4<span>th</span>, 2008</time>
+        
+         | <a href="/2008/07/the-website-is-down/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>Very funny: <a href="http://www.thewebsiteisdown.com/">http://www.thewebsiteisdown.com/</a></p>
+
+<p>:-)</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/2008/06/mysql-error-1449-there-is-no-usernamehost-registered/">MySQL Error 1449 &#8220;There Is No &#8216;Username&#8217;@&#8217;host&#8217; Registered&#8221;</a></h1>
+    
+    
+      <p class="meta">
+        
+  
+
+
+<span class="byline author vcard">Posted by <span class="fn"><a href="/blog/our-team/pim-van-der-wal.html">Pim Van der Wal</a></span></span>
+
+ - 
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2008-06-27T07:53:31+08:00" pubdate data-updated="true">Jun 27<span>th</span>, 2008</time>
+        
+         | <a href="/2008/06/mysql-error-1449-there-is-no-usernamehost-registered/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>The error message in the title occurs in a combination of circumstances. If you have 2 MySQL databases, one master and one slave in a replicating setup and you use triggers you may encounter this error. Although it is not necessary for the slave database to have the same users as the master for replication to work it is required for triggers to work. The triggers get fired at both the master and the slave and use the username of the user that caused the trigger to execute. So if user user@localhost is present at the master then the same user needs to be added to the slave. The privileges don&#8217;t have to be the same as long as the user has enough access on the slave to complete the trigger.</p>
+
+<p>The biggest problem with this is that it causes replication to stop dead in its tracks. After adding the user to the slave database the replication needs to be restarted with the following MySQL command:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>START SLAVE;</span></code></pre></td></tr></table></div></figure>
+
+
+<p>After that check for errors with the following MySQL command:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>SHOW SLAVE STATUS</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Depending on how long replication has been suspended it may take some time for the slave to catch up. This will not be shown in the replication status.</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/2008/06/centos-52-upgrade/">CentOS 5.2 Upgrade</a></h1>
+    
+    
+      <p class="meta">
+        
+  
+
+
+<span class="byline author vcard">Posted by <span class="fn"><a href="/blog/our-team/marius-ducea.html">Marius Ducea</a></span></span>
+
+ - 
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2008-06-25T15:46:57+08:00" pubdate data-updated="true">Jun 25<span>th</span>, 2008</time>
+        
+         | <a href="/2008/06/centos-52-upgrade/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>The CentOS team just released their latest version of <strong>CentOS-5.2</strong>, a minor upgrade for the Centos-5 release. This is based on the upstream release <em>RHEL 5.2.0</em> and includes packages from all variants including server and client repositories.</p>
+
+<p>Any system running CentOS-5 (either 5.0 or 5.1) can be upgraded by just running:
+<code>yum upgrade</code>
+that will bring in the new packages from 5.2 and update the system. Depending on the size of your install and your connection speed this can take a while to complete ;-) .</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/2008/06/implementing-aes-encryption-in-the-front-end/">Implementing AES Encryption in the Front-end</a></h1>
+    
+    
+      <p class="meta">
+        
+  
+
+
+<span class="byline author vcard">Posted by <span class="fn"><a href="/blog/our-team/pim-van-der-wal.html">Pim Van der Wal</a></span></span>
+
+ - 
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2008-06-20T08:24:56+08:00" pubdate data-updated="true">Jun 20<span>th</span>, 2008</time>
+        
+         | <a href="/2008/06/implementing-aes-encryption-in-the-front-end/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>This post describes a way to implement data encryption in the front-end of an application and how to make it compatible between a PHP front-end and a Java front-end.</p>
+
+<p>First off we need to decide what type of encryption to use. <a href="http://en.wikipedia.org/wiki/Advanced_Encryption_Standard">AES</a> is an encryption standard that has been endorsed by the NSA and is generally available for most programming languages. It is actually the same as the <a href="http://en.wikipedia.org/wiki/Rijndael">Rijndael</a> encryption scheme but with a couple of limitations. Rijndael describes a two-way encryption scheme which allows us to encrypt and decrypt data using an encryption key and a random generator. The random generator is used to make sure that when we&#8217;re encrypting two identical values the resulting encrypted values will be different. Since we&#8217;re encrypting credit card data like the expiration date this is actually a very desirable feature. The random value is called the <a href="http://en.wikipedia.org/wiki/Initialization_vector">Initialization Vector</a> (I.V.) and will be stored with the encrypted data. To successfully encrypt and decrypt data we will need information stored in 3 different locations:</p>
+
+<ol>
+<li>The encryption key which is stored on the web server in a plain text file</li>
+<li>The encryption key hash function which is stored in the front-end code</li>
+<li>The encrypted data and the I.V. which are both stored in the database</li>
+</ol>
+
+
+<p>Both the encryption key and the hash function are needed to encrypt data. To decrypt data the I.V. and the encrypted data are also needed of course. If any of these items is not available decryption can not take place. The hash function for the encryption key is used to make sure that the key cannot be compromised by just retrieving the key file. The key in the key file needs to be encrypted with an <a href="http://en.wikipedia.org/wiki/Md5">MD5</a> based function to be useful.</p>
+
+<p>For the second part I will describe how to encrypt and decrypt data using this method in PHP. The main concern here is to use only functions and parameters that are compatible with the Java front-end. As it turns out some PHP functions are not quite as generic as they appear at first glance. The <a href="http://us.php.net/manual/en/function.crypt.php">crypt()</a> function is a good example of this. Although the crypt() function has MD5 functionality it is by no means generic. The value is encrypted several times and a random value (a salt) is inserted in several locations. With these variations being buried in the PHP source code it is hard to match the same encryption in Java. On the other hand the <a href="http://us.php.net/manual/en/function.md5.php">md5()</a> function does provide a straightforward implementation of MD5 encryption. It is advisable to apply MD5 several times and insert a hard coded value into the string. This is similar to what the crypt() function does but by doing it ourselves we can make sure of compatibility between the platforms as well as add some security by making it custom.</p>
+
+<p>After encryption the key is ready for use and it is time to encrypt or decrypt the data. PHP comes with the <a href="http://us.php.net/mcrypt">mcrypt</a> library that supports Rijndael encryption with I.V&#8217;s (installation of the mcrypt library is described in a previous post). The limitation of using the mcrypt library is that the length of the encryption key and the length of the I.V. must be identical. Furthermore there is no way to specify what method of padding to use. When data is encrypted it will always result in blocks of data of the same size. If the data does not fill up the block completely it is padded with empty data. The default padding method is <a href="http://www.gnu.org/software/gnu-crypto/manual/api/gnu/crypto/pad/TBC.html">TBC</a>. The final code for encrypting a string will look something like this:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>$iv = mcrypt_create_iv(mcrypt_get_iv_size(MCRYPT_RIJNDAEL_256, MCRYPT_MODE_CBC), MCRYPT_RAND);
+</span><span class='line'>$encrypted_string = mcrypt_encrypt(MCRYPT_RIJNDAEL_256, $key, $input_string, MCRYPT_MODE_CBC, $iv);</span></code></pre></td></tr></table></div></figure>
+
+
+<p>The final part of this post will deal with how to implement the same encryption in Java. The first problem we run into is trying to implement this with the standard Java encryption extensions.</p>
+
+<p>First of all the 256 bits version of Rijndael is not supported without the Unlimited Strength Jurisdiction Policy files. These can be downloaded from the main <a href="http://java.sun.com/javase/downloads/index.jsp">JDK download page</a> at the Sun web site. But even with these files installed we still have some problems like no support for initialization vectors. This means we have to turn to alternative libraries like the <a href="http://www.gnu.org/software/gnu-crypto">gnu-crypto library</a>. This library contains everything we need for compatibility. It allows for the use of initialization vectors, TBC padding and different cypher block modes. We have not touched upon the use of <a href="http://en.wikipedia.org/wiki/Block_cipher_modes_of_operation">cypher block modes</a> but they define how blocks of data are encrypted. Which mode to use is largely dependent on the type of data will be encrypted and it&#8217;s definitely outside the scope of this post to delve into that. Originally we started using ECB mode with the PHP front-end but found that that mode is incompatible with the gnu-crypto implementation in Java. Instead we now use the CBC mode.</p>
+
+<p>The Java code is limited to the use of the encryption function but will need to use the IPad class afterwards to add the correct padding.</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>IMode mode = ModeFactory.getInstance("CBC", "Rijndael", 32);
+</span><span class='line'>Map attributes = new HashMap();
+</span><span class='line'>attributes.put(IMode.KEY_MATERIAL, key);
+</span><span class='line'>attributes.put(IMode.CIPHER_BLOCK_SIZE, new Integer(32));
+</span><span class='line'>attributes.put(IMode.STATE, new Integer(IMode.ENCRYPTION));
+</span><span class='line'>attributes.put(IMode.IV, iv);
+</span><span class='line'>mode.init(attributes);</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Some final tips:</p>
+
+<ul>
+<li>Insert a special string with each encrypted string to make it possible to determine whether a string has been encrypted or not.</li>
+<li>Calculate how big the data will be based on the block sizes and adjust the database columns accordingly. Using 256 bits encryption is very secure but it results in a large block size which is very inefficient for short data.</li>
+<li>If you&#8217;re upgrading your application to use encryption provide the developers with some easy functions to insert and upgrade the encrypted data.</li>
+</ul>
+
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/2008/06/install-ffmpeg-ffmpeg-php-and-audio-binaries-on-centos-rhel-system-with-cpanel/">Install Ffmpeg Ffmpeg-php and Audio Binaries on CentOS / RHEL System With Cpanel</a></h1>
+    
+    
+      <p class="meta">
+        
+  
+
+
+<span class="byline author vcard">Posted by <span class="fn"><a href="/blog/our-team/gerold-mercadero.html">Gerold Mercadero</a></span></span>
+
+ - 
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2008-06-18T05:08:29+08:00" pubdate data-updated="true">Jun 18<span>th</span>, 2008</time>
+        
+         | <a href="/2008/06/install-ffmpeg-ffmpeg-php-and-audio-binaries-on-centos-rhel-system-with-cpanel/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>FFMPEG is an open source application that allows you to convert video and audio files easily between a variety of different formats.  It supports most industry-standard codec and can convert from one file format to another quickly and easily.  This guide is intented for the installatiion of ffmpeg, ffmpeg-php, mplayer, mencoder, lame mp3 encoder, flvtool2, libVorbis, and libogg and tested on CentOS5 and RHEL3 systems with Cpanel.</p>
+
+<p><strong>To start:</strong></p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>cd /usr/src</span></code></pre></td></tr></table></div></figure>
+
+
+<p><strong>Download MPlayer and Codes, FlvTool2, Lame, and ffmpeg-php:</strong></p>
+
+<p><strong>MPlayer codecs</strong> (<a href="http://www3.mplayerhq.hu/MPlayer/releases/codecs/">check for latest release</a>):</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>wget http://www3.mplayerhq.hu/MPlayer/releases/codecs/essential-20071007.tar.bz2</span></code></pre></td></tr></table></div></figure>
+
+
+<p><strong>MPlayer</strong> (<a href="http://www3.mplayerhq.hu/MPlayer/releases/">check for latest release</a>):</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>wget http://www4.mplayerhq.hu/MPlayer/releases/MPlayer-1.0rc2.tar.bz2</span></code></pre></td></tr></table></div></figure>
+
+
+<p><strong>FlvTool2</strong> (<a href="http://rubyforge.org/frs/?group_id=1096">check for latest release</a>):</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>wget http://rubyforge.org/frs/download.php/17497/flvtool2-1.0.6.tgz</span></code></pre></td></tr></table></div></figure>
+
+
+<p><strong>Lame MP3 Encoder</strong> (<a href="http://sourceforge.net/projects/lame/">check for latest release</a>):</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>wget http://easynews.dl.sourceforge.net/sourceforge/lame/lame-3.97.tar.gz</span></code></pre></td></tr></table></div></figure>
+
+
+<p><strong>FFMPEG-PHP</strong> (<a href="http://sourceforge.net/projects/ffmpeg-php/">check for latest release</a>):</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>wget http://nchc.dl.sourceforge.net/sourceforge/ffmpeg-php/ffmpeg-php-0.5.3.1.tbz2&lt;</span></code></pre></td></tr></table></div></figure>
+
+
+<p><strong>Extract downloaded files:</strong></p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>tar -zxvf flvtool2-1.0.6.tgz
+</span><span class='line'>tar -zxvf lame-3.97.tar.gz
+</span><span class='line'>bunzip2 essential-20071007.tar.bz2;  tar xvf essential-20071007.tar
+</span><span class='line'>bunzip2 MPlayer-1.0rc2.tar.bz2; tar xvf MPlayer-1.0rc2.tar
+</span><span class='line'>bunzip2 ffmpeg-php-0.5.3.1.tbz2; tar xvf ffmpeg-php-0.5.3.1.tar</span></code></pre></td></tr></table></div></figure>
+
+
+<p><strong>Create and import the Codecs directory:</strong></p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>mkdir /usr/local/lib/codecs/
+</span><span class='line'>mv essential-20071007/* /usr/local/lib/codecs/
+</span><span class='line'>chmod -Rf 755 /usr/local/lib/codecs/</span></code></pre></td></tr></table></div></figure>
+
+
+<p><strong>Install Subversion and Ruby using Yum:</strong></p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>yum install subversion</span></code></pre></td></tr></table></div></figure>
+
+
+<p><em>You may need to open SVN port 3690</em></p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>yum install ruby</span></code></pre></td></tr></table></div></figure>
+
+
+<p><em>If you’re on cPanel you can alternatively use <code>/scripts/installruby</code></em></p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>yum install ncurses-devel</span></code></pre></td></tr></table></div></figure>
+
+
+<p><strong>Get FFMPEG and MPlayer from SVN:</strong></p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>svn checkout svn://svn.mplayerhq.hu/ffmpeg/trunk ffmpeg
+</span><span class='line'>svn checkout svn://svn.mplayerhq.hu/mplayer/trunk mplayer</span></code></pre></td></tr></table></div></figure>
+
+
+<p><strong>Install LAME:</strong></p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>cd /usr/src/lame-3.97
+</span><span class='line'>./configure && make && make install</span></code></pre></td></tr></table></div></figure>
+
+
+<p><strong>Install libOgg and libVorbis:</strong></p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>yum install libogg.i386 libvorbis.i386 libvorbis-devel.i386</span></code></pre></td></tr></table></div></figure>
+
+
+<p><strong>Install flvtool2:</strong></p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>cd /usr/src/flvtool2-1.0.6/
+</span><span class='line'>ruby setup.rb config
+</span><span class='line'>ruby setup.rb setup
+</span><span class='line'>ruby setup.rb install</span></code></pre></td></tr></table></div></figure>
+
+
+<p><strong>Install MPlayer:</strong></p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>cd /usr/src/MPlayer-1.0rc2
+</span><span class='line'>./configure && make && make install</span></code></pre></td></tr></table></div></figure>
+
+
+<p><strong>Install ffMPEG:</strong></p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>cd /usr/src/ffmpeg/
+</span><span class='line'>mkdir tmp
+</span><span class='line'>chmod 777 tmp
+</span><span class='line'>export TMPDIR=./tmp
+</span><span class='line'>./configure --enable-libmp3lame --enable-libvorbis --disable-mmx --enable-shared
+</span><span class='line'>echo '#define HAVE_LRINTF 1' &gt;&gt; config.h
+</span><span class='line'>make && make install
+</span><span class='line'>export TMPDIR=/tmp</span></code></pre></td></tr></table></div></figure>
+
+
+<p><strong>Finalize the codec setup:</strong></p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>ln -s /usr/local/lib/libavformat.so.50 /usr/lib/libavformat.so.50
+</span><span class='line'>ln -s /usr/local/lib/libavcodec.so.51 /usr/lib/libavcodec.so.51
+</span><span class='line'>ln -s /usr/local/lib/libavutil.so.49 /usr/lib/libavutil.so.49
+</span><span class='line'>ln -s /usr/local/lib/libmp3lame.so.0 /usr/lib/libmp3lame.so.0
+</span><span class='line'>ln -s /usr/local/lib/libavformat.so.51 /usr/lib/libavformat.so.51</span></code></pre></td></tr></table></div></figure>
+
+
+<p><strong>You may get an error about a library path not being found, if so, run:</strong></p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>export LD_LIBRARY_PATH=/usr/local/lib</span></code></pre></td></tr></table></div></figure>
+
+
+<p><strong>Install FFMPEG-PHP:</strong></p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>cd /usr/src/ffmpeg-php-0.5.0/
+</span><span class='line'>phpize
+</span><span class='line'>./configure && make && make install
+</span><span class='line'>ln -s /usr/local/bin/ffmpeg /usr/bin/ffmpeg
+</span><span class='line'>ln -s /usr/local/bin/mplayer /usr/bin/mplayer</span></code></pre></td></tr></table></div></figure>
+
+
+<p><strong>Add extension to php.ini (find the correct php.ini file):</strong></p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>[ffmpeg]
+</span><span class='line'>extension_dir=/usr/local/lib/php/extensions/no-debug-non-zts-20060613/
+</span><span class='line'>extension=ffmpeg.so</span></code></pre></td></tr></table></div></figure>
+
+
+<p><strong>Restart Apache and check that the module is loaded in PHP:</strong></p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>/etc/init.d/httpd restart</span></code></pre></td></tr></table></div></figure>
+
+
+<p><strong>Test</strong> <code>ffmpeg</code> <strong>from command line and if you get this errors: </strong></p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>ffmpeg: error while loading shared libraries: libavformat.so.51:...</span></code></pre></td></tr></table></div></figure>
+
+
+<p><strong>execute:</strong> <code>echo "/usr/local/lib" &gt;&gt;/etc/ld.so.conf</code> <strong>and reload library cache with</strong> <code>ldconfig -v</code></p>
+
+<p><strong>Verify ffmpeg installation:</strong></p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>php -r 'phpinfo();' | grep ffmpeg</span></code></pre></td></tr></table></div></figure>
+
+
+<p><strong>If you get the following results then FFMPEG and all it&#8217;s components are installed correctly:</strong></p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>ffmpeg
+</span><span class='line'>ffmpeg support (ffmpeg-php) =&gt; enabled
+</span><span class='line'>ffmpeg-php version =&gt; 0.5.3.1
+</span><span class='line'>ffmpeg-php gd support  =&gt; enabled
+</span><span class='line'>ffmpeg.allow_persistent =&gt; 0 =&gt; 0
+</span><span class='line'>ffmpeg.show_warnings =&gt; 0 =&gt; 0</span></code></pre></td></tr></table></div></figure>
+
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/2008/06/installing-php-mcrypt-module-via-dynamic-module/">Installing PHP Mcrypt Module via Dynamic Module</a></h1>
+    
+    
+      <p class="meta">
+        
+  
+
+
+<span class="byline author vcard">Posted by <span class="fn"><a href="/blog/our-team/marius-ducea.html">Marius Ducea</a></span></span>
+
+ - 
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2008-06-14T03:32:03+08:00" pubdate data-updated="true">Jun 14<span>th</span>, 2008</time>
+        
+         | <a href="/2008/06/installing-php-mcrypt-module-via-dynamic-module/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>Considering that you have an existing php installation compiled from sources, it is very easy to add afterwards <em>new php modules</em>, outside the php binary. This can be achieved without any interruption of the web services, and requires just the following steps:</p>
+
+<h3>1. Ensure you have the mcrypt libraries and development tools.</h3>
+
+<p>For example on a rhel system you will have to install: <strong>libmcrypt </strong>and <strong>libmcrypt-devel.</strong> If you can&#8217;t find those on your repos, <em>dag </em>has rpms for all rhel releases.</p>
+
+<h3>2. Compile the mcrypt module:</h3>
+
+<p>Assuming you have your php sources inside /usr/local/php, you have to:
+<code>cd /usr/local/php
+cd ext/mcrypt
+phpize
+./configure
+make
+make install</code>
+just as on any 3rd party php module.</p>
+
+<h3>3. Finally activate the module in your php.ini</h3>
+
+<p>by adding the line:
+<code>extension=mcrypt.so</code>
+you will also want to restart your apache service in order to see the new php module installed.</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/2008/06/utilizing-google-apps-email-as-a-web-host-sign-of-strenght-or-weakness/">Utilizing Google Apps Email as a Web Host - Sign of Strenght or Weakness?</a></h1>
+    
+    
+      <p class="meta">
+        
+  
+
+
+<span class="byline author vcard">Posted by <span class="fn"><a href="/blog/our-team/andrew-kucharski.html">Andrew Kucharski</a></span></span>
+
+ - 
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2008-06-13T16:32:55+08:00" pubdate data-updated="true">Jun 13<span>th</span>, 2008</time>
+        
+         | <a href="/2008/06/utilizing-google-apps-email-as-a-web-host-sign-of-strenght-or-weakness/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>PrometHost offers best of class hosting for websites, databases, and other services such as email, domain registration, spam filtering, etc.   We have recently made a decision to focus on three things for our hosting offering:
+* security
+* reliability
+* scalability</p>
+
+<p>Performance is obviously important, and we help with performance on a case by case basis.</p>
+
+<p>As with most businesses, we use third party tools and solutions to put together our offering.  The value that we bring with our hosting offering depends on the processes and decisions along with the quality of implementation.  We make decisions to use a reliable Data Center and provider of primary and secondary power and IP.  We make decisions on hardware choices (HP, CISCO, etc), and software platforms (RedHat, cPanel, etc.) and software services (srsPlus, Netcleanse, etc).  In terms of email – we chose an email server, spam service and configuration options.  With the constant battle with spam bots, physhing scams, along with other more serious threats to data security we have decided to look for the best in class email service to offer to our clients so that we can focus on our core offerings.</p>
+
+<p>We have looked at a number of options.  Installing network filtering solutions such as <a href="http://www.barracudanetworks.com/ns/?L=en">Barracuda </a>(http://www.barracudanetworks.com/ns/?L=en) and <a href="http://www.sonicwall.com/us/6887.html?CMP=KNC-8WO858768998&amp;_kk=barracuda&amp;_kt=16f2ca5f-e9e2-4f4c-91d3-476e6b9850cd">Sonicwall 9</a> ) .  We have looked at beefing up our Netcleanse solution as well as using on server open source solutions such as spam assassin.  However no option stood out as well as Google Apps.</p>
+
+<p><a href="http://www.google.com/a/help/intl/en/var_1c.html">Google apps</a> not only is seamless in integration on the back end as well as the customer, but it also comes with some impressive set of tools which are extremely valuable to anyone running their business, virtual or not (Calendar, Docs, etc. http://www.google.com/a/help/intl/en/var_1c.html)</p>
+
+<p>We have made this decision several months before this slashdot story was exposed: <a href="http://tech.slashdot.org/article.pl?sid=08/05/27/137229&amp;from=rss">&#8220;Large webhost urges customers to use Gmail.&#8221;</a></p>
+
+<p>Although there were some negative comments I think the slashdot community understood and supported the decision.  We stand by it and will always offer our customers an alternative to gmail but will recommend it as it is the best of class option at the moment.</p>
+
+<p>The decision was not easy as we really like to manage as many things as we can and &#8220;outsourcing&#8221; it seemed like giving up on it, but business wise this was one of the best decisions we made.  Fighting spam is frustrating and if there is a free better solution out there and most of your customers will not notice a difference if they use POP or IMAP, except maybe less spam.</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  <div class="pagination">
+    
+      <a class="prev" href="/blog/page/21/">&larr; Older</a>
+    
+    <a href="/blog/archives">Blog Archives</a>
+    
+    <a class="next" href="/blog/page/19/">Newer &rarr;</a>
+    
+  </div>
+</div>
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/2012/11/howto-bulk-import-dns-zones-to-softlayer-dns-using-cpanel/">HowTo: Bulk Import DNS Zones to Softlayer DNS using Cpanel</a>
+      </li>
+    
+      <li class="post">
+        <a href="/2012/08/integrate-sendgrid-with-redmine/">Integrate Sendgrid with Redmine</a>
+      </li>
+    
+      <li class="post">
+        <a href="/2012/07/rsback-task-x-is-locked-and-cannot-be-executed/">rsback: task x is locked and cannot be executed</a>
+      </li>
+    
+      <li class="post">
+        <a href="/2012/06/restore-xen-vm-from-lvm-snapshot-backups/">Restore Xen VM from LVM Snapshot Backups</a>
+      </li>
+    
+      <li class="post">
+        <a href="/2012/06/debian-6-backup-xen-with-lvm-and-rsnapshot/">Debian 6: Backup Xen with LVM and Rsnapshot</a>
+      </li>
+    
+  </ul>
+</section>
+
+<section>
+  <h1>GitHub Repos</h1>
+  <ul id="gh_repos">
+    <li class="loading">Status updating&#8230;</li>
+  </ul>
+  
+  <a href="https://github.com/promet">@promet</a> on GitHub
+  
+  <script type="text/javascript">
+    $.domReady(function(){
+        if (!window.jXHR){
+            var jxhr = document.createElement('script');
+            jxhr.type = 'text/javascript';
+            jxhr.src = '/javascripts/libs/jXHR.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(jxhr, s);
+        }
+
+        github.showRepos({
+            user: 'promet',
+            count: 0,
+            skip_forks: true,
+            target: '#gh_repos'
+        });
+    });
+  </script>
+  <script src="/javascripts/github.js" type="text/javascript"> </script>
+</section>
+
+
+<section>
+  <h1>Latest Tweets</h1>
+  <ul id="tweets">
+    <li class="loading">Status updating&#8230;</li>
+  </ul>
+  <script type="text/javascript">
+    $.domReady(function(){
+      getTwitterFeed("linuxsysadmnblg", 4, false);
+    });
+  </script>
+  <script src="/javascripts/twitter.js" type="text/javascript"> </script>
+  
+    <a href="http://twitter.com/linuxsysadmnblg" class="twitter-follow-button" data-show-count="false">Follow @linuxsysadmnblg</a>
+  
+</section>
+
+
+
+
+
+  
+</aside>
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2012 - Promet OPS Team -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'linuxsysadminblog';
+      
+        
+        var disqus_script = 'count.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'http://' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) {return;}
+  js = d.createElement(s); js.id = id;
+  js.src = "//connect.facebook.net/en_US/all.js#appId=212934732101925&xfbml=1";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = 'http://platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>

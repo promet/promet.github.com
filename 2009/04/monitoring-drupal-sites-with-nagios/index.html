@@ -1,0 +1,485 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Monitoring Drupal Sites With Nagios - Linux Sysadmin Blog</title>
+  <meta name="author" content="Promet OPS Team">
+
+  
+  <meta name="description" content="There is a module released for monitoring Drupal sites with Nagios.  Monitoring includes the check if your site is up and running, check for new &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://linuxsysadminblog.com/2009/04/monitoring-drupal-sites-with-nagios/">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="/javascripts/ender.js"></script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <link href="/atom.xml" rel="alternate" title="Linux Sysadmin Blog" type="application/atom+xml">
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+<!-- Google Form for Contact Page -->
+<!-- jQuery -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+<script type="text/javascript">
+    // Avoid conflict with ender.js.
+jQuery.noConflict();
+</script>
+<!-- jQuery Form Plugin -->
+<script src="http://malsup.github.com/jquery.form.js"></script>
+<script src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.9/jquery.validate.min.js"></script> 
+<script src="/javascripts/google_form.js"></script>
+<!-- Google Form for Contact Page End here -->
+
+
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-120251-38']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">Linux Sysadmin Blog</a></h1>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:linuxsysadminblog.com" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/our-team">Our Team</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+  <li><a href="/blog/about">About</a></li>
+  <li><a href="/blog/contact">Contact</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      
+
+<div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">Monitoring Drupal Sites With Nagios</h1>
+    
+    
+      <p class="meta">
+        
+  
+
+
+<span class="byline author vcard">Posted by <span class="fn"><a href="/blog/our-team/gerold-mercadero.html">Gerold Mercadero</a></span></span>
+
+ - 
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2009-04-23T04:22:31+08:00" pubdate data-updated="true">Apr 23<span>rd</span>, 2009</time>
+        
+         | <a href="#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>There is a <a href="http://drupal.org/project/nagios"><strong>module</strong></a> released for monitoring <a href="http://drupal.org/">Drupal</a> sites with <a href="http://www.nagios.org/">Nagios</a>.  Monitoring includes the check if your site is up and running, check for new updates on Drupal core, security, and modules, database updates, write permission on &#8220;files&#8221; directory,  check if cron is running on the specified period, and other sections of your Drupal site.  It is intended and helpful to those maintain large number of Drupal sites.</p>
+
+<p>At this time of writing, this module is still on a development version and there&#8217;s no guarantee that the installation guide will work out-of-the-box with your system.  And this post will mainly cover my own installation process on our Nagios monitoring server running on Debian and Nagios version 3.0, and Drupal version 6.x sites on web servers running CentOS 5.x.</p>
+
+<p><strong>Installation</strong>:
+My installation is based on the included README file and with some adjustments to my liking.</p>
+
+<p><strong>Install the Drupal Module:</strong></p>
+
+<ul>
+<li><p>Download the Nagios module from <a href="http://drupal.org/project/nagios">Drupal project page</a>.</p></li>
+<li><p>Install the module to your Drupal site just like the other modules.  Download tarball, extract to modules directory ex: <strong><em>sites/all/modules/</em></strong>, go to <strong><em>admin->build->modules</em></strong> and enable the module.</p></li>
+<li><p>Configure your Nagios module and set the site&#8217;s UniqueID and Cron duration.</p></li>
+</ul>
+
+
+<p><strong>UniqueID</strong> is your site identifier to be used by the Nagios (<em>check_drupal</em>) to authorize the service check and for security purposes.  The author also suggests the use of MD5 or SHA1 string. Refer to README for more info on this parameter.</p>
+
+<p><strong>Cron Duration</strong> - you need to supply the interval of your cron job that checks for Drupal updates.  This value should match with your cron settings, ex: daily or every 3 hours..etc.</p>
+
+<p><strong>Configure Nagios checks:</strong></p>
+
+<ul>
+<li>Copy the plugin file (<strong><em>check_drupal</em></strong>) found on the <strong><em>nagios-plugin</em></strong> directory of the module, to your Nagios plugins directory where the other Nagios check commands are located - in my case it&#8217;s on <strong><em>/usr/local/nagios/libexec/</em></strong> (CentOS).</li>
+</ul>
+
+
+<p>If your Nagios installation is on a different machine than your Drupal server, you need to copy the <em><strong>check_drupal</strong></em> file in there.  You can also put it on the same server with Drupal sites and use NRPE instead.</p>
+
+<p>On my CentOS machine i received an error on <strong><em>check_drupal</em></strong> regarding the location of <em><strong>basename</strong></em> file - it&#8217;s on <em><strong>/bin/basename</strong></em>.  You can edit the <em><strong>check_drupal</strong></em> file directly to adjust the path to <em><strong>basename</strong></em>.
+<code>./check_drupal: line 14: /usr/bin/basename: No such file or directory.</code></p>
+
+<ul>
+<li><strong>Add command, host, hostgroup, and service definition:</strong></li>
+</ul>
+
+
+<p><strong>Command </strong>(commands.cfg):  I made small modification on the given commands from the README file to match my setup.</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>define command{
+</span><span class='line'>command_name  check_drupal
+</span><span class='line'>command_line  $USER1$/check_drupal -H $ARG1$ -U $ARG2$ -t $ARG3$
+</span><span class='line'>}</span></code></pre></td></tr></table></div></figure>
+
+
+<p><strong>HostGroup</strong>:  I created a new Host group because we have other service checks on our server such as SSH, HTTP, LOAD, etc and I want to separate my checks for Drupal sites.</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>define hostgroup {
+</span><span class='line'>hostgroup_name  Drupal
+</span><span class='line'>alias           Drupal Sites
+</span><span class='line'>members         MyWebServer
+</span><span class='line'>}</span></code></pre></td></tr></table></div></figure>
+
+
+<p><strong>Host:</strong> I defined new host for Drupal sites so i can configure and group my them on the same host where they belong.</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>define host {
+</span><span class='line'>host_name                      MyWebServer
+</span><span class='line'>display_name                   MyWebServer
+</span><span class='line'>address                        HOSTNAME/IP ADDRESS HERE
+</span><span class='line'>hostgroups                     Drupal
+</span><span class='line'>check_command                  check-host-alive
+</span><span class='line'>contact_groups                 Admins
+</span><span class='line'>check_period                   24x7
+</span><span class='line'>max_check_attempts             10
+</span><span class='line'>notification_interval          480
+</span><span class='line'>notification_period            24x7
+</span><span class='line'>notification_options           d,r
+</span><span class='line'>notifications_enabled          1
+</span><span class='line'>}</span></code></pre></td></tr></table></div></figure>
+
+
+<p><strong>Service:</strong> Below is my service checks definition for checking Drupal sites, i only need to copy this and change supply parameters for domain, unique key and the timeout.</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>define service {
+</span><span class='line'>service_description            DRUPAL_SITE 1
+</span><span class='line'>host_name                      MyWebServer
+</span><span class='line'>check_period                   24x7
+</span><span class='line'>max_check_attempts             3
+</span><span class='line'>normal_check_interval          5
+</span><span class='line'>retry_check_interval           3
+</span><span class='line'>contact_groups                 Admins
+</span><span class='line'>notification_interval          480
+</span><span class='line'>notification_period            24x7
+</span><span class='line'>notification_options           w,u,c,r
+</span><span class='line'>check_command                  check_drupal!mysite.example.com!mykeyhere!5
+</span><span class='line'>notifications_enabled          1
+</span><span class='line'>}</span></code></pre></td></tr></table></div></figure>
+
+
+<p>If your installation and configuration is correct you will get the Nagios service status similar below.  It indicates number of modules, themes, users, nodes, etc.</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>DRUPAL OK, ADMIN:OK, CRON:OK
+</span><span class='line'>SAN=0;SAU=0;NOD=12;USR=7;MOD=23;THM=9</span></code></pre></td></tr></table></div></figure>
+
+
+<p>On my initial tests i received Nagios status (below) different than the above info and it was caused by my Apache configuration because i have a default Nagios installation before on my server that hosts my Drupal sites.</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>HTTP returned an error code. HTTP:   HTTP/1.1 301 Moved Permanently</span></code></pre></td></tr></table></div></figure>
+
+
+<p>So you need to check first the url of your Nagios module installation ex:  http://mysamplesite.com/nagios/, this will give you:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>Nagios status page
+</span><span class='line'>nagios=UNKNOWN, DRUPAL:UNKNOWN=Unauthorized</span></code></pre></td></tr></table></div></figure>
+
+
+
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+
+<span class="byline author vcard">Posted by <span class="fn"><a href="/blog/our-team/gerold-mercadero.html">Gerold Mercadero</a></span></span>
+
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2009-04-23T04:22:31+08:00" pubdate data-updated="true">Apr 23<span>rd</span>, 2009</time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/category/centos/'>Centos</a>, <a class='category' href='/category/installation/'>Installation</a>, <a class='category' href='/category/nagios/'>Nagios</a>, <a class='category' href='/category/drupal/'>drupal</a>, <a class='category' href='/category/monitoring/'>monitoring</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://linuxsysadminblog.com/2009/04/monitoring-drupal-sites-with-nagios/" data-via="linuxsysadmnblg" data-counturl="http://linuxsysadminblog.com/2009/04/monitoring-drupal-sites-with-nagios/" >Tweet</a>
+  
+  
+  
+    <div class="fb-like" data-send="true" data-width="450" data-show-faces="false"></div>
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/2009/04/hawaii-comes-to-our-datecenter/" title="Previous Post: Hawaii comes to our datecenter.">&laquo; Hawaii comes to our datecenter.</a>
+      
+      
+        <a class="basic-alignment right" href="/2009/04/lsi-aquires-3warec2ae-from-amcc/" title="next Post: LSI aquires 3ware® from AMCC">LSI aquires 3ware® from AMCC &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
+
+  <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/2012/11/howto-bulk-import-dns-zones-to-softlayer-dns-using-cpanel/">HowTo: Bulk Import DNS Zones to Softlayer DNS using Cpanel</a>
+      </li>
+    
+      <li class="post">
+        <a href="/2012/08/integrate-sendgrid-with-redmine/">Integrate Sendgrid with Redmine</a>
+      </li>
+    
+      <li class="post">
+        <a href="/2012/07/rsback-task-x-is-locked-and-cannot-be-executed/">rsback: task x is locked and cannot be executed</a>
+      </li>
+    
+      <li class="post">
+        <a href="/2012/06/restore-xen-vm-from-lvm-snapshot-backups/">Restore Xen VM from LVM Snapshot Backups</a>
+      </li>
+    
+      <li class="post">
+        <a href="/2012/06/debian-6-backup-xen-with-lvm-and-rsnapshot/">Debian 6: Backup Xen with LVM and Rsnapshot</a>
+      </li>
+    
+  </ul>
+</section>
+
+<section>
+  <h1>GitHub Repos</h1>
+  <ul id="gh_repos">
+    <li class="loading">Status updating...</li>
+  </ul>
+  
+  <a href="https://github.com/promet">@promet</a> on GitHub
+  
+  <script type="text/javascript">
+    $.domReady(function(){
+        if (!window.jXHR){
+            var jxhr = document.createElement('script');
+            jxhr.type = 'text/javascript';
+            jxhr.src = '/javascripts/libs/jXHR.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(jxhr, s);
+        }
+
+        github.showRepos({
+            user: 'promet',
+            count: 0,
+            skip_forks: true,
+            target: '#gh_repos'
+        });
+    });
+  </script>
+  <script src="/javascripts/github.js" type="text/javascript"> </script>
+</section>
+
+
+<section>
+  <h1>Latest Tweets</h1>
+  <ul id="tweets">
+    <li class="loading">Status updating...</li>
+  </ul>
+  <script type="text/javascript">
+    $.domReady(function(){
+      getTwitterFeed("linuxsysadmnblg", 4, false);
+    });
+  </script>
+  <script src="/javascripts/twitter.js" type="text/javascript"> </script>
+  
+    <a href="http://twitter.com/linuxsysadmnblg" class="twitter-follow-button" data-show-count="false">Follow @linuxsysadmnblg</a>
+  
+</section>
+
+
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2012 - Promet OPS Team -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'linuxsysadminblog';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://linuxsysadminblog.com/2009/04/monitoring-drupal-sites-with-nagios/';
+        var disqus_url = 'http://linuxsysadminblog.com/2009/04/monitoring-drupal-sites-with-nagios/';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'http://' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) {return;}
+  js = d.createElement(s); js.id = id;
+  js.src = "//connect.facebook.net/en_US/all.js#appId=212934732101925&xfbml=1";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = 'http://platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>

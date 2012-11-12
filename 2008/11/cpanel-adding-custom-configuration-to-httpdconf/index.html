@@ -1,0 +1,427 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Cpanel:  Adding custom configuration to httpd.conf - Linux Sysadmin Blog</title>
+  <meta name="author" content="Promet OPS Team">
+
+  
+  <meta name="description" content="Recently, Cpanel implemented their standard way of adding custom changes to virtualhost configuration to preserve custom changes after an upgrade or &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://linuxsysadminblog.com/2008/11/cpanel-adding-custom-configuration-to-httpdconf/">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="/javascripts/ender.js"></script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <link href="/atom.xml" rel="alternate" title="Linux Sysadmin Blog" type="application/atom+xml">
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+<!-- Google Form for Contact Page -->
+<!-- jQuery -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+<script type="text/javascript">
+    // Avoid conflict with ender.js.
+jQuery.noConflict();
+</script>
+<!-- jQuery Form Plugin -->
+<script src="http://malsup.github.com/jquery.form.js"></script>
+<script src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.9/jquery.validate.min.js"></script> 
+<script src="/javascripts/google_form.js"></script>
+<!-- Google Form for Contact Page End here -->
+
+
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-120251-38']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">Linux Sysadmin Blog</a></h1>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:linuxsysadminblog.com" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/our-team">Our Team</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+  <li><a href="/blog/about">About</a></li>
+  <li><a href="/blog/contact">Contact</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      
+
+<div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">Cpanel: Adding Custom Configuration to httpd.conf</h1>
+    
+    
+      <p class="meta">
+        
+  
+
+
+<span class="byline author vcard">Posted by <span class="fn"><a href="/blog/our-team/gerold-mercadero.html">Gerold Mercadero</a></span></span>
+
+ - 
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2008-11-25T09:39:23+08:00" pubdate data-updated="true">Nov 25<span>th</span>, 2008</time>
+        
+         | <a href="#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>Recently, Cpanel implemented their standard way of adding custom changes to virtualhost configuration to preserve custom changes after an upgrade or Apache rebuild.</p>
+
+<p>Here are the two common situations of adding custom changes:</p>
+
+<p><strong>1.)  Changes added inside a <code>&lt;VirtualHost&gt;</code></strong></p>
+
+<p>This is very simple as we only need to create a single file that will contain our changes.  But we need to understand the correct location on where to place this file so that our changes will be read properly.</p>
+
+<p>There are several cases of adding these changes and below are some samples and the coresponding directory where to put them:</p>
+
+<ul>
+<li>One virtualhosts (either SSL or standard)</li>
+</ul>
+
+
+<p>Apache1/SSL:  <code>/usr/local/apache/conf/userdata/ssl/1/&lt;cpanel_user&gt;/&lt;domain&gt;/&lt;filename&gt;.conf</code>
+Apache1/Standard:   <code>/usr/local/apache/conf/userdata/std/1/&lt;cpanel_user&gt;/&lt;domain&gt;/&lt;filename&gt;.conf</code>
+Apache2/SSL:   <code>/usr/local/apache/conf/userdata/ssl/2/&lt;cpanel_user&gt;/&lt;domain&gt;/&lt;filename&gt;.conf</code>
+Apache2/SSL:   <code>/usr/local/apache/conf/userdata/std/2/&lt;cpanel_user&gt;/&lt;domain&gt;/&lt;filename&gt;.conf</code></p>
+
+<ul>
+<li>All virtualhosts (both SSL and standard)</li>
+</ul>
+
+
+<p><code>Apache 1/2:   /usr/local/apache/conf/userdata/&lt;something&gt;.conf</code></p>
+
+<ul>
+<li>All SSL virtualhost or all Standard virtualhost</li>
+</ul>
+
+
+<p>Apache 1/2 - all SSL:  <code>/usr/local/apache/conf/userdata/ssl/&lt;filename&gt;.conf</code>
+Apache 1/2 - all Standard:   <code>/usr/local/apache/conf/userdata/std/&lt;filename&gt;.conf</code></p>
+
+<ul>
+<li>If you need to put the above changes on a specific Apache version you can put them this way:</li>
+</ul>
+
+
+<p>Apache 1 - all SSL:   <code>/usr/local/apache/conf/userdata/ssl/1/&lt;filename&gt;.conf</code>
+Apache 2 - all Standard:  <code>/usr/local/apache/conf/userdata/std/2/&lt;filename&gt;.conf</code></p>
+
+<p>The same process is followed on subdomains, like on one of my implementation i added a custom virtualhost in a subdomain to take effect on standard (http), so i put it on this directory:
+<code>/usr/local/apache/conf/userdata/ssl/2/gerold/mysubdomain.gerold.com/custom.conf</code></p>
+
+<p>Take note that you also need to create the directories like <em>ssl</em>, <em>std</em>, <em>1</em>, <em>2</em>, or <em>mysubdomain.gerold.com</em>&#8221; in order to have the correct directory structure/path.</p>
+
+<p>You can verify if your custom changes were added correctly using this command:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>/scripts/verify_vhost_includes</span></code></pre></td></tr></table></div></figure>
+
+
+<p><strong>Then, update the include files</strong>:</p>
+
+<p>For changes concerning single account/user you can use this command:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>/scripts/ensure_vhost_includes --user=&lt;username&gt;</span></code></pre></td></tr></table></div></figure>
+
+
+<p>And for all users run:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>/scripts/ensure_vhost_includes --all-users</span></code></pre></td></tr></table></div></figure>
+
+
+<p>And finally, restart Apache (<code>/etc/init.d/httpd restart</code>)</p>
+
+<p><strong>2.)  Changes added outside a <code>&lt;VirtualHost&gt;</code></strong></p>
+
+<p>Adding custom changes outside of virtualhost can be done in different ways, like creating a templates or using the include editor.
+On my example, i will discuss using Include editor as i usually used this on some of our client sites.</p>
+
+<p><strong>Cpanel have three ways to place our custom changes using Include editor, these are:</strong></p>
+
+<ul>
+<li><strong>Pre-Main Include</strong> - this is placed at the top of the httpd.conf file
+Location:  <code>/etc/httpd/conf/includes/pre_main_1.conf</code></li>
+<li><strong>Pre-VirtualHost Include</strong> - codes in this file are added before the first Vhost configuration
+Location:  <code>/etc/httpd/conf/includes/pre_virtualhost_1.conf</code></li>
+<li><strong>Post-VirtualHost Include</strong> - codes in this file are added at the end of httpd.conf
+Location:  <code>/etc/httpd/conf/includes/post_virtualhost_1.conf</code></li>
+</ul>
+
+
+<p>So to add our changes we can go to WHM:  <code>Main &gt;&gt; Service Configuration &gt;&gt; Apache Setup &gt;&gt; Include Editor</code>, and select where you want to place your custom changes (<em>pre-main, pre-vhost, or post-vhost</em>).
+You can also edit directly the files (<em>pre_main_1.conf, pre_virtualhost_1.conf, post_virtualhost_1.conf</em>) located at <code>/etc/httpd/conf/includes/</code>.
+Finally, restart Apache (<code>/etc/init.d/httpd restart</code>) for changes to take effect.</p>
+
+<p><strong>NOTE: For complete referrence please refer to<a href="http://www.cpanel.net/support/docs/ea/ea3/customdirectives.html"> Cpanel Docs</a>.</strong></p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+
+<span class="byline author vcard">Posted by <span class="fn"><a href="/blog/our-team/gerold-mercadero.html">Gerold Mercadero</a></span></span>
+
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2008-11-25T09:39:23+08:00" pubdate data-updated="true">Nov 25<span>th</span>, 2008</time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/category/installation/'>Installation</a>, <a class='category' href='/category/cpanel/'>cpanel</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://linuxsysadminblog.com/2008/11/cpanel-adding-custom-configuration-to-httpdconf/" data-via="linuxsysadmnblg" data-counturl="http://linuxsysadminblog.com/2008/11/cpanel-adding-custom-configuration-to-httpdconf/" >Tweet</a>
+  
+  
+  
+    <div class="fb-like" data-send="true" data-width="450" data-show-faces="false"></div>
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/2008/11/upgrading-to-trac-011/" title="Previous Post: Upgrading to Trac 0.11">&laquo; Upgrading to Trac 0.11</a>
+      
+      
+        <a class="basic-alignment right" href="/2008/12/black-monday/" title="next Post: Black Monday">Black Monday &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
+
+  <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/2012/11/howto-bulk-import-dns-zones-to-softlayer-dns-using-cpanel/">HowTo: Bulk Import DNS Zones to Softlayer DNS using Cpanel</a>
+      </li>
+    
+      <li class="post">
+        <a href="/2012/08/integrate-sendgrid-with-redmine/">Integrate Sendgrid with Redmine</a>
+      </li>
+    
+      <li class="post">
+        <a href="/2012/07/rsback-task-x-is-locked-and-cannot-be-executed/">rsback: task x is locked and cannot be executed</a>
+      </li>
+    
+      <li class="post">
+        <a href="/2012/06/restore-xen-vm-from-lvm-snapshot-backups/">Restore Xen VM from LVM Snapshot Backups</a>
+      </li>
+    
+      <li class="post">
+        <a href="/2012/06/debian-6-backup-xen-with-lvm-and-rsnapshot/">Debian 6: Backup Xen with LVM and Rsnapshot</a>
+      </li>
+    
+  </ul>
+</section>
+
+<section>
+  <h1>GitHub Repos</h1>
+  <ul id="gh_repos">
+    <li class="loading">Status updating...</li>
+  </ul>
+  
+  <a href="https://github.com/promet">@promet</a> on GitHub
+  
+  <script type="text/javascript">
+    $.domReady(function(){
+        if (!window.jXHR){
+            var jxhr = document.createElement('script');
+            jxhr.type = 'text/javascript';
+            jxhr.src = '/javascripts/libs/jXHR.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(jxhr, s);
+        }
+
+        github.showRepos({
+            user: 'promet',
+            count: 0,
+            skip_forks: true,
+            target: '#gh_repos'
+        });
+    });
+  </script>
+  <script src="/javascripts/github.js" type="text/javascript"> </script>
+</section>
+
+
+<section>
+  <h1>Latest Tweets</h1>
+  <ul id="tweets">
+    <li class="loading">Status updating...</li>
+  </ul>
+  <script type="text/javascript">
+    $.domReady(function(){
+      getTwitterFeed("linuxsysadmnblg", 4, false);
+    });
+  </script>
+  <script src="/javascripts/twitter.js" type="text/javascript"> </script>
+  
+    <a href="http://twitter.com/linuxsysadmnblg" class="twitter-follow-button" data-show-count="false">Follow @linuxsysadmnblg</a>
+  
+</section>
+
+
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2012 - Promet OPS Team -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'linuxsysadminblog';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://linuxsysadminblog.com/2008/11/cpanel-adding-custom-configuration-to-httpdconf/';
+        var disqus_url = 'http://linuxsysadminblog.com/2008/11/cpanel-adding-custom-configuration-to-httpdconf/';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'http://' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) {return;}
+  js = d.createElement(s); js.id = id;
+  js.src = "//connect.facebook.net/en_US/all.js#appId=212934732101925&xfbml=1";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = 'http://platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>
