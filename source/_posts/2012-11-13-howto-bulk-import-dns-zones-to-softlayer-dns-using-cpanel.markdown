@@ -30,7 +30,7 @@ In our case we were running Cpanel server so we copied straight our "/var/named/
 ### The Import Process:
 
 1.) Configure your Cpanel DNS cluster to connect to Softlayer's DNS servers.
-
+<!--more-->
 - Login to Cpanel WHM or DNSOnly, then go to *Cluster/Remote Access*  ->> *Configure Cluster*.
 - select *Enable DNS clustering*
 - On *Backend Type* dropdown, you will see *cPanel* only. Then click on *(Show All)* link next to it and the page will reload and you will see two more options: *Softlayer* and *VPS.NET*. Select *Softlayer* and click on *Configure button.
