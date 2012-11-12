@@ -4,7 +4,7 @@
   <title><![CDATA[Category: cpanel | Linux Sysadmin Blog]]></title>
   <link href="http://linuxsysadminblog.com/category/cpanel/atom.xml" rel="self"/>
   <link href="http://linuxsysadminblog.com/"/>
-  <updated>2012-11-13T01:37:44+08:00</updated>
+  <updated>2012-11-13T01:46:22+08:00</updated>
   <id>http://linuxsysadminblog.com/</id>
   <author>
     <name><![CDATA[Promet OPS Team]]></name>
@@ -36,6 +36,9 @@ In our case we were running Cpanel server so we copied straight our "/var/named/
 <h3>The Import Process:</h3>
 
 <p>1.) Configure your Cpanel DNS cluster to connect to Softlayer's DNS servers.</p>
+
+<!--more-->
+
 
 <ul>
 <li>Login to Cpanel WHM or DNSOnly, then go to <em>Cluster/Remote Access</em>  ->> <em>Configure Cluster</em>.</li>
