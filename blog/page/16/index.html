@@ -9,7 +9,7 @@
   <meta name="author" content="Promet OPS Team">
 
   
-  <meta name="description" content="Recently we were discussing our favorite phones and gadgets. By now we use our phones as mobile terminals so when the question of upgrading came up &hellip;">
+  <meta name="description" content="If you get this error you probably compiled mencoder and mplayer without Xvid support. To fix this error you need to re-compile mencoder and add Xvid &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -91,6 +91,52 @@ jQuery.noConflict();
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/2009/01/xvidencopts-is-not-an-mencoder-option/">Xvidencopts Is Not an MEncoder Option</a></h1>
+    
+    
+      <p class="meta">
+        
+  
+
+
+<span class="byline author vcard">Posted by <span class="fn"><a href="/blog/our-team/gerold-mercadero.html">Gerold Mercadero</a></span></span>
+
+ - 
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2009-01-27T08:18:41+08:00" pubdate data-updated="true">Jan 27<span>th</span>, 2009</time>
+        
+         | <a href="/2009/01/xvidencopts-is-not-an-mencoder-option/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>If you get this error you probably compiled mencoder and mplayer without Xvid support.</p>
+
+<p>To fix this error you need to re-compile mencoder and add Xvid codec support.  Please refer to this guide <a href="http://linuxsysadminblog.com/2009/01/compile-mplayermencoder-with-xvid-and-h264-codec-support/"><strong>Compile Mencoder and Mplayer with Xvid and H264 Support</strong></a></p>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -944,56 +990,6 @@ The error message in the title occurs in a combination of circumstances. If you 
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/2009/01/flvtool2-not-injecting-metadata-video-length/">FLVTool2 Not Injecting Metadata (Video Length)</a></h1>
-    
-    
-      <p class="meta">
-        
-  
-
-
-<span class="byline author vcard">Posted by <span class="fn"><a href="/blog/our-team/gerold-mercadero.html">Gerold Mercadero</a></span></span>
-
- - 
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2009-01-06T07:59:42+08:00" pubdate data-updated="true">Jan 6<span>th</span>, 2009</time>
-        
-         | <a href="/2009/01/flvtool2-not-injecting-metadata-video-length/#disqus_thread">Comments</a>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>Okay, I&#8217;ll make this short, we have several servers with Ffmpeg and later we found out that one of them is having problem on video conversion as it does not add the video length to the output file.  This issue was caused by older version of Flvtool2, version 1.0.5 RC6 and below.  So I upgraded my installation to latest release which is 1.0.6 final (this is the latest version at the time of this post).</p>
-
-<p>You can check for the latest release at <a href="http://rubyforge.org/frs/?group_id=1096">RubyForge</a>.</p>
-
-<p>Upgrade process is easy, same as the installation process, and if you need help visit our detailed guide on <strong>&#8220;<a href="http://linuxsysadminblog.com/2008/06/install-ffmpeg-ffmpeg-php-and-audio-binaries-on-centos-rhel-system-with-cpanel/">Installing ffmpeg and its components</a>&#8221;</strong> and look for Flvtool2 section.</p>
-
-<p>If you&#8217;re still having problem after Flvtool2 upgrade check your Ruby installation as you may need to update it as well.  If you&#8217;re on a Cpanel server you can use Cpanel&#8217;s Ruby install script at <code>/scripts/installruby</code>&#8221;.</p>
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/17/">&larr; Older</a>
@@ -1011,6 +1007,10 @@ The error message in the title occurs in a combination of circumstances. If you 
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/2012/11/xen-add-extra-partitions-to-guest-os/">Xen: Add Extra Partitions to Guest OS</a>
+      </li>
+    
+      <li class="post">
         <a href="/2012/11/howto-bulk-import-dns-zones-to-softlayer-dns-using-cpanel/">HowTo: Bulk Import DNS Zones to Softlayer DNS using Cpanel</a>
       </li>
     
@@ -1024,10 +1024,6 @@ The error message in the title occurs in a combination of circumstances. If you 
     
       <li class="post">
         <a href="/2012/06/restore-xen-vm-from-lvm-snapshot-backups/">Restore Xen VM from LVM Snapshot Backups</a>
-      </li>
-    
-      <li class="post">
-        <a href="/2012/06/debian-6-backup-xen-with-lvm-and-rsnapshot/">Debian 6: Backup Xen with LVM and Rsnapshot</a>
       </li>
     
   </ul>

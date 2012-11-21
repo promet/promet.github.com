@@ -9,7 +9,7 @@
   <meta name="author" content="Promet OPS Team">
 
   
-  <meta name="description" content="You&#8217;ll get this error when Wordpress automatic update process, via svn or admin, fail or is incomplete. It leaves the file named &#8221;. &hellip;">
+  <meta name="description" content="Here&#8217;s my quick install guide for Solr, Tomcat, and Drupal ApacheSolr module for multiple sites. Mostly I based the steps below from the &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -91,6 +91,183 @@ jQuery.noConflict();
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/2010/10/install-apache-solr-and-tomcat-for-drupal/">Install Apache Solr and Tomcat for Drupal</a></h1>
+    
+    
+      <p class="meta">
+        
+  
+
+
+<span class="byline author vcard">Posted by <span class="fn"><a href="/blog/our-team/gerold-mercadero.html">Gerold Mercadero</a></span></span>
+
+ - 
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2010-10-17T05:10:55+08:00" pubdate data-updated="true">Oct 17<span>th</span>, 2010</time>
+        
+         | <a href="/2010/10/install-apache-solr-and-tomcat-for-drupal/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>Here&#8217;s my quick install guide for Solr, Tomcat, and Drupal ApacheSolr module for multiple sites.  Mostly I based the steps below from the following sites: <a href="http://wiki.apache.org/solr/SolrTomcat">wiki.apache.org</a> and <a href="http://www.drupalconnect.com/blog/steve/configuring-apache-solr-multi-core-drupal-and-tomcat-ubuntu-910">drupalconnect.com</a>.</p>
+
+<p><strong>Detailed Setup:</strong></p>
+
+<ul>
+<li>Drupal 6.19</li>
+<li>ApacheSolr module 6-1.1</li>
+<li>Apache Solr PHP Client Library: Rev.22</li>
+<li>Solr 1.4.1</li>
+<li>Tomcat 6.0.29</li>
+<li>SunJDK 6update21</li>
+<li>RHEL5.5x64</li>
+</ul>
+
+
+<p><strong>Install Process: Tomcat</strong></p>
+
+<ul>
+<li>Create <code>solr</code> user</li>
+<li>Download <a href="http://tomcat.apache.org/download-60.cgi">Tomcat6</a></li>
+<li>Extract to <code>/opt/tomcat</code>,  <em>this will be the <code>$CATALINA_HOME</code> directory, you can use any dir you want</em></li>
+<li>Edit <code>/opt/tomcat/conf/tomcat-users.xml</code> to enable Tomcat login.  See comments in this file.</li>
+</ul>
+
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>&lt;role rolename="manager"/&gt;
+</span><span class='line'>&lt;role rolename="admin"/&gt;
+</span><span class='line'>&lt;user username="tomcat" password="tomcat" roles="manager,admin"/&gt;</span></code></pre></td></tr></table></div></figure>
+
+
+<ul>
+<li>Test run your Tomcat:  <code>/opt/tomcat/bin/catalina.sh run</code>.  Chown all Tomcat files to <code>solr</code> user (<code>chown -R solr.solr /opt/tomcat</code>).  Default server setting will use port 8080, to customized edit the file <code>/opt/tomcat/conf/server.xml</code>.  If you encounter error on &#8221;<em>BASEDIR environment variable is not defined correctly&#8230;</em>&#8221;, check permissions of <code>.sh</code> files inside <code>/opt/tomcat/bin/</code> and make them executable (<code>chmod 755 /opt/tomcat/bin/*.sh</code>).</li>
+<li>Add startup (init) script.  Copy this <a href="http://wiki.apache.org/solr/SolrTomcat?action=AttachFile&amp;do=view&amp;target=tomcat6">Tomcat6 init file</a> from Apache.org to <em>/etc/init.d/tomcat6</em>.  Check and update variables like Java home, Tomcat directory, etc, if needed.  Add to startup <code>/sbin/chkconfig --add tomcat6</code> and <code>/sbin/chkconfig tomcat6 on</code>.  Dependencies: redhat-lsb (or lsb-base?)</li>
+<li>Visit your Tomcat Admin page.  ex <em>http://localhost:8080</em></li>
+</ul>
+
+
+<p><strong>Install Process: Solr</strong></p>
+
+<ul>
+<li>Download <a href="http://mirrors.igsobe.com/apache/lucene/solr/">Solr</a></li>
+<li>Extract to temporary location, ex: <code>/opt/apache-solr-1.4.1</code></li>
+<li>Copy <code>/opt/apache-solr-1.4.1/dist/apache-solr-1.4.1.war</code> to <code>/opt/tomcat/webapps/solr.war</code></li>
+<li>Copy <code>/opt/apache-solr-1.4.1/example/solr</code> directory to <code>/opt/tomcat/solr</code>  <em>this will be the <code>$SOLR_HOME</code> directory, you can use any dir you want</em></li>
+<li>Create file <code>/opt/tomcat/conf/Catalina/localhost/solr.xml</code> with the following configuration.  Make sure paths are correct.</li>
+</ul>
+
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>&lt;Context docBase="/opt/tomcat/webapps/solr.war" debug="0" privileged="true" allowLinking="true" crossContext="true"&gt;
+</span><span class='line'>&lt;Environment name="solr/home" type="java.lang.String" value="/opt/tomcat/solr" override="true" /&gt;
+</span><span class='line'>&lt;/Context&gt;</span></code></pre></td></tr></table></div></figure>
+
+
+<p><strong>Install Process: ApacheSolr Drupal module and SolrPHP client</strong></p>
+
+<ul>
+<li>Install/enable <a href="http://drupal.org/project/apachesolr">Drupal ApacheSolr</a> module. Drush, CVS, or traditional install - whatever you want.  Example: <code>/var/www/site1/sites/all/modules/apachesolr</code></li>
+<li>Download <a href="http://code.google.com/p/solr-php-client/">SolrPHP client library</a></li>
+</ul>
+
+
+<p><strong>Configure Solr for Multi-Core Setup</strong></p>
+
+<ul>
+<li>Copy <code>/var/www/site1/sites/all/modules/apachesolr/schema.xml</code> to <code>/opt/tomcat/solr/conf/schema.xml</code></li>
+<li>Copy <code>/var/www/site1/sites/all/modules/apachesolr/solrconfig.xml</code> to <code>/opt/tomcat/solr/conf/solrconfig.xml</code></li>
+<li>Copy <code>/opt/apache-solr-1.4.1/example/multicore/solr.xml</code> to <code>/opt/tomcat/solr/solr.xml</code></li>
+<li>Create directory for each site and copy <code>/opt/tomcat/solr/conf</code> directory to each of them. Example:</li>
+</ul>
+
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>mkdir /opt/tomcat/solr/site1
+</span><span class='line'>mkdir /opt/tomcat/solr/site2
+</span><span class='line'>cp -r /opt/tomcat/solr/conf /opt/tomcat/solr/site1/
+</span><span class='line'>cp -r /opt/tomcat/solr/conf /opt/tomcat/solr/site2/</span></code></pre></td></tr></table></div></figure>
+
+
+<ul>
+<li>Edit <code>/opt/tomcat/solr/solr.xml</code> with the following config:</li>
+</ul>
+
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>&lt;?xml version="1.0" encoding="UTF-8" ?&gt;
+</span><span class='line'>&lt;solr persistent="false"&gt;
+</span><span class='line'>&lt;cores adminPath="/admin/cores"&gt;
+</span><span class='line'>&lt;core name="site1" instanceDir="site1" /&gt;
+</span><span class='line'>&lt;core name="site1" instanceDir="site2" /&gt;
+</span><span class='line'>&lt;/cores&gt;
+</span><span class='line'>&lt;/solr&gt;</span></code></pre></td></tr></table></div></figure>
+
+
+<ul>
+<li>Start or Restart Tomcat: <code>/etc/init.d/tomcat6 start</code></li>
+<li>Visit <code>http://localhost:8080/</code> and go to you Solr App</li>
+</ul>
+
+
+<p><strong>Configure Drupal site:</strong></p>
+
+<ul>
+<li>Go to ApacheSolr settings <code>http://localhost/admin/settings/apachesolr</code></li>
+<li>Save your config and if all is good you&#8217;ll see message: <code>Your site has contacted the Apache Solr server.</code></li>
+</ul>
+
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>Solr host name: localhost
+</span><span class='line'>Solr port: 8080
+</span><span class='line'>Solr path (for site1): /solr/site1</span></code></pre></td></tr></table></div></figure>
+
+
+<ul>
+<li>Configure your search index.</li>
+</ul>
+
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -706,99 +883,6 @@ Need to install <a href="https://knowledge.geotrust.com/support/knowledge-base/i
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/2010/07/debian-ftp-archive-for-etch-archive-debian-org/">Debian FTP Archive for Etch - archive.debian.org</a></h1>
-    
-    
-      <p class="meta">
-        
-  
-
-
-<span class="byline author vcard">Posted by <span class="fn"><a href="/blog/our-team/marius-ducea.html">Marius Ducea</a></span></span>
-
- - 
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2010-07-09T19:49:17+08:00" pubdate data-updated="true">Jul 9<span>th</span>, 2010</time>
-        
-         | <a href="/2010/07/debian-ftp-archive-for-etch-archive-debian-org/#disqus_thread">Comments</a>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p><strong>Debian Etch</strong> has been discontinued for a while now, and in an ideal world everyone has upgraded to <strong>lenny</strong> a long time ago. Still, this is not always possible and there are some systems out there that are still running etch, some for a good reason, some just because their admins are lazy ;) . Recently we worked on a project with such a system that was still running etch, and the devs on the team told us  that all is working perfect but they are no longer able to install new packages using apt tools. Hmm&#8230; let&#8217;s see.</p>
-
-<p>And indeed running apt update was giving a  <strong>404 error</strong>, as the etch files are no longer in the main ftp archive (on ftp.debian.org):</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>apt-get update
-</span><span class='line'>Ign http://ftp.debian.org etch Release.gpg
-</span><span class='line'>Ign http://ftp.debian.org etch Release
-</span><span class='line'>Ign http://ftp.debian.org etch/main Packages
-</span><span class='line'>Ign http://ftp.debian.org etch/non-free Packages
-</span><span class='line'>Ign http://ftp.debian.org etch/contrib Packages
-</span><span class='line'>Err http://ftp.debian.org etch/main Packages
-</span><span class='line'>404 Not Found [IP: 130.89.149.226 80]
-</span><span class='line'>Err http://ftp.debian.org etch/non-free Packages
-</span><span class='line'>404 Not Found [IP: 130.89.149.226 80]
-</span><span class='line'>Err http://ftp.debian.org etch/contrib Packages
-</span><span class='line'>404 Not Found [IP: 130.89.149.226 80]
-</span><span class='line'>Fetched 4B in 1s (3B/s)
-</span><span class='line'>Reading package lists... Done
-</span><span class='line'>W: Couldn't stat source package list http://ftp.debian.org etch/main Packages (/var/lib/apt/lists/ftp.debian.org_debian_dists_etch_main_binary-i386_Packages) - stat (2 No such file or directory)
-</span><span class='line'>W: Couldn't stat source package list http://ftp.debian.org etch/non-free Packages (/var/lib/apt/lists/ftp.debian.org_debian_dists_etch_non-free_binary-i386_Packages) - stat (2 No such file or directory)
-</span><span class='line'>W: Couldn't stat source package list http://ftp.debian.org etch/contrib Packages (/var/lib/apt/lists/ftp.debian.org_debian_dists_etch_contrib_binary-i386_Packages) - stat (2 No such file or directory)
-</span><span class='line'>W: You may want to run apt-get update to correct these problems</span></code></pre></td></tr></table></div></figure>
-
-
-<p>and the apt sources line causing this error was (from <strong>/etc/apt/sources.list</strong>):
-<code>deb http://ftp.debian.org/debian/ etch main non-free contrib</code></p>
-
-<p>We could not upgrade the machine because of internal constrains, and this was not even the scope of our project, but we needed to install some new debian packages we had to point the apt sources to a new place and this is to the <strong>archive.debian.org</strong> that continues (and will continue) to have the etch files. Basically our new apt sources became:
-<code>deb http://archive.debian.org/debian/ etch main non-free contrib</code>
-and this made it possible to complete our project and install the needed libraries. A few weeks after we finished the project we were hired for a new project to perform the upgrade to lenny, but this is a different storry.</p>
-
-<p>I hope you found this post useful, in case for some reason you are <em>still running etch and need to find a proper etch mirror to install new softwares as needed</em>. Of course I would urge you to upgrade to lenny, or even to squeeze if possible, as etch is no longer supported, you have no longer security patches, etc.</p>
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/4/">&larr; Older</a>
@@ -816,6 +900,10 @@ and this made it possible to complete our project and install the needed librari
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/2012/11/xen-add-extra-partitions-to-guest-os/">Xen: Add Extra Partitions to Guest OS</a>
+      </li>
+    
+      <li class="post">
         <a href="/2012/11/howto-bulk-import-dns-zones-to-softlayer-dns-using-cpanel/">HowTo: Bulk Import DNS Zones to Softlayer DNS using Cpanel</a>
       </li>
     
@@ -829,10 +917,6 @@ and this made it possible to complete our project and install the needed librari
     
       <li class="post">
         <a href="/2012/06/restore-xen-vm-from-lvm-snapshot-backups/">Restore Xen VM from LVM Snapshot Backups</a>
-      </li>
-    
-      <li class="post">
-        <a href="/2012/06/debian-6-backup-xen-with-lvm-and-rsnapshot/">Debian 6: Backup Xen with LVM and Rsnapshot</a>
       </li>
     
   </ul>

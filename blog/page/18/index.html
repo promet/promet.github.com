@@ -9,7 +9,7 @@
   <meta name="author" content="Promet OPS Team">
 
   
-  <meta name="description" content="Security should be practiced in all area. This is where the DiD or Defense-in-Depth Layer comes in. Defense in Depth is a multiple defensive strategy &hellip;">
+  <meta name="description" content="This article will outline the steps necessary to perform the upgrade from an older version of trac (normally 0.10 that many people are still running &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -91,6 +91,100 @@ jQuery.noConflict();
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/2008/11/upgrading-to-trac-011/">Upgrading to Trac 0.11</a></h1>
+    
+    
+      <p class="meta">
+        
+  
+
+
+<span class="byline author vcard">Posted by <span class="fn"><a href="/blog/our-team/marius-ducea.html">Marius Ducea</a></span></span>
+
+ - 
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2008-11-25T06:16:59+08:00" pubdate data-updated="true">Nov 25<span>th</span>, 2008</time>
+        
+         | <a href="/2008/11/upgrading-to-trac-011/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>This article will outline the steps necessary to perform the <strong>upgrade </strong>from an older version of <strong>trac </strong>(normally 0.10 that many people are still running) to the latest stable branch <strong>0.11</strong> (more precisely 0.11.2 available at this time). The <a href="http://trac.edgewall.org/wiki/0.11/TracUpgrade">TracUpgrade</a> official documentation describes this in detail, but unfortunately misses some important steps that can leave you with a broken trac environment while trying to upgrade. Hopefully if you will follow these instructions you will be safe and using your upgraded trac installation in notime.</p>
+
+<h3>1. Backup your existing installation</h3>
+
+<p>This is obvious, but many times ignored. Here are the key locations of a normal trac 0.10 installation that you will need to save:
+<strong>/usr/lib/python2.x/site-packages/</strong> &lt;- anything related to trac (can be just trac, but also some plugins eggs). You will normally run python2.4 meaning this will be: /usr/lib/python2.4/site-packages; If you use other versions please change accordingly.
+<strong>/usr/share/trac</strong> &lt;- web files (htdocs and cgi-bin)
+<strong>/var/trac</strong> &lt;- this is the location where you deployed your project (depends on your setup)</p>
+
+<p>Just save them, in case you will need them later. I would also <strong>disable all the plugins</strong> you might be using in trac. Now you should remove the files from <em>/usr/lib/python2.x/site-packages/</em> and <em>/usr/share/trac</em> that are <strong>related to trac</strong>. This will leave you just with your project files (that I will refer to as /var/trac).</p>
+
+<h3>2. Install the new trac version</h3>
+
+<p>Depending on how you are installing this, packaged by your distribution or manually using easy_install, you should now <a href="http://trac.edgewall.org/wiki/0.11/TracInstall">install</a> the new version of trac.</p>
+
+<p>For example if you use easy_install this will look like:
+<code>sudo easy_install Trac</code>
+(that should install all the required modules, like Genshi for ex).</p>
+
+<p>If you are using a package this might look like:
+<code>yum install python-genshi
+rpm -Uvh trac-0.11.2.1-1.el5.rf.noarch.rpm</code>
+on a rpm based distro (using the <a href="https://rpmrepo.org/RPMforge">RPMforge</a> trac package), or:
+<code>aptitude -t etch-backports Buy Propecia Online  install trac</code>
+on debian using the backports 0.11 version.</p>
+
+<h3>3. Upgrade your Trac Environment</h3>
+
+<p>Since this is a major version change you will need to upgrade your project environment. This is done using the trac-admin command:
+<code>trac-admin /path/to/projenv upgrade
+trac-admin /path/to/projenv wiki upgrade</code>
+in my case this will look like this:
+<code>trac-admin /var/trac/myproject upgrade
+trac-admin /var/trac/myproject wiki upgrade</code></p>
+
+<p>After this step the trac documentation, is saying that we just have to restart apache and all should be ok. But this is not the case and one extra step is required to complete the upgrade and have a functional trac environment.</p>
+
+<h3>4. Deploying web files</h3>
+
+<p>This new version of trac is <strong>not deploying the web and cgi files</strong> as previous ones did. Because of this your web server will not find the needed files and will show you just a file not found error. In order to fix this we have to run:
+<code>trac-admin /path/to/projenv deploy /tmp/trac/</code>
+and this will extract all the needed files in /tmp/trac and you can copy them to the final destination: /usr/share/trac:
+<em>/tmp/trac/htdocs/common should go in /usr/share/trac/htdocs</em>
+and if you are using cgi-bin then copy the needed cgi version in /usr/share/trac/cgi-bin (or /usr/lib/cgi-bin, etc.) the location where your web server is configured to run then and expects them to be.</p>
+
+<h3>5. Reinstall plugins, etc.</h3>
+
+<p>After you restart your web server you should now have a functional trac 0.11 installation. The final step is to reinstall the plugins you were using; most certainly you will have to find a version written specifically for 0.11 as the old 0.10 version will not run. Normally you will find this information on the plugin homepage (<a href="http://trac-hacks.org/">track-hacks</a> probably) and the installation will look like:
+<code>easy_install http://trac-hacks.org/svn/accountmanagerplugin/trunk</code></p>
+
+<p>Hopefully this article will help you to upgrade safely to trac 0.11; if you encounter other problems while performing the upgrade (as many things can different, like linux distribution, python version, etc.) please check the <a href="http://trac.edgewall.org/">trac docs/tickets</a> or feel free to post a comment bellow with your problem.</p>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -763,60 +857,6 @@ jQuery.noConflict();
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/2008/10/rebuilding-the-mysql-replication-slave/">MySQL Replication Problems</a></h1>
-    
-    
-      <p class="meta">
-        
-  
-
-
-<span class="byline author vcard">Posted by <span class="fn"><a href="/blog/our-team/pim-van-der-wal.html">Pim Van der Wal</a></span></span>
-
- - 
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2008-10-09T14:16:26+08:00" pubdate data-updated="true">Oct 9<span>th</span>, 2008</time>
-        
-         | <a href="/2008/10/rebuilding-the-mysql-replication-slave/#disqus_thread">Comments</a>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>We are using a replication setup for our databases. The master database takes care of all the transactions and the slave database is used for hot standby, making backups and running reports. Running mysqldump for backups locks the main tables one by one (we&#8217;re using the MyISAM storage engine) and was causing user interruptions. Hence using the replication slave for this is quite effective but it makes it very important to monitor the replication lag. If the replication stops the backups fall behind and suddenly the hot standby is not so hot anymore. A second problem is that the reports are reporting on stale data.</p>
-
-<p>Recently our master database server decided it was time for a break and spontaneusly rebooted. Since the server immediately came back up and started all services correctly production was only interrupted for a couple of minutes. A little later alerts started coming in that the replication lag was growing. It turns out the replication slave had gotten confused and was processing old replication logs. This means that transactions from a month ago were being processed again. This could be measured in several ways. The lag was showing a number of seconds equivalent to about a month This meant that the records it was trying to insert already existed and we were getting the 1062 MySQL error. This means that the primary key already exists and the new insert cannot complete. This stops replication dead in its tracks. The second way to see that old transactions are being processed is to look when the duplicate records were originally inserted. This is not always possible, but in this case there was a timestamp in the records.</p>
-
-<p>Our conclusion was that we needed to take two actions. First of all we needed to rebuild the replication slave database and restart replication from scratch. To do this you have to lock the entire database while making a mysqldump (FLUSH TABLES WITH READ LOCK).  This would lock out users for 10 to 15 minutes which is unacceptable during the daytime so we decided to execute this later in the evening when fewer users were online. The second action was to let the replication catch up so that we would have a reasonably consistent database in the mean time. This was done by adding the following line to the MySQL configuration file:</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>slave-skip-errors=1062</span></code></pre></td></tr></table></div></figure>
-
-
-<p>After that the replication slave server was restarted and the database caught up in 2 hours of processing. The reason we considered this an intermediate solution is that we don&#8217;t delete many records. The applications execute mainly updates and inserts to modify data. As long as the latest updates are executed last the data will be in decent shape. After that we rebuilt the complete slave database at a more convenient time and all was well again&#8230;..</p>
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/19/">&larr; Older</a>
@@ -834,6 +874,10 @@ jQuery.noConflict();
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/2012/11/xen-add-extra-partitions-to-guest-os/">Xen: Add Extra Partitions to Guest OS</a>
+      </li>
+    
+      <li class="post">
         <a href="/2012/11/howto-bulk-import-dns-zones-to-softlayer-dns-using-cpanel/">HowTo: Bulk Import DNS Zones to Softlayer DNS using Cpanel</a>
       </li>
     
@@ -847,10 +891,6 @@ jQuery.noConflict();
     
       <li class="post">
         <a href="/2012/06/restore-xen-vm-from-lvm-snapshot-backups/">Restore Xen VM from LVM Snapshot Backups</a>
-      </li>
-    
-      <li class="post">
-        <a href="/2012/06/debian-6-backup-xen-with-lvm-and-rsnapshot/">Debian 6: Backup Xen with LVM and Rsnapshot</a>
       </li>
     
   </ul>

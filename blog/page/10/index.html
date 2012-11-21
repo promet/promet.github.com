@@ -9,7 +9,17 @@
   <meta name="author" content="Promet OPS Team">
 
   
-  <meta name="description" content="RieserFS is a journalling filesystem that is excellent when dealing with small files under 4K in size. When used with tail-packing it is 10-15x &hellip;">
+  <meta name="description" content="Looking to rewrite all file requests to index? 1
+2
+3
+4
+5
+6
+7
+location / {
+root /var/www/nginx-default;
+index index.html;
+if (!-e $request_filename &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -91,6 +101,66 @@ jQuery.noConflict();
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/2009/05/nginx-rewrite-to-index/">Nginx Rewrite to Index</a></h1>
+    
+    
+      <p class="meta">
+        
+  
+
+
+<span class="byline author vcard">Posted by <span class="fn"><a href="/blog/our-team/max-veprinsky.html">Max Veprinsky</a></span></span>
+
+ - 
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2009-05-27T19:25:06+08:00" pubdate data-updated="true">May 27<span>th</span>, 2009</time>
+        
+         | <a href="/2009/05/nginx-rewrite-to-index/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>Looking to rewrite all file requests to index?</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>location / {
+</span><span class='line'>root /var/www/nginx-default;
+</span><span class='line'>index index.html;
+</span><span class='line'>if (!-e $request_filename) {
+</span><span class='line'>rewrite . /index.html last;
+</span><span class='line'>}
+</span><span class='line'>}</span></code></pre></td></tr></table></div></figure>
+
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -781,54 +851,6 @@ But wait the fun doesn&#8217;t end there as we are running cPanel on this partic
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/2009/05/howto-delete-all-emails-from-the-postfix-queue/">HowTo Delete All Emails From the Postfix Queue</a></h1>
-    
-    
-      <p class="meta">
-        
-  
-
-
-<span class="byline author vcard">Posted by <span class="fn"><a href="/blog/our-team/marius-ducea.html">Marius Ducea</a></span></span>
-
- - 
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2009-05-13T15:57:22+08:00" pubdate data-updated="true">May 13<span>th</span>, 2009</time>
-        
-         | <a href="/2009/05/howto-delete-all-emails-from-the-postfix-queue/#disqus_thread">Comments</a>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>I must admit that <strong>postfix </strong>queue management is definitely not the simplest one. I often get asked how you can <strong>remove all the emails</strong> that are in the <em>mail queue on a postfix server</em> (probably to delete a spamming abuse or some error, or whatever). This should be something very simple to do right? And actually it is very simple. All you have to do is to run as root:
-<code>postsuper -d ALL</code>
-or using sudo:
-<code>sudo postsuper -d ALL</code>
-this will delete instantly all the emails in the queue <strong>without any warning</strong> (be sure you know what you are doing when running this) and will just output the result (<em>xxx messages deleted</em>).</p>
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/11/">&larr; Older</a>
@@ -846,6 +868,10 @@ this will delete instantly all the emails in the queue <strong>without any warni
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/2012/11/xen-add-extra-partitions-to-guest-os/">Xen: Add Extra Partitions to Guest OS</a>
+      </li>
+    
+      <li class="post">
         <a href="/2012/11/howto-bulk-import-dns-zones-to-softlayer-dns-using-cpanel/">HowTo: Bulk Import DNS Zones to Softlayer DNS using Cpanel</a>
       </li>
     
@@ -859,10 +885,6 @@ this will delete instantly all the emails in the queue <strong>without any warni
     
       <li class="post">
         <a href="/2012/06/restore-xen-vm-from-lvm-snapshot-backups/">Restore Xen VM from LVM Snapshot Backups</a>
-      </li>
-    
-      <li class="post">
-        <a href="/2012/06/debian-6-backup-xen-with-lvm-and-rsnapshot/">Debian 6: Backup Xen with LVM and Rsnapshot</a>
       </li>
     
   </ul>

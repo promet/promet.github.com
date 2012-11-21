@@ -9,7 +9,7 @@
   <meta name="author" content="Promet OPS Team">
 
   
-  <meta name="description" content="After a long development time, Centos 4.8 was finally released on the 21st August. This is a good thing that after the latest problems between the &hellip;">
+  <meta name="description" content="Google webmail is down people&#8230; However mail can be retrieved and sent via IMAP/POP and SMTP. Fire up your favourite email client (I like &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -91,6 +91,54 @@ jQuery.noConflict();
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/2009/09/google-webmail-bites-it/">Google Webmail Bites It.</a></h1>
+    
+    
+      <p class="meta">
+        
+  
+
+
+<span class="byline author vcard">Posted by <span class="fn"><a href="/blog/our-team/max-veprinsky.html">Max Veprinsky</a></span></span>
+
+ - 
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2009-09-01T16:33:10+08:00" pubdate data-updated="true">Sep 1<span>st</span>, 2009</time>
+        
+         | <a href="/2009/09/google-webmail-bites-it/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>Google webmail is down people&#8230;</p>
+
+<p><a href="http://linuxsysadminblog.com/2009/09/google-webmail-bites-it/gmail_bites_it-3/"><img src="http://linuxsysadminblog.com/images/2009/09/gmail_bites_it2-150x150.png" alt="google webmail down" /></a></p>
+
+<p>However mail can be retrieved and sent via IMAP/POP and SMTP. Fire up your favourite email client (I like <a href="http://www.mozillamessaging.com/en-US/thunderbird/">Mozilla Thunderbird</a>) in the meantime.</p>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -775,176 +823,6 @@ In RedHat/Fedora Linux edit /etc/ssh/ssh_config and make sure you have an uncomm
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/2009/07/install-truecrypt-on-fedora-10/">Install TrueCrypt on Fedora 10</a></h1>
-    
-    
-      <p class="meta">
-        
-  
-
-
-<span class="byline author vcard">Posted by <span class="fn"><a href="/blog/our-team/max-veprinsky.html">Max Veprinsky</a></span></span>
-
- - 
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2009-07-06T15:25:20+08:00" pubdate data-updated="true">Jul 6<span>th</span>, 2009</time>
-        
-         | <a href="/2009/07/install-truecrypt-on-fedora-10/#disqus_thread">Comments</a>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p><a href="http://www.truecrypt.org">TrueCrypt</a> is an open source encryption application, it has an ability to create hidden encrypted containers and file systems/volumes, it is portable and cross platform compatible. It allows to use cascading cyphers and encrypts/decrypts files on the fly. Be sure to read the <a href="http://www.truecrypt.org/faq">FAQ</a> and <a href="http://www.truecrypt.org/docs/">documentation</a> before fully committing your files to TrueCrypt.</p>
-
-<ul>
-<li>install via yum:</li>
-</ul>
-
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>sudo yum install fuse fuse-devel wx_Base wx_GTK wx_GTK-devel</span></code></pre></td></tr></table></div></figure>
-
-
-<ul>
-<li>download source code package: http://www.truecrypt.org/downloads2</li>
-</ul>
-
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>tar -zxvf TrueCrypt\ 6.2a\ Source.tar.gz
-</span><span class='line'>cd truecrypt-6.2a-source</span></code></pre></td></tr></table></div></figure>
-
-
-<ul>
-<li>Download RSA Security Inc. PKCS #11 Cryptographic Token Interface files</li>
-</ul>
-
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>wget ftp://ftp.rsasecurity.com/pub/pkcs/pkcs-11/v2-20/pkcs11.h
-</span><span class='line'>wget ftp://ftp.rsasecurity.com/pub/pkcs/pkcs-11/v2-20/pkcs11f.h
-</span><span class='line'>wget ftp://ftp.rsasecurity.com/pub/pkcs/pkcs-11/v2-20/pkcs11t.h</span></code></pre></td></tr></table></div></figure>
-
-
-<ul>
-<li>build package</li>
-</ul>
-
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>make</span></code></pre></td></tr></table></div></figure>
-
-
-<ul>
-<li>copy binary to /usr/bin</li>
-</ul>
-
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>cd Main
-</span><span class='line'>sudo chown root:root truecrypt && sudo cp truecrypt /usr/bin</span></code></pre></td></tr></table></div></figure>
-
-
-<ul>
-<li>copy icon files to icon repository</li>
-</ul>
-
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>cd ../Resources/Icons
-</span><span class='line'>sudo chown root:root * && sudo cp * /usr/share/icons</span></code></pre></td></tr></table></div></figure>
-
-
-<p>One last order of business is to setup your sudoers file to so that TrueCrypt does not complain about requiring tty for sudo command needed to mount encrypted volumes. There are 2 ways of doing that:</p>
-
-<ol>
-<li>The less secure way &#8211; disable requiretty globally by adding an exclamation mark in front of requretty,</li>
-</ol>
-
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'># Defaults specification
-</span><span class='line'>#
-</span><span class='line'># Disable "ssh hostname sudo ", because it will show the password in clear.
-</span><span class='line'>#         You have to run "ssh -t hostname sudo ".
-</span><span class='line'>#
-</span><span class='line'>Defaults    !requiretty`</span></code></pre></td></tr></table></div></figure>
-
-
-<ol>
-<li>The more secure way especially for multi-user environments &#8211; create user alias called WHEELUSERS, assign users to this user alias:</li>
-</ol>
-
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>## User Aliases
-</span><span class='line'>## These aren't often necessary, as you can use regular groups
-</span><span class='line'>## (ie, from files, LDAP, NIS, etc) in this file - just use %groupname
-</span><span class='line'>## rather than USERALIAS
-</span><span class='line'># User_Alias ADMINS = jsmith, mikem
-</span><span class='line'>User_Alias      WHEELUSERS = max`</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Create a defaults entry for user alias disabling requiretty.</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'># Defaults specification
-</span><span class='line'>#
-</span><span class='line'># Disable "ssh hostname sudo ", because it will show the password in clear.
-</span><span class='line'>#         You have to run "ssh -t hostname sudo ".
-</span><span class='line'>#
-</span><span class='line'>Defaults    requiretty
-</span><span class='line'># added for truecrypt requiretty complaint
-</span><span class='line'>Defaults:WHEELUSERS     !requiretty`</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Video below is a walk through of creating a TrueCrypt desktop short-cut and creation of encrypted container.</p>
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/9/">&larr; Older</a>
@@ -962,6 +840,10 @@ In RedHat/Fedora Linux edit /etc/ssh/ssh_config and make sure you have an uncomm
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/2012/11/xen-add-extra-partitions-to-guest-os/">Xen: Add Extra Partitions to Guest OS</a>
+      </li>
+    
+      <li class="post">
         <a href="/2012/11/howto-bulk-import-dns-zones-to-softlayer-dns-using-cpanel/">HowTo: Bulk Import DNS Zones to Softlayer DNS using Cpanel</a>
       </li>
     
@@ -975,10 +857,6 @@ In RedHat/Fedora Linux edit /etc/ssh/ssh_config and make sure you have an uncomm
     
       <li class="post">
         <a href="/2012/06/restore-xen-vm-from-lvm-snapshot-backups/">Restore Xen VM from LVM Snapshot Backups</a>
-      </li>
-    
-      <li class="post">
-        <a href="/2012/06/debian-6-backup-xen-with-lvm-and-rsnapshot/">Debian 6: Backup Xen with LVM and Rsnapshot</a>
       </li>
     
   </ul>

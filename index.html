@@ -9,7 +9,7 @@
   <meta name="author" content="Promet OPS Team">
 
   
-  <meta name="description" content="This guide covers the process for doing bulk import of existing DNS zones from a Cpanel or BIND server to Softlayer&#8217;s DNS servers (ns1/ns2. &hellip;">
+  <meta name="description" content="Here&#8217;s one way to add and mount additional LVM partition in xen guest machines. 1.) Create logical partition and format it. Example below &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -91,6 +91,78 @@ jQuery.noConflict();
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/2012/11/xen-add-extra-partitions-to-guest-os/">Xen: Add Extra Partitions to Guest OS</a></h1>
+    
+    
+      <p class="meta">
+        
+  
+
+
+<span class="byline author vcard">Posted by <span class="fn"><a href="/blog/our-team/Promet OPS Team.html"></a></span></span>
+
+ - 
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-11-21T18:55:00+08:00" pubdate data-updated="true">Nov 21<span>st</span>, 2012</time>
+        
+         | <a href="/2012/11/xen-add-extra-partitions-to-guest-os/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>Here&#8217;s one way to add and mount additional LVM partition in xen guest machines.</p>
+
+<p>1.)  Create logical partition and format it.  Example below creates &#8220;40GB&#8221; partition and &#8220;ext3&#8221; format in &#8220;vg0&#8221; volume group.</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>lvcreate -L 40G -n extra_storage vg0
+</span><span class='line'>mkfs -t ext3 -v /dev/vg0/extra_storage</span></code></pre></td></tr></table></div></figure>
+
+
+<p>2.)  Update xen config to add new partition to guest os.  Assign device name to it, example &#8220;xvda3&#8221;.  Then re-create the VM to recognize the new partition/device. Note: reboot doesn&#8217;t read the new xen configuration.</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>disk        = [
+</span><span class='line'>        'phy:/dev/vg0/extra_storage,xvda3,w',</span></code></pre></td></tr></table></div></figure>
+
+
+<p>3.)  After you reboot, login to VM and mount the new partition.  New drive or partition shoud be in &#8220;/dev/xvda3.&#8221;</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>  mount /dev/xvda3 /extra_space</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Add it to &#8220;/etc/fstab&#8221; to automount on reboot.  /etc/fstab:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>  /dev/xvda3 /extra_space ext3 noatime,nodiratime,errors=remount-ro 0 1</span></code></pre></td></tr></table></div></figure>
+
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -694,59 +766,6 @@ vg name is vg0</p>
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/2011/04/amazon-aws-worse-failure/">Amazon AWS Worse Failure</a></h1>
-    
-    
-      <p class="meta">
-        
-  
-
-
-<span class="byline author vcard">Posted by <span class="fn"><a href="/blog/our-team/marius-ducea.html">Marius Ducea</a></span></span>
-
- - 
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2011-04-22T15:59:01+08:00" pubdate data-updated="true">Apr 22<span>nd</span>, 2011</time>
-        
-         | <a href="/2011/04/amazon-aws-worse-failure/#disqus_thread">Comments</a>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>I&#8217;m sure almost everyone is aware at this point on the <strong>failure</strong> that caused Amazon cloud computing solution AWS to be down yesterday (and still is at some smaller extend happening at this time as we can see on their <a href="http://status.aws.amazon.com/">status</a> page) for most of the day. This has affected a few big (Reddit, Foursquare, Quora, Heroku, Engine Yard, for ex.) and many small sites hosted in the <strong>us-east-1</strong> AWS region. This happened regardless on the availability zone you were in the region US-EAST (this is the oldest one and still the default for many client tools) and questioned the <a href="http://aws.amazon.com/ec2/faqs/#How_isolated_are_Availability_Zones_from_one_another">independence and isolation</a> of the availability zones in the AWS infrastructure design.</p>
-
-<p>The failure was specifically related to the <strong>EBS</strong> drives that made customer instances non responding, but also prevented them to start or stop new instances with the same EBS volumes (that probably 99% have tried immediately as they got paged). There are some sites that had failover mechanisms, but if they were in the same availability zone it was useless (something that looked like a good solution and fast and cost effective). Others, many startups, found out that they had no such mechanism at all, and that they depended way too much on the Amazon reliability. Until this issue, Amazon had a great uptime record; there were many issues but with individual instances, but not such a global issue. You would expect people running their application in the cloud to expect failures and be prepared and I&#8217;m sure most of them are compared with applications deployed in the regular datacenter, but apparently there is still much work to be done.</p>
-
-<p>Overall I believe this showed (if we needed a reminder), that failures can happen and anyone can suffer from such a problem (Google had problems, Facebook the same, and Twitter is most of the time down, and now was just Amazon&#8217;s turn). We need to be prepared and build and architect our applications with this in mind and be ready to failover. A great example of this is the twilio application design: <a href="http://www.twilio.com/engineering/2011/04/22/why-twilio-wasnt-affected-by-todays-aws-issues/">http://www.twilio.com/engineering/2011/04/22/why-twilio-wasnt-affected-by-todays-aws-issues/</a></p>
-
-</div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/2011/04/amazon-aws-worse-failure/">Read on &rarr;</a>
-    </footer>
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/2/">&larr; Older</a>
@@ -762,6 +781,10 @@ vg name is vg0</p>
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/2012/11/xen-add-extra-partitions-to-guest-os/">Xen: Add Extra Partitions to Guest OS</a>
+      </li>
+    
+      <li class="post">
         <a href="/2012/11/howto-bulk-import-dns-zones-to-softlayer-dns-using-cpanel/">HowTo: Bulk Import DNS Zones to Softlayer DNS using Cpanel</a>
       </li>
     
@@ -775,10 +798,6 @@ vg name is vg0</p>
     
       <li class="post">
         <a href="/2012/06/restore-xen-vm-from-lvm-snapshot-backups/">Restore Xen VM from LVM Snapshot Backups</a>
-      </li>
-    
-      <li class="post">
-        <a href="/2012/06/debian-6-backup-xen-with-lvm-and-rsnapshot/">Debian 6: Backup Xen with LVM and Rsnapshot</a>
       </li>
     
   </ul>

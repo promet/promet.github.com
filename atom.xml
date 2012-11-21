@@ -4,7 +4,7 @@
   <title><![CDATA[Linux Sysadmin Blog]]></title>
   <link href="http://linuxsysadminblog.com/atom.xml" rel="self"/>
   <link href="http://linuxsysadminblog.com/"/>
-  <updated>2012-11-13T10:17:21+08:00</updated>
+  <updated>2012-11-21T23:14:46+08:00</updated>
   <id>http://linuxsysadminblog.com/</id>
   <author>
     <name><![CDATA[Promet OPS Team]]></name>
@@ -12,6 +12,43 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Xen: Add Extra Partitions to Guest OS]]></title>
+    <link href="http://linuxsysadminblog.com/2012/11/xen-add-extra-partitions-to-guest-os/"/>
+    <updated>2012-11-21T18:55:00+08:00</updated>
+    <id>http://linuxsysadminblog.com/2012/11/xen-add-extra-partitions-to-guest-os</id>
+    <content type="html"><![CDATA[<p>Here&#8217;s one way to add and mount additional LVM partition in xen guest machines.</p>
+
+<p>1.)  Create logical partition and format it.  Example below creates &#8220;40GB&#8221; partition and &#8220;ext3&#8221; format in &#8220;vg0&#8221; volume group.</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>lvcreate -L 40G -n extra_storage vg0
+</span><span class='line'>mkfs -t ext3 -v /dev/vg0/extra_storage</span></code></pre></td></tr></table></div></figure>
+
+
+<p>2.)  Update xen config to add new partition to guest os.  Assign device name to it, example &#8220;xvda3&#8221;.  Then re-create the VM to recognize the new partition/device. Note: reboot doesn&#8217;t read the new xen configuration.</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>disk        = [
+</span><span class='line'>        'phy:/dev/vg0/extra_storage,xvda3,w',</span></code></pre></td></tr></table></div></figure>
+
+
+<p>3.)  After you reboot, login to VM and mount the new partition.  New drive or partition shoud be in &#8220;/dev/xvda3.&#8221;</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>  mount /dev/xvda3 /extra_space</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Add it to &#8220;/etc/fstab&#8221; to automount on reboot.  /etc/fstab:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>  /dev/xvda3 /extra_space ext3 noatime,nodiratime,errors=remount-ro 0 1</span></code></pre></td></tr></table></div></figure>
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[HowTo: Bulk Import DNS Zones to Softlayer DNS using Cpanel]]></title>
@@ -951,148 +988,6 @@ File Contents:</li>
 </span><span class='line'>Order allow,deny
 </span><span class='line'>Allow from all
 </span><span class='line'>&lt;/Location&gt;</span></code></pre></td></tr></table></div></figure>
-
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Install Apache Solr and Tomcat for Drupal]]></title>
-    <link href="http://linuxsysadminblog.com/2010/10/install-apache-solr-and-tomcat-for-drupal/"/>
-    <updated>2010-10-17T05:10:55+08:00</updated>
-    <id>http://linuxsysadminblog.com/2010/10/install-apache-solr-and-tomcat-for-drupal</id>
-    <content type="html"><![CDATA[<p>Here&#8217;s my quick install guide for Solr, Tomcat, and Drupal ApacheSolr module for multiple sites.  Mostly I based the steps below from the following sites: <a href="http://wiki.apache.org/solr/SolrTomcat">wiki.apache.org</a> and <a href="http://www.drupalconnect.com/blog/steve/configuring-apache-solr-multi-core-drupal-and-tomcat-ubuntu-910">drupalconnect.com</a>.</p>
-
-<p><strong>Detailed Setup:</strong></p>
-
-<ul>
-<li>Drupal 6.19</li>
-<li>ApacheSolr module 6-1.1</li>
-<li>Apache Solr PHP Client Library: Rev.22</li>
-<li>Solr 1.4.1</li>
-<li>Tomcat 6.0.29</li>
-<li>SunJDK 6update21</li>
-<li>RHEL5.5x64</li>
-</ul>
-
-
-<p><strong>Install Process: Tomcat</strong></p>
-
-<ul>
-<li>Create <code>solr</code> user</li>
-<li>Download <a href="http://tomcat.apache.org/download-60.cgi">Tomcat6</a></li>
-<li>Extract to <code>/opt/tomcat</code>,  <em>this will be the <code>$CATALINA_HOME</code> directory, you can use any dir you want</em></li>
-<li>Edit <code>/opt/tomcat/conf/tomcat-users.xml</code> to enable Tomcat login.  See comments in this file.</li>
-</ul>
-
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>&lt;role rolename="manager"/&gt;
-</span><span class='line'>&lt;role rolename="admin"/&gt;
-</span><span class='line'>&lt;user username="tomcat" password="tomcat" roles="manager,admin"/&gt;</span></code></pre></td></tr></table></div></figure>
-
-
-<ul>
-<li>Test run your Tomcat:  <code>/opt/tomcat/bin/catalina.sh run</code>.  Chown all Tomcat files to <code>solr</code> user (<code>chown -R solr.solr /opt/tomcat</code>).  Default server setting will use port 8080, to customized edit the file <code>/opt/tomcat/conf/server.xml</code>.  If you encounter error on &#8221;<em>BASEDIR environment variable is not defined correctly&#8230;</em>&#8221;, check permissions of <code>.sh</code> files inside <code>/opt/tomcat/bin/</code> and make them executable (<code>chmod 755 /opt/tomcat/bin/*.sh</code>).</li>
-<li>Add startup (init) script.  Copy this <a href="http://wiki.apache.org/solr/SolrTomcat?action=AttachFile&amp;do=view&amp;target=tomcat6">Tomcat6 init file</a> from Apache.org to <em>/etc/init.d/tomcat6</em>.  Check and update variables like Java home, Tomcat directory, etc, if needed.  Add to startup <code>/sbin/chkconfig --add tomcat6</code> and <code>/sbin/chkconfig tomcat6 on</code>.  Dependencies: redhat-lsb (or lsb-base?)</li>
-<li>Visit your Tomcat Admin page.  ex <em>http://localhost:8080</em></li>
-</ul>
-
-
-<p><strong>Install Process: Solr</strong></p>
-
-<ul>
-<li>Download <a href="http://mirrors.igsobe.com/apache/lucene/solr/">Solr</a></li>
-<li>Extract to temporary location, ex: <code>/opt/apache-solr-1.4.1</code></li>
-<li>Copy <code>/opt/apache-solr-1.4.1/dist/apache-solr-1.4.1.war</code> to <code>/opt/tomcat/webapps/solr.war</code></li>
-<li>Copy <code>/opt/apache-solr-1.4.1/example/solr</code> directory to <code>/opt/tomcat/solr</code>  <em>this will be the <code>$SOLR_HOME</code> directory, you can use any dir you want</em></li>
-<li>Create file <code>/opt/tomcat/conf/Catalina/localhost/solr.xml</code> with the following configuration.  Make sure paths are correct.</li>
-</ul>
-
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>&lt;Context docBase="/opt/tomcat/webapps/solr.war" debug="0" privileged="true" allowLinking="true" crossContext="true"&gt;
-</span><span class='line'>&lt;Environment name="solr/home" type="java.lang.String" value="/opt/tomcat/solr" override="true" /&gt;
-</span><span class='line'>&lt;/Context&gt;</span></code></pre></td></tr></table></div></figure>
-
-
-<p><strong>Install Process: ApacheSolr Drupal module and SolrPHP client</strong></p>
-
-<ul>
-<li>Install/enable <a href="http://drupal.org/project/apachesolr">Drupal ApacheSolr</a> module. Drush, CVS, or traditional install - whatever you want.  Example: <code>/var/www/site1/sites/all/modules/apachesolr</code></li>
-<li>Download <a href="http://code.google.com/p/solr-php-client/">SolrPHP client library</a></li>
-</ul>
-
-
-<p><strong>Configure Solr for Multi-Core Setup</strong></p>
-
-<ul>
-<li>Copy <code>/var/www/site1/sites/all/modules/apachesolr/schema.xml</code> to <code>/opt/tomcat/solr/conf/schema.xml</code></li>
-<li>Copy <code>/var/www/site1/sites/all/modules/apachesolr/solrconfig.xml</code> to <code>/opt/tomcat/solr/conf/solrconfig.xml</code></li>
-<li>Copy <code>/opt/apache-solr-1.4.1/example/multicore/solr.xml</code> to <code>/opt/tomcat/solr/solr.xml</code></li>
-<li>Create directory for each site and copy <code>/opt/tomcat/solr/conf</code> directory to each of them. Example:</li>
-</ul>
-
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>mkdir /opt/tomcat/solr/site1
-</span><span class='line'>mkdir /opt/tomcat/solr/site2
-</span><span class='line'>cp -r /opt/tomcat/solr/conf /opt/tomcat/solr/site1/
-</span><span class='line'>cp -r /opt/tomcat/solr/conf /opt/tomcat/solr/site2/</span></code></pre></td></tr></table></div></figure>
-
-
-<ul>
-<li>Edit <code>/opt/tomcat/solr/solr.xml</code> with the following config:</li>
-</ul>
-
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>&lt;?xml version="1.0" encoding="UTF-8" ?&gt;
-</span><span class='line'>&lt;solr persistent="false"&gt;
-</span><span class='line'>&lt;cores adminPath="/admin/cores"&gt;
-</span><span class='line'>&lt;core name="site1" instanceDir="site1" /&gt;
-</span><span class='line'>&lt;core name="site1" instanceDir="site2" /&gt;
-</span><span class='line'>&lt;/cores&gt;
-</span><span class='line'>&lt;/solr&gt;</span></code></pre></td></tr></table></div></figure>
-
-
-<ul>
-<li>Start or Restart Tomcat: <code>/etc/init.d/tomcat6 start</code></li>
-<li>Visit <code>http://localhost:8080/</code> and go to you Solr App</li>
-</ul>
-
-
-<p><strong>Configure Drupal site:</strong></p>
-
-<ul>
-<li>Go to ApacheSolr settings <code>http://localhost/admin/settings/apachesolr</code></li>
-<li>Save your config and if all is good you&#8217;ll see message: <code>Your site has contacted the Apache Solr server.</code></li>
-</ul>
-
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>Solr host name: localhost
-</span><span class='line'>Solr port: 8080
-</span><span class='line'>Solr path (for site1): /solr/site1</span></code></pre></td></tr></table></div></figure>
-
-
-<ul>
-<li>Configure your search index.</li>
-</ul>
 
 ]]></content>
   </entry>

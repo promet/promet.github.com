@@ -9,7 +9,7 @@
   <meta name="author" content="Promet OPS Team">
 
   
-  <meta name="description" content="In some cases you would want to have your site use SSL (https://) at all times you can do this by using: 1.) Using Htaccess/mod_rewrite. You only &hellip;">
+  <meta name="description" content="For those of us who use Linux as a desktop replacement for Windows would find it nice to be able to run the ASDM client natively. If you haven&#8217; &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -91,6 +91,64 @@ jQuery.noConflict();
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/2009/03/running-asdm-client-from-your-linux-desktop/">Running ASDM Client From Your Linux Desktop</a></h1>
+    
+    
+      <p class="meta">
+        
+  
+
+
+<span class="byline author vcard">Posted by <span class="fn"><a href="/blog/our-team/max-veprinsky.html">Max Veprinsky</a></span></span>
+
+ - 
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2009-03-10T16:13:30+08:00" pubdate data-updated="true">Mar 10<span>th</span>, 2009</time>
+        
+         | <a href="/2009/03/running-asdm-client-from-your-linux-desktop/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>For those of us who use Linux as a desktop replacement for Windows would find it nice to be able to run the ASDM client natively. If you haven&#8217;t upgraded your ASA/PIX to the <strong>latest ASDM</strong> you should do so. The steps are described <a href="http://linuxsysadminblog.com/2009/01/howto-upgrade-asdm-using-cli-on-cisco-asa5500/">here</a>.</p>
+
+<p>Once you do upgrade your PIX/ASA to the latest version you may run into another issue where your bundled version of java not connect with ASDM. The remedy for this if you are using Fedora 10 can be <a href="http://linuxsysadminblog.com/2009/02/upgrade-to-java-se-6-update-12-on-fedora-10/">found here</a>.</p>
+
+<p>Now assuming that you have asdm loaded and opened access to outside over port 4443 with:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>http server enable 4443
+</span><span class='line'>http 0.0.0.0 0.0.0.0 outside</span></code></pre></td></tr></table></div></figure>
+
+
+<p>You can connect to your PIX/ASA over port 4443 and download the asdm.jnlp file to your pc via web browser at https://external_ip_of_asa:4443</p>
+
+<p>Once you posses the asdm.jnlp file issue <code>javaws asdm.jnlp</code> in terminal. Upon successful login this will create <code>.asdm</code> folder in your home directory with files inside, as well as a desktop shortcut. After this the <code>asdm.jnlp</code> is no longer needed and can be erased.</p>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -696,70 +754,6 @@ BETTER WAY: <a href="http://www.capify.org/">Capistrano </a></p>
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/2009/02/cloud-computing-scenarios-for-database-servers/">Cloud Computing Scenario&#8217;s for Database Servers</a></h1>
-    
-    
-      <p class="meta">
-        
-  
-
-
-<span class="byline author vcard">Posted by <span class="fn"><a href="/blog/our-team/pim-van-der-wal.html">Pim Van der Wal</a></span></span>
-
- - 
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2009-02-17T10:09:35+08:00" pubdate data-updated="true">Feb 17<span>th</span>, 2009</time>
-        
-         | <a href="/2009/02/cloud-computing-scenarios-for-database-servers/#disqus_thread">Comments</a>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>We&#8217;ve been investigating the possibilities of using cloud computing for our clients. Especially Amazon EC2 has the potential to be be really effective in offering flexible, pay-as-you-go computing. From my own perspective I have been looking at how to use cloud computing in combination with MySQL and I must say that I&#8217;m a bit sceptical about the effectiveness of cloud computing in replacing the primary database server. First off there does not seem to be that much in the way of performance data for this type of installation. Can a cloud server really offer the I/O performance necessary to replace a dedicated database server? And even if the performance is equal, what is the main advantage? Scaling web sites is done by adding more servers in most cases but the same approach only works for database servers when clusters are used. So in what other scenario&#8217;s does cloud computing give us an edge?</p>
-
-<p><strong>Temporary reporting servers</strong></p>
-
-<p>Create a one time copy of an existing production database server to run specific heavy reports. This is ideal for monthly reports since the server only needs to be up and running for several hours per month.</p>
-
-<p><strong>Backup database server</strong></p>
-
-<p>This is a backup solution where the server is only allocated once there is a problem with the primary server which makes a lot of sense because the client only pays for the server once it is used. One downside to this scenario is that the server has to created and loaded with the latest backup which will result in a decent amount of downtime but at least all of this can be automated. A bigger problem is the loss of data since the latest backup.For our high availability sites we have a standby database server replicating all changes from the master so we can switch over at a moment&#8217;s notice without losing any data.</p>
-
-<p><strong>Migrations</strong></p>
-
-<p>Performing a migration or a system upgrade usually brings some downtime. Promoting a standby system to primary creates a single point of failure so it makes sense to create a remporary standby of the standby.</p>
-
-<p><strong>Development branches and testing environments</strong></p>
-
-<p>For development branches we usually only need an extra database for a short amount of time although truth be told, those database are not very large in general so we tend to put them on the same development database server anyway. The same is true for testing and QA. These activities usually occur in cycles which means that they are very attractive targets for cloud based servers.</p>
-
-<p><strong>Alternative data center</strong></p>
-
-<p>Yes, it happened to us once that our datacenter went off line due to a very heavy attack. Instead of finding another data center for these eventualities it could be useful to have cloud based backup servers defined. However, this requires the extra effort of keeping these instances up to date for this eventuality. Additionally, DNS caching will stop the switch from being instantaneous. A geographical load balancing solution would be the answer to that but at that point the cost for preparing for this eventuality will have to be compared to the loss due to down time.</p>
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/15/">&larr; Older</a>
@@ -777,6 +771,10 @@ BETTER WAY: <a href="http://www.capify.org/">Capistrano </a></p>
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/2012/11/xen-add-extra-partitions-to-guest-os/">Xen: Add Extra Partitions to Guest OS</a>
+      </li>
+    
+      <li class="post">
         <a href="/2012/11/howto-bulk-import-dns-zones-to-softlayer-dns-using-cpanel/">HowTo: Bulk Import DNS Zones to Softlayer DNS using Cpanel</a>
       </li>
     
@@ -790,10 +788,6 @@ BETTER WAY: <a href="http://www.capify.org/">Capistrano </a></p>
     
       <li class="post">
         <a href="/2012/06/restore-xen-vm-from-lvm-snapshot-backups/">Restore Xen VM from LVM Snapshot Backups</a>
-      </li>
-    
-      <li class="post">
-        <a href="/2012/06/debian-6-backup-xen-with-lvm-and-rsnapshot/">Debian 6: Backup Xen with LVM and Rsnapshot</a>
       </li>
     
   </ul>

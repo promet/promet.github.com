@@ -9,7 +9,7 @@
   <meta name="author" content="Promet OPS Team">
 
   
-  <meta name="description" content="A client had asked us a very innocent question about bandwidth usage What will my average cost of video download be?. This question lead me down a &hellip;">
+  <meta name="description" content="We are using a replication setup for our databases. The master database takes care of all the transactions and the slave database is used for hot &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -91,6 +91,60 @@ jQuery.noConflict();
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/2008/10/rebuilding-the-mysql-replication-slave/">MySQL Replication Problems</a></h1>
+    
+    
+      <p class="meta">
+        
+  
+
+
+<span class="byline author vcard">Posted by <span class="fn"><a href="/blog/our-team/pim-van-der-wal.html">Pim Van der Wal</a></span></span>
+
+ - 
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2008-10-09T14:16:26+08:00" pubdate data-updated="true">Oct 9<span>th</span>, 2008</time>
+        
+         | <a href="/2008/10/rebuilding-the-mysql-replication-slave/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>We are using a replication setup for our databases. The master database takes care of all the transactions and the slave database is used for hot standby, making backups and running reports. Running mysqldump for backups locks the main tables one by one (we&#8217;re using the MyISAM storage engine) and was causing user interruptions. Hence using the replication slave for this is quite effective but it makes it very important to monitor the replication lag. If the replication stops the backups fall behind and suddenly the hot standby is not so hot anymore. A second problem is that the reports are reporting on stale data.</p>
+
+<p>Recently our master database server decided it was time for a break and spontaneusly rebooted. Since the server immediately came back up and started all services correctly production was only interrupted for a couple of minutes. A little later alerts started coming in that the replication lag was growing. It turns out the replication slave had gotten confused and was processing old replication logs. This means that transactions from a month ago were being processed again. This could be measured in several ways. The lag was showing a number of seconds equivalent to about a month This meant that the records it was trying to insert already existed and we were getting the 1062 MySQL error. This means that the primary key already exists and the new insert cannot complete. This stops replication dead in its tracks. The second way to see that old transactions are being processed is to look when the duplicate records were originally inserted. This is not always possible, but in this case there was a timestamp in the records.</p>
+
+<p>Our conclusion was that we needed to take two actions. First of all we needed to rebuild the replication slave database and restart replication from scratch. To do this you have to lock the entire database while making a mysqldump (FLUSH TABLES WITH READ LOCK).  This would lock out users for 10 to 15 minutes which is unacceptable during the daytime so we decided to execute this later in the evening when fewer users were online. The second action was to let the replication catch up so that we would have a reasonably consistent database in the mean time. This was done by adding the following line to the MySQL configuration file:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>slave-skip-errors=1062</span></code></pre></td></tr></table></div></figure>
+
+
+<p>After that the replication slave server was restarted and the database caught up in 2 hours of processing. The reason we considered this an intermediate solution is that we don&#8217;t delete many records. The applications execute mainly updates and inserts to modify data. As long as the latest updates are executed last the data will be in decent shape. After that we rebuilt the complete slave database at a more convenient time and all was well again&#8230;..</p>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -732,50 +786,6 @@ The thread is waiting for the client to send a new statement to it.
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/2008/07/happy-sysadmin-day/">Happy Sysadmin Day!</a></h1>
-    
-    
-      <p class="meta">
-        
-  
-
-
-<span class="byline author vcard">Posted by <span class="fn"><a href="/blog/our-team/marius-ducea.html">Marius Ducea</a></span></span>
-
- - 
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2008-07-25T15:26:37+08:00" pubdate data-updated="true">Jul 25<span>th</span>, 2008</time>
-        
-         | <a href="/2008/07/happy-sysadmin-day/#disqus_thread">Comments</a>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>Happy <a href="http://www.sysadminday.com/">sysadmin day</a> to my fellow colegues! I hope we will have a &#8216;quiet&#8217; weekend to celebrate this properly, and not have to deal with any unexpected emergency&#8230;</p>
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/20/">&larr; Older</a>
@@ -793,6 +803,10 @@ The thread is waiting for the client to send a new statement to it.
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/2012/11/xen-add-extra-partitions-to-guest-os/">Xen: Add Extra Partitions to Guest OS</a>
+      </li>
+    
+      <li class="post">
         <a href="/2012/11/howto-bulk-import-dns-zones-to-softlayer-dns-using-cpanel/">HowTo: Bulk Import DNS Zones to Softlayer DNS using Cpanel</a>
       </li>
     
@@ -806,10 +820,6 @@ The thread is waiting for the client to send a new statement to it.
     
       <li class="post">
         <a href="/2012/06/restore-xen-vm-from-lvm-snapshot-backups/">Restore Xen VM from LVM Snapshot Backups</a>
-      </li>
-    
-      <li class="post">
-        <a href="/2012/06/debian-6-backup-xen-with-lvm-and-rsnapshot/">Debian 6: Backup Xen with LVM and Rsnapshot</a>
       </li>
     
   </ul>

@@ -9,7 +9,9 @@
   <meta name="author" content="Promet OPS Team">
 
   
-  <meta name="description" content="This post cover the steps to copy, transfer, or duplicate a Drupal site to new domain or from development/test site to live/production server. This &hellip;">
+  <meta name="description" content="This task is very simple and can be done in two steps:
+1.)  Login as root and change your server hostname: 1
+hostname newhos.name.tld Note: Don&#8217 &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -91,6 +93,59 @@ jQuery.noConflict();
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/2009/04/change-hostname-of-cpanel-server/">Change Hostname of Cpanel Server</a></h1>
+    
+    
+      <p class="meta">
+        
+  
+
+
+<span class="byline author vcard">Posted by <span class="fn"><a href="/blog/our-team/gerold-mercadero.html">Gerold Mercadero</a></span></span>
+
+ - 
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2009-04-05T07:19:16+08:00" pubdate data-updated="true">Apr 5<span>th</span>, 2009</time>
+        
+         | <a href="/2009/04/change-hostname-of-cpanel-server/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>This task is very simple and can be done in two steps:
+1.)  Login as root and change your server hostname:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>hostname newhos.name.tld</span></code></pre></td></tr></table></div></figure>
+
+
+<p><strong>Note:</strong>  Don&#8217;t forget to create an A entry for your new hostname, otherwise you will get a popup message during WHM login.</p>
+
+<p>2.)  Issue <code>/usr/local/cpanel/cpkeyclt</code> to update your Cpanel License Key, otherwise you will get Invalid License when you login to WHM/Cpanel interface.</p>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -730,64 +785,6 @@ To do this we need to edit two files, <em>config_inc.php</em> and <em>custom_str
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/2009/03/running-asdm-client-from-your-linux-desktop/">Running ASDM Client From Your Linux Desktop</a></h1>
-    
-    
-      <p class="meta">
-        
-  
-
-
-<span class="byline author vcard">Posted by <span class="fn"><a href="/blog/our-team/max-veprinsky.html">Max Veprinsky</a></span></span>
-
- - 
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2009-03-10T16:13:30+08:00" pubdate data-updated="true">Mar 10<span>th</span>, 2009</time>
-        
-         | <a href="/2009/03/running-asdm-client-from-your-linux-desktop/#disqus_thread">Comments</a>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>For those of us who use Linux as a desktop replacement for Windows would find it nice to be able to run the ASDM client natively. If you haven&#8217;t upgraded your ASA/PIX to the <strong>latest ASDM</strong> you should do so. The steps are described <a href="http://linuxsysadminblog.com/2009/01/howto-upgrade-asdm-using-cli-on-cisco-asa5500/">here</a>.</p>
-
-<p>Once you do upgrade your PIX/ASA to the latest version you may run into another issue where your bundled version of java not connect with ASDM. The remedy for this if you are using Fedora 10 can be <a href="http://linuxsysadminblog.com/2009/02/upgrade-to-java-se-6-update-12-on-fedora-10/">found here</a>.</p>
-
-<p>Now assuming that you have asdm loaded and opened access to outside over port 4443 with:</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>http server enable 4443
-</span><span class='line'>http 0.0.0.0 0.0.0.0 outside</span></code></pre></td></tr></table></div></figure>
-
-
-<p>You can connect to your PIX/ASA over port 4443 and download the asdm.jnlp file to your pc via web browser at https://external_ip_of_asa:4443</p>
-
-<p>Once you posses the asdm.jnlp file issue <code>javaws asdm.jnlp</code> in terminal. Upon successful login this will create <code>.asdm</code> folder in your home directory with files inside, as well as a desktop shortcut. After this the <code>asdm.jnlp</code> is no longer needed and can be erased.</p>
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/14/">&larr; Older</a>
@@ -805,6 +802,10 @@ To do this we need to edit two files, <em>config_inc.php</em> and <em>custom_str
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/2012/11/xen-add-extra-partitions-to-guest-os/">Xen: Add Extra Partitions to Guest OS</a>
+      </li>
+    
+      <li class="post">
         <a href="/2012/11/howto-bulk-import-dns-zones-to-softlayer-dns-using-cpanel/">HowTo: Bulk Import DNS Zones to Softlayer DNS using Cpanel</a>
       </li>
     
@@ -818,10 +819,6 @@ To do this we need to edit two files, <em>config_inc.php</em> and <em>custom_str
     
       <li class="post">
         <a href="/2012/06/restore-xen-vm-from-lvm-snapshot-backups/">Restore Xen VM from LVM Snapshot Backups</a>
-      </li>
-    
-      <li class="post">
-        <a href="/2012/06/debian-6-backup-xen-with-lvm-and-rsnapshot/">Debian 6: Backup Xen with LVM and Rsnapshot</a>
       </li>
     
   </ul>

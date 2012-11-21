@@ -9,7 +9,7 @@
   <meta name="author" content="Promet OPS Team">
 
   
-  <meta name="description" content="I noticed lots of email being relayed on one of our shared hosting server, CentOS5 with Cpanel and running Exim, and the strange thing is that the &hellip;">
+  <meta name="description" content="I made a copy of Drupal6 site with SecurePages module installed and configured. This module is configured to redirect all or certain pages to https &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -91,6 +91,84 @@ jQuery.noConflict();
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/2010/02/problem-moving-drupal-site-with-securepages-module-enabled/">Problem Moving Drupal Site With SecurePages Module Enabled</a></h1>
+    
+    
+      <p class="meta">
+        
+  
+
+
+<span class="byline author vcard">Posted by <span class="fn"><a href="/blog/our-team/gerold-mercadero.html">Gerold Mercadero</a></span></span>
+
+ - 
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2010-02-17T07:41:23+08:00" pubdate data-updated="true">Feb 17<span>th</span>, 2010</time>
+        
+         | <a href="/2010/02/problem-moving-drupal-site-with-securepages-module-enabled/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>I made a copy of Drupal6 site with <a href="http://drupal.org/project/securepages">SecurePages</a> module installed and configured.  This module is configured to redirect all or certain pages to https - depending on your configurations.  For our setup we usually include the login and admin sections to redirect to https.</p>
+
+<p>The problem is on the copied site that is on a new domain as we cannot login and go to the admin section because it redirect back to the source/original site.  What we need is either disable the securepages module or update the domains.  To do this, you need to access your database (ex: phpmyadmin, etc), go to <em>variable</em> table, and search for <em>securepages</em> configurations.</p>
+
+<p>If you want to disable the module change:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>securepages_enable  s:1:"**1**";</span></code></pre></td></tr></table></div></figure>
+
+
+<p>to</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>securepages_enable  s:1:"**0**";</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Or if you want to update the domain change:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>securepages_basepath s:30:"http://**www.domain.com**";
+</span><span class='line'>securepages_basepath_ssl s:31:"https://**www.domain.com**";</span></code></pre></td></tr></table></div></figure>
+
+
+<p>to</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>securepages_basepath s:30:"http://**www.newdomain.com**";
+</span><span class='line'>securepages_basepath_ssl s:31:"https://**www.newdomain.com**";</span></code></pre></td></tr></table></div></figure>
+
+
+<p>After making the above changes <strong>don&#8217;t forget</strong> to run the update.php (<code>http://www.newdomain.com/update.php</code>)</p>
+
+<p>If you want to uninstall the module, try removing the securepages directory and run update.php.</p>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -577,66 +655,6 @@ jQuery.noConflict();
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/2009/11/upgrade-to-fedora-12/">Upgrade to Fedora 12</a></h1>
-    
-    
-      <p class="meta">
-        
-  
-
-
-<span class="byline author vcard">Posted by <span class="fn"><a href="/blog/our-team/max-veprinsky.html">Max Veprinsky</a></span></span>
-
- - 
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2009-11-22T15:58:02+08:00" pubdate data-updated="true">Nov 22<span>nd</span>, 2009</time>
-        
-         | <a href="/2009/11/upgrade-to-fedora-12/#disqus_thread">Comments</a>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>Fedora release 12 became available to the public November 17, 2009. <a href="http://fedoraproject.org/wiki/Releases/12/FeatureList">New features</a> are plentiful and many are centred around KVM virtualization.</p>
-
-<p>If you are like me and still running Fedora 10 or 11 and do not wish to wait till a yum based update is pushed out you can kick off your adventure into Fedora 12 land manually. Set aside at least an hour of time where you will not be able to use the PC while the update is taking place. First thing is to review <a href="http://fedoraproject.org/wiki/PreUpgrade">Preupgrade Wiki Page</a>, once you feel confident that your system is ready (enough space in /boot, created backups of your data) issue (as root):</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>yum update && yum install preupgrade</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Followed by:</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>preupgrade-cli "Fedora 12 (Constantine)"</span></code></pre></td></tr></table></div></figure>
-
-
-<p>After a lengthy download, reboot and update process you should be looking at Fedora 12 login prompt.</p>
-
-<p>If you used ext3 filesystem in your Fedora 10/11 system you can also migrate to ext4 filesystem by following the <a href="https://fedoraproject.org/wiki/Ext4_in_Fedora_11">Fedora ext4 Wiki guide</a>.</p>
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/6/">&larr; Older</a>
@@ -654,6 +672,10 @@ jQuery.noConflict();
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/2012/11/xen-add-extra-partitions-to-guest-os/">Xen: Add Extra Partitions to Guest OS</a>
+      </li>
+    
+      <li class="post">
         <a href="/2012/11/howto-bulk-import-dns-zones-to-softlayer-dns-using-cpanel/">HowTo: Bulk Import DNS Zones to Softlayer DNS using Cpanel</a>
       </li>
     
@@ -667,10 +689,6 @@ jQuery.noConflict();
     
       <li class="post">
         <a href="/2012/06/restore-xen-vm-from-lvm-snapshot-backups/">Restore Xen VM from LVM Snapshot Backups</a>
-      </li>
-    
-      <li class="post">
-        <a href="/2012/06/debian-6-backup-xen-with-lvm-and-rsnapshot/">Debian 6: Backup Xen with LVM and Rsnapshot</a>
       </li>
     
   </ul>

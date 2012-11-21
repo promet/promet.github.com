@@ -9,7 +9,7 @@
   <meta name="author" content="Promet OPS Team">
 
   
-  <meta name="description" content="I thought that at least 10% of our readers would appreciate this information - or at least be already aware of it.  For a more details and a full &hellip;">
+  <meta name="description" content="Latest version of PHP available for RHEL5.x is 5.1.6 and no new RedHat releases are coming as packaging has ceased. You can get PHP 5.3 for RHEL5 &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -91,6 +91,207 @@ jQuery.noConflict();
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/2009/10/php-5-2-9-on-rhel5-x-for-drupal-6/">Php 5.2.9 on RHEL5.x (for Drupal 6)</a></h1>
+    
+    
+      <p class="meta">
+        
+  
+
+
+<span class="byline author vcard">Posted by <span class="fn"><a href="/blog/our-team/max-veprinsky.html">Max Veprinsky</a></span></span>
+
+ - 
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2009-10-21T15:10:13+08:00" pubdate data-updated="true">Oct 21<span>st</span>, 2009</time>
+        
+         | <a href="/2009/10/php-5-2-9-on-rhel5-x-for-drupal-6/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>Latest version of <strong>PHP</strong> available for RHEL5.x is 5.1.6 and no new RedHat releases are coming as packaging has ceased. You can get PHP 5.3 for RHEL5 from <a href="http://blog.famillecollet.com/pages/Config-en">Remi</a>, but it it&#8217;s incompatible with latest versions of Drupal, Civicrm or many modules so we need the a 5.2X branch of PHP. This requires building php from source or using rpmbuild and source rpm. I was able to use <a href="http://kojipkgs.fedoraproject.org/packages/php/5.2.9/1.fc9/src/php-5.2.9-1.fc9.src.rpm">Koji&#8217;s</a> FC9 php5.2.9 src.rpm to rebuild for RHEL5 and here is how.</p>
+
+<p>Install rpm-build package.</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>sudo yum install rpm-build</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Create build env in your home directory (mine is called &#8216;max&#8217;), do NOT build as root user. I used &#8216;rpm&#8217; directory as the build location.</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>mkdir -p rpm/{SOURCES,SRPMS,SPECS,BUILD,RPMS}</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Create .rpmmacros file which will identify the build location.</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>echo "%_topdir /home/max/rpm" &gt; .rpmmacros</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Download php5.2.9 rpm source file, i used FC9 version as it is closest to RHEL5.</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>wget http://kojipkgs.fedoraproject.org/packages/php/5.2.9/1.fc9/src/php-5.2.9-1.fc9.src.rpm</span></code></pre></td></tr></table></div></figure>
+
+
+<p>To rebuild php5.2.9 FC9 source RPM for RHEL5.x into binary RPM&#8217;s we need to make sure build dependences have been satisfied. I created a file called &#8220;php-deps&#8221; which contains the build dependencies to be installed via YUM.</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>bzip2-devel
+</span><span class='line'>curl-devel
+</span><span class='line'>db4-devel
+</span><span class='line'>gmp-devel
+</span><span class='line'>httpd-devel
+</span><span class='line'>pam-devel
+</span><span class='line'>libstdc++-devel
+</span><span class='line'>openssl-devel
+</span><span class='line'>sqlite-devel
+</span><span class='line'>zlib-devel
+</span><span class='line'>pcre-devel
+</span><span class='line'>readline-devel
+</span><span class='line'>libtool
+</span><span class='line'>gcc-c++
+</span><span class='line'>krb5-devel
+</span><span class='line'>libc-client-devel
+</span><span class='line'>cyrus-sasl-devel
+</span><span class='line'>openldap-devel
+</span><span class='line'>mysql-devel
+</span><span class='line'>postgresql-devel
+</span><span class='line'>unixODBC-devel
+</span><span class='line'>libxml2-devel
+</span><span class='line'>net-snmp-devel
+</span><span class='line'>libxslt-devel
+</span><span class='line'>libxml2-devel
+</span><span class='line'>mhash-devel
+</span><span class='line'>ncurses-devel
+</span><span class='line'>libXpm-devel
+</span><span class='line'>libjpeg-devel</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Install build dependencies via yum</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>sudo yum install -y `cat php-deps`</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Finally perform the build, this could take some time depending on speed of your machine. If everything goes well many php*.rpm files will  be created in rpm/RPMS/&#8221;arch-type&#8221;/ folder. &#8220;arch-type&#8221; is the hardware-platform of your machine which will match &#8220;uname -i&#8221; command (mine is i386)</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>rpmbuild --rebuild php-5.2.9-1.fc9.src.rpm</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Now you can install the resulting RPM&#8217;s manually but a better way is to create a local YUM repository. Install createrepo application via YUM.</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>sudo yum info createrepo</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Create a repository location directory and copy your newly generated php5.2.9 RPM files into it.</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>sudo mkdir /opt/local-repository && cp /home/max/rpm/RPMS/i386/* /opt/local-repository</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Initialize the local repository and catalog the files copied there. (run this command anytime you add/remove files from your local repository directory)</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>sudo createrepo /opt/local-repository/</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Configure your local repository with yum by creating a file in /etc/yum.repos.d called &#8220;local-repository.repo&#8221;
+containing:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>[local-repository]
+</span><span class='line'>name=RHEL5 $releasever - Local Repo
+</span><span class='line'>baseurl=file:///opt/local-repository/
+</span><span class='line'>enabled=0
+</span><span class='line'>gpgcheck=0
+</span><span class='line'>#gpgkey=file:///path/to/you/RPM-GPG-KEY</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Update yum to register local repository</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>sudo yum update</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Update php using your new rpm files via the local repository</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>sudo yum --enablerepo=local-repository update php</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Restart apache</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>sudo /etc/init.d/httpd restart</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Verify PHP version</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>php -v</span></code></pre></td></tr></table></div></figure>
+
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -658,54 +859,6 @@ and this will result in displaying in the browser any errors your application mi
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/2009/09/google-webmail-bites-it/">Google Webmail Bites It.</a></h1>
-    
-    
-      <p class="meta">
-        
-  
-
-
-<span class="byline author vcard">Posted by <span class="fn"><a href="/blog/our-team/max-veprinsky.html">Max Veprinsky</a></span></span>
-
- - 
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2009-09-01T16:33:10+08:00" pubdate data-updated="true">Sep 1<span>st</span>, 2009</time>
-        
-         | <a href="/2009/09/google-webmail-bites-it/#disqus_thread">Comments</a>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>Google webmail is down people&#8230;</p>
-
-<p><a href="http://linuxsysadminblog.com/2009/09/google-webmail-bites-it/gmail_bites_it-3/"><img src="http://linuxsysadminblog.com/images/2009/09/gmail_bites_it2-150x150.png" alt="google webmail down" /></a></p>
-
-<p>However mail can be retrieved and sent via IMAP/POP and SMTP. Fire up your favourite email client (I like <a href="http://www.mozillamessaging.com/en-US/thunderbird/">Mozilla Thunderbird</a>) in the meantime.</p>
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/8/">&larr; Older</a>
@@ -723,6 +876,10 @@ and this will result in displaying in the browser any errors your application mi
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/2012/11/xen-add-extra-partitions-to-guest-os/">Xen: Add Extra Partitions to Guest OS</a>
+      </li>
+    
+      <li class="post">
         <a href="/2012/11/howto-bulk-import-dns-zones-to-softlayer-dns-using-cpanel/">HowTo: Bulk Import DNS Zones to Softlayer DNS using Cpanel</a>
       </li>
     
@@ -736,10 +893,6 @@ and this will result in displaying in the browser any errors your application mi
     
       <li class="post">
         <a href="/2012/06/restore-xen-vm-from-lvm-snapshot-backups/">Restore Xen VM from LVM Snapshot Backups</a>
-      </li>
-    
-      <li class="post">
-        <a href="/2012/06/debian-6-backup-xen-with-lvm-and-rsnapshot/">Debian 6: Backup Xen with LVM and Rsnapshot</a>
       </li>
     
   </ul>

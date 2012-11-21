@@ -9,7 +9,7 @@
   <meta name="author" content="Promet OPS Team">
 
   
-  <meta name="description" content="Here is a quick tip on how to remove a list of files. Let&#8217;s say you have the list of files inside a file called files_to_remove. Usually I &hellip;">
+  <meta name="description" content="Debian Etch has been discontinued for a while now, and in an ideal world everyone has upgraded to lenny a long time ago. Still, this is not always &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -91,6 +91,99 @@ jQuery.noConflict();
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/2010/07/debian-ftp-archive-for-etch-archive-debian-org/">Debian FTP Archive for Etch - archive.debian.org</a></h1>
+    
+    
+      <p class="meta">
+        
+  
+
+
+<span class="byline author vcard">Posted by <span class="fn"><a href="/blog/our-team/marius-ducea.html">Marius Ducea</a></span></span>
+
+ - 
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2010-07-09T19:49:17+08:00" pubdate data-updated="true">Jul 9<span>th</span>, 2010</time>
+        
+         | <a href="/2010/07/debian-ftp-archive-for-etch-archive-debian-org/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p><strong>Debian Etch</strong> has been discontinued for a while now, and in an ideal world everyone has upgraded to <strong>lenny</strong> a long time ago. Still, this is not always possible and there are some systems out there that are still running etch, some for a good reason, some just because their admins are lazy ;) . Recently we worked on a project with such a system that was still running etch, and the devs on the team told us  that all is working perfect but they are no longer able to install new packages using apt tools. Hmm&#8230; let&#8217;s see.</p>
+
+<p>And indeed running apt update was giving a  <strong>404 error</strong>, as the etch files are no longer in the main ftp archive (on ftp.debian.org):</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>apt-get update
+</span><span class='line'>Ign http://ftp.debian.org etch Release.gpg
+</span><span class='line'>Ign http://ftp.debian.org etch Release
+</span><span class='line'>Ign http://ftp.debian.org etch/main Packages
+</span><span class='line'>Ign http://ftp.debian.org etch/non-free Packages
+</span><span class='line'>Ign http://ftp.debian.org etch/contrib Packages
+</span><span class='line'>Err http://ftp.debian.org etch/main Packages
+</span><span class='line'>404 Not Found [IP: 130.89.149.226 80]
+</span><span class='line'>Err http://ftp.debian.org etch/non-free Packages
+</span><span class='line'>404 Not Found [IP: 130.89.149.226 80]
+</span><span class='line'>Err http://ftp.debian.org etch/contrib Packages
+</span><span class='line'>404 Not Found [IP: 130.89.149.226 80]
+</span><span class='line'>Fetched 4B in 1s (3B/s)
+</span><span class='line'>Reading package lists... Done
+</span><span class='line'>W: Couldn't stat source package list http://ftp.debian.org etch/main Packages (/var/lib/apt/lists/ftp.debian.org_debian_dists_etch_main_binary-i386_Packages) - stat (2 No such file or directory)
+</span><span class='line'>W: Couldn't stat source package list http://ftp.debian.org etch/non-free Packages (/var/lib/apt/lists/ftp.debian.org_debian_dists_etch_non-free_binary-i386_Packages) - stat (2 No such file or directory)
+</span><span class='line'>W: Couldn't stat source package list http://ftp.debian.org etch/contrib Packages (/var/lib/apt/lists/ftp.debian.org_debian_dists_etch_contrib_binary-i386_Packages) - stat (2 No such file or directory)
+</span><span class='line'>W: You may want to run apt-get update to correct these problems</span></code></pre></td></tr></table></div></figure>
+
+
+<p>and the apt sources line causing this error was (from <strong>/etc/apt/sources.list</strong>):
+<code>deb http://ftp.debian.org/debian/ etch main non-free contrib</code></p>
+
+<p>We could not upgrade the machine because of internal constrains, and this was not even the scope of our project, but we needed to install some new debian packages we had to point the apt sources to a new place and this is to the <strong>archive.debian.org</strong> that continues (and will continue) to have the etch files. Basically our new apt sources became:
+<code>deb http://archive.debian.org/debian/ etch main non-free contrib</code>
+and this made it possible to complete our project and install the needed libraries. A few weeks after we finished the project we were hired for a new project to perform the upgrade to lenny, but this is a different storry.</p>
+
+<p>I hope you found this post useful, in case for some reason you are <em>still running etch and need to find a proper etch mirror to install new softwares as needed</em>. Of course I would urge you to upgrade to lenny, or even to squeeze if possible, as etch is no longer supported, you have no longer security patches, etc.</p>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -719,84 +812,6 @@ apc.cache_by_default=0 # disable by default
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/2010/02/problem-moving-drupal-site-with-securepages-module-enabled/">Problem Moving Drupal Site With SecurePages Module Enabled</a></h1>
-    
-    
-      <p class="meta">
-        
-  
-
-
-<span class="byline author vcard">Posted by <span class="fn"><a href="/blog/our-team/gerold-mercadero.html">Gerold Mercadero</a></span></span>
-
- - 
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2010-02-17T07:41:23+08:00" pubdate data-updated="true">Feb 17<span>th</span>, 2010</time>
-        
-         | <a href="/2010/02/problem-moving-drupal-site-with-securepages-module-enabled/#disqus_thread">Comments</a>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>I made a copy of Drupal6 site with <a href="http://drupal.org/project/securepages">SecurePages</a> module installed and configured.  This module is configured to redirect all or certain pages to https - depending on your configurations.  For our setup we usually include the login and admin sections to redirect to https.</p>
-
-<p>The problem is on the copied site that is on a new domain as we cannot login and go to the admin section because it redirect back to the source/original site.  What we need is either disable the securepages module or update the domains.  To do this, you need to access your database (ex: phpmyadmin, etc), go to <em>variable</em> table, and search for <em>securepages</em> configurations.</p>
-
-<p>If you want to disable the module change:</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>securepages_enable  s:1:"**1**";</span></code></pre></td></tr></table></div></figure>
-
-
-<p>to</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>securepages_enable  s:1:"**0**";</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Or if you want to update the domain change:</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>securepages_basepath s:30:"http://**www.domain.com**";
-</span><span class='line'>securepages_basepath_ssl s:31:"https://**www.domain.com**";</span></code></pre></td></tr></table></div></figure>
-
-
-<p>to</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>securepages_basepath s:30:"http://**www.newdomain.com**";
-</span><span class='line'>securepages_basepath_ssl s:31:"https://**www.newdomain.com**";</span></code></pre></td></tr></table></div></figure>
-
-
-<p>After making the above changes <strong>don&#8217;t forget</strong> to run the update.php (<code>http://www.newdomain.com/update.php</code>)</p>
-
-<p>If you want to uninstall the module, try removing the securepages directory and run update.php.</p>
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/5/">&larr; Older</a>
@@ -814,6 +829,10 @@ apc.cache_by_default=0 # disable by default
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/2012/11/xen-add-extra-partitions-to-guest-os/">Xen: Add Extra Partitions to Guest OS</a>
+      </li>
+    
+      <li class="post">
         <a href="/2012/11/howto-bulk-import-dns-zones-to-softlayer-dns-using-cpanel/">HowTo: Bulk Import DNS Zones to Softlayer DNS using Cpanel</a>
       </li>
     
@@ -827,10 +846,6 @@ apc.cache_by_default=0 # disable by default
     
       <li class="post">
         <a href="/2012/06/restore-xen-vm-from-lvm-snapshot-backups/">Restore Xen VM from LVM Snapshot Backups</a>
-      </li>
-    
-      <li class="post">
-        <a href="/2012/06/debian-6-backup-xen-with-lvm-and-rsnapshot/">Debian 6: Backup Xen with LVM and Rsnapshot</a>
       </li>
     
   </ul>
