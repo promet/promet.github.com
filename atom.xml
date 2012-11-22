@@ -4,7 +4,7 @@
   <title><![CDATA[Linux Sysadmin Blog]]></title>
   <link href="http://linuxsysadminblog.com/atom.xml" rel="self"/>
   <link href="http://linuxsysadminblog.com/"/>
-  <updated>2012-11-21T23:19:31+08:00</updated>
+  <updated>2012-11-22T11:06:26+08:00</updated>
   <id>http://linuxsysadminblog.com/</id>
   <author>
     <name><![CDATA[Promet OPS Team]]></name>
@@ -42,7 +42,7 @@
 </pre></td><td class='code'><pre><code class=''><span class='line'>  mount /dev/xvda3 /extra_space</span></code></pre></td></tr></table></div></figure>
 
 
-<p>Add it to &#8220;/etc/fstab&#8221; to automount on reboot.  /etc/fstab:</p>
+<p>Add it to &#8220;/etc/fstab&#8221; to automount on reboot.</p>
 
 <figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 </pre></td><td class='code'><pre><code class=''><span class='line'>  /dev/xvda3 /extra_space ext3 noatime,nodiratime,errors=remount-ro 0 1</span></code></pre></td></tr></table></div></figure>
