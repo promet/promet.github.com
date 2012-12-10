@@ -48,7 +48,7 @@ vi /etc/tomcat6/Catalina/localhost/solr.xml
 	<Context docBase="/usr/share/tomcat6/webapps/solr.war" debug="0" privileged="true" allowLinking="true" crossContext="true">
 	<Environment name="solr/home" type="java.lang.String" value="/usr/share/tomcat6/solr" override="true" />
 	</Context>
-chown -r tomcat6.tomcat6 /var/lib/tomcat6
+chown -R tomcat6.tomcat6 /var/lib/tomcat6
 /etc/init.d/tomcat6 restart
 ```
 
@@ -64,7 +64,7 @@ cp /path/drupal_site/sites/all/modules/apachesolr/solrconfig.xml /usr/share/tomc
 cp apache-solr-1.4.1/example/multicore/solr.xml /usr/share/tomcat6/solr/
 mkdir /usr/share/tomcat6/solr/site_sample1
 cp -r /usr/share/tomcat6/solr/conf /usr/share/tomcat6/solr/site_sample1/conf
-vi /usr/share/tomcat6/solr/solr.xml`
+vi /usr/share/tomcat6/solr/solr.xml
 	<core name="site1" instanceDir="site_sample1" />
 chown -R tomcat6:root /usr/share/tomcat6/solr/
 /etc/init.d/tomcat6 restart
