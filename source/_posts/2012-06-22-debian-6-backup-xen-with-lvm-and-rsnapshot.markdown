@@ -38,7 +38,7 @@ vi /etc/rsnapshot.conf
 ```
 
 Here's my rsnapshot config changes and/or additions:
-
+<!--more-->
 ```
 snapshot_root /backups/    #this is a mounted partition
 interval daily 1    # i removed all other schedule and one daily copy only

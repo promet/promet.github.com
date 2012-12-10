@@ -57,7 +57,7 @@ You should see Solr access on your Tomcat admin/manager page (`http://hostname:8
 **3.)  Connect Drupal Site to Solr (multi-core setup)**
 
 I already have a Drupal site with ApacheSolr module installed and SolrPHPclient library.
-
+<!--more-->
 ```
 cp /path/drupal_site/sites/all/modules/apachesolr/schema.xml /usr/share/tomcat6/solr/conf/schema.xml
 cp /path/drupal_site/sites/all/modules/apachesolr/solrconfig.xml /usr/share/tomcat6/solr/conf/solrconfig.xml

@@ -31,7 +31,7 @@ aptitude install libpam-pwdfile
 ```
 
 Next create your password file (example: _/etc/vsftpd_users.conf_) which contain the list of virtual users and password hash.  You can use [htpasswd](http://httpd.apache.org/docs/2.0/programs/htpasswd.html) that's included in Apache or go to this website, [htaccesstools.com](http://www.htaccesstools.com/htpasswd-generator/) to generate the list of users and passwords.
-
+<!--more-->
 Once you have the list of users (example: _demo1_ and _demo2_), you have to create their virtual directory as well, let's say I want to set ftp users home directory inside _/home/ftpusers_.  This will be their home directory and they can't see or navigate outside of their home dir. Make sure they're writable as well.
 
 ```
